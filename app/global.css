@@ -107,72 +107,85 @@ html > body[data-scroll-locked] {
  */
 .mermaid-diagram .nodeLabel,
 .mermaid-diagram .node .label,
+/* Label colors follow palette text (set per-node in enhanceMermaidSvg).
+   Fallbacks only — do not force one ink color across themes. */
 .mermaid-diagram .node foreignObject,
 .mermaid-diagram .node foreignObject div,
 .mermaid-diagram .node foreignObject span,
 .mermaid-diagram .node foreignObject p {
-  color: #1e293b !important;
-  -webkit-text-fill-color: #1e293b !important;
+  color: #1e293b;
+  -webkit-text-fill-color: #1e293b;
+}
+.dark .mermaid-diagram .node foreignObject,
+.dark .mermaid-diagram .node foreignObject div,
+.dark .mermaid-diagram .node foreignObject span,
+.dark .mermaid-diagram .node foreignObject p {
+  color: #e8eaf8;
+  -webkit-text-fill-color: #e8eaf8;
 }
 .mermaid-diagram .node text,
 .mermaid-diagram .node tspan {
-  fill: #1e293b !important;
+  fill: #1e293b;
+}
+.dark .mermaid-diagram .node text,
+.dark .mermaid-diagram .node tspan {
+  fill: #e8eaf8;
 }
 
-/* Modern colorful palette — light */
+/* Excalidraw-style: fill = same hue as border, lower contrast */
 :root {
-  --sketch-border-blue: #4f46e5;
+  --sketch-border-blue: #6366f1;
   --sketch-text-blue: #1e1b4b;
-  --sketch-bg-blue: #eef2ff;
+  --sketch-bg-blue: #e8eaf8;
   --sketch-hatch-blue: #6366f1;
-  --sketch-border-green: #059669;
+  --sketch-border-green: #10b981;
   --sketch-text-green: #064e3b;
-  --sketch-bg-green: #ecfdf5;
+  --sketch-bg-green: #e6f6ee;
   --sketch-hatch-green: #10b981;
-  --sketch-border-amber: #d97706;
+  --sketch-border-amber: #f59e0b;
   --sketch-text-amber: #78350f;
-  --sketch-bg-amber: #fffbeb;
+  --sketch-bg-amber: #fef3e0;
   --sketch-hatch-amber: #f59e0b;
-  --sketch-border-rose: #e11d48;
+  --sketch-border-rose: #f43f5e;
   --sketch-text-rose: #881337;
-  --sketch-bg-rose: #fff1f2;
+  --sketch-bg-rose: #fde8ec;
   --sketch-hatch-rose: #f43f5e;
-  --sketch-border-violet: #7c3aed;
+  --sketch-border-violet: #8b5cf6;
   --sketch-text-violet: #4c1d95;
-  --sketch-bg-violet: #f5f3ff;
+  --sketch-bg-violet: #eee8fa;
   --sketch-hatch-violet: #8b5cf6;
-  --sketch-border-neutral: #64748b;
+  --sketch-border-neutral: #868e96;
   --sketch-text-neutral: #1e293b;
-  --sketch-bg-neutral: #f8fafc;
-  --sketch-hatch-neutral: #94a3b8;
+  --sketch-bg-neutral: #f1f3f5;
+  --sketch-hatch-neutral: #868e96;
 }
 
-/* Dark mode palette */
+/* Dark — Excalidraw low-contrast fills + bright borders */
 .dark {
-  --sketch-border-blue: #818cf8;
-  --sketch-text-blue: #e0e7ff;
-  --sketch-bg-blue: #1e1b4b;
-  --sketch-hatch-blue: #6366f1;
-  --sketch-border-green: #34d399;
+  --sketch-border-blue: #6d70c6;
+  --sketch-text-blue: #e8eaf8;
+  --sketch-bg-blue: #252647;
+  --sketch-hatch-blue: #6d70c6;
+  --sketch-border-green: #22c55e;
   --sketch-text-green: #d1fae5;
-  --sketch-bg-green: #064e3b;
-  --sketch-hatch-green: #10b981;
-  --sketch-border-amber: #fbbf24;
+  --sketch-bg-green: #0a2e22;
+  --sketch-hatch-green: #22c55e;
+  --sketch-border-amber: #f59e0b;
   --sketch-text-amber: #fef3c7;
-  --sketch-bg-amber: #78350f;
+  --sketch-bg-amber: #451a03;
   --sketch-hatch-amber: #f59e0b;
   --sketch-border-rose: #fb7185;
   --sketch-text-rose: #ffe4e6;
-  --sketch-bg-rose: #881337;
-  --sketch-hatch-rose: #f43f5e;
+  --sketch-bg-rose: #3f0a14;
+  --sketch-hatch-rose: #fb7185;
   --sketch-border-violet: #a78bfa;
   --sketch-text-violet: #ede9fe;
-  --sketch-bg-violet: #4c1d95;
-  --sketch-hatch-violet: #8b5cf6;
+  --sketch-bg-violet: #2e1a4a;
+  --sketch-hatch-violet: #a78bfa;
   --sketch-border-neutral: #94a3b8;
-  --sketch-text-neutral: #f1f5f9;
-  --sketch-bg-neutral: #1e293b;
-  --sketch-hatch-neutral: #64748b;
+  --sketch-text-neutral: #e2e8f0;
+  --sketch-bg-neutral: #1a1d24;
+  --sketch-hatch-neutral: #94a3b8;
 }
 
 .sketch-palette-blue { --sk-bg: var(--sketch-bg-blue); --sk-hatch: var(--sketch-hatch-blue); --sk-border: var(--sketch-border-blue); --sk-text: var(--sketch-text-blue); }

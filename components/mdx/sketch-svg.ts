@@ -6,21 +6,20 @@ import {
   type SketchFillStyle,
 } from '../diagrams/sketch-styles';
 
-/** SVG `<defs>` for optional hachure patterns */
+/** SVG `<defs>` for optional hachure patterns — low-contrast bg + hatch in border hue */
 export function buildSketchPatternDefs(isDark = false): string {
-  // Always use light pastel fills for node readability; dark mode only affects edges/container
-  const palettes = getSketchPalettes(false);
+  const palettes = getSketchPalettes(isDark);
   const patterns = Object.entries(palettes)
     .map(([name, p]) => {
       return `
     <pattern id="sketch-hachure-${name}" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
       <rect width="8" height="8" fill="${p.bg}"/>
-      <line x1="0" y1="0" x2="0" y2="8" stroke="${p.hatch}" stroke-width="1.5" stroke-opacity="0.3"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="${p.hatch}" stroke-width="1.5" stroke-opacity="0.35"/>
     </pattern>
     <pattern id="sketch-cross-hatch-${name}" patternUnits="userSpaceOnUse" width="10" height="10">
       <rect width="10" height="10" fill="${p.bg}"/>
-      <path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="${p.hatch}" stroke-width="1" stroke-opacity="0.25"/>
-      <path d="M-1,9 l2,2 M0,0 l10,10 M9,-1 l2,2" stroke="${p.hatch}" stroke-width="1" stroke-opacity="0.25"/>
+      <path d="M-1,1 l2,-2 M0,10 l10,-10 M9,11 l2,-2" stroke="${p.hatch}" stroke-width="1" stroke-opacity="0.3"/>
+      <path d="M-1,9 l2,2 M0,0 l10,10 M9,-1 l2,2" stroke="${p.hatch}" stroke-width="1" stroke-opacity="0.3"/>
     </pattern>`;
     })
     .join('');
@@ -90,7 +89,6 @@ function forceLabelColor(root: Element, color: string) {
 function resolveNodeClass(className: string): string {
   const tokens = className.split(/\s+/).filter(Boolean);
   const skip = new Set(['node', 'default', 'flowchart-label', 'label', 'clickable']);
-  // Longer keys first so "process" wins over accidental short matches
   const keys = Object.keys(mermaidSketchStyles).sort((a, b) => b.length - a.length);
   for (const key of keys) {
     if (skip.has(key)) continue;
@@ -99,13 +97,14 @@ function resolveNodeClass(className: string): string {
   return 'input';
 }
 
-/** Post-process Mermaid SVG — pastel fills + contrast-safe labels */
+/** Post-process Mermaid SVG — Excalidraw fills + solid box strokes + dashed edges */
 export function enhanceMermaidSvg(svg: string, isDark = false): string {
   if (typeof DOMParser === 'undefined') return svg;
 
-  const edgeColor = isDark ? '#A5B4FC' : '#4F46E5';
-  // Pastel fills in both themes so text never shares the fill color
-  const palettes = getSketchPalettes(false);
+  const edgeColor = isDark ? '#A5B4FC' : '#6366F1';
+  const palettes = getSketchPalettes(isDark);
+  // Flow connectors match Excalidraw: dashed by default
+  const edgeDash = strokeDasharray('dashed');
 
   try {
     const parser = new DOMParser();
@@ -114,15 +113,15 @@ export function enhanceMermaidSvg(svg: string, isDark = false): string {
     if (root.querySelector('parsererror')) return svg;
 
     const defs = doc.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    defs.innerHTML = buildSketchPatternDefs(false).replace(/^<defs>|<\/defs>$/g, '');
+    defs.innerHTML = buildSketchPatternDefs(isDark).replace(/^<defs>|<\/defs>$/g, '');
     root.insertBefore(defs, root.firstChild);
 
-    // Neutralize Mermaid <style> label colors — we set them per-node
     root.querySelectorAll('style').forEach((styleEl) => {
       let css = styleEl.textContent ?? '';
+      const ink = isDark ? '#E8EAF8' : '#1E293B';
       css = css.replace(
         /((?:\.nodeLabel|\.label|foreignObject)[^{]*\{[^}]*?)color\s*:\s*[^;!}]+/gi,
-        `$1color:#1E293B`,
+        `$1color:${ink}`,
       );
       styleEl.textContent = css;
     });
@@ -143,8 +142,7 @@ export function enhanceMermaidSvg(svg: string, isDark = false): string {
       if (dash) shape.setAttribute('stroke-dasharray', dash);
       else shape.removeAttribute('stroke-dasharray');
 
-      // Pastel fills → always dark text (never same as fill)
-      const labelColor = contrastText(fill.startsWith('#') ? fill : palette.bg);
+      const labelColor = fill.startsWith('#') ? contrastText(fill) : palette.text;
       forceLabelColor(node, labelColor);
     });
 
@@ -156,7 +154,8 @@ export function enhanceMermaidSvg(svg: string, isDark = false): string {
     root.querySelectorAll('.edgePath path, .flowchart-link').forEach((path) => {
       path.setAttribute('stroke', edgeColor);
       path.setAttribute('stroke-width', '2');
-      path.removeAttribute('stroke-dasharray');
+      if (edgeDash) path.setAttribute('stroke-dasharray', edgeDash);
+      else path.removeAttribute('stroke-dasharray');
       path.setAttribute('fill', 'none');
     });
 

@@ -27,8 +27,8 @@ export function ConceptFrame({
       <div
         className={cn(
           'min-h-[240px] overflow-hidden rounded-2xl border-2 border-indigo-200/80',
-          'bg-white shadow-sm dark:border-indigo-800/50 dark:bg-slate-900',
-          'border-l-4 border-l-indigo-500 dark:border-l-indigo-400',
+          'bg-white shadow-sm dark:border-[#3d3f6b]/70 dark:bg-[#12121a]',
+          'border-l-4 border-l-indigo-500 dark:border-l-[#6d70c6]',
         )}
       >
         <div className="flex min-h-[220px] flex-col justify-center p-5 sm:p-7">{children}</div>
@@ -106,10 +106,24 @@ export function StepChip({
   );
 }
 
-export function FlowConnector({ className }: { className?: string }) {
+export function FlowConnector({
+  className,
+  strokeStyle = 'dashed',
+}: {
+  className?: string;
+  strokeStyle?: SketchStrokeStyle;
+}) {
+  const lineClass =
+    strokeStyle === 'dotted'
+      ? 'border-t-2 border-dotted'
+      : strokeStyle === 'solid'
+        ? 'border-t-2 border-solid'
+        : 'border-t-2 border-dashed';
+
   return (
-    <div className={cn('flex items-center justify-center px-1 text-indigo-400', className)}>
-      <ArrowRight className="h-4 w-4" />
+    <div className={cn('flex items-center justify-center gap-0.5 px-1 text-indigo-400 dark:text-[#A5B4FC]', className)}>
+      <span className={cn('w-4 sm:w-6', lineClass, 'border-current')} aria-hidden />
+      <ArrowRight className="h-4 w-4 shrink-0" />
     </div>
   );
 }

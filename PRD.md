@@ -338,13 +338,14 @@ Every lesson uses **one primary `<ConceptAnim slug="…" />`** from [`lesson-con
 **Design rules:**
 
 1. **One idea = one animated figure** — no duplicate Mermaid for the same concept
-2. **Modern colorful UI** — pastel fills, solid 2px borders, indigo accent frame; dark-mode tokens required
+2. **Excalidraw color system** — fill = same hue as border at lower contrast; bright borders; dark-mode tokens required
 3. **Bangla typography** — Noto Sans Bengali (`--font-bn`) for prose; JetBrains Mono for code
 4. **Stable layout** — `min-h-[220px]` ConceptFrame; Bangla `DataLabel` + English term
 5. **Data-bound** — fruit corpus; `P(apple|i like) ≈ 72% / 18% / 10%`
 6. **Motion** with `prefers-reduced-motion`
 7. **3D only when spatial** — `embedding-space-3d` on Module 6.1; attention stays 2D heatmap
 8. `SketchBox` default fill = solid; hachure/cross-hatch for emphasis only
+9. **Stroke styles** — boxes default `solid`; connectors `dashed`/`dotted` per diagram meaning
 
 **Shared primitives:** `components/diagrams/diagram-ui.tsx` — `ConceptFrame`, `StepChip`, `FlowConnector`, `ModelBadge`, `StepDots`, `SketchBox`
 

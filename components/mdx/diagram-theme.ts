@@ -1,3 +1,10 @@
+import {
+  getSketchPalettes,
+  paletteToClassDef,
+  sketchPalettes,
+  sketchPalettesDark,
+} from '../diagrams/sketch-styles';
+
 export type ModuleTheme = {
   primaryColor: string;
   primaryTextColor: string;
@@ -20,149 +27,104 @@ export type ModuleTheme = {
 const BN_FONT =
   "var(--font-bn), 'Noto Sans Bengali', ui-sans-serif, system-ui, sans-serif";
 
-/** Modern pastel fills, dark text — high contrast */
+function themeFromPalettes(isDark: boolean): ModuleTheme {
+  const p = getSketchPalettes(isDark);
+  return {
+    primaryColor: p.blue.bg,
+    primaryTextColor: p.blue.text,
+    primaryBorderColor: p.blue.border,
+    secondaryColor: p.green.bg,
+    secondaryTextColor: p.green.text,
+    secondaryBorderColor: p.green.border,
+    tertiaryColor: p.amber.bg,
+    tertiaryTextColor: p.amber.text,
+    lineColor: isDark ? '#A5B4FC' : '#6366F1',
+    background: isDark ? '#0F172A' : '#FFFFFF',
+    mainBkg: isDark ? '#1E293B' : '#F8FAFC',
+    textColor: isDark ? '#F1F5F9' : '#1E293B',
+    nodeBorder: p.blue.border,
+    clusterBkg: isDark ? '#1A1D24' : '#F1F5F9',
+    titleColor: isDark ? '#F1F5F9' : '#1E293B',
+    edgeLabelBackground: isDark ? '#1E293B' : '#FFFFFF',
+  };
+}
+
+/** Excalidraw-aligned Mermaid themes (light pastel / dark low-contrast) */
 export const moduleThemes: Record<string, ModuleTheme> = {
-  default: {
-    primaryColor: '#EEF2FF',
-    primaryTextColor: '#1E1B4B',
-    primaryBorderColor: '#4F46E5',
-    secondaryColor: '#ECFDF5',
-    secondaryTextColor: '#064E3B',
-    secondaryBorderColor: '#059669',
-    tertiaryColor: '#FFFBEB',
-    tertiaryTextColor: '#78350F',
-    lineColor: '#4F46E5',
-    background: '#FFFFFF',
-    mainBkg: '#F8FAFC',
-    textColor: '#1E293B',
-    nodeBorder: '#4F46E5',
-    clusterBkg: '#F1F5F9',
-    titleColor: '#1E293B',
-    edgeLabelBackground: '#FFFFFF',
-  },
-  dark: {
-    primaryColor: '#1E1B4B',
-    primaryTextColor: '#E0E7FF',
-    primaryBorderColor: '#818CF8',
-    secondaryColor: '#064E3B',
-    secondaryTextColor: '#D1FAE5',
-    secondaryBorderColor: '#34D399',
-    tertiaryColor: '#78350F',
-    tertiaryTextColor: '#FEF3C7',
-    lineColor: '#A5B4FC',
-    background: '#0F172A',
-    mainBkg: '#1E293B',
-    textColor: '#F1F5F9',
-    nodeBorder: '#818CF8',
-    clusterBkg: '#334155',
-    titleColor: '#F1F5F9',
-    edgeLabelBackground: '#1E293B',
-  },
+  default: themeFromPalettes(false),
+  dark: themeFromPalettes(true),
 };
 
 export function getMermaidThemeVariables(isDark: boolean): Record<string, string> {
-  // Node fills stay pastel with dark text in both themes (readable Module 1/2 diagrams).
-  // Only chrome (lines, edge label bg) follows dark mode.
-  const light = moduleThemes.default;
-  const dark = moduleThemes.dark;
+  const t = isDark ? moduleThemes.dark : moduleThemes.default;
   return {
-    primaryColor: light.primaryColor,
-    primaryTextColor: light.primaryTextColor,
-    primaryBorderColor: light.primaryBorderColor,
-    secondaryColor: light.secondaryColor,
-    secondaryTextColor: light.secondaryTextColor,
-    secondaryBorderColor: light.secondaryBorderColor,
-    tertiaryColor: light.tertiaryColor,
-    tertiaryTextColor: light.tertiaryTextColor,
-    lineColor: isDark ? dark.lineColor : light.lineColor,
-    background: isDark ? dark.background : light.background,
-    mainBkg: light.mainBkg,
-    textColor: light.textColor,
-    nodeBorder: light.nodeBorder,
-    clusterBkg: isDark ? dark.clusterBkg : light.clusterBkg,
-    titleColor: isDark ? dark.titleColor : light.titleColor,
-    edgeLabelBackground: isDark ? dark.edgeLabelBackground : light.edgeLabelBackground,
+    primaryColor: t.primaryColor,
+    primaryTextColor: t.primaryTextColor,
+    primaryBorderColor: t.primaryBorderColor,
+    secondaryColor: t.secondaryColor,
+    secondaryTextColor: t.secondaryTextColor,
+    secondaryBorderColor: t.secondaryBorderColor,
+    tertiaryColor: t.tertiaryColor,
+    tertiaryTextColor: t.tertiaryTextColor,
+    lineColor: t.lineColor,
+    background: t.background,
+    mainBkg: t.mainBkg,
+    textColor: t.textColor,
+    nodeBorder: t.nodeBorder,
+    clusterBkg: t.clusterBkg,
+    titleColor: t.titleColor,
+    edgeLabelBackground: t.edgeLabelBackground,
     fontFamily: BN_FONT,
     fontSize: '14px',
   };
 }
 
-export const excalidrawClassDefs: Record<string, string> = {
-  input: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-  process: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  output: 'fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px',
-  highlight: 'fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px',
-  matrix: 'fill:#F5F3FF,color:#4C1D95,stroke:#7C3AED,stroke-width:2px',
-  dim: 'fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px',
-  weight: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  a: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-  b: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  c: 'fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px',
-  out: 'fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px',
-  train: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-  model: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  gpt: 'fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px',
-  attn: 'fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px',
-  mlp: 'fill:#FDF2F8,color:#831843,stroke:#DB2777,stroke-width:2px',
-  block: 'fill:#F5F3FF,color:#4C1D95,stroke:#7C3AED,stroke-width:2px',
-  data: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-  lookup: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  vector: 'fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px',
-  scalar: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-  embed: 'fill:#F5F3FF,color:#4C1D95,stroke:#7C3AED,stroke-width:2px',
-  layer: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  bad: 'fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px',
-  good: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  fail: 'fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px',
-  success: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  done: 'fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px',
-  next: 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px',
-};
+function buildClassDefs(isDark: boolean): Record<string, string> {
+  const p = isDark ? sketchPalettesDark : sketchPalettes;
+  return {
+    input: paletteToClassDef(p.blue),
+    process: paletteToClassDef(p.green),
+    output: paletteToClassDef(p.amber),
+    highlight: paletteToClassDef(p.rose),
+    matrix: paletteToClassDef(p.violet),
+    dim: paletteToClassDef(p.neutral),
+    weight: paletteToClassDef(p.green),
+    a: paletteToClassDef(p.blue),
+    b: paletteToClassDef(p.green),
+    c: paletteToClassDef(p.amber),
+    out: paletteToClassDef(p.amber),
+    train: paletteToClassDef(p.blue),
+    model: paletteToClassDef(p.green),
+    gpt: paletteToClassDef(p.amber),
+    attn: paletteToClassDef(p.rose),
+    mlp: paletteToClassDef(p.rose),
+    block: paletteToClassDef(p.violet),
+    data: paletteToClassDef(p.blue),
+    lookup: paletteToClassDef(p.green),
+    vector: paletteToClassDef(p.amber),
+    scalar: paletteToClassDef(p.blue),
+    embed: paletteToClassDef(p.violet),
+    layer: paletteToClassDef(p.green),
+    bad: paletteToClassDef(p.rose),
+    good: paletteToClassDef(p.green),
+    fail: paletteToClassDef(p.rose),
+    success: paletteToClassDef(p.green),
+    done: paletteToClassDef(p.green),
+    next: paletteToClassDef(p.blue),
+  };
+}
 
-const DARK_CLASSDEFS: Record<string, string> = {
-  input: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-  process: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  output: 'fill:#78350F,color:#FEF3C7,stroke:#FBBF24,stroke-width:2px',
-  highlight: 'fill:#881337,color:#FFE4E6,stroke:#FB7185,stroke-width:2px',
-  matrix: 'fill:#4C1D95,color:#EDE9FE,stroke:#A78BFA,stroke-width:2px',
-  dim: 'fill:#1E293B,color:#CBD5E1,stroke:#94A3B8,stroke-width:2px',
-  weight: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  a: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-  b: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  c: 'fill:#78350F,color:#FEF3C7,stroke:#FBBF24,stroke-width:2px',
-  out: 'fill:#78350F,color:#FEF3C7,stroke:#FBBF24,stroke-width:2px',
-  train: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-  model: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  gpt: 'fill:#78350F,color:#FEF3C7,stroke:#FBBF24,stroke-width:2px',
-  attn: 'fill:#881337,color:#FFE4E6,stroke:#FB7185,stroke-width:2px',
-  mlp: 'fill:#831843,color:#FCE7F3,stroke:#F472B6,stroke-width:2px',
-  block: 'fill:#4C1D95,color:#EDE9FE,stroke:#A78BFA,stroke-width:2px',
-  data: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-  lookup: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  vector: 'fill:#78350F,color:#FEF3C7,stroke:#FBBF24,stroke-width:2px',
-  scalar: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-  embed: 'fill:#4C1D95,color:#EDE9FE,stroke:#A78BFA,stroke-width:2px',
-  layer: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  bad: 'fill:#881337,color:#FFE4E6,stroke:#FB7185,stroke-width:2px',
-  good: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  fail: 'fill:#881337,color:#FFE4E6,stroke:#FB7185,stroke-width:2px',
-  success: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  done: 'fill:#064E3B,color:#D1FAE5,stroke:#34D399,stroke-width:2px',
-  next: 'fill:#1E1B4B,color:#E0E7FF,stroke:#818CF8,stroke-width:2px',
-};
+export const excalidrawClassDefs = buildClassDefs(false);
+const DARK_CLASSDEFS = buildClassDefs(true);
 
 export function normalizeMermaidChart(chart: string, isDark: boolean): string {
   let result = chart;
-  // Keep pastel fills + dark text in BOTH themes so labels stay readable.
-  // (Dark fills + failed label updates caused same-color text in Module 1/2.)
-  const defs = excalidrawClassDefs;
-  void isDark;
+  const defs = isDark ? DARK_CLASSDEFS : excalidrawClassDefs;
 
   result = result.replace(/classDef\s+(\w+)\s+[^\n]+/gi, (match, name: string) => {
     const key = name.toLowerCase();
     const style = defs[key];
     if (style) return `classDef ${name} ${style}`;
-    // White-on-saturated → pastel + dark text
     if (/color:#fff(?:fff)?/i.test(match) || /color:#000(?:000)?/i.test(match)) {
       return `classDef ${name} ${defs.input}`;
     }
@@ -171,16 +133,19 @@ export function normalizeMermaidChart(chart: string, isDark: boolean): string {
 
   // Charts with no classDef (Module index pages): inject readable defaults
   if (!/classDef\s+\w+/i.test(result) && /flowchart/i.test(result)) {
-    result += `\n${mermaidClassDefs.trim()}`;
+    result += `\n${mermaidClassDefs(isDark).trim()}`;
   }
 
   result = result.replace(/["'][\u{1F300}-\u{1F9FF}\u2600-\u27BF]\s*/gu, '"');
   return result;
 }
 
-export const mermaidClassDefs = `
-classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
-classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
-classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
-classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
+export function mermaidClassDefs(isDark = false): string {
+  const d = isDark ? DARK_CLASSDEFS : excalidrawClassDefs;
+  return `
+classDef input ${d.input}
+classDef process ${d.process}
+classDef output ${d.output}
+classDef highlight ${d.highlight}
 `;
+}
