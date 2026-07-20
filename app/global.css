@@ -119,59 +119,59 @@ html > body[data-scroll-locked] {
   fill: #1e293b !important;
 }
 
-/* Modern colorful palette — vivid pastels + dark text (both themes) */
+/* Modern colorful palette — light */
 :root {
-  --sketch-border-blue: #4338ca;
+  --sketch-border-blue: #4f46e5;
   --sketch-text-blue: #1e1b4b;
-  --sketch-bg-blue: #c7d2fe;
-  --sketch-hatch-blue: #4f46e5;
-  --sketch-border-green: #047857;
+  --sketch-bg-blue: #eef2ff;
+  --sketch-hatch-blue: #6366f1;
+  --sketch-border-green: #059669;
   --sketch-text-green: #064e3b;
-  --sketch-bg-green: #a7f3d0;
-  --sketch-hatch-green: #059669;
-  --sketch-border-amber: #b45309;
+  --sketch-bg-green: #ecfdf5;
+  --sketch-hatch-green: #10b981;
+  --sketch-border-amber: #d97706;
   --sketch-text-amber: #78350f;
-  --sketch-bg-amber: #fde68a;
-  --sketch-hatch-amber: #d97706;
-  --sketch-border-rose: #be123c;
+  --sketch-bg-amber: #fffbeb;
+  --sketch-hatch-amber: #f59e0b;
+  --sketch-border-rose: #e11d48;
   --sketch-text-rose: #881337;
-  --sketch-bg-rose: #fecdd3;
-  --sketch-hatch-rose: #e11d48;
-  --sketch-border-violet: #6d28d9;
+  --sketch-bg-rose: #fff1f2;
+  --sketch-hatch-rose: #f43f5e;
+  --sketch-border-violet: #7c3aed;
   --sketch-text-violet: #4c1d95;
-  --sketch-bg-violet: #ddd6fe;
-  --sketch-hatch-violet: #7c3aed;
-  --sketch-border-neutral: #475569;
+  --sketch-bg-violet: #f5f3ff;
+  --sketch-hatch-violet: #8b5cf6;
+  --sketch-border-neutral: #64748b;
   --sketch-text-neutral: #1e293b;
-  --sketch-bg-neutral: #e2e8f0;
-  --sketch-hatch-neutral: #64748b;
+  --sketch-bg-neutral: #f8fafc;
+  --sketch-hatch-neutral: #94a3b8;
 }
 
-/* Dark mode: brighter pastels, still dark text on nodes */
+/* Dark mode palette */
 .dark {
   --sketch-border-blue: #818cf8;
-  --sketch-text-blue: #1e1b4b;
-  --sketch-bg-blue: #a5b4fc;
+  --sketch-text-blue: #e0e7ff;
+  --sketch-bg-blue: #1e1b4b;
   --sketch-hatch-blue: #6366f1;
   --sketch-border-green: #34d399;
-  --sketch-text-green: #064e3b;
-  --sketch-bg-green: #6ee7b7;
+  --sketch-text-green: #d1fae5;
+  --sketch-bg-green: #064e3b;
   --sketch-hatch-green: #10b981;
   --sketch-border-amber: #fbbf24;
-  --sketch-text-amber: #78350f;
-  --sketch-bg-amber: #fcd34d;
+  --sketch-text-amber: #fef3c7;
+  --sketch-bg-amber: #78350f;
   --sketch-hatch-amber: #f59e0b;
   --sketch-border-rose: #fb7185;
-  --sketch-text-rose: #881337;
-  --sketch-bg-rose: #fda4af;
+  --sketch-text-rose: #ffe4e6;
+  --sketch-bg-rose: #881337;
   --sketch-hatch-rose: #f43f5e;
   --sketch-border-violet: #a78bfa;
-  --sketch-text-violet: #4c1d95;
-  --sketch-bg-violet: #c4b5fd;
+  --sketch-text-violet: #ede9fe;
+  --sketch-bg-violet: #4c1d95;
   --sketch-hatch-violet: #8b5cf6;
   --sketch-border-neutral: #94a3b8;
-  --sketch-text-neutral: #1e293b;
-  --sketch-bg-neutral: #cbd5e1;
+  --sketch-text-neutral: #f1f5f9;
+  --sketch-bg-neutral: #1e293b;
   --sketch-hatch-neutral: #64748b;
 }
 
@@ -195,9 +195,9 @@ html > body[data-scroll-locked] {
   background-image: repeating-linear-gradient(
     45deg,
     transparent,
-    transparent 4px,
-    color-mix(in srgb, var(--sk-hatch) 38%, transparent) 4px,
-    color-mix(in srgb, var(--sk-hatch) 38%, transparent) 6px
+    transparent 5px,
+    color-mix(in srgb, var(--sk-hatch) 22%, transparent) 5px,
+    color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px
   );
 }
 
@@ -209,15 +209,15 @@ html > body[data-scroll-locked] {
     repeating-linear-gradient(
       45deg,
       transparent,
-      transparent 5px,
-      color-mix(in srgb, var(--sk-hatch) 32%, transparent) 5px,
-      color-mix(in srgb, var(--sk-hatch) 32%, transparent) 7px
+      transparent 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 7px
     ),
     repeating-linear-gradient(
       -45deg,
       transparent,
-      transparent 5px,
-      color-mix(in srgb, var(--sk-hatch) 32%, transparent) 5px,
-      color-mix(in srgb, var(--sk-hatch) 32%, transparent) 7px
+      transparent 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 7px
     );
 }
