@@ -39,12 +39,13 @@ flowchart TD
   <Formula>
     {`$$L = -\\log p_y = -\\log \\text{softmax}(\\text{logits})_y$$`}
   </Formula>
-  <WorkedExample>
-    True token = "apple" (ID 2){'\n'}
-    probs = [0.1, 0.2, 0.5, 0.2]{'\n'}
-    L = -log(0.5) ≈ 0.693{'\n\n'}
-    যদি model confident হত (p=0.9): L = -log(0.9) ≈ 0.105
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. সঠিক token = <code>"apple"</code> (ID = 2)</div>
+    <div>২. Model probs: <code>[0.1, 0.2, 0.5, 0.2]</code> → সঠিকটার p = 0.5</div>
+    <div>৩. Loss: <code>L = −log(0.5) ≈ 0.693</code></div>
+    <div>৪. যদি confident হত (p = 0.9): <code>L = −log(0.9) ≈ 0.105</code> — অনেক কম</div>
+    <div>৫. যদি ভুল হত (p = 0.1): <code>L = −log(0.1) ≈ 2.303</code> — অনেক বেশি</div>
+  </MathPractical>
   <CodeLink>Playground-এ loss calculate করো ↓</CodeLink>
 </MathLesson>
 
@@ -66,7 +67,7 @@ $$W \leftarrow W - \eta \cdot \frac{\partial L}{\partial W}$$
 
 এটা Module 4-এ শেখা autograd + gradient descent-এর application।
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-06/loss" title="Cross-Entropy Loss Calculator" />
 

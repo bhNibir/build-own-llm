@@ -26,12 +26,12 @@ export function ConceptFrame({
     <figure className="my-8 not-prose">
       <div
         className={cn(
-          'min-h-[220px] overflow-hidden rounded-2xl border-2 border-indigo-200/80',
+          'min-h-[240px] overflow-hidden rounded-2xl border-2 border-indigo-200/80',
           'bg-white shadow-sm dark:border-indigo-800/50 dark:bg-slate-900',
           'border-l-4 border-l-indigo-500 dark:border-l-indigo-400',
         )}
       >
-        <div className="flex min-h-[200px] flex-col justify-center p-4 sm:p-6">{children}</div>
+        <div className="flex min-h-[220px] flex-col justify-center p-5 sm:p-7">{children}</div>
         {hint && (
           <div className="border-t border-fd-border bg-indigo-50/50 px-4 py-2 text-center text-xs text-fd-muted-foreground dark:bg-indigo-950/30">
             {hint}
@@ -42,6 +42,41 @@ export function ConceptFrame({
         <figcaption className="mt-2 text-center text-sm text-fd-muted-foreground">{caption}</figcaption>
       )}
     </figure>
+  );
+}
+
+/** Cartesian plot shell: grid background + labeled axes */
+export function PlotFrame({
+  children,
+  xLabel = 'x',
+  yLabel = 'y',
+  className,
+}: {
+  children: ReactNode;
+  xLabel?: string;
+  yLabel?: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn('relative mx-auto w-full max-w-md', className)}>
+      <div className="mb-1 text-center font-mono text-[10px] text-fd-muted-foreground">{yLabel} ↑</div>
+      <div
+        className={cn(
+          'relative min-h-[160px] rounded-xl border-2 border-slate-200 p-4 dark:border-slate-600',
+          'bg-[linear-gradient(to_right,rgba(148,163,184,0.18)_1px,transparent_1px),linear-gradient(to_bottom,rgb(148,163,184,0.18)_1px,transparent_1px)]',
+          'bg-[size:16px_16px] dark:bg-[linear-gradient(to_right,rgb(71,85,105,0.45)_1px,transparent_1px),linear-gradient(to_bottom,rgb(71,85,105,0.45)_1px,transparent_1px)]',
+        )}
+      >
+        {/* Y axis */}
+        <div className="pointer-events-none absolute bottom-3 left-3 top-3 w-px bg-slate-400 dark:bg-slate-500" />
+        {/* X axis */}
+        <div className="pointer-events-none absolute bottom-3 left-3 right-3 h-px bg-slate-400 dark:bg-slate-500" />
+        <div className="relative z-10 flex h-full min-h-[140px] items-end justify-center gap-3 pl-3 pb-2">
+          {children}
+        </div>
+      </div>
+      <div className="mt-1 text-center font-mono text-[10px] text-fd-muted-foreground">{xLabel} →</div>
+    </div>
   );
 }
 

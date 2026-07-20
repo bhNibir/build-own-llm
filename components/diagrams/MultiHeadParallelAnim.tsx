@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const HEADS = 3;
 const MINI = [
@@ -23,6 +23,8 @@ export function MultiHeadParallelAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={HEADS} current={active} onSelect={setActive} />
+      <DataLabel bn="hটি head সমান্তরালে চলে, শেষে মিলিয়ে যায়" en="multi-head" />
       <div className="flex flex-wrap justify-center gap-3">
         {Array.from({ length: HEADS }, (_, h) => (
           <motion.div
@@ -36,7 +38,7 @@ export function MultiHeadParallelAnim({ paused }: { paused?: boolean }) {
               className="p-3"
             >
               <p className="mb-2 text-center text-xs font-semibold">Head {h + 1}</p>
-              <div className="grid grid-cols-3 gap-0.5">
+              <div className="grid grid-cols-3 gap-2">
                 {MINI.flatMap((row, r) =>
                   row.map((w, c) => (
                     <div
@@ -63,7 +65,6 @@ export function MultiHeadParallelAnim({ paused }: { paused?: boolean }) {
           </SketchBox>
         </motion.div>
       </div>
-      <DataLabel bn="hটি head সমান্তরালে চলে, শেষে মিলিয়ে যায়" en="multi-head" />
     </div>
   );
 }

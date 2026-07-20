@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const NODES = ['c', 'b', 'a'];
 
@@ -17,6 +17,7 @@ export function BackpropFlowAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={NODES.length} current={edge} onSelect={setEdge} />
       <DataLabel bn="ব্যাকপ্রপ — গ্র্যাডিয়েন্ট পেছনে যায়" en="grad flows backward" />
       <div className="flex items-center justify-center">
         {NODES.map((n, i) => (

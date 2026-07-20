@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { ArrowLeftRight } from 'lucide-react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const PAIRS = [
   { word: 'i', id: 7 },
@@ -28,14 +28,28 @@ export function EncodeDecodeAnim({ paused }: { paused?: boolean }) {
   }, [paused]);
 
   const pair = PAIRS[idx];
+  const stepIndex = (dir === 'encode' ? 0 : PAIRS.length) + idx;
 
   return (
     <div className="space-y-4">
+      <StepDots
+        total={PAIRS.length * 2}
+        current={stepIndex}
+        onSelect={(i) => {
+          if (i < PAIRS.length) {
+            setDir('encode');
+            setIdx(i);
+          } else {
+            setDir('decode');
+            setIdx(i - PAIRS.length);
+          }
+        }}
+      />
       <DataLabel
         bn={dir === 'encode' ? 'Encode: শব্দ → ID' : 'Decode: ID → শব্দ'}
         en={dir === 'encode' ? 'word → ID' : 'ID → word'}
       />
-      <p className="flex items-center justify-center gap-1 text-xs font-medium text-fd-muted-foreground">
+      <p className="flex items-center justify-center gap-2 text-xs font-medium text-fd-muted-foreground">
         <ArrowLeftRight className="h-3.5 w-3.5" />
         bidirectional map
       </p>

@@ -47,6 +47,14 @@ Example: `"i like apple"` sentence-এ attention weights:
 - Row `"like"`: strong self-attention (0.8)
 - Row `"apple"`: `"like"` (0.3) এবং নিজের (0.5) দিকে — verb–object link!
 
+<MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+  <div>১. Token <code>"i"</code>-এর weight row: <code>w = [0.7, 0.2, 0.1]</code> (নিজে / like / apple)</div>
+  <div>২. Value vectors ধরো: <code>V_i=[1,0]</code>, <code>V_like=[0,1]</code>, <code>V_apple=[1,1]</code></div>
+  <div>৩. Weighted sum: <code>0.7·[1,0] + 0.2·[0,1] + 0.1·[1,1]</code></div>
+  <div>৪. = <code>[0.7, 0] + [0, 0.2] + [0.1, 0.1] = [0.8, 0.3]</code></div>
+  <div>৫. Output = context-aware vector — বেশিরভাগ নিজের info, একটু neighbours-এর mix</div>
+</MathPractical>
+
 ## Full Implementation
 
 <StepReveal steps={[
@@ -65,14 +73,14 @@ Example: `"i like apple"` sentence-এ attention weights:
 
 GPT training-এ token শুধু **আগের** tokens দেখতে পায় — future cheat করা যায় না।
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-07/self-attention" title="Self-Attention on 3 Words" viz="attention" />
 
 ## ✅ তুমি কী শিখলে?
 
-- Self-attention = tokens attend to each other
-- Heatmap shows who-attends-to-whom
-- GPT uses **causal** masked self-attention
+- Self-attention = token একে অপরের দিকে attend করে
+- Heatmap দেখায় কে কাকে attend করছে
+- GPT **causal** masked self-attention ব্যবহার করে
 
 **পরের lesson:** [Multi-Head Attention](/docs/part-07-attention/05-multi-head)

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const A = [[1, 2], [3, 4]];
 const B = [[5, 6], [7, 8]];
@@ -28,6 +28,11 @@ export function MatmulVisualAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots
+        total={4}
+        current={cell.r * 2 + cell.c}
+        onSelect={(i) => setCell({ r: Math.floor(i / 2), c: i % 2 })}
+      />
       <DataLabel bn="ম্যাট্রিক্স গুণ" en="C = A × B" />
       <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
         <MatrixView m={A} highlightRow={cell.r} />
@@ -50,9 +55,9 @@ function MatrixView({
   highlightCell?: { r: number; c: number };
 }) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex flex-col gap-2">
       {m.map((row, r) => (
-        <div key={r} className="flex gap-0.5">
+        <div key={r} className="flex gap-2">
           {row.map((v, c) => {
             const active = highlightCell ? highlightCell.r === r && highlightCell.c === c
               : highlightRow === r || highlightCol === c;

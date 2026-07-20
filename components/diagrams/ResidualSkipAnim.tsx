@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
   const [phase, setPhase] = useState(0);
@@ -15,6 +15,8 @@ export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={3} current={phase} onSelect={setPhase} />
+      <DataLabel bn="মূল signal skip করে যোগ হয় — gradient flow সহজ" en="residual" />
       <div className="relative mx-auto flex max-w-xs flex-col items-center gap-2">
         <SketchBox
           fillStyle={phase === 0 ? 'hachure' : 'solid'}
@@ -58,7 +60,6 @@ export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
           x + sublayer(x)
         </SketchBox>
       </div>
-      <DataLabel bn="মূল signal skip করে যোগ হয় — gradient flow সহজ" en="residual" />
     </div>
   );
 }

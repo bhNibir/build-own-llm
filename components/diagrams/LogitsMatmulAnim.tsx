@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const E = [0.3, 0.5, 0.2];
 const W = [
@@ -14,12 +14,13 @@ const LABELS = ['apple', 'banana', 'mango'];
 
 export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
   const [step, setStep] = useState(0);
+  const total = W[0].length + 2;
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setStep((s) => (s + 1) % (W[0].length + 2)), 900);
+    const t = setInterval(() => setStep((s) => (s + 1) % total), 900);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, total]);
 
   const logits = W[0].map((_, j) =>
     E.reduce((sum, e, i) => sum + e * W[i][j], 0),
@@ -27,10 +28,12 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={total} current={step} onSelect={setStep} />
+      <DataLabel bn="embedding × weight matrix = প্রতিটি token-এর score" en="E @ W" />
       <div className="flex flex-wrap items-center justify-center gap-2">
         <div className="text-center">
           <p className="mb-1 text-xs font-semibold">E (1×d)</p>
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-2">
             {E.map((v, i) => (
               <SketchBox
                 key={i}
@@ -49,7 +52,7 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
 
         <div className="text-center">
           <p className="mb-1 text-xs font-semibold">W (d×V)</p>
-          <div className="grid grid-cols-3 gap-0.5">
+          <div className="grid grid-cols-3 gap-2">
             {W.flatMap((row, r) =>
               row.map((v, c) => (
                 <SketchBox
@@ -69,7 +72,7 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
 
         <div className="text-center">
           <p className="mb-1 text-xs font-semibold">logits</p>
-          <div className="flex flex-col gap-0.5">
+          <div className="flex flex-col gap-2">
             {logits.map((z, i) => (
               <motion.div
                 key={LABELS[i]}
@@ -88,7 +91,6 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
           </div>
         </div>
       </div>
-      <DataLabel bn="embedding × weight matrix = প্রতিটি token-এর score" en="E @ W" />
     </div>
   );
 }

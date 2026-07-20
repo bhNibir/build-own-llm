@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const VALUES = [
   { label: 'x', data: 2.0, grad: 0.0 },
@@ -25,6 +25,7 @@ export function ValueTapeAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={VALUES.length + 1} current={step} onSelect={setStep} />
       <DataLabel bn="Value টেপ — data ও grad একসাথে" en="data + grad" />
       <div className="mx-auto max-w-xs overflow-hidden rounded-lg border border-fd-border">
         <div className="grid grid-cols-3 border-b border-fd-border bg-fd-muted/40 text-xs font-semibold">

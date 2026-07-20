@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 const ARCS = [{ from: 0, to: 2, label: 'long-range' }];
@@ -21,6 +21,8 @@ export function DependencyLinesAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={ARCS.length + 1} current={active} onSelect={setActive} />
+      <DataLabel bn="দূরের token-এর উপর নির্ভর — attention-এর মূল কারণ" en="dependency" />
       <div className="relative mx-auto h-36 w-full max-w-sm">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 320 120" aria-hidden>
           <motion.path
@@ -60,7 +62,6 @@ export function DependencyLinesAnim({ paused }: { paused?: boolean }) {
           })}
         </div>
       </div>
-      <DataLabel bn="দূরের token-এর উপর নির্ভর — attention-এর মূল কারণ" en="dependency" />
     </div>
   );
 }

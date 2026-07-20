@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const V = [1, 2];
 const SCALE = 28;
@@ -22,8 +22,9 @@ export function VectorAxisAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={2} current={show ? 1 : 0} onSelect={(i) => setShow(i === 1)} />
       <DataLabel bn="ভেক্টর ২D গ্রিডে" en="v = [1, 2]" />
-      <svg viewBox="0 0 200 140" className="mx-auto h-36 w-full max-w-xs">
+      <svg viewBox="0 0 200 140" className="mx-auto h-36 w-full max-w-xs rounded-lg border border-fd-border bg-fd-muted/10">
         {[0, 1, 2, 3, 4].map((i) => (
           <g key={i}>
             <line x1={ORIGIN.x + i * SCALE} y1={ORIGIN.y} x2={ORIGIN.x + i * SCALE} y2={20} stroke="currentColor" className="text-fd-border" strokeWidth={0.5} />

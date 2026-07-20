@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const NODES = ['a', 'b', 'c'];
 const HINTS = [
@@ -22,6 +22,7 @@ export function CompGraphAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={NODES.length + 1} current={active} onSelect={setActive} />
       <DataLabel bn="কম্পিউটেশনাল গ্রাফ — সামনে এগোয়" en="forward pass" />
       <div className="flex items-center justify-center">
         {NODES.map((n, i) => (

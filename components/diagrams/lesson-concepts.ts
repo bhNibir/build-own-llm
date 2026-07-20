@@ -12,6 +12,7 @@ export type ConceptConfig = {
   name: string;
   caption: string;
   example?: ConceptExample;
+  mode?: 'bigram' | 'neural' | 'gpt';
 };
 
 const FRUIT_NEXT: ConceptExample = {
@@ -74,17 +75,17 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
     caption: 'Count: like→apple appears 2 times',
   },
   'part-02-bigram/03-predict': {
-    name: 'next-token',
-    caption: 'Argmax from count table',
-    example: FRUIT_NEXT,
+    name: 'bigram-predict',
+    caption: 'Count → normalize → argmax = apple',
   },
   'part-02-bigram/04-generate': {
     name: 'generate-chain',
-    caption: 'Autoregressive: i → like → apple',
+    caption: 'Bigram autoregressive: i → like → apple',
+    mode: 'bigram',
   },
   'part-02-bigram/05-sampling-vs-argmax': {
-    name: 'softmax-bars',
-    caption: 'Sampling vs always picking max',
+    name: 'sampling-bars',
+    caption: 'Argmax সবসময় একই; sampling লটারি',
     example: { probs: NEXT_AFTER_I_LIKE.probs, labels: NEXT_AFTER_I_LIKE.labels },
   },
   // Module 3
@@ -114,12 +115,20 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-06-neural-lm/02-weight-matrix': { name: 'logits-matmul', caption: 'E × W → logits' },
   'part-06-neural-lm/03-loss': {
-    name: 'softmax-bars',
-    caption: 'Cross-entropy measures prediction error',
-    example: { probs: [0.665, 0.245, 0.09], labels: ['apple', 'banana', 'mango'] },
+    name: 'loss-bars',
+    caption: 'Cross-entropy: −log(P_true)',
+    example: { probs: [0.5, 0.3, 0.2], labels: ['apple', 'banana', 'mango'] },
   },
-  'part-06-neural-lm/04-train': { name: 'train-loop', caption: '200 epochs — loss decreases' },
-  'part-06-neural-lm/05-generate': { name: 'generate-chain', caption: 'Sample from trained LM' },
+  'part-06-neural-lm/04-train': {
+    name: 'train-loop',
+    caption: 'Neural LM — epochs-এ loss কমে',
+    mode: 'neural',
+  },
+  'part-06-neural-lm/05-generate': {
+    name: 'generate-chain',
+    caption: 'Neural LM sample generation',
+    mode: 'neural',
+  },
   // Module 7
   'part-07-attention/01-why-attention': { name: 'dependency-lines', caption: 'Long-range token dependencies' },
   'part-07-attention/02-qkv': { name: 'qkv-split', caption: 'Embedding → Query, Key, Value' },
@@ -138,12 +147,19 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   'part-08-transformer/05-block': { name: 'transformer-block', caption: 'Full transformer block' },
   // Module 9
   'part-09-mini-gpt/01-gpt-architecture': { name: 'gpt-stack', caption: 'Stack N transformer blocks' },
-  'part-09-mini-gpt/02-train': { name: 'train-loop', caption: 'Train Mini GPT on fruit corpus' },
-  'part-09-mini-gpt/03-generate': { name: 'generate-chain', caption: 'Autoregressive generation' },
+  'part-09-mini-gpt/02-train': {
+    name: 'train-loop',
+    caption: 'Mini GPT train — transformer epochs',
+    mode: 'gpt',
+  },
+  'part-09-mini-gpt/03-generate': {
+    name: 'generate-chain',
+    caption: 'Mini GPT autoregressive generation',
+    mode: 'gpt',
+  },
   'part-09-mini-gpt/04-temperature': {
-    name: 'softmax-bars',
+    name: 'temp-softmax',
     caption: 'Temperature widens/narrows distribution',
-    example: { probs: NEXT_AFTER_I_LIKE.probs, labels: NEXT_AFTER_I_LIKE.labels },
   },
   'part-09-mini-gpt/05-top-k': { name: 'topk-filter', caption: 'Top-k filters low-probability tokens' },
   // Module 10

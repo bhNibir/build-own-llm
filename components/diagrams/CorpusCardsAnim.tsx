@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 import { FRUIT_DATASET } from './shared-data';
 
 export function CorpusCardsAnim({ paused }: { paused?: boolean }) {
@@ -18,6 +18,7 @@ export function CorpusCardsAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={FRUIT_DATASET.length} current={highlight} onSelect={setHighlight} />
       <DataLabel bn="Corpus = সব training sentence" en="training dataset" />
       <AnimatePresence mode="wait">
         <motion.p

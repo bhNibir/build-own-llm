@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const RUNGS = [
   { name: 'Fruit Mini GPT', params: '~270K', tokens: '30 words', active: true },
@@ -22,7 +22,9 @@ export function ScaleLadderAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <div className="mx-auto flex max-w-sm flex-col gap-1">
+      <StepDots total={RUNGS.length} current={step} onSelect={setStep} />
+      <DataLabel bn="একই architecture — data ও params বড় হলে শক্তি বাড়ে" en="scale" />
+      <div className="mx-auto flex max-w-sm flex-col gap-2">
         {RUNGS.map((rung, i) => (
           <motion.div
             key={rung.name}
@@ -44,7 +46,6 @@ export function ScaleLadderAnim({ paused }: { paused?: boolean }) {
           </motion.div>
         ))}
       </div>
-      <DataLabel bn="একই architecture — data ও params বড় হলে শক্তি বাড়ে" en="scale" />
     </div>
   );
 }

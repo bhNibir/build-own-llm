@@ -55,7 +55,7 @@ export function ColorConsole({
   return (
     <div
       className={cn(
-        'max-h-[280px] min-h-[120px] overflow-x-auto p-3 font-mono text-xs leading-relaxed',
+        'max-h-[280px] min-h-[120px] overflow-x-auto overflow-y-auto p-3 font-mono text-xs leading-relaxed',
         className,
       )}
     >

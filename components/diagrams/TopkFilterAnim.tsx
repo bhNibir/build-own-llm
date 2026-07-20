@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 import { NEXT_AFTER_I_LIKE } from './shared-data';
 
 const K = 2;
@@ -24,6 +24,7 @@ export function TopkFilterAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={2} current={phase} onSelect={setPhase} />
       <DataLabel bn={`শুধু top-${K} রাখি`} en={`top-k = ${K}`} />
       <div className="flex justify-center gap-5">
         {items.map((item) => {

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const MATRIX = [
   [1, 2, 3],
@@ -12,6 +12,10 @@ const MATRIX = [
 export function MatrixGridAnim({ paused }: { paused?: boolean }) {
   const [mode, setMode] = useState<'row' | 'col'>('row');
   const [idx, setIdx] = useState(0);
+  const rowCount = MATRIX.length;
+  const colCount = MATRIX[0].length;
+  const total = rowCount + colCount;
+  const current = mode === 'row' ? idx : rowCount + idx;
 
   useEffect(() => {
     if (paused) return;
@@ -30,10 +34,23 @@ export function MatrixGridAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots
+        total={total}
+        current={current}
+        onSelect={(i) => {
+          if (i < rowCount) {
+            setMode('row');
+            setIdx(i);
+          } else {
+            setMode('col');
+            setIdx(i - rowCount);
+          }
+        }}
+      />
       <DataLabel bn="ম্যাট্রিক্স আকার ২×৩" en="rows × cols" />
-      <div className="flex justify-center gap-1">
+      <div className="flex justify-center gap-2">
         {MATRIX.map((row, r) => (
-          <div key={r} className="flex flex-col gap-1">
+          <div key={r} className="flex flex-col gap-2">
             {row.map((val, c) => {
               const active = mode === 'row' ? r === idx : c === idx;
               return (

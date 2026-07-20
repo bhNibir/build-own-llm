@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Box, Eye } from 'lucide-react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 export function BlackBoxGlassAnim({ paused }: { paused?: boolean }) {
   const [side, setSide] = useState(0);
@@ -16,6 +16,7 @@ export function BlackBoxGlassAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={2} current={side} onSelect={setSide} />
       <DataLabel bn="কালো বাক্স বনাম স্বচ্ছ বাক্স" en="black box vs glass box" />
       <div className="grid gap-4 sm:grid-cols-2">
         <motion.div animate={side === 0 ? { scale: 1.02 } : { scale: 1, opacity: 0.88 }}>
@@ -26,10 +27,10 @@ export function BlackBoxGlassAnim({ paused }: { paused?: boolean }) {
             active={side === 0}
             className="p-4"
           >
-            <p className="mb-2 flex items-center gap-1 text-xs font-semibold">
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold">
               <Box className="h-3.5 w-3.5" /> API (black box)
             </p>
-            <div className="flex items-center justify-center gap-1 text-xs font-mono">
+            <div className="flex items-center justify-center gap-2 text-xs font-mono">
               <SketchBox fillStyle="solid" palette="neutral" className="px-2 py-1 text-xs">
                 App
               </SketchBox>
@@ -52,12 +53,12 @@ export function BlackBoxGlassAnim({ paused }: { paused?: boolean }) {
             active={side === 1}
             className="p-4"
           >
-            <p className="mb-2 flex items-center gap-1 text-xs font-semibold">
+            <p className="mb-2 flex items-center gap-2 text-xs font-semibold">
               <Eye className="h-3.5 w-3.5" /> From scratch (glass box)
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-1 text-[10px] font-mono">
+            <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
               {['Tokenizer', 'Embed', 'Attn', 'Predict'].map((s, i) => (
-                <span key={s} className="flex items-center gap-1">
+                <span key={s} className="flex items-center gap-2">
                   <SketchBox fillStyle="solid" palette="violet" className="px-1.5 py-0.5 text-[10px]">
                     {s}
                   </SketchBox>

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const A = [3, 1];
 const B = [1, 2];
@@ -25,8 +25,18 @@ export function DotGeometryAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={3} current={phase} onSelect={setPhase} />
       <DataLabel bn="ডট প্রোডাক্ট = প্রজেকশন × দৈর্ঘ্য" en="a·b" />
       <svg viewBox="0 0 180 130" className="mx-auto h-32 w-full max-w-xs">
+        {/* grid */}
+        {[0, 1, 2, 3, 4, 5].map((i) => (
+          <g key={i}>
+            <line x1={O.x + i * SCALE} y1={20} x2={O.x + i * SCALE} y2={O.y} stroke="currentColor" className="text-fd-border" strokeWidth={0.5} />
+            <line x1={O.x} y1={O.y - i * SCALE} x2={160} y2={O.y - i * SCALE} stroke="currentColor" className="text-fd-border" strokeWidth={0.5} />
+          </g>
+        ))}
+        <line x1={O.x} y1={O.y} x2={160} y2={O.y} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.5} />
+        <line x1={O.x} y1={O.y} x2={O.x} y2={20} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.5} />
         <line x1={O.x} y1={O.y} x2={O.x + B[0] * SCALE} y2={O.y - B[1] * SCALE} stroke="currentColor" className="text-emerald-600" strokeWidth={2} strokeDasharray={phase >= 1 ? '0' : '4 3'} />
         <line x1={O.x} y1={O.y} x2={O.x + A[0] * SCALE} y2={O.y - A[1] * SCALE} stroke="currentColor" className="text-indigo-500" strokeWidth={2} />
         {phase >= 2 && (

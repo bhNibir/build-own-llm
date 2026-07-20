@@ -36,7 +36,7 @@ export function EmbeddingLookupAnim({ paused }: { paused?: boolean }) {
 
         <div className="overflow-x-auto">
           <p className="mb-1 text-center text-xs font-semibold">E (embedding matrix)</p>
-          <div className="inline-grid gap-0.5" style={{ gridTemplateColumns: `repeat(${COLS + 1}, minmax(0, 1fr))` }}>
+          <div className="inline-grid gap-2" style={{ gridTemplateColumns: `repeat(${COLS + 1}, minmax(0, 1fr))` }}>
             <div className="h-6" />
             {Array.from({ length: COLS }, (_, c) => (
               <div key={`h-${c}`} className="flex h-6 items-center justify-center text-[10px] text-fd-muted-foreground">

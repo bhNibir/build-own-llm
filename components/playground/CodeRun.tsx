@@ -35,7 +35,7 @@ export function CodeRun({
   children,
   id,
   title,
-  height = 200,
+  height = 280,
   autoRun = true,
   editable = true,
 }: CodeRunProps) {
@@ -99,7 +99,14 @@ export function CodeRun({
           }}
           onCopy={async () => navigator.clipboard.writeText(code)}
         />
-        <CodeEditor value={code} onChange={setCode} readOnly={!editable} height={height} isDark={isDark} />
+        <CodeEditor
+          value={code}
+          onChange={setCode}
+          readOnly={!editable}
+          height={height}
+          isDark={isDark}
+          onRun={() => void runCode(code)}
+        />
         <div className="border-t border-fd-border bg-[#0d1117]">
           <ColorConsole lines={output} emptyLabel={ready ? '(no output)' : ''} />
         </div>

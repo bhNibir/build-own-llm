@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActiveRing, DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { ActiveRing, DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const DEFAULT = { input: 'I Like Apple', tokens: ['i', 'like', 'apple'] };
 
@@ -30,6 +30,7 @@ export function TokenizerSplitAnim({
 
   return (
     <div className="space-y-4">
+      <StepDots total={3} current={step} onSelect={setStep} />
       <DataLabel bn={`ধাপ ${step + 1}/3: ${stepBn}`} en={stepEn} />
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <div className="relative">
@@ -49,7 +50,7 @@ export function TokenizerSplitAnim({
           fillStyle={step >= 2 ? 'hachure' : 'solid'}
           strokeStyle="solid"
           palette="green"
-          className="flex min-h-[48px] min-w-[140px] flex-wrap justify-center gap-1.5"
+          className="flex min-h-[48px] min-w-[140px] flex-wrap justify-center gap-2"
         >
           {step < 2 ? (
             <span className="text-xs text-fd-muted-foreground">…</span>

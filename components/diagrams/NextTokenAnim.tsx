@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActiveRing, DataLabel, FlowConnector, ModelBadge, SketchBox } from './diagram-ui';
+import { ActiveRing, DataLabel, FlowConnector, ModelBadge, SketchBox, StepDots } from './diagram-ui';
 import { NEXT_AFTER_I_LIKE } from './shared-data';
 
 const DEFAULT_WORDS = ['i', 'like', '???'];
@@ -57,6 +57,14 @@ export function NextTokenAnim({
 
   return (
     <div className="space-y-4">
+      <StepDots
+        total={3}
+        current={phase}
+        onSelect={(i) => {
+          setPhase(i);
+          setPicked(i >= 2 ? (options[0]?.word ?? 'apple') : null);
+        }}
+      />
       <DataLabel bn="Context দেখে probability → একটা token pick" en="next-token prediction" />
       <div className="flex flex-wrap items-center justify-center gap-2">
         {words.map((w, i) => (

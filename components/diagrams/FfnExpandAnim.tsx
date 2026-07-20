@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const LAYERS = [
   { label: 'd', width: 48, nodes: 3 },
@@ -21,6 +21,8 @@ export function FfnExpandAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={4} current={step} onSelect={setStep} />
+      <DataLabel bn="FFN প্রথমে expand (4d), তারপর compress" en="d → 4d → d" />
       <div className="flex items-end justify-center gap-2">
         {LAYERS.map((layer, i) => {
           const lit = step === i || (step === 3 && i === 2);
@@ -28,16 +30,16 @@ export function FfnExpandAnim({ paused }: { paused?: boolean }) {
             <div key={layer.label + i} className="flex items-end gap-2">
               {i > 0 && <FlowConnector />}
               <motion.div
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-2"
                 animate={lit ? { scale: 1.04 } : { scale: 1 }}
               >
                 <SketchBox
                   fillStyle={lit ? 'hachure' : 'solid'}
                   palette={lit ? (i === 1 ? 'amber' : 'blue') : 'neutral'}
                   active={lit}
-                  className="flex items-end justify-center gap-0.5 p-2"
+                  className="flex items-end justify-center gap-2 p-2"
                 >
-                  <div className="flex items-end justify-center gap-0.5" style={{ minWidth: layer.width }}>
+                  <div className="flex items-end justify-center gap-2" style={{ minWidth: layer.width }}>
                     {Array.from({ length: layer.nodes }, (_, n) => (
                       <motion.div
                         key={n}
@@ -57,7 +59,6 @@ export function FfnExpandAnim({ paused }: { paused?: boolean }) {
           );
         })}
       </div>
-      <DataLabel bn="FFN প্রথমে expand (4d), তারপর compress" en="d → 4d → d" />
     </div>
   );
 }

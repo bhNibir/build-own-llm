@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const MAP = [
   { module: 'M7 Attention', file: 'CausalSelfAttention' },
@@ -23,6 +23,8 @@ export function CodeMapAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={MAP.length} current={active} onSelect={setActive} />
+      <DataLabel bn="course module সরাসরি nanoGPT code-এ map" en="code map" />
       <div className="mx-auto max-w-md space-y-2">
         {MAP.map((row, i) => (
           <motion.div
@@ -49,7 +51,6 @@ export function CodeMapAnim({ paused }: { paused?: boolean }) {
           </motion.div>
         ))}
       </div>
-      <DataLabel bn="course module সরাসরি nanoGPT code-এ map" en="code map" />
     </div>
   );
 }

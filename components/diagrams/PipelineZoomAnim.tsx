@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { Type, List, Hash, Link2 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const PART1_STEPS: { label: string; icon: LucideIcon; palette: 'blue' | 'green' | 'amber' | 'violet' }[] = [
   { label: 'Tokenizer', icon: Type, palette: 'blue' },
@@ -24,6 +24,7 @@ export function PipelineZoomAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={PART1_STEPS.length} current={active} onSelect={setActive} />
       <DataLabel bn="Module 1 focus — বাকি steps পরে" en="tokenizer → pairs" />
       <div className="flex flex-wrap justify-center gap-2">
         {PART1_STEPS.map((s, i) => {

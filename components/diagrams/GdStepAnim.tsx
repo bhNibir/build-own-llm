@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const POINTS = [
   { w: 3.5, loss: 2.8 },
@@ -27,11 +27,23 @@ export function GdStepAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={POINTS.length} current={step} onSelect={setStep} />
       <DataLabel bn="গ্র্যাডিয়েন্ট ডিসেন্ট — ধাপে ধাপে নামে" en="W ← W − η∇L" />
-      <svg viewBox="0 0 180 110" className="mx-auto h-32 w-full max-w-sm">
+      <svg viewBox="0 0 180 110" className="mx-auto h-32 w-full max-w-sm rounded-lg border border-fd-border bg-fd-muted/10">
+        {/* grid + axes */}
+        {[0, 1, 2, 3, 4].map((i) => (
+          <g key={i}>
+            <line x1={20 + i * 35} y1={10} x2={20 + i * 35} y2={100} stroke="currentColor" className="text-fd-border" strokeWidth={0.5} />
+            <line x1={15} y1={20 + i * 20} x2={170} y2={20 + i * 20} stroke="currentColor" className="text-fd-border" strokeWidth={0.5} />
+          </g>
+        ))}
+        <line x1={15} y1={100} x2={170} y2={100} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.5} />
+        <line x1={20} y1={10} x2={20} y2={100} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.5} />
+        <text x={90} y={108} textAnchor="middle" className="fill-fd-muted-foreground text-[7px] font-mono">W →</text>
+        <text x={8} y={55} textAnchor="middle" className="fill-fd-muted-foreground text-[7px] font-mono" transform="rotate(-90 8 55)">L</text>
         <path
           d={POINTS.map((p, i) => `${i === 0 ? 'M' : 'L'}${20 + (p.w / 4) * 140},${20 + (p.loss / 3) * 80}`).join(' ')}
-          fill="none" stroke="currentColor" className="text-fd-border" strokeWidth={2}
+          fill="none" stroke="currentColor" className="text-indigo-300 dark:text-indigo-700" strokeWidth={2}
         />
         {POINTS.map((p, i) => (
           <circle key={i} cx={20 + (p.w / 4) * 140} cy={20 + (p.loss / 3) * 80} r={3}

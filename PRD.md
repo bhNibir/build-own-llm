@@ -461,6 +461,7 @@ fruit is healthy
 | Phase 4 | 9–10 | ✅ Complete (GenerateControls) |
 | **Phase 5** | **Interactive polish v2** | ✅ Complete — Shiki, CodeRun, Motion, live viz |
 | **Phase 6** | **UX v3 (Bangla + colorful)** | ✅ Complete — Noto Bengali, SketchBox, Mermaid dark, log.step, EmbeddingSpace3D |
+| **Phase 7** | **Editor + clarity polish** | ✅ Complete — CodeMirror 6, StepDots/PlotFrame, MathPractical, unique anims |
 
 ---
 
@@ -474,6 +475,7 @@ fruit is healthy
 | 49 lesson curriculum | Done | All modules present |
 | Bangla prose + English terms | Done | Noto Sans Bengali + guided path |
 | Home/docs CTA → Lesson 0.1 | Done | Guided learner journey |
+| MathPractical collapsible | Done | Closed-by-default numeric walkthroughs |
 | Prev/next navigation | Done | Per-lesson links |
 | Theory-only lessons (12) | Done by design | M0, 1.1, 1.2, 2.1, 4.1, 7.1, 9.1, M10 |
 
@@ -484,7 +486,7 @@ fruit is healthy
 | Full-lesson `<Playground>` | Done | 37/37 code lessons |
 | Static ` ```ts ` blocks runnable | Done | Replaced with Playground or CodeRun |
 | Copy button on code | Done | RunnerToolbar on Playground + CodeRun |
-| Syntax-highlighted editor | Done | Shiki CodeEditor |
+| Syntax-highlighted editor | Done | **CodeMirror 6** (scroll, wrap, resize, fullscreen) |
 | Colorful semantic console | Done | ColorConsole + `log.step` / `log.data` / `log.ok` |
 | Single runtime (esbuild-wasm) | Done | Nodepod removed |
 
@@ -493,9 +495,11 @@ fruit is healthy
 | Item | Status | Notes |
 |------|--------|-------|
 | Mermaid on lessons | Done | Dark-aware classDefs + sketch palettes |
-| `<ConceptAnim>` lesson-specific | Done | 40+ anims, SketchBox + DataLabel |
+| `<ConceptAnim>` lesson-specific | Done | Unique mappings + StepDots + PlotFrame |
 | Diagrams use lesson data | Done | `lesson-concepts.ts` + `shared-data.ts` |
 | Embedding space 3D (M6.1) | Done | CSS perspective `embedding-space-3d` |
+| Stack CSS 3D | Done | GPT / Transformer block / Layer stack |
+| KaTeX Formula strings | Done | Client `KatexFormula` renderer |
 | Live viz from Run output | Done | `viz` prop on softmax, train, self-attention |
 | Motion animations | Done | ConceptAnim registry |
 | Animated toolbar icons | Done | Motion-enhanced Run/Copy/Reset |
@@ -506,7 +510,7 @@ fruit is healthy
 |------|--------|-------|
 | `bun run build` passes | Done | ~199 static pages |
 | CLI scripts part-01 … part-09 | Done | `bun run part-NN` |
-| PRD reflects UX v3 | Done | This document |
+| PRD reflects editor polish | Done | This document |
 
 ---
 

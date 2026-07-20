@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox, StepDots } from './diagram-ui';
+import { DataLabel, PlotFrame, SketchBox, StepDots } from './diagram-ui';
 
 export type SoftmaxBarsProps = {
   paused?: boolean;
@@ -40,21 +40,21 @@ export function SoftmaxBarsAnim({ paused, probs, labels }: SoftmaxBarsProps) {
         bn={showProbs ? 'Softmax → probability (যোগফল = ১)' : 'Logits = raw scores'}
         en={showProbs ? 'probabilities' : 'logits'}
       />
-      <div className="flex justify-center gap-4 sm:gap-8">
+      <PlotFrame xLabel="token" yLabel={showProbs ? 'P' : 'z'}>
         {items.map((item) => (
           <div key={item.label} className="flex flex-col items-center gap-2">
             <span className="font-mono text-sm font-medium">{item.label}</span>
-            <div className="flex h-36 w-16 items-end justify-center">
+            <div className="flex h-36 w-14 items-end justify-center">
               {showProbs ? (
                 <motion.div
-                  className="w-12 rounded-t-md bg-emerald-500"
+                  className="w-10 rounded-t-md bg-emerald-500"
                   initial={{ height: 0 }}
                   animate={{ height: `${item.p * 100}%` }}
                   transition={{ type: 'spring', stiffness: 120, damping: 18 }}
                 />
               ) : (
                 <motion.div
-                  className="w-12 rounded-t-md bg-violet-500"
+                  className="w-10 rounded-t-md bg-violet-500"
                   initial={{ height: 0 }}
                   animate={{ height: `${(item.z / 2) * 100}%` }}
                   transition={{ type: 'spring', stiffness: 120, damping: 18 }}
@@ -71,7 +71,7 @@ export function SoftmaxBarsAnim({ paused, probs, labels }: SoftmaxBarsProps) {
             </SketchBox>
           </div>
         ))}
-      </div>
+      </PlotFrame>
     </div>
   );
 }

@@ -35,7 +35,7 @@ export function Playground({
   id,
   title,
   editable = true,
-  height = 360,
+  height = 480,
   showConsole = true,
   viz,
 }: PlaygroundProps) {
@@ -120,6 +120,7 @@ export function Playground({
           readOnly={!editable}
           height={height}
           isDark={isDark}
+          onRun={() => void runCode(code)}
         />
         {showConsole && (
           <div className="border-t border-fd-border bg-[#0d1117]">

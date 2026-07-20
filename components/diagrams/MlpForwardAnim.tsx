@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const LAYERS = ['input', 'hidden', 'output'];
 
@@ -17,6 +17,7 @@ export function MlpForwardAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={LAYERS.length + 1} current={pulse} onSelect={setPulse} />
       <DataLabel bn="MLP ফরওয়ার্ড পাস — সিগন্যাল এগোয়" en="signal propagates" />
       <div className="flex items-center justify-center">
         {LAYERS.map((l, i) => (

@@ -41,7 +41,20 @@ Input: `"I Like Apple"` → Output: `["i", "like", "apple"]`
 
 GPT **BPE (Byte Pair Encoding)** ব্যবহার করে — idea same: text → tokens।
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+Whitespace split + lowercase — নীচের snippet চালাও, তারপর Playground-এ নিজের sentence try করো।
+
+<CodeRun title="Tokenizer" height={200}>{`// Sentence কে token-এ ভাগ করো
+function tokenize(text: string): string[] {
+  return text.trim().toLowerCase().split(/\\s+/).filter(Boolean);
+}
+
+const input = 'I Like Apple';
+log.step('Tokenizer');
+log.data('Input', input);
+log.data('Tokens', tokenize(input));
+log.ok('lowercase + split সম্পন্ন');`}</CodeRun>
 
 <Playground id="part-01/tokenizer" title="Tokenizer Demo" />
 

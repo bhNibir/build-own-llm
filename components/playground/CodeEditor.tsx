@@ -1,20 +1,14 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { useEffect, useRef, useState } from 'react';
-import { createHighlighter, type Highlighter } from 'shiki';
-
-let highlighterPromise: Promise<Highlighter> | null = null;
-
-function getHighlighter(isDark: boolean): Promise<Highlighter> {
-  if (!highlighterPromise) {
-    highlighterPromise = createHighlighter({
-      themes: ['github-light', 'github-dark'],
-      langs: ['typescript', 'javascript'],
-    });
-  }
-  return highlighterPromise;
-}
+import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+import { javascript } from '@codemirror/lang-javascript';
+import { EditorState, type Extension } from '@codemirror/state';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { EditorView, keymap, lineNumbers } from '@codemirror/view';
+import CodeMirror from '@uiw/react-codemirror';
+import { Maximize2, Minimize2, WrapText } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 type CodeEditorProps = {
   value: string;
@@ -22,66 +16,170 @@ type CodeEditorProps = {
   readOnly?: boolean;
   height?: number;
   isDark?: boolean;
+  onRun?: () => void;
+  className?: string;
 };
+
+const lightTheme = EditorView.theme({
+  '&': { backgroundColor: '#ffffff', color: '#1f2328' },
+  '.cm-content': {
+    caretColor: '#4f46e5',
+    fontFamily: 'var(--font-mono), ui-monospace, monospace',
+    fontSize: '13px',
+  },
+  '.cm-gutters': { backgroundColor: '#f6f8fa', color: '#656d76', border: 'none' },
+  '.cm-activeLineGutter': { backgroundColor: '#eef2ff' },
+  '.cm-activeLine': { backgroundColor: '#eef2ff55' },
+  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground': {
+    backgroundColor: '#c7d2fe88',
+  },
+});
 
 export function CodeEditor({
   value,
   onChange,
   readOnly = false,
-  height = 360,
+  height = 480,
   isDark = false,
+  onRun,
+  className,
 }: CodeEditorProps) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [html, setHtml] = useState('');
+  const [wrap, setWrap] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const [editorHeight, setEditorHeight] = useState(height);
 
   useEffect(() => {
-    let cancelled = false;
+    setEditorHeight(Math.min(Math.max(height, 160), 720));
+  }, [height]);
 
-    (async () => {
-      try {
-        const hl = await getHighlighter(isDark);
-        const themed = hl.codeToHtml(value || ' ', {
-          lang: 'typescript',
-          theme: isDark ? 'github-dark' : 'github-light',
-        });
-        if (!cancelled) setHtml(themed);
-      } catch {
-        if (!cancelled) setHtml('');
-      }
-    })();
-
-    return () => {
-      cancelled = true;
+  useEffect(() => {
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setExpanded(false);
     };
-  }, [value, isDark]);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [expanded]);
+
+  const extensions: Extension[] = useMemo(() => {
+    const list: Extension[] = [
+      javascript({ typescript: true }),
+      lineNumbers(),
+      history(),
+      keymap.of([
+        ...defaultKeymap,
+        ...historyKeymap,
+        {
+          key: 'Mod-Enter',
+          run: () => {
+            onRun?.();
+            return true;
+          },
+        },
+      ]),
+      EditorState.tabSize.of(2),
+    ];
+    if (wrap) list.push(EditorView.lineWrapping);
+    return list;
+  }, [wrap, onRun]);
+
+  const themes = useMemo(() => (isDark ? [oneDark] : [lightTheme]), [isDark]);
+
+  const onHeightDrag = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      const startY = e.clientY;
+      const startH = editorHeight;
+      const onMove = (ev: MouseEvent) => {
+        setEditorHeight(Math.min(720, Math.max(160, startH + (ev.clientY - startY))));
+      };
+      const onUp = () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+      };
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+    },
+    [editorHeight],
+  );
+
+  const shell = (
+    <div
+      className={cn(
+        'flex flex-col',
+        expanded &&
+          'fixed inset-4 z-50 rounded-xl border-2 border-indigo-400 bg-white shadow-2xl dark:bg-slate-950',
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2 border-b border-fd-border bg-fd-muted/30 px-2 py-1">
+        <button
+          type="button"
+          onClick={() => setWrap((w) => !w)}
+          className={cn(
+            'inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] font-medium',
+            wrap
+              ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950 dark:text-indigo-200'
+              : 'text-fd-muted-foreground hover:bg-fd-muted',
+          )}
+          title="Toggle word wrap"
+        >
+          <WrapText className="h-3.5 w-3.5" />
+          Wrap
+        </button>
+        <button
+          type="button"
+          onClick={() => setExpanded((x) => !x)}
+          className="inline-flex items-center gap-1 rounded px-2 py-1 text-[11px] font-medium text-fd-muted-foreground hover:bg-fd-muted"
+          title={expanded ? 'Exit fullscreen' : 'Expand editor'}
+        >
+          {expanded ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+          {expanded ? 'Exit' : 'Expand'}
+        </button>
+        <span className="ml-auto text-[10px] text-fd-muted-foreground">Ctrl/⌘+Enter = Run</span>
+      </div>
+      <CodeMirror
+        value={value}
+        height={expanded ? 'calc(100vh - 8rem)' : `${editorHeight}px`}
+        theme={themes}
+        extensions={extensions}
+        editable={!readOnly}
+        basicSetup={{
+          lineNumbers: false,
+          foldGutter: true,
+          highlightActiveLine: true,
+          bracketMatching: true,
+          autocompletion: false,
+          indentOnInput: true,
+        }}
+        onChange={onChange}
+        className="text-[13px] [&_.cm-editor]:outline-none [&_.cm-scroller]:overflow-auto"
+      />
+      {!expanded && (
+        <div
+          role="separator"
+          aria-orientation="horizontal"
+          onMouseDown={onHeightDrag}
+          className="flex h-3 cursor-ns-resize items-center justify-center border-t border-fd-border bg-fd-muted/20 hover:bg-indigo-100 dark:hover:bg-indigo-950/40"
+          title="Drag to resize"
+        >
+          <div className="h-1 w-10 rounded-full bg-fd-border" />
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <div
-      className="relative overflow-auto"
-      style={{ height, minHeight: 160 }}
-    >
-      <div
-        className={cn(
-          'pointer-events-none absolute inset-0 overflow-hidden p-4 font-mono text-[13px] leading-relaxed',
-          '[&_pre]:!m-0 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_code]:!bg-transparent',
-          isDark ? 'bg-[#0d1117]' : 'bg-[#ffffff]',
-        )}
-        aria-hidden
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-      <textarea
-        ref={textareaRef}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        readOnly={readOnly}
-        spellCheck={false}
-        className={cn(
-          'relative z-10 h-full w-full resize-none border-0 bg-transparent p-4 font-mono text-[13px] leading-relaxed caret-indigo-500 outline-none',
-          'text-transparent selection:bg-indigo-500/30',
-          readOnly && 'cursor-default',
-        )}
-        style={{ WebkitTextFillColor: 'transparent' }}
-      />
-    </div>
+    <>
+      {expanded && (
+        <button
+          type="button"
+          aria-label="Close fullscreen"
+          className="fixed inset-0 z-40 bg-black/40"
+          onClick={() => setExpanded(false)}
+        />
+      )}
+      {shell}
+    </>
   );
 }

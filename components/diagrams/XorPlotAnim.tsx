@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const POINTS = [
   { x: 20, y: 80, label: '0,0', out: 0 },
@@ -26,9 +26,19 @@ export function XorPlotAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
+      <StepDots total={LOSSES.length} current={epoch} onSelect={setEpoch} />
       <DataLabel bn="XOR সমস্যা — নন-লিনিয়ার সীমানা" en="non-linear boundary" />
       <div className="flex flex-wrap items-start justify-center gap-6">
-        <svg viewBox="0 0 100 100" className="h-36 w-36 rounded-lg border border-fd-border">
+        <svg viewBox="0 0 100 100" className="h-36 w-36 rounded-lg border border-fd-border bg-fd-muted/10">
+          {/* grid + axes */}
+          {[20, 40, 60, 80].map((v) => (
+            <g key={v}>
+              <line x1={v} y1={0} x2={v} y2={100} stroke="currentColor" className="text-fd-border" strokeWidth={0.4} />
+              <line x1={0} y1={v} x2={100} y2={v} stroke="currentColor" className="text-fd-border" strokeWidth={0.4} />
+            </g>
+          ))}
+          <line x1={0} y1={100} x2={100} y2={100} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.2} />
+          <line x1={0} y1={0} x2={0} y2={100} stroke="currentColor" className="text-fd-muted-foreground" strokeWidth={1.2} />
           <motion.line
             x1={boundary} y1={0} x2={100 - boundary} y2={100}
             stroke="currentColor" className="text-indigo-400" strokeWidth={1.5} strokeDasharray="4 3"
@@ -40,7 +50,7 @@ export function XorPlotAnim({ paused }: { paused?: boolean }) {
           ))}
         </svg>
         <div className="space-y-2">
-          <div className="flex h-24 items-end gap-1">
+          <div className="flex h-24 items-end gap-2">
             {LOSSES.map((l, i) => (
               <motion.div
                 key={i}

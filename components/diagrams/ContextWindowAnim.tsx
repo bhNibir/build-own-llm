@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 
@@ -17,6 +17,7 @@ export function ContextWindowAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={TOKENS.length} current={pos} onSelect={setPos} />
       <DataLabel bn="১-শব্দ context window" en="context = 1" />
       <div className="flex justify-center gap-2">
         {TOKENS.map((w, i) => (

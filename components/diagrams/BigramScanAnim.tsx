@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const DEFAULT_SENTENCE = ['i', 'like', 'apple'];
 const DEFAULT_PAIRS = [
@@ -37,6 +37,8 @@ export function BigramScanAnim({
 
   return (
     <div className="space-y-4">
+      <StepDots total={pairs.length + 1} current={idx} onSelect={setIdx} />
+      <DataLabel bn="Scanner বাম থেকে ডানে যায় — প্রতিটি pair-এর count +1" en="bigram scan" />
       <div className="flex justify-center gap-2">
         {sentence.map((w, i) => {
           const lit = idx < pairs.length && (i === idx || i === idx + 1);
@@ -102,7 +104,6 @@ export function BigramScanAnim({
           </motion.div>
         ))}
       </div>
-      <DataLabel bn="Scanner বাম থেকে ডানে যায় — প্রতিটি pair-এর count +1" en="bigram scan" />
     </div>
   );
 }

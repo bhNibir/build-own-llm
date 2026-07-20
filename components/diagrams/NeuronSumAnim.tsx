@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const INPUTS = [
   { x: 0.8, w: 0.5 },
@@ -24,10 +24,11 @@ export function NeuronSumAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={4} current={phase} onSelect={setPhase} />
       <DataLabel bn="নিউরন — ওয়েটেড যোগফল + ReLU" en="Σ xᵢwᵢ + b → ReLU" />
       <div className="flex flex-wrap items-center justify-center gap-2">
         {INPUTS.map((p, i) => (
-          <div key={i} className="flex items-center gap-1">
+          <div key={i} className="flex items-center gap-2">
             <SketchBox
               fillStyle="solid"
               palette={phase < 3 && phase === i ? 'blue' : 'neutral'}

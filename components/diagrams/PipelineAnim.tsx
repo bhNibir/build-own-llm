@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { Type, List, Hash, Brain, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 import type { SketchFillStyle, SketchStrokeStyle } from './sketch-styles';
 import type { ConceptExample } from './lesson-concepts';
 
@@ -40,13 +40,14 @@ export function PipelineAnim({
 
   return (
     <div className="space-y-3 overflow-x-auto pb-1">
+      <StepDots total={NODES.length} current={active} onSelect={setActive} />
       <DataLabel bn="LLM pipeline — ধাপে ধাপে" en="text → predict" />
       {example?.input && (
         <p className="text-center font-mono text-sm text-fd-muted-foreground">
           Input: &quot;{example.input}&quot;
         </p>
       )}
-      <div className="flex min-w-max items-center justify-center gap-1 px-2">
+      <div className="flex min-w-max items-center justify-center gap-2 px-2">
         {NODES.map((node, i) => {
           const Icon = node.icon;
           const isActive = active === i;

@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const DEFAULT_TOKENS = ['i', 'like', 'apple'];
 const DEFAULT_WEIGHTS = [
@@ -25,6 +25,8 @@ export function AttentionFlowAnim({
   const matrix = DEFAULT_WEIGHTS;
   const rowRef = useRef(0);
   const colRef = useRef(0);
+  const cellTotal = tokens.length * tokens.length;
+  const current = activeRow * tokens.length + activeCol;
 
   useEffect(() => {
     if (paused) return;
@@ -52,6 +54,18 @@ export function AttentionFlowAnim({
 
   return (
     <div className="space-y-4">
+      <StepDots
+        total={cellTotal}
+        current={current}
+        onSelect={(i) => {
+          const row = Math.floor(i / tokens.length);
+          const col = i % tokens.length;
+          rowRef.current = row;
+          colRef.current = col;
+          setActiveRow(row);
+          setActiveCol(col);
+        }}
+      />
       <DataLabel bn="প্রতিটি Query সব Key-এর সাথে compare করে" en="attention scores" />
       <div className="flex justify-center gap-6">
         <div className="text-center">
@@ -87,7 +101,7 @@ export function AttentionFlowAnim({
 
       <div className="mx-auto max-w-[220px]">
         <p className="mb-2 text-center text-xs font-medium">Attention weights</p>
-        <div className="grid grid-cols-3 gap-1">
+        <div className="grid grid-cols-3 gap-2">
           {matrix.flatMap((row, r) =>
             row.map((w, c) => (
               <motion.div

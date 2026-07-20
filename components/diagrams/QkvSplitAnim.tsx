@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
 const PROJ = [
   { key: 'Q', palette: 'blue' as const, label: 'Query' },
@@ -21,6 +21,8 @@ export function QkvSplitAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={4} current={step} onSelect={setStep} />
+      <DataLabel bn="এক embedding তিন projection-এ ভাগ" en="x → Q, K, V" />
       <div className="flex flex-wrap items-center justify-center gap-3">
         <motion.div animate={step === 0 ? { scale: 1.04 } : { scale: 1 }}>
           <SketchBox
@@ -61,7 +63,6 @@ export function QkvSplitAnim({ paused }: { paused?: boolean }) {
           ))}
         </div>
       </div>
-      <DataLabel bn="এক embedding তিন projection-এ ভাগ" en="x → Q, K, V" />
     </div>
   );
 }

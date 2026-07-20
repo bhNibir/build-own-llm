@@ -8,6 +8,10 @@ import { TokenizerSplitAnim } from './TokenizerSplitAnim';
 import { NextTokenAnim } from './NextTokenAnim';
 import { BigramScanAnim } from './BigramScanAnim';
 import { SoftmaxBarsAnim } from './SoftmaxBarsAnim';
+import { SamplingBarsAnim } from './SamplingBarsAnim';
+import { LossBarsAnim } from './LossBarsAnim';
+import { TempSoftmaxAnim } from './TempSoftmaxAnim';
+import { BigramPredictAnim } from './BigramPredictAnim';
 import { AttentionFlowAnim } from './AttentionFlowAnim';
 import { TrainLoopAnim } from './TrainLoopAnim';
 import { PipelineAnim } from './PipelineAnim';
@@ -54,13 +58,18 @@ type AnimProps = {
   example?: ConceptExample;
   probs?: number[];
   labels?: string[];
+  mode?: 'bigram' | 'neural' | 'gpt';
 };
 
 const concepts: Record<string, ComponentType<AnimProps>> = {
   'tokenizer-split': TokenizerSplitAnim,
   'next-token': NextTokenAnim,
   'bigram-scan': BigramScanAnim,
+  'bigram-predict': BigramPredictAnim,
   'softmax-bars': SoftmaxBarsAnim,
+  'sampling-bars': SamplingBarsAnim,
+  'loss-bars': LossBarsAnim,
+  'temp-softmax': TempSoftmaxAnim,
   'attention-flow': AttentionFlowAnim,
   'train-loop': TrainLoopAnim,
   'llm-pipeline': PipelineAnim,
@@ -126,6 +135,7 @@ export function ConceptAnim({
   const example = exampleProp ?? lesson?.example;
   const probs = probsProp ?? example?.probs;
   const labels = labelsProp ?? example?.labels;
+  const mode = lesson?.mode;
 
   const Component = name ? concepts[name] : undefined;
   const reducedMotion = useReducedMotion();
@@ -145,6 +155,7 @@ export function ConceptAnim({
         example={example}
         probs={probs}
         labels={labels}
+        mode={mode}
       />
     </ConceptFrame>
   );

@@ -84,18 +84,18 @@ Attention = softmax(Q @ K^T / √d) @ V
 
 Module 7-এ attention build করলে এই matmul directly use হবে।
 
-## Code
+## কোড চেষ্টা করো
 
-## Interactive Demo
+দুটো matrix multiply করে shape ও cell-by-cell result নীচের Playground-এ দেখো।
 
 <Playground id="part-03/matmul" title="Matrix Multiplication" />
 
 ## ✅ তুমি কী শিখলে?
 
 - **Matmul** shape: `(m×n) @ (n×p) = (m×p)`
-- Each output cell = dot product of row × column
-- Neural layer = input @ weight matrix
-- Attention = matmul of Q, K, V matrices
+- প্রতিটা output cell = row × column-এর dot product
+- Neural layer মূলত = input @ weight matrix
+- Attention = Q, K, V matrix-এর matmul
 
 **আগের lesson:** [Dot Product](/docs/part-03-math/03-dot-product)
 

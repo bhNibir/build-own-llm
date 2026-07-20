@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 const SCORES = [
@@ -23,6 +23,8 @@ export function AttentionScoresAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
+      <StepDots total={total + 1} current={filled} onSelect={setFilled} />
+      <DataLabel bn="প্রতিটি Q·K pair একটি score দেয়" en="Q @ Kᵀ / √d" />
       <div className="flex justify-center gap-6">
         <div className="text-center">
           <p className="mb-1 text-xs font-semibold text-indigo-600">Q</p>
@@ -37,7 +39,7 @@ export function AttentionScoresAnim({ paused }: { paused?: boolean }) {
 
         <div>
           <p className="mb-1 text-center text-xs font-semibold">scores</p>
-          <div className="grid grid-cols-3 gap-1">
+          <div className="grid grid-cols-3 gap-2">
             {SCORES.flatMap((row, r) =>
               row.map((s, c) => {
                 const idx = r * TOKENS.length + c;
@@ -62,7 +64,6 @@ export function AttentionScoresAnim({ paused }: { paused?: boolean }) {
           </div>
         </div>
       </div>
-      <DataLabel bn="প্রতিটি Q·K pair একটি score দেয়" en="Q @ Kᵀ / √d" />
     </div>
   );
 }

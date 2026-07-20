@@ -53,7 +53,24 @@ ID 2 ("apple") → [0.7,  0.2, -0.3,  0.1]
   { emoji: "3️⃣", title: "Vector out", body: "D-dimensional representation" }
 ]} />
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+Token ID দিয়ে embedding row pick — নীচের snippet চালাও, তারপর Playground-এ experiment করো।
+
+<CodeRun title="Embedding lookup" height={220}>{`// Embedding matrix E — প্রতিটা row একটা word vector
+const words = ['i', 'like', 'apple'];
+const E = [
+  [0.1, 0.3, -0.2, 0.5],
+  [0.4, -0.1, 0.6, 0.2],
+  [0.7, 0.2, -0.3, 0.1],
+];
+
+const id = 1; // "like"
+log.step('Embedding lookup');
+log.data('Token', words[id]);
+log.data('ID', id);
+log.data('Vector E[id]', E[id]);
+log.ok('row pick সম্পন্ন');`}</CodeRun>
 
 <Playground id="part-06/embedding" title="Embedding Lookup" />
 

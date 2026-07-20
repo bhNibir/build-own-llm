@@ -39,6 +39,14 @@ $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h) W_O
 
 $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 
+<MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+  <div>১. Shapes: <code>n = 2</code> tokens, <code>d_model = 4</code>, <code>h = 2</code> heads → প্রতি head <code>d_k = 2</code></div>
+  <div>২. Input X shape: <code>(2 × 4)</code> — split হয়ে প্রতি head-এ Q/K/V: <code>(2 × 2)</code></div>
+  <div>৩. Head 1 scores (এক row): <code>[2, 0]</code> → ÷ √2 ≈ <code>[1.414, 0]</code></div>
+  <div>৪. Softmax: ≈ <code>[0.80, 0.20]</code> — এই head একটা pattern দেখে</div>
+  <div>৫. Head 2 আলাদা weights → আলাদা pattern; concat → <code>(2 × 4)</code>, তারপর <code>W_O</code> দিয়ে mix</div>
+</MathPractical>
+
 ## Why Multiple Heads?
 
 | Head | Might learn |
@@ -56,6 +64,8 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 ]} />
 
 ## Typical Config
+
+Head সংখ্যা ও `d_model` scale অনুযায়ী বাড়ে — নীচের table ও Playground-এ multi-head split দেখো।
 
 ## GPT-2 Style
 
