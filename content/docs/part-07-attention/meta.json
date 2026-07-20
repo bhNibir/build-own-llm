@@ -1,0 +1,11 @@
+{
+  "title": "Module 7: Attention",
+  "pages": [
+    "index",
+    "01-why-attention",
+    "02-qkv",
+    "03-scaled-dot-product",
+    "04-self-attention",
+    "05-multi-head"
+  ]
+}

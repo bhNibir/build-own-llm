@@ -1,0 +1,10 @@
+{
+  "title": "Module 4: Autograd",
+  "pages": [
+    "index",
+    "01-computational-graph",
+    "02-value",
+    "03-backprop",
+    "04-gradient-descent"
+  ]
+}

@@ -1,0 +1,103 @@
+---
+title: GPT Architecture
+description: N transformer blocks stacked — full Mini GPT stack
+---
+
+# 🏛️ GPT Architecture
+
+সব building block এক জায়গায় — **GPT architecture**। Token in → transformer blocks → next token out।
+
+<Callout type="idea">
+💡 GPT = **Generative Pre-trained Transformer** — decoder-only, causal self-attention, autoregressive generation।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["Input Tokens"]:::input --> B["Token Embedding"]:::emb
+    B --> C["+ Positional Embedding"]:::pos
+    C --> D["Transformer Block 1"]:::b1
+    D --> E["Transformer Block 2"]:::b2
+    E --> F["Transformer Block 3"]:::b3
+    F --> G["Transformer Block 4"]:::b4
+    G --> H["Final LayerNorm"]:::norm
+    H --> I["LM Head (Linear)"]:::head
+    I --> J["Vocabulary Logits"]:::logits
+    J --> K["Softmax → Next Token"]:::out
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef emb fill:#10B981,color:#fff,stroke:#047857
+    classDef pos fill:#10B981,color:#fff,stroke:#047857
+    classDef b1 fill:#FFD700,color:#000,stroke:#CA8A04
+    classDef b2 fill:#FFD700,color:#000,stroke:#CA8A04
+    classDef b3 fill:#FFD700,color:#000,stroke:#CA8A04
+    classDef b4 fill:#FFD700,color:#000,stroke:#CA8A04
+    classDef norm fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef head fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef logits fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef out fill:#EF4444,color:#fff,stroke:#DC2626
+```
+
+## Transformer Block (recap)
+
+```mermaid
+flowchart TD
+    input[Input] --> norm1[LayerNorm]
+    norm1 --> attn[Multi-Head Attention]
+    attn --> res1["+ (Residual)"]
+    input --> res1
+    res1 --> norm2[LayerNorm]
+    norm2 --> mlp[MLP Feed Forward]
+    mlp --> res2["+ (Residual)"]
+    res1 --> res2
+    res2 --> output[Output]
+    style attn fill:#FFD700
+```
+
+## Mini GPT Config
+
+| Hyperparameter | Value |
+|----------------|-------|
+| Vocabulary | ~30 fruit words |
+| d_model | 64 |
+| n_heads | 4 |
+| n_layers | 4 |
+| seq_len | 32 |
+| ~Lines of code | 500 |
+
+<StepReveal steps={[
+  { emoji: "🔤", title: "Embed", body: "Token + positional lookup" },
+  { emoji: "🧱", title: "4 Blocks", body: "Attention + FFN each" },
+  { emoji: "📏", title: "Final Norm", body: "Stabilize before output" },
+  { emoji: "🎯", title: "LM Head", body: "D → V logits" }
+]} />
+
+## Components Map
+
+| Component | Module | Role |
+|-----------|--------|------|
+| Tokenizer | 1 | Text → IDs |
+| Embedding | 6 | ID → vector |
+| Attention | 7 | Context mixing |
+| Transformer block | 8 | Full block |
+| Training | 6 | Loss + update |
+| Generation | 2, 6 | Autoregressive |
+
+## vs nanoGPT
+
+| | Our Mini GPT | Karpathy nanoGPT |
+|---|-------------|------------------|
+| Language | TypeScript | Python/PyTorch |
+| Size | ~500 lines | ~300 lines |
+| Dataset | Fruit sentences | Shakespeare |
+| Runtime | Browser (Nodepod) | GPU |
+
+<Callout type="tip">
+✅ Architecture **identical** — শুধু language এবং scale different। Module 10-এ nanoGPT line-by-line পড়ব।
+</Callout>
+
+## ✅ তুমি কী শিখলে?
+
+- GPT = embed + N blocks + LM head
+- Decoder-only, causal attention
+- Our Mini GPT = same architecture, smaller scale
+
+**পরের lesson:** [Train Mini GPT](/docs/part-09-mini-gpt/02-train)

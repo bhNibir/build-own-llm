@@ -3,7 +3,7 @@
 **Project:** নিজের LLM বানাও (Build Your Own LLM)  
 **Version:** 1.0  
 **Last updated:** 2026-07-20  
-**Status:** Phase 1 in progress
+**Status:** All phases complete (49 lessons)
 
 ---
 
@@ -217,22 +217,32 @@ title: [Lesson Title in Bangla]
 description: [One-line summary]
 ---
 
-# [Title]
+# 🔤 [Title]
 
-[Why this step matters — 2-3 sentences in Bangla, English terms]
+<Callout type="idea">💡 One-line hook in Bangla</Callout>
+
+<Illustration name="token-pipeline" />
+
+<StepReveal steps={[{ emoji: "1️⃣", title: "...", body: "..." }]} />
 
 ```mermaid
 flowchart TD
-  ...
+    A["📝 Input"]:::input --> B["⚡ Process"]:::process
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef process fill:#10B981,color:#fff,stroke:#047857
 ```
 
-[Concept explanation with examples]
+<MathLesson title="Formula Name">
+  <MathIntuition>Bangla intuition first</MathIntuition>
+  <SymbolTable symbols={[{ sym: "z_i", meaning: "logit" }]} />
+  <Formula>$$...$$</Formula>
+  <WorkedExample>numeric example</WorkedExample>
+  <CodeLink>Playground-এ run করো ↓</CodeLink>
+</MathLesson>
 
 <Playground id="part-XX/lesson-id" title="[Demo Title]" />
 
-[Optional: KaTeX math block]
-
-## তুমি কী শিখলে?
+## ✅ তুমি কী শিখলে?
 
 - [Bullet summary]
 
@@ -258,6 +268,8 @@ flowchart TD
 | `height` | `number` | `360` | Editor height in px |
 | `showConsole` | `boolean` | `true` | Show console output panel |
 
+| `runtime` | `'esbuild' \| 'nodepod'` | auto | Browser runtime (auto: nodepod for part-04+) |
+
 **UX requirements:**
 - Visible **▶ Run** button in toolbar (always shown, not hidden inside editor)
 - **Reset** button restores initial code and re-runs
@@ -265,15 +277,25 @@ flowchart TD
 - Bangla hint: "কোড edit করে Run চাপো — output নিচে দেখবে"
 - Editor uses Fumadocs theme tokens; console uses dark/light terminal colors
 
-**Current runtime (Phase 1):** `esbuild-wasm` transpile + sandboxed `Function` with captured `console.log`
+**Runtimes:**
+- **esbuild-wasm** — Modules 1–3, 7–8 (lightweight `console.log` lessons)
+- **Nodepod** — Modules 4–6, 9 (training loops, longer scripts) via `app/__sw__.js/route.ts`
 
-**Future runtime (Phase 2+):** [@scelar/nodepod](https://github.com/R1ck404/Nodepod) — see Appendix C
+### 7.2 Visual & Math Components
 
-### 7.2 Visualizer (Phase 3)
+| Component | Path | Purpose |
+|-----------|------|---------|
+| `Illustration` | `components/illustrations/` | SVG diagrams (token pipeline, neuron, attention) |
+| `StepReveal` | `components/mdx/animate/` | Staggered step animations |
+| `TokenFlow` | `components/mdx/animate/` | Animated pipeline tokens |
+| `MathLesson` | `components/mdx/math/` | 4-step math pedagogy (intuition → symbols → formula → example) |
+| `LossChart` | `components/visualizer/` | Training loss curve |
+| `AttentionHeatmap` | `components/visualizer/` | Attention weight matrix |
+| `MatrixViz` | `components/visualizer/` | Colored matrix cells |
+| `GenerateControls` | `components/mdx/` | Temperature / top-k sliders (Module 9) |
+| `Mermaid` | `components/mdx/mermaid.tsx` | Colorful themed diagrams |
 
-**File:** `components/playground/Visualizer.tsx`
-
-Pre-built React components for matrices, attention heatmaps, loss curves. Props-driven, not editable.
+### 7.3 Visualizer
 
 ---
 
@@ -288,8 +310,11 @@ Pre-built React components for matrices, attention heatmaps, loss curves. Props-
 **Rules:**
 - Technical terms in English: Tokenizer, Embedding, Softmax, Gradient Descent
 - Explanations in Bangla
-- Mermaid diagram on every lesson with a pipeline step
-- KaTeX for formulas (softmax, loss, attention)
+- Mermaid diagram on every lesson with **colorful `classDef`** and emoji node labels
+- Math via `<MathLesson>` blocks (intuition → symbols → formula → worked example)
+- Strategic emoji in headings, callouts, and diagram nodes — not every sentence
+- `<StepReveal>` for multi-step pipelines; `<Illustration>` for concept visuals
+- KaTeX inside `<Formula>` for softmax, loss, attention
 - No artificial Bengali translations of technical terms
 
 ---
@@ -299,12 +324,19 @@ Pre-built React components for matrices, attention heatmaps, loss curves. Props-
 ```
 build-own-llm/
 ├── PRD.md                          # This file — source of truth
-├── content/docs/                   # Fumadocs MDX lessons
+├── content/docs/                   # Fumadocs MDX lessons (10 modules, 49 lessons)
+│   ├── part-00-intro/            # Module 0
 │   ├── part-01-tokenizer/        # Module 1
 │   ├── part-02-bigram/           # Module 2
-│   └── part-03-neural-network/   # Module 3+ skeletons
-├── playgrounds/                  # Self-contained TS for Sandpack
-│   └── (content inlined in playgrounds.ts registry)
+│   ├── part-03-math/             # Module 3
+│   ├── part-04-autograd/         # Module 4
+│   ├── part-05-neural-network/   # Module 5
+│   ├── part-06-neural-lm/        # Module 6
+│   ├── part-07-attention/        # Module 7
+│   ├── part-08-transformer/      # Module 8
+│   ├── part-09-mini-gpt/         # Module 9
+│   └── part-10-bridge/           # Module 10
+├── playgrounds/                  # (inlined in components/playground/*.ts)
 ├── code/                         # CLI dev/debug (maintainer only)
 │   ├── shared/data.ts
 │   ├── part-01/
@@ -313,8 +345,13 @@ build-own-llm/
 │   ├── playground/
 │   │   ├── Playground.tsx        # Editor + Run + console
 │   │   ├── PlaygroundLazy.tsx    # Client-only dynamic import
-│   │   └── playgrounds.ts        # id → TS source registry
-│   └── mdx.tsx                   # MDX component registration
+│   │   ├── playgrounds.ts        # part-01, part-02 registry
+│   │   ├── playgrounds-part03-05.ts
+│   │   └── playgrounds-part06-09.ts
+│   ├── illustrations/            # SVG concept diagrams
+│   ├── visualizer/               # LossChart, AttentionHeatmap, MatrixViz
+│   └── mdx/                      # Mermaid, MathLesson, StepReveal
+├── app/__sw__.js/route.ts        # Nodepod service worker
 ├── public/
 │   └── esbuild.wasm              # Browser TS compiler
 └── app/                          # Next.js + Fumadocs
@@ -322,12 +359,10 @@ build-own-llm/
 
 **Stack:**
 - Next.js 16 + Fumadocs 16 (MDX docs)
-- **esbuild-wasm** — in-browser TypeScript → JavaScript (Phase 1)
+- **esbuild-wasm** — Modules 1–3, 7–8
+- **Nodepod** (`@scelar/nodepod`) — Modules 4–6, 9 (integrated)
 - KaTeX + Mermaid (math + diagrams)
 - Bun (dev tooling, optional CLI scripts)
-
-**Planned (Phase 2+):**
-- **Nodepod** (`@scelar/nodepod`) — full Node.js in browser for training loops + npm (see Appendix C)
 
 ---
 
@@ -357,12 +392,12 @@ fruit is healthy
 
 ## 11. Phased Delivery
 
-| Phase | Modules | Deliverables | Acceptance Criteria |
-|-------|---------|--------------|---------------------|
-| **Phase 1** (current) | 0–2 | PRD, Playground (esbuild-wasm), Part 1–2 wired | All M1–M2 lessons run in browser; visible Run button; no terminal |
-| Phase 2 | 3–6 | Nodepod integration, Math → Neural LM | Training loop in browser via Nodepod; loss decreases |
-| Phase 3 | 7–8 | Attention, Transformer Block | Visualizer heatmap for attention weights |
-| Phase 4 | 9–10 | Mini GPT, nanoGPT bridge | Full generate UI with temperature slider |
+| Phase | Modules | Status |
+|-------|---------|--------|
+| Phase 1 | 0–2 | ✅ Complete |
+| Phase 2 | 3–6 | ✅ Complete (Nodepod integrated) |
+| Phase 3 | 7–8 | ✅ Complete (visualizers) |
+| Phase 4 | 9–10 | ✅ Complete (GenerateControls) |
 
 ---
 
@@ -371,7 +406,9 @@ fruit is healthy
 | Metric | Target |
 |--------|--------|
 | Playground load time | < 3 seconds on first visit |
-| Lessons with live playground | 100% of code lessons (Modules 1–2: 8/8) |
+| Lessons with live playground | 100% of code lessons (37/37) |
+| Lessons with colorful diagram | 100% (49/49) |
+| Lessons with MathLesson (where math) | Modules 3–9 |
 | Terminal steps for learner | 0 |
 | Lesson completion rate | Track via future analytics |
 

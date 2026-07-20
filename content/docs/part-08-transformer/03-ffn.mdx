@@ -1,0 +1,76 @@
+---
+title: Feed-Forward Network (FFN)
+description: Position-wise MLP — attention-এর পর non-linear transform
+---
+
+# 🔧 Feed-Forward Network (FFN)
+
+Attention tokens-এর মধ্যে information mix করে। **FFN** প্রতিটা token-এ independently **non-linear transformation** apply করে — "think deeper" step।
+
+<Callout type="idea">
+💡 FFN = position-wise MLP: same network every token-এ, কিন্তু tokens parallel process হয়।
+</Callout>
+
+```mermaid
+flowchart LR
+    A["x (D)"]:::input --> B["Linear → 4D"]:::expand
+    B --> C["GELU"]:::act
+    C --> D["Linear → D"]:::project
+    D --> E["output (D)"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef expand fill:#10B981,color:#fff,stroke:#047857
+    classDef act fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef project fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef output fill:#EC4899,color:#fff,stroke:#DB2777
+```
+
+## Architecture
+
+$$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
+
+- Expand: `D → 4D` (typically 4× embedding size)
+- Activation: **GELU** (GPT) or ReLU
+- Project back: `4D → D`
+
+<Illustration name="neuron-diagram" />
+
+## Why 4× Expansion?
+
+Wider hidden layer = more capacity to transform each token's representation after attention mixing.
+
+```ts
+function ffn(x: number[]): number[] {
+  const hidden = gelu(matmul(W1, x) + b1);  // D → 4D
+  return matmul(W2, hidden) + b2;              // 4D → D
+}
+```
+
+<StepReveal steps={[
+  { emoji: "📈", title: "Expand", body: "D → 4D linear projection" },
+  { emoji: "⚡", title: "GELU", body: "Non-linear activation" },
+  { emoji: "📉", title: "Project", body: "4D → D back to model dim" },
+  { emoji: "🔄", title: "Per token", body: "Same FFN, all tokens parallel" }
+]} />
+
+## Attention vs FFN Roles
+
+| Component | Role |
+|-----------|------|
+| Attention | **Mix** information between tokens |
+| FFN | **Transform** each token's representation |
+
+## Parameter Count
+
+FFN often has **most parameters** in a transformer block — 2 matrices of size D×4D and 4D×D.
+
+## Interactive Demo
+
+<Playground id="part-08/ffn" title="Feed-Forward Network" />
+
+## ✅ তুমি কী শিখলে?
+
+- FFN = position-wise 2-layer MLP
+- Expand 4× → GELU → project back
+- Complements attention (mix vs transform)
+
+**পরের lesson:** [Residual Connections](/docs/part-08-transformer/04-residual)

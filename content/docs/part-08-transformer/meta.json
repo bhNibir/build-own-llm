@@ -1,0 +1,11 @@
+{
+  "title": "Module 8: Transformer Block",
+  "pages": [
+    "index",
+    "01-positional",
+    "02-layer-norm",
+    "03-ffn",
+    "04-residual",
+    "05-block"
+  ]
+}

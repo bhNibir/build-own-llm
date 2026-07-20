@@ -10,3 +10,62 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
 }
+
+@keyframes token-flow {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-4px); opacity: 0.85; }
+}
+
+.animate-token-flow {
+  animation: token-flow 1.6s ease-in-out infinite;
+}
+
+@keyframes flow-dot {
+  0% { transform: translateX(-12px); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(12px); opacity: 0; }
+}
+
+.animate-flow-dot {
+  animation: flow-dot 1.2s ease-in-out infinite;
+  font-size: 10px;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.5s ease-in-out infinite;
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.45s ease-out forwards;
+}
+
+@keyframes grow-up {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to { transform: scaleY(1); transform-origin: bottom; }
+}
+
+.animate-grow-up {
+  animation: grow-up 0.6s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-token-flow,
+  .animate-flow-dot,
+  .animate-pulse-ring,
+  .animate-pop-in,
+  .animate-grow-up {
+    animation: none;
+  }
+}

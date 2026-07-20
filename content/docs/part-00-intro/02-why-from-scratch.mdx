@@ -1,0 +1,47 @@
+---
+title: Why build from scratch?
+description: API ব্যবহার vs ভেতরের কাজ বোঝা
+---
+
+# 🔬 Why build from scratch?
+
+<Callout type="warn">
+⚡ **LangChain, Ollama, OpenAI API** দিয়ে শুরু করলে তুমি LLM *ব্যবহার* শিখবে — LLM *কীভাবে কাজ করে* সেটা নয়।
+</Callout>
+
+```mermaid
+flowchart TB
+    subgraph api [API Path — Black Box]
+        A1[Your App] --> A2[OpenAI API]
+        A2 --> A3[??? Magic ???]
+    end
+    subgraph scratch [From Scratch — Transparent]
+        B1[Tokenizer]:::process --> B2[Model]:::process
+        B2 --> B3[Softmax]:::process --> B4[Generate]:::output
+    end
+    classDef process fill:#10B981,color:#fff,stroke:#047857
+    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
+```
+
+## Comparison
+
+| Approach | শেখায় | Limitation |
+|----------|---------|------------|
+| API / LangChain | Prompt engineering, RAG | Black box |
+| From scratch (this course) | Tokenizer, Attention, Training | More effort, deeper understanding |
+
+## What you'll build
+
+<StepReveal steps={[
+  { emoji: "📦", title: "Module 1–2: Data + Bigram", body: "তোমার প্রথম working LM" },
+  { emoji: "📐", title: "Module 3–5: Math + Neural Net", body: "Matrix, Autograd, XOR" },
+  { emoji: "🧠", title: "Module 6–9: Transformer + Mini GPT", body: "Real GPT architecture" }
+]} />
+
+## ✅ তুমি কী শিখলে?
+
+- API path = fast but opaque
+- From scratch = every layer visible
+- This course uses **pure TypeScript**, no PyTorch
+
+**পরের lesson:** [Roadmap](/docs/part-00-intro/03-roadmap)

@@ -1,0 +1,11 @@
+{
+  "title": "Module 6: Neural LM",
+  "pages": [
+    "index",
+    "01-embedding",
+    "02-weight-matrix",
+    "03-loss",
+    "04-train",
+    "05-generate"
+  ]
+}

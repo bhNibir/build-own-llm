@@ -3,10 +3,16 @@
   "pages": [
     "index",
     "---",
+    "part-00-intro",
     "part-01-tokenizer",
     "part-02-bigram",
-    "part-03-neural-network",
-    "part-04-attention",
-    "part-05-mini-gpt"
+    "part-03-math",
+    "part-04-autograd",
+    "part-05-neural-network",
+    "part-06-neural-lm",
+    "part-07-attention",
+    "part-08-transformer",
+    "part-09-mini-gpt",
+    "part-10-bridge"
   ]
 }

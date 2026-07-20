@@ -1,0 +1,81 @@
+---
+title: Generate from Neural LM
+description: Trained model দিয়ে autoregressive text generation
+---
+
+# 🎲 Generate from Neural LM
+
+Training শেষ — এখন trained neural LM দিয়ে **text generate** করব। Process Bigram generation-এর মতোই: autoregressive loop।
+
+<Callout type="idea">
+💡 Generation = trained model-এর probability distribution থেকে **sample** করে next token pick করা।
+</Callout>
+
+```mermaid
+flowchart LR
+    A["🌱 Seed: 'i'"]:::seed --> B["🧠 Forward"]:::model
+    B --> C["📊 Probs"]:::probs
+    C --> D["🎲 Sample"]:::sample
+    D --> E["➕ Append token"]:::append
+    E --> B
+    classDef seed fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef model fill:#10B981,color:#fff,stroke:#047857
+    classDef probs fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef sample fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef append fill:#EC4899,color:#fff,stroke:#DB2777
+```
+
+## Generation Loop
+
+```ts
+function generate(seed: string, maxTokens: number): string {
+  let tokens = [seed];
+  for (let i = 0; i < maxTokens; i++) {
+    const logits = forward(lastTokenId);
+    const probs = softmax(logits);
+    const next = sample(probs);      // random, not argmax
+    tokens.push(next);
+  }
+  return tokens.join(' ');
+}
+```
+
+<StepReveal steps={[
+  { emoji: "1️⃣", title: "Seed token", body: "'i' দিয়ে শুরু" },
+  { emoji: "2️⃣", title: "Forward pass", body: "Neural LM → probability distribution" },
+  { emoji: "3️⃣", title: "Sample", body: "Distribution থেকে random pick" },
+  { emoji: "4️⃣", title: "Repeat", body: "'i like apple is fruit...'" }
+]} />
+
+## Neural vs Bigram Generation
+
+| | Bigram | Neural LM |
+|---|--------|-----------|
+| Memory | Count table | Learned E + W |
+| Quality | Limited patterns | Richer (same context window) |
+| Sampling | Same idea | Same idea |
+
+<Illustration name="llm-predict" />
+
+## Example Output
+
+```
+Seed: "i"
+→ i like apple
+→ i like apple is fruit
+→ i like banana is healthy
+```
+
+Output **random** — same seed + different sample = different text!
+
+## Interactive Demo
+
+<Playground id="part-06/generate" title="Neural LM Text Generation" />
+
+## ✅ তুমি কী শিখলে?
+
+- Trained neural LM generates via autoregressive sampling
+- Same loop as Bigram — but learned weights instead of counts
+- Module 6 complete — next: **Attention** for longer context!
+
+**পরের Module:** [Module 7 — Attention](/docs/part-07-attention)

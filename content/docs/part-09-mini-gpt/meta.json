@@ -1,0 +1,11 @@
+{
+  "title": "Module 9: Mini GPT",
+  "pages": [
+    "index",
+    "01-gpt-architecture",
+    "02-train",
+    "03-generate",
+    "04-temperature",
+    "05-top-k"
+  ]
+}

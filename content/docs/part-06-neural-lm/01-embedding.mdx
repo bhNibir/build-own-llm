@@ -1,0 +1,70 @@
+---
+title: Embedding Matrix
+description: Word ID থেকে learned vector — count table-এর smart alternative
+---
+
+# 📊 Embedding Matrix
+
+<Callout type="idea">
+💡 **Embedding** মানে: প্রতিটা word/token-এর জন্য একটা **learned vector**। Similar word-এর vector কাছাকাছি হবে।
+</Callout>
+
+Bigram model-এ `like → { apple: 2, banana: 1 }` count table ছিল। Neural LM-এ আমরা **embedding matrix** `E` ব্যবহার করি:
+
+$$E \in \mathbb{R}^{V \times D}$$
+
+- `V` = vocabulary size (কতটা unique word)
+- `D` = embedding dimension (প্রতিটা vector-এর length)
+
+```mermaid
+flowchart TD
+    A["🔤 'apple' → ID 3"]:::input --> B["📋 Row 3 of E"]:::lookup
+    B --> C["[0.2, -0.5, 0.8, ...]"]:::vector
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef lookup fill:#10B981,color:#fff,stroke:#047857
+    classDef vector fill:#F59E0B,color:#fff,stroke:#D97706
+```
+
+## Lookup = Matrix Row
+
+Token ID দিয়ে embedding matrix-এর **একটা row** pick করা — এটাই lookup:
+
+```ts
+function embed(tokenId: number, E: number[][]): number[] {
+  return E[tokenId]; // row lookup
+}
+```
+
+**Example:** Vocabulary = 5 words, D = 4
+
+```
+ID 0 ("i")     → [0.1,  0.3, -0.2,  0.5]
+ID 1 ("like")  → [0.4, -0.1,  0.6,  0.2]
+ID 2 ("apple") → [0.7,  0.2, -0.3,  0.1]
+```
+
+## Count Table vs Embedding
+
+| | Bigram Count | Embedding |
+|---|-------------|-----------|
+| Storage | Sparse counts | Dense vectors |
+| Similarity | None | Learned |
+| Update | Count +1 | Gradient descent |
+
+<StepReveal steps={[
+  { emoji: "1️⃣", title: "Token → ID", body: "Vocabulary থেকে integer index" },
+  { emoji: "2️⃣", title: "ID → Row", body: "Embedding matrix E[tokenId]" },
+  { emoji: "3️⃣", title: "Vector out", body: "D-dimensional representation" }
+]} />
+
+## Interactive Demo
+
+<Playground id="part-06/embedding" title="Embedding Lookup" />
+
+## ✅ তুমি কী শিখলে?
+
+- **Embedding matrix** = learned word representations
+- Lookup = pick row by token ID
+- Similar words → similar vectors (training-এ শেখে)
+
+**পরের lesson:** [Weight Matrix](/docs/part-06-neural-lm/02-weight-matrix)

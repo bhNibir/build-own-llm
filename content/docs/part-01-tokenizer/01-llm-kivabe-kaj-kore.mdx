@@ -3,7 +3,9 @@ title: LLM কীভাবে কাজ করে?
 description: Next token prediction — LLM-এর মূল ধারণা
 ---
 
-# LLM কীভাবে কাজ করে?
+# 🧠 LLM কীভাবে কাজ করে?
+
+<ConceptAnim name="next-token" caption="Context দেখে model পরের token-এর probability বের করে" />
 
 একটা LLM আসলে **"next token prediction machine"**।
 
@@ -11,10 +13,13 @@ description: Next token prediction — LLM-এর মূল ধারণা
 
 ```mermaid
 flowchart TD
-    input["Input: i like"] --> model[Language Model]
-    model --> apple["apple (72%)"]
-    model --> banana["banana (18%)"]
-    model --> mango["mango (10%)"]
+    input["📝 Input: i like"]:::input --> model["🧠 Language Model"]:::process
+    model --> apple["🍎 apple 72%"]:::out
+    model --> banana["🍌 banana 18%"]:::out
+    model --> mango["🥭 mango 10%"]:::out
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef process fill:#10B981,color:#fff,stroke:#047857
+    classDef out fill:#F59E0B,color:#fff,stroke:#D97706
 ```
 
 ## উদাহরণ
@@ -51,15 +56,20 @@ is → 100% chance
 
 ## পুরো Pipeline
 
+<ConceptAnim name="llm-pipeline" caption="Text থেকে prediction — step-by-step data flow" />
+
 ```mermaid
 flowchart TD
-    text[Text] --> tokenizer[Tokenizer]
-    tokenizer --> vocab[Vocabulary]
-    vocab --> embedding[Embedding]
-    embedding --> transformer[Transformer]
-    transformer --> logits[Logits]
-    logits --> softmax[Softmax]
-    softmax --> nextToken[Next Token]
+    text["📝 Text"]:::a --> tokenizer["🔤 Tokenizer"]:::b
+    tokenizer --> vocab["📖 Vocabulary"]:::b
+    vocab --> embedding["🔢 Embedding"]:::b
+    embedding --> transformer["🧠 Transformer"]:::b
+    transformer --> logits["📊 Logits"]:::b
+    logits --> softmax["⚡ Softmax"]:::b
+    softmax --> nextToken["🎯 Next Token"]:::c
+    classDef a fill:#4F46E5,color:#fff
+    classDef b fill:#10B981,color:#fff
+    classDef c fill:#F59E0B,color:#fff
 ```
 
 আমরা এখন **শুধু প্রথম ২টা step** করব (Tokenizer + Vocabulary)। বাকিগুলো পরের Part-এ।

@@ -1,0 +1,85 @@
+---
+title: Training Loop
+description: 200 epoch forward + backward + update — model শেখা শুরু
+---
+
+# 🔄 Training Loop
+
+<ConceptAnim name="train-loop" caption="Forward → Loss → Backward → Update — loop until loss drops" />
+
+Embedding, weight matrix, loss — সব ready।
+
+<Callout type="tip">
+✅ Typical neural LM training: **200 epochs** fruit dataset-এ। Loss gradually কমতে থাকবে।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["📂 Training pairs"]:::data --> B["➡️ Forward"]:::fwd
+    B --> C["📉 Loss"]:::loss
+    C --> D["⬅️ Backward"]:::bwd
+    D --> E["🔄 Update weights"]:::upd
+    E --> F{"Epoch done?"}:::check
+    F -->|No| B
+    F -->|Yes| G["✅ Trained model"]:::done
+    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef fwd fill:#10B981,color:#fff,stroke:#047857
+    classDef loss fill:#EF4444,color:#fff,stroke:#DC2626
+    classDef bwd fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef upd fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef check fill:#8B5CF6,color:#fff,stroke:#7C3AED
+    classDef done fill:#10B981,color:#fff,stroke:#047857
+```
+
+## Loop Structure
+
+```ts
+for (let epoch = 0; epoch < 200; epoch++) {
+  let totalLoss = 0;
+  for (const [inputId, targetId] of trainingPairs) {
+    const logits = forward(inputId);
+    const loss = crossEntropy(logits, targetId);
+    backward(loss);
+    updateWeights(lr);
+    totalLoss += loss;
+  }
+  console.log(`Epoch ${epoch}: loss = ${totalLoss / n}`);
+}
+```
+
+<StepReveal steps={[
+  { emoji: "1️⃣", title: "Forward", body: "Input token → logits → loss" },
+  { emoji: "2️⃣", title: "Backward", body: "Gradient compute (autograd)" },
+  { emoji: "3️⃣", title: "Update", body: "W, E -= lr × gradient" },
+  { emoji: "4️⃣", title: "Repeat", body: "200 epochs until loss drops" }
+]} />
+
+## Loss Curve
+
+Training চলাকালীন loss কমতে থাকে:
+
+<LossChart data={[2.5, 1.8, 1.2, 0.9, 0.7]} title="Neural LM Training Loss" />
+
+<Callout type="warn">
+⚠️ Loss 0 হবে না — overfitting warning! Real model-এ validation loss monitor করো।
+</Callout>
+
+## Hyperparameters
+
+| Param | Typical | Meaning |
+|-------|---------|---------|
+| `lr` | 0.01–0.1 | Learning rate |
+| `epochs` | 200 | Full dataset passes |
+| `D` | 16–64 | Embedding dimension |
+
+## Interactive Demo
+
+<Playground id="part-06/train" title="200-Epoch Training Loop" />
+
+## ✅ তুমি কী শিখলে?
+
+- Training = repeat forward → loss → backward → update
+- Loss curve should **decrease** over epochs
+- 200 epochs ≈ enough for small fruit dataset
+
+**পরের lesson:** [Generate](/docs/part-06-neural-lm/05-generate)

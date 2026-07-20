@@ -1,0 +1,11 @@
+{
+  "title": "Module 3: Math Foundations",
+  "pages": [
+    "index",
+    "01-scalar-vector",
+    "02-matrix",
+    "03-dot-product",
+    "04-matmul",
+    "05-softmax"
+  ]
+}

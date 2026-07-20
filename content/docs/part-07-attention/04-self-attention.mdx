@@ -1,0 +1,90 @@
+---
+title: Self-Attention
+description: 3-word sentence-এ full self-attention — heatmap দিয়ে দেখো
+---
+
+# 🔄 Self-Attention
+
+<ConceptAnim name="attention-flow" caption="Query প্রতিটি Key-এর সাথে match → weight = focus amount" />
+
+**Self-attention** = একই sequence-এর সব token একে অপরকে attend করে।
+
+<Callout type="idea">
+💡 `"i like apple"` — প্রতিটা word অন্য দুটো word-এর দিকেও তাকায়। `"like"` `"i"` এবং `"apple"` দুটোই দেখে।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["i"]:::t1 --> B["Self-Attention"]:::attn
+    C["like"]:::t2 --> B
+    D["apple"]:::t3 --> B
+    B --> E["Context-aware i"]:::out
+    B --> F["Context-aware like"]:::out
+    B --> G["Context-aware apple"]:::out
+    classDef t1 fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef t2 fill:#10B981,color:#fff,stroke:#047857
+    classDef t3 fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef attn fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef out fill:#EC4899,color:#fff,stroke:#DB2777
+```
+
+## Attention Weights Heatmap
+
+Example: `"i like apple"` sentence-এ attention weights:
+
+<AttentionHeatmap
+  tokens={["i", "like", "apple"]}
+  weights={[
+    [0.7, 0.2, 0.1],
+    [0.1, 0.8, 0.1],
+    [0.2, 0.3, 0.5],
+  ]}
+  title="Self-Attention: i like apple"
+/>
+
+**Reading the heatmap:**
+- Row `"i"`: mostly attends to itself (0.7)
+- Row `"like"`: strong self-attention (0.8)
+- Row `"apple"`: attends to `"like"` (0.3) and itself (0.5) — verb-object link!
+
+## Full Implementation
+
+```ts
+function selfAttention(x: number[][]): number[][] {
+  const Q = matmul(x, Wq);
+  const K = matmul(x, Wk);
+  const V = matmul(x, Wv);
+  const scores = matmul(Q, transpose(K));
+  const scaled = scale(scores, 1 / Math.sqrt(d_k));
+  const weights = softmaxRows(scaled);
+  return matmul(weights, V);
+}
+```
+
+<StepReveal steps={[
+  { emoji: "📥", title: "Input X", body: "3 embeddings (3 × D)" },
+  { emoji: "🔍", title: "Q, K, V", body: "Same X, different projections" },
+  { emoji: "📊", title: "Attention weights", body: "3×3 matrix — who looks at whom" },
+  { emoji: "📤", title: "Output", body: "3 context-enriched vectors" }
+]} />
+
+## Causal vs Full
+
+| Type | Mask | Used in |
+|------|------|---------|
+| Full self-attention | None | BERT (encoder) |
+| **Causal** (masked) | Future tokens hidden | **GPT** (decoder) |
+
+GPT training-এ token শুধু **আগের** tokens দেখতে পায় — future cheat করা যায় না।
+
+## Interactive Demo
+
+<Playground id="part-07/self-attention" title="Self-Attention on 3 Words" />
+
+## ✅ তুমি কী শিখলে?
+
+- Self-attention = tokens attend to each other
+- Heatmap shows who-attends-to-whom
+- GPT uses **causal** masked self-attention
+
+**পরের lesson:** [Multi-Head Attention](/docs/part-07-attention/05-multi-head)

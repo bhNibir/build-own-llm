@@ -1,0 +1,47 @@
+---
+title: Module 5 — Neural Network
+description: Neuron, layer, MLP, এবং XOR gate train করা
+---
+
+# 🧠 Module 5: Neural Network
+
+Math + Autograd শেষ — এখন **real neural network** বানাবো। Single neuron থেকে শুরু করে **XOR** solve করব।
+
+<Callout type="idea">
+💡 একটা **neuron** = weighted sum + activation function। Layer stack করলে **MLP (Multi-Layer Perceptron)** — GPT-এর ancestor!
+</Callout>
+
+<Illustration name="neuron-diagram" />
+
+<StepReveal steps={[
+  { emoji: "🧬", title: "Neuron", body: "inputs × weights + bias → activation" },
+  { emoji: "📚", title: "Layer", body: "Parallel neurons — vector in, vector out" },
+  { emoji: "🏗️", title: "MLP", body: "Multiple layers stacked" },
+  { emoji: "❌", title: "XOR", body: "Non-linear problem — 2-layer net দিয়ে solve" }
+]} />
+
+## Lessons
+
+| # | Lesson | Topic |
+|---|--------|-------|
+| 5.1 | [Neuron](/docs/part-05-neural-network/01-neuron) | Single neuron |
+| 5.2 | [Layer](/docs/part-05-neural-network/02-layer) | Layer of neurons |
+| 5.3 | [MLP](/docs/part-05-neural-network/03-mlp) | Multi-layer perceptron |
+| 5.4 | [Train XOR](/docs/part-05-neural-network/04-xor) | XOR decision boundary |
+
+```mermaid
+flowchart LR
+    I["📥 Inputs"]:::input --> N["🧠 Neuron"]:::neuron
+    N --> L["📚 Layer"]:::layer
+    L --> M["🏗️ MLP"]:::mlp
+    M --> X["❌ XOR"]:::xor
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef neuron fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef layer fill:#10B981,color:#fff,stroke:#047857
+    classDef mlp fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef xor fill:#EF4444,color:#fff,stroke:#B91C1C
+```
+
+**আগের Module:** [Module 4 — Autograd](/docs/part-04-autograd)
+
+**পরের lesson:** [Neuron](/docs/part-05-neural-network/01-neuron)

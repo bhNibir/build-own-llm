@@ -1,0 +1,156 @@
+---
+title: Train XOR
+description: 2-layer network দিয়ে XOR gate solve — non-linearity-র proof
+---
+
+# ❌ Train XOR
+
+<Callout type="idea">
+💡 **XOR** = classic test — single neuron/layer solve করতে পারে না। 2-layer MLP + gradient descent = first "magic" moment!
+</Callout>
+
+## XOR Truth Table
+
+| x₁ | x₂ | XOR |
+|----|----|----|
+| 0 | 0 | **0** |
+| 0 | 1 | **1** |
+| 1 | 0 | **1** |
+| 1 | 1 | **0** |
+
+Same input → different output। Linear boundary দিয়ে separate করা **impossible**।
+
+```mermaid
+flowchart TD
+    P00["(0,0)→0"]:::zero --> B["❌ No single line\nseparates 0s from 1s"]:::impossible
+    P01["(0,1)→1"]:::one --> B
+    P10["(1,0)→1"]:::one --> B
+    P11["(1,1)→0"]:::zero --> B
+    classDef zero fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef one fill:#EF4444,color:#fff,stroke:#B91C1C
+    classDef impossible fill:#F59E0B,color:#fff,stroke:#D97706
+```
+
+## Why Single Layer Fails
+
+Single neuron output:
+
+```
+y = activation(w₁x₁ + w₂x₂ + b)
+```
+
+এটা একটা **straight line** (or curve if sigmoid, but still one boundary) — XOR needs **two regions**, not one half-plane.
+
+1969-এ Minsky & Papert proof করেছিল — এটাই "AI winter"-এর একটা কারণ ছিল। Hidden layer solution: **1986 backprop revival**।
+
+## Our Solution: MLP [2, 4, 1]
+
+```
+Input (2) → Hidden (4, ReLU) → Output (1, Sigmoid)
+```
+
+<StepReveal steps={[
+  { emoji: "📊", title: "4 training points", body: "XOR truth table as dataset" },
+  { emoji: "➡️", title: "Forward pass", body: "MLP predicts ŷ for each (x₁, x₂)" },
+  { emoji: "📉", title: "MSE loss", body: "Σ(ŷ - target)² / 4" },
+  { emoji: "🔄", title: "~100 epochs GD", body: "Loss → 0, predictions correct" }
+]} />
+
+## Loss Function
+
+<MathLesson title="Mean Squared Error (MSE)">
+  <MathIntuition>
+    Prediction target-এর কাছাকাছি হলে loss কম — squared error penalizes big mistakes more।
+  </MathIntuition>
+  <SymbolTable symbols={[
+    { sym: "ŷ", meaning: "model prediction" },
+    { sym: "y", meaning: "true target (0 or 1)" },
+    { sym: "n", meaning: "number of training examples (4 for XOR)" }
+  ]} />
+  <Formula>
+    {`$$L = \\frac{1}{n} \\sum_{i=1}^{n} (\\hat{y}_i - y_i)^2$$`}
+  </Formula>
+  <WorkedExample>
+    Predictions after training:{'\n'}
+    (0,0)→0.01, (0,1)→0.98, (1,0)→0.97, (1,1)→0.02{'\n'}
+    All correct! Loss ≈ 0.0001
+  </WorkedExample>
+  <CodeLink>Playground-এ XOR training run করো ↓</CodeLink>
+</MathLesson>
+
+## Decision Boundary
+
+Training শেষে hidden layer non-linear boundary তৈরি করে:
+
+```mermaid
+flowchart LR
+    I["📥 (x₁,x₂)"]:::input --> H["🧠 Hidden: bend space"]:::hidden
+    H --> O["📤 Linearly\nseparable"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef hidden fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef output fill:#10B981,color:#fff,stroke:#047857
+```
+
+Hidden layer input space-কে **transform** করে যেখানে output layer linearly separate করতে পারে।
+
+## Training Code Sketch
+
+```ts
+const model = new MLP([2, 4, 1]);
+const data = [
+  { x: [0, 0], y: 0 },
+  { x: [0, 1], y: 1 },
+  { x: [1, 0], y: 1 },
+  { x: [1, 1], y: 0 },
+];
+
+for (let epoch = 0; epoch < 100; epoch++) {
+  let loss = new Value(0);
+  for (const { x, y } of data) {
+    const pred = model.forward(x.map(v => new Value(v)));
+    const err = pred[0].sub(new Value(y));
+    loss = loss.add(err.mul(err));
+  }
+  loss = loss.scale(1 / data.length);
+  loss.backward();
+  // update parameters...
+}
+```
+
+## Loss During Training
+
+<LossChart
+  data={[0.65, 0.45, 0.22, 0.08, 0.02, 0.001]}
+  title="XOR Training Loss"
+/>
+
+## Module 5 Complete!
+
+```mermaid
+flowchart TD
+    N["🧬 Neuron"]:::n --> L["📚 Layer"]:::l
+    L --> M["🏗️ MLP"]:::m
+    M --> X["❌ XOR ✓"]:::x
+    classDef n fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef l fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef m fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef x fill:#10B981,color:#fff,stroke:#047857
+```
+
+🎉 তুমি **neural network** বানিয়ে **train** করলে! পরের Module-এ এটাকে **language model**-এ apply করব।
+
+## Interactive Demo
+
+<Playground id="part-05/xor" title="XOR Training" />
+
+## ✅ তুমি কী শিখলে?
+
+- **XOR** cannot be solved by single-layer linear classifier
+- **2-layer MLP** with hidden units solves it via non-linear transform
+- Training = forward → MSE loss → backprop → gradient descent
+- Loss decreases to ~0 over ~100 epochs
+- Same training loop scales to GPT (billions of params)
+
+**আগের lesson:** [MLP](/docs/part-05-neural-network/03-mlp)
+
+**পরের Module:** [Module 6 — Neural Language Model](/docs/part-06-neural-lm) *(coming soon)*

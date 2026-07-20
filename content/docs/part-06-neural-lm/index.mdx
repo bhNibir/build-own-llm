@@ -1,0 +1,39 @@
+---
+title: Module 6 — Neural Language Model
+description: Count table-এর বদলে learned embedding + weight matrix দিয়ে language model
+---
+
+# 🧠 Module 6 — Neural Language Model
+
+Bigram model **counting** দিয়ে কাজ করে। Module 6-এ আমরা same task neural network দিয়ে করব — **embedding**, **weight matrix**, **loss**, **training loop**, এবং **generation**।
+
+<Callout type="idea">
+💡 Bigram-এর count table = fixed memory। Neural LM-এ weights **gradient descent** দিয়ে learn হয় — data বাড়লে pattern capture করতে পারে।
+</Callout>
+
+```mermaid
+flowchart LR
+    A["🔢 Token ID"]:::input --> B["📊 Embedding E"]:::process
+    B --> C["⚖️ Weight W"]:::process
+    C --> D["📈 Softmax"]:::process
+    D --> E["🎯 Next token"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef process fill:#10B981,color:#fff,stroke:#047857
+    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
+```
+
+## Lessons
+
+| # | Lesson | Topic |
+|---|--------|-------|
+| 6.1 | [Embedding](/docs/part-06-neural-lm/01-embedding) | Word ID → vector lookup |
+| 6.2 | [Weight Matrix](/docs/part-06-neural-lm/02-weight-matrix) | Input → logits |
+| 6.3 | [Cross-Entropy Loss](/docs/part-06-neural-lm/03-loss) | Prediction error measure |
+| 6.4 | [Training Loop](/docs/part-06-neural-lm/04-train) | Forward + backward + update |
+| 6.5 | [Generate](/docs/part-06-neural-lm/05-generate) | Sample from trained model |
+
+**Reference:** `code/part-03/neural-char.ts` — character-level neural LM (baby names)
+
+**আগের Module:** [Module 5 — Neural Network](/docs/part-03-neural-network)
+
+**পরের step:** [Embedding Matrix](/docs/part-06-neural-lm/01-embedding)

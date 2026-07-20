@@ -1,71 +1,12 @@
 ---
-title: Part 3 — Neural Network
-description: Embedding, Softmax, Loss, Gradient Descent — coming soon
+title: Part 3 — Neural Network (legacy)
+description: Moved to part-03-math, part-04-autograd, part-05-neural-network
 ---
 
-# Part 3: Neural Network + Gradient Descent
+# Redirect
 
-> 🔜 **Coming soon** — এই Part এখনো লেখা হচ্ছে।
+This section has been split into three modules:
 
-## এই Part-এ কী শিখবে?
-
-Bigram model counting দিয়ে কাজ করে। কিন্তু real LLM **Neural Network** ব্যবহার করে। এই Part-এ আমরা শিখব:
-
-```mermaid
-flowchart TD
-    A[Bigram Count Table] --> B[Neural Network]
-    B --> C[Embedding Matrix]
-    C --> D[Weight Matrix W]
-    D --> E[Softmax]
-    E --> F[Cross-Entropy Loss]
-    F --> G[Gradient Descent]
-    G --> H[Backpropagation]
-    style B fill:#FFD700
-```
-
-## Topics Preview
-
-### Embedding
-
-Count table-এর বদলে **learned vectors**:
-
-$$E \in \mathbb{R}^{V \times D}$$
-
-প্রতিটা word-এর জন্য $D$-dimensional vector। Similar word-এর vector কাছাকাছি হবে।
-
-### Softmax
-
-Raw scores (logits) কে probability-তে convert:
-
-$$\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$$
-
-### Cross-Entropy Loss
-
-Model কতটা ভুল করলো:
-
-$$L = -\log P(\text{correct token})$$
-
-### Gradient Descent
-
-Error কমাতে weights update:
-
-$$W \leftarrow W - \eta \cdot \frac{\partial L}{\partial W}$$
-
-## Reference Code
-
-Part 3-এর জন্য একটি character-level neural network reference আছে:
-
-`code/part-03/neural-char.ts` — এটা baby names dataset-এ train করে নতুন নাম generate করে। Part 3-এ আমরা এটাকে word-level-এ port করব।
-
-## Roadmap Position
-
-```mermaid
-flowchart LR
-    P1[Part 1: Tokenizer ✅] --> P2[Part 2: Bigram ✅]
-    P2 --> P3[Part 3: Neural Network 🔜]
-    P3 --> P4[Part 4: Attention]
-    P4 --> P5[Part 5: Mini GPT]
-    style P3 fill:#FFD700
-```
-
-**আগের Part:** [Part 2 — Bigram](/docs/part-02-bigram)
+- [Module 3 — Math Foundations](/docs/part-03-math)
+- [Module 4 — Autograd](/docs/part-04-autograd)
+- [Module 5 — Neural Network](/docs/part-05-neural-network)

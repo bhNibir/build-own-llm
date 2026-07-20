@@ -5,16 +5,20 @@ description: Training data থেকে count table বানানো
 
 # Count-based Training
 
+<ConceptAnim name="bigram-scan" caption="Scanner sentence traverse করে — প্রতিটি bigram pair count +1" />
+
 Bigram model-এর training খুব simple: **গুনে রাখো** কোন word-এর পরে কোন word কতবার এসেছে।
 
 ## Training Process
 
 ```mermaid
 flowchart TD
-    A["i like apple"] --> B["i → like (count +1)"]
-    A --> C["like → apple (count +1)"]
-    D["i like banana"] --> E["i → like (count +1)"]
-    D --> F["like → banana (count +1)"]
+    A["📝 i like apple"]:::input --> B["i → like +1"]:::process
+    A --> C["like → apple +1"]:::process
+    D["📝 i like banana"]:::input --> E["i → like +1"]:::process
+    D --> F["like → banana +1"]:::process
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef process fill:#10B981,color:#fff,stroke:#047857
 ```
 
 ## Step by Step
@@ -77,15 +81,23 @@ Data structure: `Map<currentWord, Map<nextWord, count>>`
 
 ## Probability Formula
 
-Count থেকে probability বের করা:
-
-$$P(\text{next} \mid \text{current}) = \frac{\text{count(current, next)}}{\sum_w \text{count(current, w)}}$$
-
-Example:
-
-$$P(\text{like} \mid \text{i}) = \frac{3}{3} = 1.0$$
-
-$$P(\text{apple} \mid \text{like}) = \frac{2}{2+1+1} = 0.5$$
+<MathLesson title="Bigram Probability">
+  <MathIntuition>
+    Count বেশি হলে probability বেশি — কিন্তু সব probability যোগ করলে 1 হতে হবে (normalize)।
+  </MathIntuition>
+  <SymbolTable symbols={[
+    { sym: "P(next | current)", meaning: "current word দেখে next word-এর probability" },
+    { sym: "count(a, b)", meaning: "pair (a → b) কতবার দেখা গেছে" }
+  ]} />
+  <Formula>
+    {`$$P(\\text{next} \\mid \\text{current}) = \\frac{\\text{count(current, next)}}{\\sum_w \\text{count(current, w)}}$$`}
+  </Formula>
+  <WorkedExample>
+    P(like | i) = 3/3 = 1.0{'\n'}
+    P(apple | like) = 2/(2+1+1) = 0.5
+  </WorkedExample>
+  <CodeLink>Playground-এ count table run করো ↓</CodeLink>
+</MathLesson>
 
 ## Interactive Demo
 

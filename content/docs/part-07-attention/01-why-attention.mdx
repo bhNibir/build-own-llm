@@ -1,0 +1,70 @@
+---
+title: Why Attention?
+description: Bigram-এর 1-token limit — long-range dependency problem
+---
+
+# 🤔 Why Attention?
+
+Bigram এবং neural bigram দুটোই শুধু **একটা আগের token** দেখে। কিন্তু real language-এ context অনেক বড়।
+
+<Callout type="warn">
+⚠️ `"The animal didn't cross the road because it was tired."` — `"it"` কার দিকে point করে? `animal` নাকি `road`?
+</Callout>
+
+```mermaid
+flowchart TD
+    A["📝 Long sentence"]:::input --> B["❌ Bigram: 1 token context"]:::bad
+    A --> C["✅ Attention: all tokens"]:::good
+    B --> D["Wrong 'it' reference"]:::fail
+    C --> E["Correct 'it' → animal"]:::success
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef bad fill:#EF4444,color:#fff,stroke:#DC2626
+    classDef good fill:#10B981,color:#fff,stroke:#047857
+    classDef fail fill:#FCA5A5,color:#991B1B,stroke:#DC2626
+    classDef success fill:#6EE7B7,color:#065F46,stroke:#047857
+```
+
+## The Problem: Fixed Context Window
+
+| Model | Context | Limitation |
+|-------|---------|------------|
+| Bigram | 1 token | `"it"` → `"was"` only |
+| Neural bigram | 1 token | Same |
+| **Attention** | All tokens | Full sentence |
+
+## Real Example
+
+```
+"i like apple because apple is fruit"
+```
+
+`"because"`-এর পর `"apple"` আবার আসে — `"because"` `"apple"`-এর সাথে connect করতে চায়। Bigram `"because"`-কে শুধু আগের word দেখায়, `"apple"`-কে miss করে।
+
+## Attention Solution
+
+**Attention** প্রতিটা token-কে sentence-এর **সব token-এর সাথে compare** করে:
+
+<StepReveal steps={[
+  { emoji: "🔍", title: "Query", body: "'it' কী খুঁজছে?" },
+  { emoji: "🔑", title: "Key", body: "অন্য word-গুলো কী offer করে?" },
+  { emoji: "⚖️", title: "Score", body: "Relevance measure" },
+  { emoji: "📦", title: "Value", body: "Relevant info weighted sum" }
+]} />
+
+## Historical Context
+
+- **2017:** "Attention Is All You Need" paper — Transformer birth
+- **Before:** RNN/LSTM sequential processing (slow, forgetful)
+- **After:** Parallel attention — GPT, BERT, Llama সব এটা use করে
+
+<Callout type="tip">
+✅ Attention GPT-এর **core innovation** — Module 7-8-এ আমরা এটা from scratch build করব।
+</Callout>
+
+## ✅ তুমি কী শিখলে?
+
+- Bigram/neural bigram = 1-token context limit
+- Long sentences need **all-token** context
+- Attention solves long-range dependencies
+
+**পরের lesson:** [Query, Key, Value](/docs/part-07-attention/02-qkv)

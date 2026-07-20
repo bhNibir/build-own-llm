@@ -1,0 +1,71 @@
+---
+title: Temperature
+description: Randomness control — temperature scaling logits
+---
+
+# 🌡️ Temperature
+
+Generation-এ **কতটা random** হবে? **Temperature** parameter logits scale করে — low = deterministic, high = creative (sometimes nonsense)।
+
+<Callout type="idea">
+💡 Temperature = creativity knob। T=0 → always pick highest prob. T=2 → very random।
+</Callout>
+
+```mermaid
+flowchart LR
+    A["Logits z"]:::logits --> B["÷ Temperature T"]:::scale
+    B --> C["Softmax"]:::softmax
+    C --> D["Sample"]:::sample
+    classDef logits fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef scale fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef softmax fill:#10B981,color:#fff,stroke:#047857
+    classDef sample fill:#EC4899,color:#fff,stroke:#DB2777
+```
+
+## Formula
+
+$$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
+
+| Temperature | Effect | Use case |
+|-------------|--------|----------|
+| T → 0 | Argmax (deterministic) | Factual answers |
+| T = 1 | Default model distribution | Balanced |
+| T > 1 | Flatter distribution | Creative writing |
+
+## Example
+
+Logits: `[2.0, 1.0, 0.5]` for tokens `[apple, banana, mango]`
+
+| T | Probs (approx) | Behavior |
+|---|----------------|----------|
+| 0.5 | [0.84, 0.11, 0.05] | Very confident → apple |
+| 1.0 | [0.58, 0.21, 0.13] | Moderate spread |
+| 2.0 | [0.42, 0.30, 0.28] | More random |
+
+```ts
+function sampleWithTemperature(logits: number[], T: number): number {
+  const scaled = logits.map(z => z / T);
+  return sample(softmax(scaled));
+}
+```
+
+<GenerateControls defaultTemperature={1} defaultTopK={5} />
+
+<StepReveal steps={[
+  { emoji: "📊", title: "Raw logits", body: "Model output scores" },
+  { emoji: "🌡️", title: "Divide by T", body: "Scale before softmax" },
+  { emoji: "📈", title: "Softmax", body: "T low → peaked, T high → flat" },
+  { emoji: "🎲", title: "Sample", body: "Pick from adjusted distribution" }
+]} />
+
+## Interactive Demo
+
+<Playground id="part-09/temperature" title="Temperature Sampling" />
+
+## ✅ তুমি কী শিখলে?
+
+- Temperature scales logits before softmax
+- Low T = greedy/deterministic, high T = random
+- T=1 = model's natural distribution
+
+**পরের lesson:** [Top-k Sampling](/docs/part-09-mini-gpt/05-top-k)

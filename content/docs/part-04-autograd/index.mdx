@@ -1,0 +1,45 @@
+---
+title: Module 4 — Autograd
+description: Computational graph, Value class, backprop, gradient descent
+---
+
+# 🔄 Module 4: Autograd
+
+Neural network **train** করতে হলে model-কে বলতে হবে: "তোমার weight একটু বাড়ালে loss কমে না কমে?" — এটাই **gradient**।
+
+<Callout type="idea">
+💡 **Autograd** = forward pass-এ graph বানাও, backward pass-এ chain rule দিয়ে gradient বের করো। Andrej Karpathy-র **micrograd** idea-টাই follow করব।
+</Callout>
+
+<StepReveal steps={[
+  { emoji: "📊", title: "Computational Graph", body: "Operation-গুলো node, data flow edge" },
+  { emoji: "📦", title: "Value Class", body: "Number + gradient + backward hook" },
+  { emoji: "⬅️", title: "Backpropagation", body: "Loss থেকে root পর্যন্ত chain rule" },
+  { emoji: "📉", title: "Gradient Descent", body: "Gradient দিয়ে weight update" }
+]} />
+
+## Lessons
+
+| # | Lesson | Topic |
+|---|--------|-------|
+| 4.1 | [Computational Graph](/docs/part-04-autograd/01-computational-graph) | Forward pass visualization |
+| 4.2 | [Value Class](/docs/part-04-autograd/02-value) | micrograd-style Value |
+| 4.3 | [Backpropagation](/docs/part-04-autograd/03-backprop) | Manual backward pass |
+| 4.4 | [Gradient Descent](/docs/part-04-autograd/04-gradient-descent) | Weight update loop |
+
+```mermaid
+flowchart TD
+    F["➡️ Forward Pass"]:::forward --> L["📉 Loss"]:::loss
+    L --> B["⬅️ Backward Pass"]:::backward
+    B --> G["🔧 Update Weights"]:::update
+    classDef forward fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef loss fill:#EF4444,color:#fff,stroke:#B91C1C
+    classDef backward fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef update fill:#10B981,color:#fff,stroke:#047857
+```
+
+Module 4 থেকে Playground **Nodepod runtime** ব্যবহার করে — training loop-এর জন্য বেশি compute power।
+
+**আগের Module:** [Module 3 — Math](/docs/part-03-math)
+
+**পরের lesson:** [Computational Graph](/docs/part-04-autograd/01-computational-graph)

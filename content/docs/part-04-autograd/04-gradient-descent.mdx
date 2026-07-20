@@ -1,0 +1,115 @@
+---
+title: Gradient Descent
+description: Gradient দিয়ে weight update — model train করার core loop
+---
+
+# 📉 Gradient Descent
+
+<Callout type="idea">
+💡 **Gradient** বলে loss কোন direction-এ বাড়ছে। **Gradient descent** = opposite direction-এ small step — loss কমাতে weight update।
+</Callout>
+
+## The Update Rule
+
+<MathLesson title="Gradient Descent">
+  <MathIntuition>
+    Loss landscape-এ downhill যাও — gradient positive হলে weight কমাও, negative হলে weight বাড়াও। Learning rate step size control করে।
+  </MathIntuition>
+  <SymbolTable symbols={[
+    { sym: "w", meaning: "weight (parameter to optimize)" },
+    { sym: "L", meaning: "loss function" },
+    { sym: "∂L/∂w", meaning: "gradient — how loss changes w.r.t. w" },
+    { sym: "α", meaning: "learning rate (step size, e.g. 0.01)" }
+  ]} />
+  <Formula>
+    {`$$w \\leftarrow w - \\alpha \\cdot \\frac{\\partial L}{\\partial w}$$`}
+  </Formula>
+  <WorkedExample>
+    w = 3.0, ∂L/∂w = 4.0, α = 0.1{'\n'}
+    w_new = 3.0 - 0.1 × 4.0 = 2.6{'\n'}
+    (loss decreases because we moved opposite to gradient)
+  </WorkedExample>
+  <CodeLink>Playground-এ training loop run করো ↓</CodeLink>
+</MathLesson>
+
+## Training Loop
+
+```mermaid
+flowchart TD
+    F["➡️ Forward pass"]:::forward --> L["📉 Compute loss"]:::loss
+    L --> B["⬅️ Backward pass"]:::backward
+    B --> U["🔧 Update weights"]:::update
+    U --> F
+    classDef forward fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef loss fill:#EF4444,color:#fff,stroke:#B91C1C
+    classDef backward fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef update fill:#10B981,color:#fff,stroke:#047857
+```
+
+```ts
+for (let epoch = 0; epoch < 100; epoch++) {
+  // 1. Forward
+  const loss = model.forward(x, y);
+
+  // 2. Backward
+  loss.backward();
+
+  // 3. Update all parameters
+  for (const p of parameters) {
+    p.data -= learningRate * p.grad;
+    p.grad = 0;  // reset for next iteration
+  }
+}
+```
+
+<StepReveal steps={[
+  { emoji: "➡️", title: "Forward", body: "Input দিয়ে prediction + loss compute" },
+  { emoji: "⬅️", title: "Backward", body: "loss.backward() — সব param-এ grad" },
+  { emoji: "🔧", title: "Update", body: "w -= lr × grad" },
+  { emoji: "🔄", title: "Repeat", body: "Loss gradually decreases" }
+]} />
+
+## Learning Rate
+
+| α too small | α too large | α just right |
+|-------------|-------------|--------------|
+| Slow convergence | Overshoot, diverge | Steady loss decrease |
+| Many epochs needed | Loss oscillates or NaN | Efficient training |
+
+Typical values: `0.001` – `0.1` (problem-dependent)
+
+## Loss Curve
+
+Training-এ loss overtime track করি:
+
+<LossChart
+  data={[2.5, 1.8, 1.1, 0.6, 0.3, 0.15]}
+  title="Example Loss Curve"
+/>
+
+Module 6-9-এ live loss chart training-এর সাথে update হবে।
+
+## Full Picture
+
+```
+Math (Module 3)     → operations
+Autograd (Module 4) → gradients
+Gradient Descent    → weight updates
+Neural Net (Module 5) → architecture to train
+```
+
+## Interactive Demo
+
+<Playground id="part-04/gradient-descent" title="Gradient Descent Training" />
+
+## ✅ তুমি কী শিখলে?
+
+- **Gradient descent**: `w ← w - α × ∂L/∂w`
+- Training loop = forward → backward → update → repeat
+- **Learning rate** controls step size — critical hyperparameter
+- Reset `grad = 0` after each update
+- This is how every neural network (including GPT) learns
+
+**আগের lesson:** [Backpropagation](/docs/part-04-autograd/03-backprop)
+
+**পরের Module:** [Module 5 — Neural Network](/docs/part-05-neural-network/01-neuron)

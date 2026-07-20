@@ -1,0 +1,10 @@
+{
+  "title": "Module 5: Neural Network",
+  "pages": [
+    "index",
+    "01-neuron",
+    "02-layer",
+    "03-mlp",
+    "04-xor"
+  ]
+}

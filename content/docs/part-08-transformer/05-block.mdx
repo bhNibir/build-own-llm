@@ -1,0 +1,88 @@
+---
+title: Full Transformer Block
+description: Norm → Attn → Res → Norm → FFN → Res — complete assembly
+---
+
+# 🏗️ Full Transformer Block
+
+সব piece ready — এখন **assemble**: LayerNorm → Multi-Head Attention → Residual → LayerNorm → FFN → Residual। এটাই GPT-এর core building block।
+
+<Callout type="tip">
+✅ GPT = N transformer blocks stacked + final LayerNorm + output projection to vocabulary.
+</Callout>
+
+<Illustration name="transformer-block" />
+
+```mermaid
+flowchart TD
+    A["Input X"]:::input --> B["LayerNorm"]:::norm1
+    B --> C["Multi-Head Attention"]:::attn
+    C --> D["X + Attn out"]:::res1
+    A --> D
+    D --> E["LayerNorm"]:::norm2
+    E --> F["FFN"]:::ffn
+    F --> G["D + FFN out"]:::res2
+    D --> G
+    G --> H["Block Output"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef norm1 fill:#10B981,color:#fff,stroke:#047857
+    classDef norm2 fill:#10B981,color:#fff,stroke:#047857
+    classDef attn fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef res1 fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef res2 fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef ffn fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef output fill:#EF4444,color:#fff,stroke:#DC2626
+```
+
+## Complete Code
+
+```ts
+function transformerBlock(x: number[][]): number[][] {
+  // Pre-LN Attention + Residual
+  const norm1 = layerNorm(x);
+  const attnOut = multiHeadAttention(norm1);
+  const x1 = add(x, attnOut);
+
+  // Pre-LN FFN + Residual
+  const norm2 = layerNorm(x1);
+  const ffnOut = ffn(norm2);
+  return add(x1, ffnOut);
+}
+```
+
+<StepReveal steps={[
+  { emoji: "1️⃣", title: "Norm → Attn → +", body: "Context mixing with skip" },
+  { emoji: "2️⃣", title: "Norm → FFN → +", body: "Per-token transform with skip" },
+  { emoji: "3️⃣", title: "Stack N blocks", body: "Mini GPT: 4 blocks" },
+  { emoji: "4️⃣", title: "Final head", body: "LayerNorm → logits → softmax" }
+]} />
+
+## Mini GPT Stack
+
+```
+Token IDs
+  → Token Embedding + Positional Embedding
+  → Block 1 → Block 2 → Block 3 → Block 4
+  → Final LayerNorm
+  → Linear → Vocabulary logits
+```
+
+## Parameter Overview
+
+| Component | Params (approx) |
+|-----------|-----------------|
+| Embeddings | V × D |
+| Each block | 4 × D² (attn + FFN) |
+| 4 blocks | ~16 × D² |
+
+## Interactive Demo
+
+<Playground id="part-08/block" title="Full Transformer Block" />
+
+## ✅ তুমি কী শিখলে?
+
+- Full block = Pre-LN Attn + Residual + Pre-LN FFN + Residual
+- Stack N blocks = GPT body
+- Module 8 complete — next: **Mini GPT** end-to-end!
+
+**পরের Module:** [Module 9 — Mini GPT](/docs/part-09-mini-gpt)

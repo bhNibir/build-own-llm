@@ -1,0 +1,133 @@
+---
+title: Backpropagation
+description: Chain rule দিয়ে loss থেকে সব parameter-এ gradient propagate
+---
+
+# ⬅️ Backpropagation
+
+<Callout type="idea">
+💡 **Backpropagation** = computational graph reverse traverse করে chain rule apply। Loss থেকে শুরু, root পর্যন্ত gradient flow।
+</Callout>
+
+## The Algorithm
+
+```ts
+backward(): void {
+  // 1. Topological sort (reverse)
+  const topo: Value[] = [];
+  const visited = new Set<Value>();
+
+  function build(v: Value) {
+    if (!visited.has(v)) {
+      visited.add(v);
+      for (const child of v._prev) build(child);
+      topo.push(v);
+    }
+  }
+  build(this);
+
+  // 2. Seed gradient at output
+  this.grad = 1.0;
+
+  // 3. Reverse traverse, apply local rules
+  for (let i = topo.length - 1; i >= 0; i--) {
+    topo[i]._backward();
+  }
+}
+```
+
+<StepReveal steps={[
+  { emoji: "📋", title: "Topological sort", body: "Nodes order — children before parents" },
+  { emoji: "1️⃣", title: "Seed grad = 1", body: "Output node (loss) starts with ∂L/∂L = 1" },
+  { emoji: "⬅️", title: "Reverse loop", body: "Each node calls _backward()" },
+  { emoji: "➕", title: "Accumulate grads", body: "Parents receive gradient contributions" }
+]} />
+
+## Chain Rule in Action
+
+Expression: `L = (a × b + c)²`
+
+```mermaid
+flowchart BT
+    L["📉 L"]:::loss --> S["²"]:::op
+    S --> P["+"]:::op
+    P --> M["×"]:::op
+    M --> A["a"]:::leaf
+    M --> B["b"]:::leaf
+    P --> C["c"]:::leaf
+    classDef loss fill:#EF4444,color:#fff,stroke:#B91C1C
+    classDef op fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef leaf fill:#4F46E5,color:#fff,stroke:#3730A3
+```
+
+Backward (bottom-up in diagram = reverse topo order):
+
+```
+∂L/∂L = 1
+∂L/∂(square input) = 2 × input × ∂L/∂L
+∂L/∂a = ∂L/∂(ab) × b
+∂L/∂b = ∂L/∂(ab) × a
+∂L/∂c = ∂L/∂(sum) × 1
+```
+
+## Worked Example
+
+`a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
+
+<MathLesson title="Backprop Chain Rule">
+  <MathIntuition>
+    Gradient flows backward like water upstream — each node passes its share to parents using local derivative × incoming gradient।
+  </MathIntuition>
+  <SymbolTable symbols={[
+    { sym: "∂L/∂y", meaning: "gradient flowing into node y from above" },
+    { sym: "_backward()", meaning: "local rule: distribute grad to parents" },
+    { sym: "topo sort", meaning: "visit children before parents" }
+  ]} />
+  <Formula>
+    {`$$\\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial x}$$`}
+  </Formula>
+  <WorkedExample>
+    a=2, b=-3, c=10 → L=16{'\n'}
+    After backward():{'\n'}
+    ∂L/∂a = -24, ∂L/∂b = 16, ∂L/∂c = 8
+  </WorkedExample>
+  <CodeLink>Playground-এ backward() run করে grad values verify করো ↓</CodeLink>
+</MathLesson>
+
+## Why Topological Sort?
+
+Operation order matter — parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
+
+```
+Wrong order: parent._backward() before child.grad set → wrong gradients
+Right order: reverse topo ensures child processed first
+```
+
+## Debugging Tips
+
+```ts
+y.backward();
+console.log('a.grad:', a.grad);
+console.log('b.grad:', b.grad);
+```
+
+Gradient zero? Check:
+- `_backward` rule correct?
+- Topo sort order correct?
+- Forgot to call `.backward()`?
+
+## Interactive Demo
+
+<Playground id="part-04/backprop" title="Backpropagation Demo" />
+
+## ✅ তুমি কী শিখলে?
+
+- **Backprop** = reverse topological traversal + chain rule
+- Output node seeded with `grad = 1`
+- Each `_backward()` distributes gradient to parents
+- Topological sort ensures correct order
+- Enables training networks with millions of parameters
+
+**আগের lesson:** [Value Class](/docs/part-04-autograd/02-value)
+
+**পরের lesson:** [Gradient Descent](/docs/part-04-autograd/04-gradient-descent)

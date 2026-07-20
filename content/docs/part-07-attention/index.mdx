@@ -1,0 +1,40 @@
+---
+title: Module 7 — Attention
+description: Long-range dependencies solve — Query, Key, Value থেকে Self-Attention
+---
+
+# 👁️ Module 7 — Attention
+
+Neural bigram শুধু **১টা আগের token** দেখে। Real sentence-এ দূরের word-ও গুরুত্বপূর্ণ। **Attention** সব token-এর মধ্যে relevance measure করে।
+
+<Callout type="idea">
+💡 Attention = "এই word-এর জন্য sentence-এর কোন অংশ সবচেয়ে relevant?" — search engine-এর মতো।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["📝 Input tokens"]:::input --> B["🔍 Query Q"]:::qkv
+    A --> C["🔑 Key K"]:::qkv
+    A --> D["📦 Value V"]:::qkv
+    B --> E["⚡ Attention scores"]:::attn
+    C --> E
+    E --> F["📊 Weighted sum of V"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef qkv fill:#10B981,color:#fff,stroke:#047857
+    classDef attn fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef output fill:#6366F1,color:#fff,stroke:#4338CA
+```
+
+## Lessons
+
+| # | Lesson | Topic |
+|---|--------|-------|
+| 7.1 | [Why Attention?](/docs/part-07-attention/01-why-attention) | Long-range dependency problem |
+| 7.2 | [Query, Key, Value](/docs/part-07-attention/02-qkv) | Q/K/V search engine analogy |
+| 7.3 | [Scaled Dot-Product](/docs/part-07-attention/03-scaled-dot-product) | Attention formula |
+| 7.4 | [Self-Attention](/docs/part-07-attention/04-self-attention) | Full attention on sentence |
+| 7.5 | [Multi-Head](/docs/part-07-attention/05-multi-head) | Parallel attention heads |
+
+**আগের Module:** [Module 6 — Neural LM](/docs/part-06-neural-lm)
+
+**পরের step:** [Why Attention?](/docs/part-07-attention/01-why-attention)

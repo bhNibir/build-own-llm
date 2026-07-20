@@ -1,0 +1,47 @@
+---
+title: Module 9 — Mini GPT
+description: Full Transformer stack — train, generate, temperature, top-k
+---
+
+# 🤖 Module 9 — Mini GPT
+
+Module 1-8-এর সব piece একসাথে — **সম্পূর্ণ Mini GPT**। Karpathy-এর nanoGPT-এর মতো, কিন্তু TypeScript-এ, zero ML library।
+
+<Callout type="idea">
+💡 ~500 lines TypeScript — browser-এ train + generate। এটাই course-এর **final working LLM**।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["📝 Text Input"]:::input --> B["🔤 Tokenizer"]:::tok
+    B --> C["🔢 Token IDs"]:::ids
+    C --> D["📊 Embed + Position"]:::emb
+    D --> E["🧱 Block × 4"]:::blocks
+    E --> F["📏 LayerNorm"]:::norm
+    F --> G["📈 Logits"]:::logits
+    G --> H["🎲 Sample"]:::sample
+    H --> I["✨ Generated Text"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef tok fill:#10B981,color:#fff,stroke:#047857
+    classDef ids fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef emb fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef blocks fill:#FFD700,color:#000,stroke:#CA8A04
+    classDef norm fill:#10B981,color:#fff,stroke:#047857
+    classDef logits fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef sample fill:#8B5CF6,color:#fff,stroke:#7C3AED
+    classDef output fill:#EF4444,color:#fff,stroke:#DC2626
+```
+
+## Lessons
+
+| # | Lesson | Topic |
+|---|--------|-------|
+| 9.1 | [GPT Architecture](/docs/part-09-mini-gpt/01-gpt-architecture) | Full stack overview |
+| 9.2 | [Train Mini GPT](/docs/part-09-mini-gpt/02-train) | ~500-line training |
+| 9.3 | [Generate Text](/docs/part-09-mini-gpt/03-generate) | Autoregressive loop |
+| 9.4 | [Temperature](/docs/part-09-mini-gpt/04-temperature) | Randomness control |
+| 9.5 | [Top-k Sampling](/docs/part-09-mini-gpt/05-top-k) | Restrict token choices |
+
+**আগের Module:** [Module 8 — Transformer Block](/docs/part-08-transformer)
+
+**পরের step:** [GPT Architecture](/docs/part-09-mini-gpt/01-gpt-architecture)

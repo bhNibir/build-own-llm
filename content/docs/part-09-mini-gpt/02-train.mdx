@@ -1,0 +1,87 @@
+---
+title: Train Mini GPT
+description: Fruit dataset-এ ~500-line TypeScript training loop
+---
+
+# 🏋️ Train Mini GPT
+
+Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
+
+<Callout type="warn">
+⚠️ Browser-এ training slow — Nodepod runtime use করে real training run করব (~500 lines TypeScript)।
+</Callout>
+
+```mermaid
+flowchart TD
+    A["📂 Fruit dataset"]:::data --> B["🔀 Batches"]:::batch
+    B --> C["➡️ Forward (4 blocks)"]:::fwd
+    C --> D["📉 Cross-entropy loss"]:::loss
+    D --> E["⬅️ Backprop"]:::bwd
+    E --> F["🔄 Adam update"]:::upd
+    F --> G{"Converged?"}:::check
+    G -->|No| B
+    G -->|Yes| H["💾 Saved weights"]:::done
+    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef batch fill:#10B981,color:#fff,stroke:#047857
+    classDef fwd fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef loss fill:#EF4444,color:#fff,stroke:#DC2626
+    classDef bwd fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef upd fill:#8B5CF6,color:#fff,stroke:#7C3AED
+    classDef check fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef done fill:#10B981,color:#fff,stroke:#047857
+```
+
+## Training Loop
+
+```ts
+for (let step = 0; step < maxSteps; step++) {
+  const { input, target } = getBatch();
+  const logits = gpt.forward(input);       // (B, T, V)
+  const loss = crossEntropy(logits, target);
+  loss.backward();
+  optimizer.step();
+  if (step % 100 === 0) console.log(`loss: ${loss.value}`);
+}
+```
+
+<LossChart data={[3.2, 2.1, 1.5, 1.0, 0.8, 0.6]} title="Mini GPT Training Loss" />
+
+## Dataset
+
+Fruit sentences from Module 1:
+
+```
+"i like apple"
+"apple is fruit"
+"banana is healthy"
+"i like banana"
+...
+```
+
+<StepReveal steps={[
+  { emoji: "📂", title: "Load data", body: "Tokenized fruit sentences" },
+  { emoji: "🔀", title: "Batch", body: "Random windows of length T" },
+  { emoji: "🧠", title: "Forward", body: "4 transformer blocks" },
+  { emoji: "📉", title: "Loss + update", body: "Cross-entropy + Adam" }
+]} />
+
+## What Gets Trained
+
+| Parameter | Shape | Count |
+|-----------|-------|-------|
+| Token embed | V × D | ~2K |
+| Pos embed | T × D | ~2K |
+| 4 blocks | ~16D² each | ~260K |
+| LM head | D × V | ~2K |
+
+## Interactive Demo
+
+<Playground id="part-09/train" title="Train Mini GPT" />
+
+## ✅ তুমি কী শিখলে?
+
+- Full GPT training loop in TypeScript
+- Loss should decrease over steps
+- All weights (embed, blocks, head) learned jointly
+
+**পরের lesson:** [Generate Text](/docs/part-09-mini-gpt/03-generate)

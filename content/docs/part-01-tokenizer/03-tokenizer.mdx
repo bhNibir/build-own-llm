@@ -3,7 +3,23 @@ title: Tokenizer
 description: Sentence কে word-এ ভাগ করা
 ---
 
-# Tokenizer
+# 🔤 Tokenizer
+
+<Callout type="idea">
+💡 Computer string বুঝে না — প্রথম step: sentence কে **token**-এ ভাগ করা।
+</Callout>
+
+<ConceptAnim name="tokenizer-split" caption="Tokenizer: sentence → lowercase → whitespace split → tokens" />
+
+```mermaid
+flowchart LR
+    A["📝 I Like Apple"]:::input --> B["🔡 lowercase"]:::process
+    B --> C["✂️ split"]:::process
+    C --> D["🔤 i · like · apple"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef process fill:#10B981,color:#fff,stroke:#047857
+    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
+```
 
 Computer string বুঝে না। তাই প্রথম কাজ: sentence কে ছোট ছোট **token**-এ ভাগ করা।
 

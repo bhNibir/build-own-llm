@@ -1,0 +1,123 @@
+---
+title: Value Class
+description: micrograd-style Value — number + gradient + backward hook
+---
+
+# 📦 Value Class
+
+<Callout type="idea">
+💡 **Value** = number যেটা জানে কোথা থেকে এসেছে (parents) এবং `.backward()` call করলে gradient propagate করে।
+</Callout>
+
+## Anatomy of Value
+
+```ts
+class Value {
+  data: number;      // forward pass value
+  grad: number;      // gradient (accumulated)
+  _prev: Value[];    // parent nodes in graph
+  _backward: () => void;  // local gradient rule
+}
+```
+
+```mermaid
+flowchart TD
+    V["📦 Value"]:::value --> D["data: 6.0"]:::field
+    V --> G["grad: 0.0"]:::field
+    V --> P["_prev: [a, b]"]:::field
+    V --> B["_backward()"]:::field
+    classDef value fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef field fill:#8B5CF6,color:#fff,stroke:#6D28D9
+```
+
+## Operations Build the Graph
+
+```ts
+add(other: Value): Value {
+  const out = new Value(this.data + other.data, [this, other]);
+  out._backward = () => {
+    this.grad += 1.0 * out.grad;
+    other.grad += 1.0 * out.grad;
+  };
+  return out;
+}
+```
+
+Operation করলে:
+1. New `Value` create — result store
+2. `_prev` = parent nodes link
+3. `_backward` = local chain rule define
+
+<StepReveal steps={[
+  { emoji: "➕", title: "add()", body: "∂(a+b)/∂a = 1, ∂(a+b)/∂b = 1" },
+  { emoji: "✖️", title: "mul()", body: "∂(a×b)/∂a = b, ∂(a×b)/∂b = a" },
+  { emoji: "📈", title: "relu()", body: "∂relu/∂x = 1 if x>0 else 0" },
+  { emoji: "🔗", title: "Graph grows", body: "Each op adds nodes automatically" }
+]} />
+
+## Example: y = a × b + c
+
+```ts
+const a = new Value(2);
+const b = new Value(3);
+const c = new Value(1);
+
+const d = a.mul(b);   // d = 6, graph: a,b → d
+const y = d.add(c);   // y = 7, graph: d,c → y
+```
+
+Graph structure:
+
+```mermaid
+flowchart LR
+    A["a=2"]:::leaf --> M["×"]:::op
+    B["b=3"]:::leaf --> M
+    M --> D["d=6"]:::mid
+    D --> P["+"]:::op
+    C["c=1"]:::leaf --> P
+    P --> Y["y=7"]:::out
+    classDef leaf fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef op fill:#0EA5E9,color:#fff,stroke:#0369A1
+    classDef mid fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef out fill:#10B981,color:#fff,stroke:#047857
+```
+
+## Gradient Accumulation
+
+`grad +=` (not `=`) — একটা node multiple path-এ use হতে পারে:
+
+```
+     b
+    ↙ ↘
+  a×b   b+c
+    ↘ ↙
+     sum
+```
+
+`b.grad` = gradient from both paths যোগ হবে।
+
+## Why Not Plain Numbers?
+
+| Plain `number` | `Value` |
+|----------------|---------|
+| No graph history | Parents tracked |
+| Manual chain rule | Auto via `_backward` |
+| Can't call `.backward()` | Full autograd |
+
+PyTorch-এ `Tensor` same idea — requires_grad=True।
+
+## Interactive Demo
+
+<Playground id="part-04/value" title="Value Class" />
+
+## ✅ তুমি কী শিখলে?
+
+- **Value** wraps a number with graph metadata
+- `data` = forward value, `grad` = accumulated gradient
+- Operations auto-build graph via `_prev` and `_backward`
+- Gradient accumulation uses `+=` for shared nodes
+- Foundation for automatic backpropagation
+
+**আগের lesson:** [Computational Graph](/docs/part-04-autograd/01-computational-graph)
+
+**পরের lesson:** [Backpropagation](/docs/part-04-autograd/03-backprop)

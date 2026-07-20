@@ -1,0 +1,124 @@
+---
+title: Layer
+description: Parallel neurons — vector input থেকে vector output
+---
+
+# 📚 Layer
+
+<Callout type="idea">
+💡 **Layer** = একসাথে অনেক neuron parallel run। Vector in → matrix multiply → activation → vector out।
+</Callout>
+
+<Illustration name="neuron-diagram" />
+
+## Single Neuron vs Layer
+
+| | Neuron | Layer |
+|---|--------|-------|
+| Input | scalar or small vector | vector (n dims) |
+| Output | 1 value | vector (m dims) |
+| Weights | 1 weight vector | weight **matrix** (n × m) |
+
+```mermaid
+flowchart LR
+    IN["📥 Input (n)"]:::input --> W["⚖️ W (n×m)"]:::weight
+    W --> Z["📊 z = x @ W + b"]:::linear
+    Z --> A["⚡ Activation"]:::act
+    A --> OUT["📤 Output (m)"]:::output
+    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef weight fill:#7C3AED,color:#fff,stroke:#5B21B6
+    classDef linear fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef act fill:#8B5CF6,color:#fff,stroke:#6D28D9
+    classDef output fill:#10B981,color:#fff,stroke:#047857
+```
+
+## Matrix Form
+
+```
+x: (1 × n)     input vector
+W: (n × m)     weight matrix — m neurons, each with n weights
+b: (1 × m)     bias vector
+z = x @ W + b  → (1 × m)
+a = activation(z)
+```
+
+Module 3-এর **matmul** directly use হয়!
+
+<StepReveal steps={[
+  { emoji: "📥", title: "Input vector x", body: "n features" },
+  { emoji: "✖️", title: "x @ W + b", body: "m neurons compute in parallel" },
+  { emoji: "⚡", title: "Activation", body: "Element-wise ReLU/sigmoid" },
+  { emoji: "📤", title: "Output vector", body: "m activations" }
+]} />
+
+## Example: 3 → 2 Layer
+
+```
+x = [1, 2, 3]   (3 inputs)
+
+W = | 0.1  0.2 |
+    | 0.3  0.4 |
+    | 0.5  0.6 |   (3×2)
+
+b = [0.1, 0.2]
+
+z = x @ W + b = [2.2, 2.8]
+a = ReLU(z) = [2.2, 2.8]
+```
+
+<MatrixViz
+  matrix={[[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]]}
+  rowLabels={["w₀", "w₁", "w₂"]}
+  colLabels={["n₀", "n₁"]}
+  title="Weight Matrix (3×2)"
+/>
+
+## Layer Class
+
+```ts
+class Layer {
+  constructor(
+    public nIn: number,
+    public nOut: number,
+  ) {
+    // Initialize W (nIn × nOut) and b (nOut)
+  }
+
+  forward(x: Value[]): Value[] {
+    // z[j] = Σ x[i] * W[i][j] + b[j]
+    // return activation(z)
+  }
+
+  parameters(): Value[] {
+    // Return all W and b for gradient descent
+  }
+}
+```
+
+## Parameter Count
+
+Layer with `n` inputs, `m` outputs:
+
+```
+weights: n × m
+biases:  m
+total:   n×m + m = m(n + 1)
+```
+
+GPT-3 layer: millions of parameters per layer!
+
+## Interactive Demo
+
+<Playground id="part-05/layer" title="Neural Layer" />
+
+## ✅ তুমি কী শিখলে?
+
+- **Layer** = parallel neurons as matrix operation
+- Forward: `output = activation(x @ W + b)`
+- Weight matrix shape: `(n_in × n_out)`
+- Uses matmul from Module 3
+- `parameters()` returns all weights for training
+
+**আগের lesson:** [Neuron](/docs/part-05-neural-network/01-neuron)
+
+**পরের lesson:** [MLP](/docs/part-05-neural-network/03-mlp)

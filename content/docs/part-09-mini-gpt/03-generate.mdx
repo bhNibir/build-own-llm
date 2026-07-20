@@ -1,0 +1,76 @@
+---
+title: Generate Text
+description: Autoregressive generation loop — trained Mini GPT দিয়ে text
+---
+
+# ✨ Generate Text
+
+Trained Mini GPT ready — এখন **autoregressive generation**: একটা token predict → append → repeat।
+
+<Callout type="idea">
+💡 Generation = inference mode — no backward pass, just forward + sample loop।
+</Callout>
+
+```mermaid
+flowchart LR
+    A["🌱 'i'"]:::seed --> B["GPT forward"]:::fwd
+    B --> C["Logits"]:::logits
+    C --> D["Softmax"]:::softmax
+    D --> E["Sample token"]:::sample
+    E --> F["Append to context"]:::append
+    F --> B
+    classDef seed fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef fwd fill:#10B981,color:#fff,stroke:#047857
+    classDef logits fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef softmax fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef sample fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef append fill:#8B5CF6,color:#fff,stroke:#7C3AED
+```
+
+## Generation Code
+
+```ts
+function generate(model: GPT, prompt: string, maxTokens: number): string {
+  let ids = tokenize(prompt);
+  for (let i = 0; i < maxTokens; i++) {
+    const logits = model.forward(ids.slice(-seqLen));
+    const nextId = sample(softmax(logits[logits.length - 1]));
+    ids.push(nextId);
+  }
+  return detokenize(ids);
+}
+```
+
+<StepReveal steps={[
+  { emoji: "🌱", title: "Prompt", body: "'i' or 'apple is'" },
+  { emoji: "🧠", title: "Forward", body: "Full GPT pass → last token logits" },
+  { emoji: "🎲", title: "Sample", body: "Pick from probability distribution" },
+  { emoji: "🔄", title: "Loop", body: "'i like apple is fruit...'" }
+]} />
+
+## Example Outputs
+
+```
+Prompt: "i"
+→ i like apple is fruit
+→ i like banana is healthy
+→ i like mango is fruit
+```
+
+<Illustration name="llm-predict" />
+
+## Causal Mask During Generation
+
+GPT forward-এ **causal mask** active — token i শুধু tokens 0..i-1 দেখে। Generation-এ naturally satisfied (শুধু past tokens context-এ)।
+
+## Interactive Demo
+
+<Playground id="part-09/generate" title="Mini GPT Text Generation" />
+
+## ✅ তুমি কী শিখলে?
+
+- Generation = autoregressive forward + sample loop
+- Only last token's logits used for next prediction
+- Context window = last `seq_len` tokens
+
+**পরের lesson:** [Temperature](/docs/part-09-mini-gpt/04-temperature)

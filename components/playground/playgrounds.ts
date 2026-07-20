@@ -1,7 +1,11 @@
+import { playgroundsPart03to05 } from './playgrounds-part03-05';
+import { playgroundsPart06to09 } from './playgrounds-part06-09';
+
 export type PlaygroundEntry = {
   files: Record<string, string>;
   template: 'vanilla-ts';
   activeFile: string;
+  runtime?: 'esbuild' | 'nodepod';
 };
 
 export const playgrounds: Record<string, PlaygroundEntry> = {
@@ -435,6 +439,9 @@ for (let i = 0; i < 5; i++) {
 `,
     },
   },
+
+  ...playgroundsPart03to05,
+  ...playgroundsPart06to09,
 };
 
 export function getPlayground(id: string): PlaygroundEntry | undefined {
