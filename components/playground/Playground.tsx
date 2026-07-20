@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/cn';
+import { useIsDarkMode } from '@/lib/use-is-dark-mode';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ColorConsole } from './ColorConsole';
 import { CodeEditor } from './CodeEditor';
@@ -17,19 +17,6 @@ export type PlaygroundProps = {
   showConsole?: boolean;
   viz?: 'loss' | 'softmax' | 'attention';
 };
-
-function useIsDarkMode(): boolean {
-  const [isDark, setIsDark] = useState(false);
-  useEffect(() => {
-    const root = document.documentElement;
-    const update = () => setIsDark(root.classList.contains('dark'));
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
-  return isDark;
-}
 
 export function Playground({
   id,

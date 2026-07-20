@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
-import { useTheme } from 'next-themes';
 import { cn } from '@/lib/cn';
+import { useIsDarkMode } from '@/lib/use-is-dark-mode';
 import { getMermaidThemeVariables, normalizeMermaidChart } from './diagram-theme';
 import { enhanceMermaidSvg } from './sketch-svg';
 
 export function Mermaid({ chart }: { chart: string }) {
   const id = useId().replace(/:/g, '');
   const containerRef = useRef<HTMLDivElement>(null);
-  const { resolvedTheme } = useTheme();
+  const isDark = useIsDarkMode();
   const [svg, setSvg] = useState('');
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
@@ -28,7 +28,6 @@ export function Mermaid({ chart }: { chart: string }) {
     async function render() {
       try {
         const mermaid = (await import('mermaid')).default;
-        const isDark = resolvedTheme === 'dark';
         const normalizedChart = normalizeMermaidChart(chart, isDark);
 
         mermaid.initialize({
@@ -65,7 +64,7 @@ export function Mermaid({ chart }: { chart: string }) {
     return () => {
       cancelled = true;
     };
-  }, [chart, id, resolvedTheme, mounted]);
+  }, [chart, id, isDark, mounted]);
 
   if (!mounted) {
     return (
