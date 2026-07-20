@@ -5,6 +5,8 @@ description: Gradient দিয়ে weight update — model train করার
 
 # 📉 Gradient Descent
 
+<ConceptAnim name="train-loop" caption="Gradient descent update" />
+
 <Callout type="idea">
 💡 **Gradient** বলে loss কোন direction-এ বাড়ছে। **Gradient descent** = opposite direction-এ small step — loss কমাতে weight update।
 </Callout>
@@ -44,22 +46,6 @@ flowchart TD
     classDef loss fill:#EF4444,color:#fff,stroke:#B91C1C
     classDef backward fill:#8B5CF6,color:#fff,stroke:#6D28D9
     classDef update fill:#10B981,color:#fff,stroke:#047857
-```
-
-```ts
-for (let epoch = 0; epoch < 100; epoch++) {
-  // 1. Forward
-  const loss = model.forward(x, y);
-
-  // 2. Backward
-  loss.backward();
-
-  // 3. Update all parameters
-  for (const p of parameters) {
-    p.data -= learningRate * p.grad;
-    p.grad = 0;  // reset for next iteration
-  }
-}
 ```
 
 <StepReveal steps={[

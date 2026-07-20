@@ -5,6 +5,8 @@ description: Activation normalize — training stable রাখে
 
 # 📏 LayerNorm
 
+<ConceptAnim name="train-loop" caption="Layer normalization" />
+
 Deep network-এ activation values explode বা vanish হতে পারে। **LayerNorm** প্রতিটা token-এর vector normalize করে — training stable রাখে।
 
 <Callout type="tip">
@@ -36,14 +38,6 @@ $$\text{LayerNorm}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} 
 ## Why Per-Token?
 
 BatchNorm batch dimension-এ normalize করে — language model-এ sequence length variable, তাই **per-token LayerNorm** better fit।
-
-```ts
-function layerNorm(x: number[], gamma: number[], beta: number[]): number[] {
-  const mu = mean(x);
-  const sigma = std(x);
-  return x.map((v, i) => gamma[i] * (v - mu) / (sigma + 1e-5) + beta[i]);
-}
-```
 
 <StepReveal steps={[
   { emoji: "📊", title: "Compute μ, σ", body: "Mean and std of token vector" },

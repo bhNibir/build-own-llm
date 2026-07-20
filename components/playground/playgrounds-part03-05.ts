@@ -2,7 +2,6 @@ export type PlaygroundEntry = {
   files: Record<string, string>;
   template: 'vanilla-ts';
   activeFile: string;
-  runtime?: 'esbuild' | 'nodepod';
 };
 
 export const playgroundsPart03to05: Record<string, PlaygroundEntry> = {
@@ -182,7 +181,6 @@ console.log('Sum = ' + total.toFixed(4));
   'part-04/value': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// micrograd-style autograd: each Value tracks how it was computed.
 class Value {
@@ -228,7 +226,6 @@ console.log('    └─ right (1) ← +');
   'part-04/backprop': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `class Value {
   data: number;
@@ -299,7 +296,6 @@ console.log('  ∂d/∂d = ' + d.grad);
   'part-04/gradient-descent': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Minimize f(x) = x² using gradient descent.
 // f'(x) = 2x, so we step: x ← x - lr * 2x
@@ -340,7 +336,6 @@ console.log('\\nConverged near x = 0 (minimum of x²)');
   'part-05/neuron': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `function sigmoid(x: number): number {
   return 1 / (1 + Math.exp(-x));
@@ -383,7 +378,6 @@ console.log('(squashes z into range (0, 1))');
   'part-05/layer': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `function sigmoid(x: number): number {
   return 1 / (1 + Math.exp(-x));
@@ -425,7 +419,6 @@ console.log('\\nLayer output: [' + outputs.map((o) => o.toFixed(4)).join(', ') +
   'part-05/mlp': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `function sigmoid(x: number): number {
   return 1 / (1 + Math.exp(-x));
@@ -465,7 +458,6 @@ console.log('\\nData flow: input → hidden (sigmoid) → output (sigmoid)');
   'part-05/xor': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `function sigmoid(x: number): number {
   return 1 / (1 + Math.exp(-x));

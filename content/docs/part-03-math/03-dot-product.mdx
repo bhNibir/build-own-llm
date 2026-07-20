@@ -5,6 +5,8 @@ description: দুটো vector-এর similarity measure — attention-এর 
 
 # ⚡ Dot Product
 
+<ConceptAnim name="attention-flow" caption="Dot product = similarity" />
+
 <Callout type="idea">
 💡 **Dot product** দুটো vector-কে একটা **scalar**-এ compress করে। Value বেশি = vectors "aligned" — attention-এ exactly এটাই measure হয়।
 </Callout>
@@ -68,15 +70,6 @@ apple · car   = 0.25  ← low (different meaning)
 Embedding space-এ semantically similar words-এর dot product বেশি হয়।
 
 ## Code
-
-```ts
-export function dot(a: number[], b: number[]): number {
-  if (a.length !== b.length) {
-    throw new Error('Vectors must have same length');
-  }
-  return a.reduce((sum, val, i) => sum + val * b[i], 0);
-}
-```
 
 <StepReveal steps={[
   { emoji: "✖️", title: "Element-wise multiply", body: "a[i] × b[i] for each i" },

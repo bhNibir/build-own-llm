@@ -1,18 +1,41 @@
 'use client';
 
+import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
+import type { ConceptExample } from './lesson-concepts';
 import { ActivePulse, FlowArrow } from './ConceptAnim';
 
-const WORDS = ['i', 'like', '???'];
-const OPTIONS = [
+const DEFAULT_WORDS = ['i', 'like', '???'];
+const DEFAULT_OPTIONS = [
   { word: 'apple', pct: 50 },
   { word: 'banana', pct: 25 },
   { word: 'mango', pct: 25 },
 ];
 
-export function NextTokenAnim({ paused }: { paused?: boolean }) {
+export function NextTokenAnim({
+  paused,
+  example,
+  probs,
+  labels,
+}: {
+  paused?: boolean;
+  example?: ConceptExample;
+  probs?: number[];
+  labels?: string[];
+}) {
   const [phase, setPhase] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
+
+  const words = example?.tokens?.slice(0, 2)
+    ? [...example.tokens.slice(0, 2), '???']
+    : DEFAULT_WORDS;
+
+  const options = labels?.length
+    ? labels.map((word, i) => ({
+        word,
+        pct: Math.round((probs?.[i] ?? DEFAULT_OPTIONS[i]?.pct ?? 0) * (probs ? 100 : 1)),
+      }))
+    : DEFAULT_OPTIONS;
 
   useEffect(() => {
     if (paused) return;
@@ -21,29 +44,32 @@ export function NextTokenAnim({ paused }: { paused?: boolean }) {
       setPicked(null);
       setTimeout(() => setPhase(1), 800);
       setTimeout(() => setPhase(2), 2000);
-      setTimeout(() => setPicked('apple'), 2800);
+      setTimeout(() => setPicked(options[0]?.word ?? 'apple'), 2800);
     };
     cycle();
     const t = setInterval(cycle, 4500);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, options]);
 
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {WORDS.map((w, i) => (
+        {words.map((w, i) => (
           <div key={i} className="relative">
             <ActivePulse active={phase >= 1 && w === '???'} />
-            <span
+            <motion.span
+              layout
               className={`inline-block rounded-xl px-4 py-2 font-mono text-base font-semibold ${
                 w === '???'
                   ? 'border-2 border-amber-400 bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100'
                   : 'bg-indigo-500 text-white'
-              } ${phase >= 1 && w !== '???' ? 'opacity-100' : w === '???' ? 'animate-pulse' : ''}`}
+              }`}
+              animate={w === '???' && phase >= 1 && !picked ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+              transition={{ repeat: w === '???' && !picked ? Infinity : 0, duration: 1 }}
             >
               {w === '???' && picked ? picked : w}
-            </span>
-            {i < WORDS.length - 1 && (
+            </motion.span>
+            {i < words.length - 1 && (
               <span className="mx-1 text-fd-muted-foreground">+</span>
             )}
           </div>
@@ -59,29 +85,38 @@ export function NextTokenAnim({ paused }: { paused?: boolean }) {
       </div>
 
       <div className="flex flex-wrap justify-center gap-3">
-        {OPTIONS.map((opt) => (
-          <div
+        {options.map((opt) => (
+          <motion.div
             key={opt.word}
-            className={`relative overflow-hidden rounded-xl border-2 px-3 py-2 transition-all duration-500 ${
+            layout
+            className={`relative overflow-hidden rounded-xl border-2 px-3 py-2 ${
               picked === opt.word
                 ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40'
                 : 'border-fd-border bg-white dark:bg-slate-800'
             }`}
+            animate={picked === opt.word ? { scale: 1.05 } : { scale: 1 }}
           >
             <span className="font-mono font-medium">{opt.word}</span>
             <div className="mt-1 h-2 w-24 overflow-hidden rounded-full bg-fd-muted">
-              <div
-                className="h-full rounded-full bg-indigo-500 transition-all duration-700"
-                style={{
-                  width: phase >= 2 ? `${opt.pct}%` : '0%',
-                }}
+              <motion.div
+                className="h-full rounded-full bg-indigo-500"
+                initial={{ width: 0 }}
+                animate={{ width: phase >= 2 ? `${opt.pct}%` : '0%' }}
+                transition={{ type: 'spring', stiffness: 120, damping: 18 }}
               />
             </div>
             <span className="text-xs text-fd-muted-foreground">{opt.pct}%</span>
             {picked === opt.word && (
-              <span className="absolute -right-1 -top-1 animate-pop-in text-lg">✓</span>
+              <motion.span
+                className="absolute -right-1 -top-1 text-lg"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring' }}
+              >
+                ✓
+              </motion.span>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
       <p className="text-center text-xs text-fd-muted-foreground">

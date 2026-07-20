@@ -5,6 +5,8 @@ description: শুধু top-k highest probability tokens থেকে sample
 
 # 🎯 Top-k Sampling
 
+<ConceptAnim name="softmax-bars" caption="Top-k sampling" />
+
 High temperature-এ model nonsense token pick করতে পারে। **Top-k** restricts sampling to **k highest-probability** tokens only — quality + diversity balance।
 
 <Callout type="tip">
@@ -25,16 +27,6 @@ flowchart TD
 ```
 
 ## Algorithm
-
-```ts
-function topKSample(logits: number[], k: number, T: number): number {
-  const probs = softmax(logits.map(z => z / T));
-  const topK = getTopKIndices(probs, k);
-  const filtered = topK.map(i => probs[i]);
-  const renorm = normalize(filtered);
-  return topK[sample(renorm)];
-}
-```
 
 ## Example
 

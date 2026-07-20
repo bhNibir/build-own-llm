@@ -5,6 +5,8 @@ description: Token position যোগ করা — attention order-agnostic, po
 
 # 📍 Positional Encoding
 
+<ConceptAnim name="llm-pipeline" caption="Positional encoding" />
+
 Attention **order-agnostic** — `"i like apple"` এবং `"apple like i"` same attention weights পাবে (embedding same হলে)। Position info manually যোগ করতে হবে।
 
 <Callout type="warn">
@@ -51,12 +53,6 @@ flowchart LR
 | **Learned** | Trainable vector | **GPT**, Llama |
 
 আমাদের Mini GPT **learned positional embedding** use করব — simpler, same idea।
-
-```ts
-function addPosition(tokenEmb: number[], pos: number, PE: number[][]): number[] {
-  return tokenEmb.map((v, i) => v + PE[pos][i]);
-}
-```
 
 <StepReveal steps={[
   { emoji: "🔢", title: "Position index", body: "0, 1, 2, ... for each token" },

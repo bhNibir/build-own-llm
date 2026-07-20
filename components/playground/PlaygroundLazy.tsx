@@ -8,7 +8,7 @@ const PlaygroundClient = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="my-6 h-64 animate-pulse rounded-lg border border-fd-border bg-fd-muted/30" />
+      <div className="my-6 h-64 animate-pulse rounded-xl border border-fd-border bg-fd-muted/30" />
     ),
   },
 );

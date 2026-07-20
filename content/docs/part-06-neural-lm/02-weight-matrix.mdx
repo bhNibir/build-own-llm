@@ -5,6 +5,8 @@ description: Embedding vector থেকে next-token logits — neural bigram
 
 # ⚖️ Weight Matrix W
 
+<ConceptAnim name="next-token" caption="Weight matrix → logits" />
+
 Embedding vector পেলাম — এখন **next token predict** করতে হবে। Weight matrix `W` embedding-কে **logits**-এ convert করে।
 
 <Callout type="warn">
@@ -28,14 +30,6 @@ $$W \in \mathbb{R}^{D \times V}$$
 
 - Input: embedding vector shape `(D,)`
 - Output: logits shape `(V,)` — প্রতিটা vocabulary word-এর জন্য একটা score
-
-```ts
-function forward(tokenId: number, E: number[][], W: number[][]): number[] {
-  const x = E[tokenId];           // (D,)
-  const logits = matmul(W, x);      // (V,)
-  return logits;
-}
-```
 
 ## Example Walkthrough
 

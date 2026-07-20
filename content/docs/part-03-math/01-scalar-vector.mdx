@@ -5,6 +5,8 @@ description: Scalar vs vector — LLM-এ data represent করার প্র�
 
 # 🔢 Scalars and Vectors
 
+<ConceptAnim name="llm-pipeline" caption="Vectors = building blocks" />
+
 <Callout type="idea">
 💡 **Scalar** = একটা number। **Vector** = number-এর ordered list। Embedding, weight — সব vector/matrix format-এ store হয়।
 </Callout>
@@ -67,28 +69,6 @@ flowchart LR
 ]} />
 
 ## Vector Class (Skeleton)
-
-```ts
-export class Vector {
-  data: number[];
-
-  constructor(data: number[]) {
-    this.data = data;
-  }
-
-  add(other: Vector): Vector {
-    return new Vector(this.data.map((v, i) => v + other.data[i]));
-  }
-
-  scale(n: number): Vector {
-    return new Vector(this.data.map(v => v * n));
-  }
-
-  length(): number {
-    return Math.sqrt(this.data.reduce((s, v) => s + v * v, 0));
-  }
-}
-```
 
 ## LLM-এ কেন দরকার?
 

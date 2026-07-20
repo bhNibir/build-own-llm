@@ -10,12 +10,18 @@
     "postinstall": "fumadocs-mdx",
     "lint": "oxlint",
     "part-01": "bun code/part-01/index.ts",
-    "part-02": "bun code/part-02/index.ts"
+    "part-02": "bun code/part-02/index.ts",
+    "part-03": "bun code/part-03/index.ts",
+    "part-04": "bun code/part-04/index.ts",
+    "part-05": "bun code/part-05/index.ts",
+    "part-06": "bun code/part-06/index.ts",
+    "part-07": "bun code/part-07/index.ts",
+    "part-08": "bun code/part-08/index.ts",
+    "part-09": "bun code/part-09/index.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.23",
     "@openrouter/ai-sdk-provider": "^3.0.0",
-    "@scelar/nodepod": "^1.9.12",
     "ai": "^7.0.22",
     "class-variance-authority": "^0.7.1",
     "cnfast": "^0.0.8",
@@ -28,6 +34,7 @@
     "katex": "^0.18.1",
     "lucide-react": "^1.24.0",
     "mermaid": "^11.16.0",
+    "motion": "^12.42.2",
     "next": "16.2.10",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
@@ -36,6 +43,7 @@
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-rehype": "^11.1.2",
+    "shiki": "^4.3.1",
     "unist-util-visit": "^5.1.0",
     "zod": "^4.4.3"
   },

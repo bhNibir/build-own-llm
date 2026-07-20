@@ -5,6 +5,8 @@ description: 2-layer network দিয়ে XOR gate solve — non-linearity-�
 
 # ❌ Train XOR
 
+<ConceptAnim name="train-loop" caption="XOR training loop" />
+
 <Callout type="idea">
 💡 **XOR** = classic test — single neuron/layer solve করতে পারে না। 2-layer MLP + gradient descent = first "magic" moment!
 </Callout>
@@ -94,28 +96,6 @@ flowchart LR
 Hidden layer input space-কে **transform** করে যেখানে output layer linearly separate করতে পারে।
 
 ## Training Code Sketch
-
-```ts
-const model = new MLP([2, 4, 1]);
-const data = [
-  { x: [0, 0], y: 0 },
-  { x: [0, 1], y: 1 },
-  { x: [1, 0], y: 1 },
-  { x: [1, 1], y: 0 },
-];
-
-for (let epoch = 0; epoch < 100; epoch++) {
-  let loss = new Value(0);
-  for (const { x, y } of data) {
-    const pred = model.forward(x.map(v => new Value(v)));
-    const err = pred[0].sub(new Value(y));
-    loss = loss.add(err.mul(err));
-  }
-  loss = loss.scale(1 / data.length);
-  loss.backward();
-  // update parameters...
-}
-```
 
 ## Loss During Training
 

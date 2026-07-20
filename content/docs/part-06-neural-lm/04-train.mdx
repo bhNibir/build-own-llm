@@ -33,20 +33,6 @@ flowchart TD
 
 ## Loop Structure
 
-```ts
-for (let epoch = 0; epoch < 200; epoch++) {
-  let totalLoss = 0;
-  for (const [inputId, targetId] of trainingPairs) {
-    const logits = forward(inputId);
-    const loss = crossEntropy(logits, targetId);
-    backward(loss);
-    updateWeights(lr);
-    totalLoss += loss;
-  }
-  console.log(`Epoch ${epoch}: loss = ${totalLoss / n}`);
-}
-```
-
 <StepReveal steps={[
   { emoji: "1️⃣", title: "Forward", body: "Input token → logits → loss" },
   { emoji: "2️⃣", title: "Backward", body: "Gradient compute (autograd)" },
@@ -74,7 +60,7 @@ Training চলাকালীন loss কমতে থাকে:
 
 ## Interactive Demo
 
-<Playground id="part-06/train" title="200-Epoch Training Loop" />
+<Playground id="part-06/train" title="200-Epoch Training Loop" viz="loss" />
 
 ## ✅ তুমি কী শিখলে?
 

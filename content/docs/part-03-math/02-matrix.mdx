@@ -5,6 +5,8 @@ description: 2D grid of numbers — neural network weights store করার fo
 
 # 📊 Matrices
 
+<ConceptAnim name="llm-pipeline" caption="Matrix stores weights" />
+
 <Callout type="idea">
 💡 **Matrix** = number-এর 2D table। Neural network-এর **weight matrix** সব layer-এর core data structure।
 </Callout>
@@ -43,34 +45,6 @@ flowchart TD
 GPT-3-এ **175 billion** parameters — প্রতিটা parameter matrix-এর একটা cell।
 
 ## Matrix Class
-
-```ts
-export class Matrix {
-  data: number[][];
-  rows: number;
-  cols: number;
-
-  constructor(data: number[][]) {
-    this.data = data;
-    this.rows = data.length;
-    this.cols = data[0].length;
-  }
-
-  get(row: number, col: number): number {
-    return this.data[row][col];
-  }
-
-  set(row: number, col: number, value: number): void {
-    this.data[row][col] = value;
-  }
-
-  static zeros(rows: number, cols: number): Matrix {
-    return new Matrix(Array.from({ length: rows }, () =>
-      Array(cols).fill(0)
-    ));
-  }
-}
-```
 
 ## Shape Rules (Preview)
 

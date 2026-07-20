@@ -5,6 +5,8 @@ description: Parallel neurons — vector input থেকে vector output
 
 # 📚 Layer
 
+<ConceptAnim name="llm-pipeline" caption="Layer of neurons" />
+
 <Callout type="idea">
 💡 **Layer** = একসাথে অনেক neuron parallel run। Vector in → matrix multiply → activation → vector out।
 </Callout>
@@ -74,26 +76,6 @@ a = ReLU(z) = [2.2, 2.8]
 />
 
 ## Layer Class
-
-```ts
-class Layer {
-  constructor(
-    public nIn: number,
-    public nOut: number,
-  ) {
-    // Initialize W (nIn × nOut) and b (nOut)
-  }
-
-  forward(x: Value[]): Value[] {
-    // z[j] = Σ x[i] * W[i][j] + b[j]
-    // return activation(z)
-  }
-
-  parameters(): Value[] {
-    // Return all W and b for gradient descent
-  }
-}
-```
 
 ## Parameter Count
 

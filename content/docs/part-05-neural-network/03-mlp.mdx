@@ -5,6 +5,8 @@ description: Multi-Layer Perceptron — layers stack করে complex function 
 
 # 🏗️ MLP (Multi-Layer Perceptron)
 
+<ConceptAnim name="llm-pipeline" caption="Multi-layer perceptron" />
+
 <Callout type="idea">
 💡 **MLP** = multiple layer stack। Hidden layers non-linear transform করে — XOR, image classification, language modeling-এর ancestor।
 </Callout>
@@ -41,31 +43,6 @@ Two+ layers with activation = **non-linear decision boundaries** — can solve X
 
 ## MLP Class
 
-```ts
-class MLP {
-  layers: Layer[];
-
-  constructor(sizes: number[]) {
-    // sizes = [nIn, h1, h2, ..., nOut]
-    this.layers = [];
-    for (let i = 0; i < sizes.length - 1; i++) {
-      this.layers.push(new Layer(sizes[i], sizes[i + 1]));
-    }
-  }
-
-  forward(x: Value[]): Value[] {
-    for (const layer of this.layers) {
-      x = layer.forward(x);
-    }
-    return x;
-  }
-
-  parameters(): Value[] {
-    return this.layers.flatMap(l => l.parameters());
-  }
-}
-```
-
 ## Example: 2 → 4 → 1 MLP
 
 XOR problem-এর জন্য typical architecture:
@@ -96,21 +73,6 @@ flowchart TD
 ```
 
 ## Training an MLP
-
-```ts
-const model = new MLP([2, 4, 1]);
-const lr = 0.1;
-
-for (let step = 0; step < 100; step++) {
-  // forward → loss → backward → update
-  const loss = computeLoss(model, data);
-  loss.backward();
-  for (const p of model.parameters()) {
-    p.data -= lr * p.grad;
-    p.grad = 0;
-  }
-}
-```
 
 ## MLP vs GPT
 

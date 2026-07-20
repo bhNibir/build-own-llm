@@ -5,6 +5,8 @@ description: Matmul — neural network layer computation এবং attention-এ
 
 # ✖️ Matrix Multiplication
 
+<ConceptAnim name="llm-pipeline" caption="Matmul in attention and FFN" />
+
 <Callout type="idea">
 💡 **Matrix multiplication (matmul)** = batch dot products। Neural network-এর প্রতিটা layer মূলত `output = input @ W + b`।
 </Callout>
@@ -85,23 +87,6 @@ Attention = softmax(Q @ K^T / √d) @ V
 Module 7-এ attention build করলে এই matmul directly use হবে।
 
 ## Code
-
-```ts
-export function matmul(A: number[][], B: number[][]): number[][] {
-  const m = A.length, n = A[0].length, p = B[0].length;
-  if (n !== B.length) throw new Error('Inner dims must match');
-
-  const C = Array.from({ length: m }, () => Array(p).fill(0));
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < p; j++) {
-      for (let k = 0; k < n; k++) {
-        C[i][j] += A[i][k] * B[k][j];
-      }
-    }
-  }
-  return C;
-}
-```
 
 ## Interactive Demo
 

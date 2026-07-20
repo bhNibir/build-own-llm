@@ -13,6 +13,7 @@ import {
 } from './mdx/math/MathLesson';
 import { Illustration } from './illustrations';
 import { Playground } from './playground/PlaygroundLazy';
+import { CodeRun } from './playground/CodeRunLazy';
 import { GenerateControls } from './mdx/GenerateControls';
 import { AttentionHeatmap } from './visualizer/AttentionHeatmap';
 import { LossChart } from './visualizer/LossChart';
@@ -24,6 +25,7 @@ export function getMDXComponents(components?: MDXComponents) {
     Mermaid,
     ConceptAnim,
     Playground,
+    CodeRun,
     Illustration,
     StepReveal,
     TokenFlow,

@@ -5,6 +5,8 @@ description: একটার পর একটা word predict করে sentence
 
 # Sentence Generate
 
+<ConceptAnim name="next-token" caption="Generate: i like apple …" />
+
 এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা।
 
 ## Idea: Autoregressive Generation
@@ -34,22 +36,6 @@ Step 6:  ...fruit is"  → predict → ???        → stop (no more data)
 ```
 
 ## কোড
-
-```ts
-generate(start: string, maxLen = 10): string {
-  const words = [start];
-
-  for (let i = 0; i < maxLen; i++) {
-    const current = words.at(-1)!;
-    const next = this.predict(current);
-
-    if (!next) break;
-    words.push(next);
-  }
-
-  return words.join(' ');
-}
-```
 
 Loop:
 1. শেষ word নাও

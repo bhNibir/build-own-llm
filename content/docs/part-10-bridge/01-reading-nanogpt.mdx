@@ -5,6 +5,8 @@ description: Karpathy-এর nanoGPT line-by-line — course knowledge apply
 
 # 📖 Reading nanoGPT
 
+<ConceptAnim name="llm-pipeline" caption="Course → nanoGPT map" />
+
 তুমি Mini GPT বানিয়েছো — এখন Andrej Karpathy-এর [**nanoGPT**](https://github.com/karpathy/nanoGPT) পড়ো। Same architecture, production-quality Python/PyTorch code.
 
 <Callout type="tip">
@@ -62,11 +64,10 @@ flowchart TD
 ## CausalSelfAttention — Side by Side
 
 **Our code (Module 7):**
-```ts
-const scores = matmul(Q, transpose(K)) / Math.sqrt(d_k);
+<CodeRun title="Self-attention (our TS)" height={160} editable={false} autoRun={false}>{`const scores = matmul(Q, transpose(K)) / Math.sqrt(d_k);
 const weights = causalSoftmax(scores);  // mask future
-return matmul(weights, V);
-```
+const output = matmul(weights, V);
+console.log('Attention output shape:', output.length);`}</CodeRun>
 
 **nanoGPT (model.py):**
 ```python

@@ -5,6 +5,8 @@ description: Autoregressive generation loop — trained Mini GPT দিয়ে
 
 # ✨ Generate Text
 
+<ConceptAnim name="next-token" caption="Autoregressive generation" />
+
 Trained Mini GPT ready — এখন **autoregressive generation**: একটা token predict → append → repeat।
 
 <Callout type="idea">
@@ -28,18 +30,6 @@ flowchart LR
 ```
 
 ## Generation Code
-
-```ts
-function generate(model: GPT, prompt: string, maxTokens: number): string {
-  let ids = tokenize(prompt);
-  for (let i = 0; i < maxTokens; i++) {
-    const logits = model.forward(ids.slice(-seqLen));
-    const nextId = sample(softmax(logits[logits.length - 1]));
-    ids.push(nextId);
-  }
-  return detokenize(ids);
-}
-```
 
 <StepReveal steps={[
   { emoji: "🌱", title: "Prompt", body: "'i' or 'apple is'" },

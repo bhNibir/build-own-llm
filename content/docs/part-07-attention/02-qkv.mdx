@@ -5,6 +5,8 @@ description: Search engine analogy — Q/K/V দিয়ে relevance find
 
 # 🔍 Query, Key, Value (Q/K/V)
 
+<ConceptAnim name="attention-flow" caption="Query, Key, Value" />
+
 Attention-এর heart: তিনটা vector — **Query**, **Key**, **Value**। Best analogy: **search engine**।
 
 <Callout type="idea">
@@ -37,12 +39,6 @@ flowchart LR
 ## From Embedding to Q/K/V
 
 প্রতিটা token-এর embedding থেকে তিনটা vector বের করি — তিনটা **learned weight matrix**:
-
-```ts
-const Q = x @ Wq;  // Query
-const K = x @ Wk;  // Key
-const V = x @ Wv;  // Value
-```
 
 <StepReveal steps={[
   { emoji: "📊", title: "Input x", body: "Token embedding" },

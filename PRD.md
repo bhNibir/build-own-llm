@@ -1,9 +1,9 @@
 # Product Requirements Document: Interactive LLM Learning Platform
 
 **Project:** নিজের LLM বানাও (Build Your Own LLM)  
-**Version:** 1.0  
+**Version:** 2.0  
 **Last updated:** 2026-07-20  
-**Status:** All phases complete (49 lessons)
+**Status:** Structure complete (49 lessons). Interactive polish v2 complete — Shiki editor, CodeRun, Motion diagrams, live viz.
 
 ---
 
@@ -256,8 +256,13 @@ flowchart TD
 ### 7.1 Playground
 
 **Files:**
-- `components/playground/Playground.tsx` — editor, Run/Reset, console (client)
+- `components/playground/Playground.tsx` — Shiki editor, Run/Copy/Reset, ColorConsole, optional live viz (client)
 - `components/playground/PlaygroundLazy.tsx` — `next/dynamic` wrapper with `ssr: false`
+- `components/playground/CodeEditor.tsx` — Shiki syntax highlighting (`github-light` / `github-dark`)
+- `components/playground/ColorConsole.tsx` — semantic log colors (headers, numbers, errors)
+- `components/playground/RunnerToolbar.tsx` — Run, Copy, Reset with Motion icon feedback
+- `components/playground/LiveVizPanel.tsx` — parses console → LossChart / SoftmaxBars / AttentionHeatmap
+- `components/playground/runtime.ts` — shared esbuild-wasm sandbox + `log.step` / `log.data` helpers
 - `components/playground/playgrounds.ts` — id → TypeScript source registry
 
 | Prop | Type | Default | Description |
@@ -267,21 +272,35 @@ flowchart TD
 | `editable` | `boolean` | `true` | Allow code editing |
 | `height` | `number` | `360` | Editor height in px |
 | `showConsole` | `boolean` | `true` | Show console output panel |
-
-| `runtime` | `'esbuild' \| 'nodepod'` | auto | Browser runtime (auto: nodepod for part-04+) |
+| `viz` | `'loss' \| 'softmax' \| 'attention'` | — | Live chart from Run output |
 
 **UX requirements:**
-- Visible **▶ Run** button in toolbar (always shown, not hidden inside editor)
-- **Reset** button restores initial code and re-runs
+- Visible **▶ Run**, **Copy**, **Reset** in toolbar
 - Auto-run on first load
-- Bangla hint: "কোড edit করে Run চাপো — output নিচে দেখবে"
-- Editor uses Fumadocs theme tokens; console uses dark/light terminal colors
+- Bangla hint: "কোড edit করে Run চাপো — colorful output নিচে দেখবে"
+- Shiki-highlighted editor matching site light/dark theme
+- ColorConsole: `===` headers indigo, numbers emerald, `→` violet, errors red
 
-**Runtimes:**
-- **esbuild-wasm** — Modules 1–3, 7–8 (lightweight `console.log` lessons)
-- **Nodepod** — Modules 4–6, 9 (training loops, longer scripts) via `app/__sw__.js/route.ts`
+**Runtime:** **esbuild-wasm only** — single sandboxed runtime for all 37 code lessons. No Nodepod, no service worker.
 
-### 7.2 Visual & Math Components
+### 7.2 CodeRun
+
+Compact inline runnable snippets for lessons without a full Playground, or for small reference blocks.
+
+**Files:** `components/playground/CodeRun.tsx`, `CodeRunLazy.tsx`
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `id` | `string` | — | Pull code from playground registry |
+| `children` | `string` | — | Inline TS source |
+| `title` | `string` | — | Heading |
+| `height` | `number` | `200` | Editor height |
+| `autoRun` | `boolean` | `true` | Run on load |
+| `editable` | `boolean` | `true` | Allow editing |
+
+**Rule:** No lesson should show dead ` ```ts ` fences — use `<Playground>` or `<CodeRun>`.
+
+### 7.3 Visual & Math Components
 
 | Component | Path | Purpose |
 |-----------|------|---------|
@@ -292,12 +311,36 @@ flowchart TD
 | `LossChart` | `components/visualizer/` | Training loss curve |
 | `AttentionHeatmap` | `components/visualizer/` | Attention weight matrix |
 | `MatrixViz` | `components/visualizer/` | Colored matrix cells |
+| `ConceptAnim` | `components/diagrams/` | Motion-driven concept animations with lesson data |
+| `LossChart` | `components/visualizer/` | Training loss curve (static + live from Playground) |
+| `AttentionHeatmap` | `components/visualizer/` | Attention weight matrix |
+| `MatrixViz` | `components/visualizer/` | Colored matrix cells |
 | `GenerateControls` | `components/mdx/` | Temperature / top-k sliders (Module 9) |
 | `Mermaid` | `components/mdx/mermaid.tsx` | Colorful themed diagrams |
 
-### 7.3 Visualizer
+### 7.4 CodeRun UX
 
----
+Every runnable code surface shares:
+
+| Control | Behavior |
+|---------|----------|
+| **Run** | esbuild-wasm transpile → sandboxed `Function(console, …)` |
+| **Copy** | `navigator.clipboard.writeText(code)` + "Copied!" feedback |
+| **Reset** | Restore registry initial code + re-run |
+| **Console** | ColorConsole semantic line styling |
+
+Sandbox preamble injects `log.step(msg)`, `log.data(label, val)`, `log.ok(msg)` for consistent section headers.
+
+### 7.5 Concept diagram rules
+
+Every `<ConceptAnim>` must:
+
+1. Use **actual lesson example data** via `example={{ input, tokens, probs, labels }}` when applicable
+2. Animate with **Motion** (`motion/react`) and respect `prefers-reduced-motion`
+3. Appear on **all 49 lessons** (theory lessons get concept-only; code lessons get data + playground)
+4. Map slugs via `components/diagrams/lesson-concepts.ts`
+
+### 7.6 Visualizer
 
 ## 8. Content Guidelines
 
@@ -343,15 +386,24 @@ build-own-llm/
 │   └── part-02/
 ├── components/
 │   ├── playground/
-│   │   ├── Playground.tsx        # Editor + Run + console
+│   │   ├── Playground.tsx        # Shiki editor + Run/Copy/Reset + ColorConsole
+│   │   ├── CodeRun.tsx           # Inline runnable snippets
+│   │   ├── CodeEditor.tsx        # Shiki overlay
+│   │   ├── ColorConsole.tsx      # Semantic log colors
+│   │   ├── runtime.ts            # esbuild-wasm sandbox
 │   │   ├── PlaygroundLazy.tsx    # Client-only dynamic import
 │   │   ├── playgrounds.ts        # part-01, part-02 registry
 │   │   ├── playgrounds-part03-05.ts
 │   │   └── playgrounds-part06-09.ts
+│   ├── diagrams/                 # ConceptAnim + Motion animations
+│   ├── icons/                    # Motion-enhanced toolbar icons
 │   ├── illustrations/            # SVG concept diagrams
 │   ├── visualizer/               # LossChart, AttentionHeatmap, MatrixViz
 │   └── mdx/                      # Mermaid, MathLesson, StepReveal
-├── app/__sw__.js/route.ts        # Nodepod service worker
+├── code/                         # CLI dev/debug (maintainer only)
+│   ├── shared/data.ts
+│   ├── part-01/ … part-09/
+│   └── part-03/neural-char.ts
 ├── public/
 │   └── esbuild.wasm              # Browser TS compiler
 └── app/                          # Next.js + Fumadocs
@@ -359,10 +411,11 @@ build-own-llm/
 
 **Stack:**
 - Next.js 16 + Fumadocs 16 (MDX docs)
-- **esbuild-wasm** — Modules 1–3, 7–8
-- **Nodepod** (`@scelar/nodepod`) — Modules 4–6, 9 (integrated)
+- **esbuild-wasm** — single browser runtime for all playgrounds
+- **Shiki** — syntax-highlighted editors
+- **Motion** (`motion/react`) — concept diagram animations
 - KaTeX + Mermaid (math + diagrams)
-- Bun (dev tooling, optional CLI scripts)
+- Bun (dev tooling, CLI scripts `bun run part-01` … `part-09`)
 
 ---
 
@@ -395,13 +448,58 @@ fruit is healthy
 | Phase | Modules | Status |
 |-------|---------|--------|
 | Phase 1 | 0–2 | ✅ Complete |
-| Phase 2 | 3–6 | ✅ Complete (Nodepod integrated) |
+| Phase 2 | 3–6 | ✅ Complete |
 | Phase 3 | 7–8 | ✅ Complete (visualizers) |
 | Phase 4 | 9–10 | ✅ Complete (GenerateControls) |
+| **Phase 5** | **Interactive polish v2** | ✅ Complete — Shiki, CodeRun, Motion, live viz, checklist |
 
 ---
 
-## 12. Success Metrics
+## 12. Completion Checklist
+
+### Curriculum and content
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Module 0–10 lesson files | Done | 64 MDX files incl. indexes |
+| 49 lesson curriculum | Done | All modules present |
+| Bangla prose + English terms | Done | Consistent across modules |
+| Prev/next navigation | Done | Per-lesson links |
+| Theory-only lessons (12) | Done by design | M0, 1.1, 1.2, 2.1, 4.1, 7.1, 9.1, M10 |
+
+### Interactive code
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Full-lesson `<Playground>` | Done | 37/37 code lessons |
+| Static ` ```ts ` blocks runnable | Done | Replaced with Playground or CodeRun |
+| Copy button on code | Done | RunnerToolbar on Playground + CodeRun |
+| Syntax-highlighted editor | Done | Shiki CodeEditor |
+| Colorful semantic console | Done | ColorConsole |
+| Single runtime (esbuild-wasm) | Done | Nodepod removed |
+
+### Visual learning
+
+| Item | Status | Notes |
+|------|--------|-------|
+| Mermaid on lessons | Done | ~55 blocks |
+| `<ConceptAnim>` | Done | All 49 lessons |
+| Diagrams use lesson data | Done | `example` prop + lesson-concepts.ts |
+| Live viz from Run output | Done | `viz` prop on softmax, train, self-attention |
+| Motion animations | Done | All 7 ConceptAnim components |
+| Animated toolbar icons | Done | Motion-enhanced Run/Copy/Reset |
+
+### Maintainer
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `bun run build` passes | Done | ~199 static pages |
+| CLI scripts part-01 … part-09 | Done | `bun run part-NN` |
+| PRD reflects v2 UX | Done | This document |
+
+---
+
+## 13. Success Metrics
 
 | Metric | Target |
 |--------|--------|
@@ -414,7 +512,7 @@ fruit is healthy
 
 ---
 
-## 13. Out of Scope (v1)
+## 14. Out of Scope (v1–v2)
 
 - LangChain, Ollama, OpenAI API tutorials
 - Cloud GPU training
@@ -422,7 +520,20 @@ fruit is healthy
 - User accounts / progress saving
 - PyTorch / TensorFlow ports
 
-Note: Full Node.js in browser (Nodepod) is **in scope for Phase 2+**, not v1.
+- PyTorch / TensorFlow ports
+
+Note: Node.js-in-browser (Nodepod) was evaluated and **rejected** — esbuild-wasm handles all lessons including training loops.
+
+---
+
+## Appendix D: Animation Stack
+
+| Library | Purpose | Docs |
+|---------|---------|------|
+| [Motion](https://motion.dev/) | ConceptAnim bar/flow/spring animations, toolbar icon feedback | `motion/react` |
+| Lucide React + Motion wrappers | Run/Copy/Reset icons in `components/icons/` | Built on `lucide-react` |
+
+All animations respect `prefers-reduced-motion` via Motion's `useReducedMotion`.
 
 ---
 
@@ -432,41 +543,20 @@ Options evaluated for running learner TypeScript in the browser:
 
 | Runtime | Best for | Next.js 16 | Run button UX | Verdict |
 |---------|----------|------------|---------------|---------|
-| **esbuild-wasm + sandbox** | `console.log` lessons, no imports | Works now | Custom toolbar ✅ | **Phase 1 (current)** |
-| [**Nodepod**](https://github.com/R1ck404/Nodepod) (`@scelar/nodepod`) | Playgrounds, npm, `node index.ts`, terminals | Official App Router support via `app/__sw__.js/route.ts` | Custom toolbar ✅ | **Phase 2+ target** |
-| [almostnode](https://github.com/macaly/almostnode) | WebContainers-like, npm install | Worker bundling breaks Turbopack build | N/A | Rejected for now |
-| [Sandpack](https://sandpack.codesandbox.io/) | React/CSS demos | Works | Run button hidden / theme mismatch | Rejected |
-| [Edge.js](https://edgejs.org/) | Server-side sandboxed Node (`--safe`) | Server only, not browser | N/A | Out of scope — not a browser runtime |
+| **esbuild-wasm + sandbox** | All lessons, training loops via pure TS | Works now | Custom toolbar ✅ | **Production (v2)** |
+| [Nodepod](https://github.com/R1ck404/Nodepod) | npm, real Node APIs | SW route complexity | Custom toolbar ✅ | **Rejected** — esbuild sufficient |
+| [almostnode](https://github.com/macaly/almostnode) | WebContainers-like | Turbopack build breaks | N/A | Rejected |
+| [Sandpack](https://sandpack.codesandbox.io/) | React/CSS demos | Works | Run hidden / theme mismatch | Rejected |
+| [Edge.js](https://edgejs.org/) | Server-side sandbox | Server only | N/A | Out of scope |
 
-### Phase 1: esbuild-wasm (implemented)
+### esbuild-wasm (implemented — all modules)
 
 ```
-User edits TS → esbuild-wasm transform → sandboxed Function(console, js) → console output panel
+User edits TS → esbuild-wasm transform → sandboxed Function(console, log, js) → ColorConsole → optional LiveViz
 ```
 
-- Pros: Lightweight (~1MB wasm), no service worker, works in Next.js 16 App Router
-- Cons: No `require()`, no real Node.js APIs — sufficient for Modules 1–2
-
-### Phase 2+: Nodepod (planned)
-
-Nodepod is built for coding playgrounds and AI dev tools. Integration plan:
-
-1. Add service worker route:
-   ```typescript
-   // app/__sw__.js/route.ts
-   export { GET } from '@scelar/nodepod/next';
-   ```
-2. Boot pod per playground session:
-   ```typescript
-   const nodepod = await Nodepod.boot({
-     files: { '/index.ts': code },
-     serviceWorker: true,
-   });
-   const proc = await nodepod.spawn('npx', ['tsx', '/index.ts']);
-   proc.on('output', (text) => appendToConsole(text));
-   ```
-3. Keep custom **▶ Run** / **Reset** toolbar (same UX as Phase 1)
-4. Enables Module 6+ training loops with real file I/O and longer scripts
+- Pros: Lightweight (~1MB wasm), no service worker, works in Next.js 16 App Router, handles 200-epoch training loops
+- Cons: No `require()`, no real Node.js APIs — sufficient for entire curriculum
 
 ### Why not Edge.js?
 

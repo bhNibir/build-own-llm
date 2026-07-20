@@ -5,6 +5,8 @@ description: Model কী শেখে — input/output pair তৈরি
 
 # Training Pairs
 
+<ConceptAnim name="bigram-scan" caption="Training pairs from fruit sentences" />
+
 এখন সবচেয়ে গুরুত্বপূর্ণ প্রশ্ন: **Model কী শেখে?**
 
 উত্তর: **Next word prediction**।
@@ -50,21 +52,6 @@ flowchart TD
 মোট **~20টা pair** তৈরি হবে ১০টা sentence থেকে।
 
 ## কোড
-
-```ts
-export function buildTrainingPairs(): TrainingPair[] {
-  const pairs: TrainingPair[] = [];
-
-  for (const sentence of dataset) {
-    const words = tokenize(sentence);
-    for (let i = 0; i < words.length - 1; i++) {
-      pairs.push([words[i], words[i + 1]]);
-    }
-  }
-
-  return pairs;
-}
-```
 
 ## Real World Scale
 

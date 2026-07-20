@@ -5,7 +5,6 @@ export type PlaygroundEntry = {
   files: Record<string, string>;
   template: 'vanilla-ts';
   activeFile: string;
-  runtime?: 'esbuild' | 'nodepod';
 };
 
 export const playgrounds: Record<string, PlaygroundEntry> = {

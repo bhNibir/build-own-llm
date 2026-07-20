@@ -5,6 +5,8 @@ description: Norm → Attn → Res → Norm → FFN → Res — complete assembl
 
 # 🏗️ Full Transformer Block
 
+<ConceptAnim name="llm-pipeline" caption="Transformer block assembly" />
+
 সব piece ready — এখন **assemble**: LayerNorm → Multi-Head Attention → Residual → LayerNorm → FFN → Residual। এটাই GPT-এর core building block।
 
 <Callout type="tip">
@@ -35,20 +37,6 @@ flowchart TD
 ```
 
 ## Complete Code
-
-```ts
-function transformerBlock(x: number[][]): number[][] {
-  // Pre-LN Attention + Residual
-  const norm1 = layerNorm(x);
-  const attnOut = multiHeadAttention(norm1);
-  const x1 = add(x, attnOut);
-
-  // Pre-LN FFN + Residual
-  const norm2 = layerNorm(x1);
-  const ffnOut = ffn(norm2);
-  return add(x1, ffnOut);
-}
-```
 
 <StepReveal steps={[
   { emoji: "1️⃣", title: "Norm → Attn → +", body: "Context mixing with skip" },

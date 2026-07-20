@@ -5,6 +5,8 @@ description: Training corpus — model যা দেখে শেখে
 
 # Dataset (Training Corpus)
 
+<ConceptAnim name="llm-pipeline" caption="10 fruit sentences corpus" />
+
 Model কোনো magic দিয়ে শেখে না। সে **data দেখে** শেখে। এই data-কে বলে **corpus** বা **training dataset**।
 
 ## আমাদের Dataset
@@ -30,8 +32,7 @@ fruit is healthy
 
 `code/shared/data.ts`:
 
-```ts
-export const dataset = [
+<CodeRun title="Fruit dataset" height={220} editable={false}>{`export const dataset = [
   'i like apple',
   'i like banana',
   'i like mango',
@@ -43,7 +44,10 @@ export const dataset = [
   'mango is fruit',
   'fruit is healthy',
 ];
-```
+
+console.log('=== Fruit Dataset ===');
+console.log('Sentences:', dataset.length);
+for (const s of dataset) console.log('  -', s);`}</CodeRun>
 
 ## কেন এত ছোট?
 

@@ -5,36 +5,13 @@ description: Chain rule দিয়ে loss থেকে সব parameter-এ g
 
 # ⬅️ Backpropagation
 
+<ConceptAnim name="train-loop" caption="Backprop chain rule" />
+
 <Callout type="idea">
 💡 **Backpropagation** = computational graph reverse traverse করে chain rule apply। Loss থেকে শুরু, root পর্যন্ত gradient flow।
 </Callout>
 
 ## The Algorithm
-
-```ts
-backward(): void {
-  // 1. Topological sort (reverse)
-  const topo: Value[] = [];
-  const visited = new Set<Value>();
-
-  function build(v: Value) {
-    if (!visited.has(v)) {
-      visited.add(v);
-      for (const child of v._prev) build(child);
-      topo.push(v);
-    }
-  }
-  build(this);
-
-  // 2. Seed gradient at output
-  this.grad = 1.0;
-
-  // 3. Reverse traverse, apply local rules
-  for (let i = topo.length - 1; i >= 0; i--) {
-    topo[i]._backward();
-  }
-}
-```
 
 <StepReveal steps={[
   { emoji: "📋", title: "Topological sort", body: "Nodes order — children before parents" },
@@ -104,12 +81,6 @@ Right order: reverse topo ensures child processed first
 ```
 
 ## Debugging Tips
-
-```ts
-y.backward();
-console.log('a.grad:', a.grad);
-console.log('b.grad:', b.grad);
-```
 
 Gradient zero? Check:
 - `_backward` rule correct?

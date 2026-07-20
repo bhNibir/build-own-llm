@@ -5,6 +5,8 @@ description: Unique word-এর list এবং ID mapping
 
 # Vocabulary
 
+<ConceptAnim name="tokenizer-split" caption="12 words → unique vocab IDs" />
+
 Tokenizer sentence কে word-এ ভাগ করল। এখন প্রশ্ন: model কীভাবে এই word-গুলো বুঝবে?
 
 উত্তর: **number দিয়ে**।
@@ -42,29 +44,6 @@ flowchart LR
 ## কোড
 
 `code/part-01/vocabulary.ts`:
-
-```ts
-export function buildVocab(): Vocabulary {
-  const words = new Set<string>();
-
-  for (const sentence of dataset) {
-    for (const word of tokenize(sentence)) {
-      words.add(word);
-    }
-  }
-
-  const sorted = Array.from(words).sort();
-  const stoi: Record<string, number> = {};
-  const itos: Record<number, string> = {};
-
-  sorted.forEach((word, index) => {
-    stoi[word] = index;
-    itos[index] = word;
-  });
-
-  return { stoi, itos, size: sorted.length };
-}
-```
 
 দুটো map:
 - **stoi** (string → int): `"apple"` → `0`

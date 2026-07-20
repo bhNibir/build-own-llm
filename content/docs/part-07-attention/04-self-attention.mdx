@@ -49,18 +49,6 @@ Example: `"i like apple"` sentence-এ attention weights:
 
 ## Full Implementation
 
-```ts
-function selfAttention(x: number[][]): number[][] {
-  const Q = matmul(x, Wq);
-  const K = matmul(x, Wk);
-  const V = matmul(x, Wv);
-  const scores = matmul(Q, transpose(K));
-  const scaled = scale(scores, 1 / Math.sqrt(d_k));
-  const weights = softmaxRows(scaled);
-  return matmul(weights, V);
-}
-```
-
 <StepReveal steps={[
   { emoji: "📥", title: "Input X", body: "3 embeddings (3 × D)" },
   { emoji: "🔍", title: "Q, K, V", body: "Same X, different projections" },
@@ -79,7 +67,7 @@ GPT training-এ token শুধু **আগের** tokens দেখতে প�
 
 ## Interactive Demo
 
-<Playground id="part-07/self-attention" title="Self-Attention on 3 Words" />
+<Playground id="part-07/self-attention" title="Self-Attention on 3 Words" viz="attention" />
 
 ## ✅ তুমি কী শিখলে?
 

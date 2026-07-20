@@ -5,6 +5,8 @@ description: Fruit dataset-এ ~500-line TypeScript training loop
 
 # 🏋️ Train Mini GPT
 
+<ConceptAnim name="train-loop" caption="Train Mini GPT" />
+
 Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
 
 <Callout type="warn">
@@ -32,17 +34,6 @@ flowchart TD
 ```
 
 ## Training Loop
-
-```ts
-for (let step = 0; step < maxSteps; step++) {
-  const { input, target } = getBatch();
-  const logits = gpt.forward(input);       // (B, T, V)
-  const loss = crossEntropy(logits, target);
-  loss.backward();
-  optimizer.step();
-  if (step % 100 === 0) console.log(`loss: ${loss.value}`);
-}
-```
 
 <LossChart data={[3.2, 2.1, 1.5, 1.0, 0.8, 0.6]} title="Mini GPT Training Loss" />
 

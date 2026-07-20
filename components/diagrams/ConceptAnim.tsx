@@ -1,7 +1,8 @@
 'use client';
 
 import { cn } from '@/lib/cn';
-import { useEffect, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
+import type { ComponentType } from 'react';
 import { TokenizerSplitAnim } from './TokenizerSplitAnim';
 import { NextTokenAnim } from './NextTokenAnim';
 import { BigramScanAnim } from './BigramScanAnim';
@@ -9,8 +10,11 @@ import { SoftmaxBarsAnim } from './SoftmaxBarsAnim';
 import { AttentionFlowAnim } from './AttentionFlowAnim';
 import { TrainLoopAnim } from './TrainLoopAnim';
 import { PipelineAnim } from './PipelineAnim';
+import type { ConceptExample } from './lesson-concepts';
 
-const concepts = {
+type AnimProps = { paused?: boolean; example?: ConceptExample; probs?: number[]; labels?: string[] };
+
+const concepts: Record<string, ComponentType<AnimProps>> = {
   'tokenizer-split': TokenizerSplitAnim,
   'next-token': NextTokenAnim,
   'bigram-scan': BigramScanAnim,
@@ -18,23 +22,25 @@ const concepts = {
   'attention-flow': AttentionFlowAnim,
   'train-loop': TrainLoopAnim,
   'llm-pipeline': PipelineAnim,
-} as const;
+};
 
 export type ConceptAnimName = keyof typeof concepts;
 
 export function ConceptAnim({
   name,
   caption,
+  example,
+  probs,
+  labels,
 }: {
   name: ConceptAnimName;
   caption?: string;
+  example?: ConceptExample;
+  probs?: number[];
+  labels?: string[];
 }) {
   const Component = concepts[name];
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   if (!Component) {
     return (
@@ -54,11 +60,16 @@ export function ConceptAnim({
     >
       <div className="border-b border-indigo-200/60 bg-indigo-600/10 px-4 py-2 dark:border-indigo-800/60">
         <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700 dark:text-indigo-300">
-          🎬 Live concept
+          Live concept — real example
         </span>
       </div>
       <div className="p-4 sm:p-6">
-        <Component paused={reducedMotion} />
+        <Component
+          paused={reducedMotion ?? false}
+          example={example}
+          probs={probs ?? example?.probs}
+          labels={labels ?? example?.labels}
+        />
       </div>
       {caption && (
         <figcaption className="border-t border-indigo-200/60 px-4 py-3 text-center text-sm text-fd-muted-foreground dark:border-indigo-800/60">
@@ -69,22 +80,17 @@ export function ConceptAnim({
   );
 }
 
-/** Animated arrow connector */
 export function FlowArrow({ className }: { className?: string }) {
   return (
     <div className={cn('relative flex items-center justify-center px-1', className)}>
       <div className="h-0.5 w-8 bg-indigo-400 dark:bg-indigo-500" />
-      <span
-        className="absolute animate-flow-dot text-indigo-600 dark:text-indigo-400"
-        aria-hidden
-      >
+      <span className="absolute animate-flow-dot text-indigo-600 dark:text-indigo-400" aria-hidden>
         ▶
       </span>
     </div>
   );
 }
 
-/** Pulsing highlight ring on active element */
 export function ActivePulse({ active }: { active: boolean }) {
   if (!active) return null;
   return (

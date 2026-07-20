@@ -5,6 +5,8 @@ description: Trained model দিয়ে autoregressive text generation
 
 # 🎲 Generate from Neural LM
 
+<ConceptAnim name="next-token" caption="Generate from neural LM" />
+
 Training শেষ — এখন trained neural LM দিয়ে **text generate** করব। Process Bigram generation-এর মতোই: autoregressive loop।
 
 <Callout type="idea">
@@ -26,19 +28,6 @@ flowchart LR
 ```
 
 ## Generation Loop
-
-```ts
-function generate(seed: string, maxTokens: number): string {
-  let tokens = [seed];
-  for (let i = 0; i < maxTokens; i++) {
-    const logits = forward(lastTokenId);
-    const probs = softmax(logits);
-    const next = sample(probs);      // random, not argmax
-    tokens.push(next);
-  }
-  return tokens.join(' ');
-}
-```
 
 <StepReveal steps={[
   { emoji: "1️⃣", title: "Seed token", body: "'i' দিয়ে শুরু" },

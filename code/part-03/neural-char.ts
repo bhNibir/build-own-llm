@@ -4,6 +4,8 @@
 // Run: npx tsx code/part-03/neural-char.ts
 // ============================================================
 
+export {};
+
 // ---------- STEP 1: Training data (corpus) ----------
 // Asol LLM (GPT etc) internet-er billions word diye train hoy.
 // Amra ekhane matro kichu naam diye choto scale-e dekhabo same idea.

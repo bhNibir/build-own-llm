@@ -5,6 +5,8 @@ description: Position-wise MLP — attention-এর পর non-linear transform
 
 # 🔧 Feed-Forward Network (FFN)
 
+<ConceptAnim name="llm-pipeline" caption="Feed-forward network" />
+
 Attention tokens-এর মধ্যে information mix করে। **FFN** প্রতিটা token-এ independently **non-linear transformation** apply করে — "think deeper" step।
 
 <Callout type="idea">
@@ -37,13 +39,6 @@ $$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
 ## Why 4× Expansion?
 
 Wider hidden layer = more capacity to transform each token's representation after attention mixing.
-
-```ts
-function ffn(x: number[]): number[] {
-  const hidden = gelu(matmul(W1, x) + b1);  // D → 4D
-  return matmul(W2, hidden) + b2;              // 4D → D
-}
-```
 
 <StepReveal steps={[
   { emoji: "📈", title: "Expand", body: "D → 4D linear projection" },

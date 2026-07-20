@@ -99,18 +99,9 @@ flowchart TD
 
 ## Code
 
-```ts
-export function softmax(logits: number[]): number[] {
-  const max = Math.max(...logits);
-  const exps = logits.map(z => Math.exp(z - max));
-  const sum = exps.reduce((a, b) => a + b, 0);
-  return exps.map(e => e / sum);
-}
-```
-
 ## Interactive Demo
 
-<Playground id="part-03/softmax" title="Softmax Calculator" />
+<Playground id="part-03/softmax" title="Softmax Calculator" viz="softmax" />
 
 ## ✅ তুমি কী শিখলে?
 

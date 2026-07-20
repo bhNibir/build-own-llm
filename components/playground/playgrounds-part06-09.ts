@@ -2,14 +2,12 @@ export type PlaygroundEntry = {
   files: Record<string, string>;
   template: 'vanilla-ts';
   activeFile: string;
-  runtime?: 'esbuild' | 'nodepod';
 };
 
 export const playgroundsPart06to09: Record<string, PlaygroundEntry> = {
   'part-06/embedding': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Embedding matrix: each row = one token's vector
 const vocab = ['i', 'like', 'apple', 'fruit'];
@@ -49,7 +47,6 @@ for (const id of sentence) {
   'part-06/weight-matrix': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Char-level bigram: W[current][next] = logit for next char
 const chars = ['.', 'a', 'b', 'c'];
@@ -97,7 +94,6 @@ for (const ch of ['.', 'a', 'b']) {
   'part-06/loss': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Cross-entropy loss: -log(P(correct token))
 function softmax(logits: number[]): number[] {
@@ -142,7 +138,6 @@ console.log('Lower loss = model more confident on correct token.');
   'part-06/train': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Tiny char bigram neural LM — train from scratch
 const words = ['ab', 'abc', 'cab'];
@@ -208,7 +203,6 @@ for (let epoch = 0; epoch < epochs; epoch++) {
   'part-06/generate': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Train tiny model, then sample next chars autoregressively
 const words = ['ab', 'abc', 'cab', 'ab'];
@@ -859,7 +853,6 @@ for (let i = 0; i < words.length; i++) {
   'part-09/train': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Simplified word-level GPT-style training on fruit sentences
 const dataset = [
@@ -934,7 +927,6 @@ for (let epoch = 0; epoch < epochs; epoch++) {
   'part-09/generate': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Train word bigram model, then autoregressively generate
 const dataset = [
@@ -1025,7 +1017,6 @@ for (const start of ['i', 'you', 'fruit']) {
   'part-09/temperature': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Temperature scales logits before softmax: logits / T
 function softmax(logits: number[]): number[] {
@@ -1083,7 +1074,6 @@ console.log('\\nT<1 = sharper (more deterministic), T>1 = flatter (more random)'
   'part-09/top-k': {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
-    runtime: 'nodepod',
     files: {
       '/index.ts': `// Top-k sampling: zero out all but k highest logits, then sample
 function softmax(logits: number[]): number[] {

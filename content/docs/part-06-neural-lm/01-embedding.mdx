@@ -5,6 +5,8 @@ description: Word ID থেকে learned vector — count table-এর smart al
 
 # 📊 Embedding Matrix
 
+<ConceptAnim name="llm-pipeline" caption="Embedding lookup table" />
+
 <Callout type="idea">
 💡 **Embedding** মানে: প্রতিটা word/token-এর জন্য একটা **learned vector**। Similar word-এর vector কাছাকাছি হবে।
 </Callout>
@@ -28,12 +30,6 @@ flowchart TD
 ## Lookup = Matrix Row
 
 Token ID দিয়ে embedding matrix-এর **একটা row** pick করা — এটাই lookup:
-
-```ts
-function embed(tokenId: number, E: number[][]): number[] {
-  return E[tokenId]; // row lookup
-}
-```
 
 **Example:** Vocabulary = 5 words, D = 4
 

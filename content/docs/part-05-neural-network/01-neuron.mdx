@@ -5,6 +5,8 @@ description: Single neuron — weighted sum + activation function
 
 # 🧬 Neuron
 
+<ConceptAnim name="llm-pipeline" caption="Single neuron forward pass" />
+
 <Callout type="idea">
 💡 একটা **neuron** = inputs-কে weight দিয়ে যোগ + bias + **activation function**। Biological neuron-এর digital version।
 </Callout>
@@ -53,20 +55,6 @@ Activation **non-linearity** যোগ করে — ছাড়া multi-layer
 ]} />
 
 ## Code
-
-```ts
-function relu(z: Value): Value {
-  return z.data > 0 ? z : new Value(0);
-}
-
-function neuron(inputs: Value[], weights: Value[], bias: Value): Value {
-  let sum = bias;
-  for (let i = 0; i < inputs.length; i++) {
-    sum = sum.add(inputs[i].mul(weights[i]));
-  }
-  return relu(sum);
-}
-```
 
 ## Example
 

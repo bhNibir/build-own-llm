@@ -60,23 +60,6 @@ is      → { fruit: 3, healthy: 1 }
 
 `code/part-02/bigram.ts`:
 
-```ts
-export class BigramModel {
-  table = new Map<string, Map<string, number>>();
-
-  train(): void {
-    for (const sentence of dataset) {
-      const words = tokenize(sentence);
-      for (let i = 0; i < words.length - 1; i++) {
-        const current = words[i];
-        const next = words[i + 1];
-        // ... count increment
-      }
-    }
-  }
-}
-```
-
 Data structure: `Map<currentWord, Map<nextWord, count>>`
 
 ## Probability Formula

@@ -5,6 +5,8 @@ description: Parallel attention heads — different patterns একসাথে 
 
 # 🎭 Multi-Head Attention
 
+<ConceptAnim name="attention-flow" caption="Multi-head attention" />
+
 Single attention head একটা pattern দেখে। **Multi-head** = একাধিক head **parallel**-এ run করে — syntax, semantics, position সব আলাদা capture।
 
 <Callout type="idea">
@@ -54,15 +56,6 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 ]} />
 
 ## Typical Config
-
-```ts
-const nHead = 4;
-const dModel = 64;
-const dHead = dModel / nHead;  // 16 per head
-
-// Each head: Attention with d_k = dHead
-// Output: concat 4 heads → 64 dims → W_o
-```
 
 ## GPT-2 Style
 

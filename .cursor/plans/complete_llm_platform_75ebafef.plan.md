@@ -10,7 +10,7 @@ todos:
     status: completed
   - id: nodepod-runtime
     content: Integrate @scelar/nodepod (SW route + Playground runtime switch) before Module 4
-    status: completed
+    status: cancelled
   - id: modules-3-5
     content: "Write Modules 3–5 content (13 lessons + playgrounds): Math, Autograd, Neural Network"
     status: completed
@@ -22,6 +22,9 @@ todos:
     status: completed
   - id: nav-prd-polish
     content: Update meta.json to 10-module nav, homepage, PRD visual/math guidelines, full QA pass
+    status: completed
+  - id: phase5-polish
+    content: "Phase 5: Shiki Playground v2, CodeRun, Motion ConceptAnim, live viz, esbuild-only runtime"
     status: completed
 isProject: false
 ---
@@ -366,3 +369,38 @@ gantt
 | 49-lesson scope creep | Ship module-by-module; each module is independently usable |
 | Math too dense | Mandatory `<MathIntuition>` + `<WorkedExample>` before every formula |
 | URL breaks | Never rename `part-01-tokenizer` or `part-02-bigram`; use redirects for old skeleton paths |
+
+---
+
+## Phase 5: Interactive Polish v2 (complete)
+
+Phases 0–4 delivered all 49 lessons. Phase 5 upgraded UX to production-quality interactivity:
+
+| Deliverable | Status |
+|-------------|--------|
+| Shiki CodeEditor + ColorConsole + Copy/Reset toolbar | Done |
+| CodeRun inline runnable snippets | Done |
+| Motion ConceptAnim on all 49 lessons | Done |
+| Live viz (`viz` prop) for loss, softmax, attention | Done |
+| Single esbuild-wasm runtime (Nodepod removed) | Done |
+| CLI scripts `part-03` … `part-09` | Done |
+| PRD v2.0 + completion checklist | Done |
+
+```mermaid
+flowchart TB
+    subgraph mdx [MDX Lesson]
+        prose[Bangla explanation]
+        concept[ConceptAnim with real data]
+        coderun[Playground or CodeRun]
+    end
+    subgraph runtime [Single Runtime]
+        esbuild[esbuild-wasm]
+        sandbox[Sandboxed Function]
+    end
+    subgraph output [Rich Output]
+        colorConsole[ColorConsole]
+        liveViz[Live LossChart / Heatmap]
+    end
+    coderun --> esbuild --> sandbox --> colorConsole
+    colorConsole --> liveViz
+```

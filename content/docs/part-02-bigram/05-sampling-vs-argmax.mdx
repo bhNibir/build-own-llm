@@ -5,6 +5,8 @@ description: কেন LLM random text generate করে
 
 # Sampling vs Argmax
 
+<ConceptAnim name="softmax-bars" caption="Sampling vs always picking max" />
+
 আগের lesson-এ দেখলাম argmax দিয়ে generate করলে **সবসময় same output**। কিন্তু ChatGPT তো প্রতিবার আলাদা answer দেয় — কেন?
 
 ## Argmax Problem
@@ -38,21 +40,6 @@ Random number: 0.6
 পরের বার random number ভিন্ন হলে ভিন্ন word pick হবে।
 
 ## কোড
-
-```ts
-sample(word: string): string | null {
-  const probs = this.probabilities(word);
-  const r = Math.random();
-  let cumulative = 0;
-
-  for (const [next, prob] of probs) {
-    cumulative += prob;
-    if (r < cumulative) return next;
-  }
-
-  return last option;
-}
-```
 
 ## Comparison
 
