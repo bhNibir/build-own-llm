@@ -15,11 +15,15 @@ description: একটার পর একটা word predict করে sentence
 
 ```mermaid
 flowchart LR
-    start["Start: i"] --> p1["predict → like"]
-    p1 --> p2["predict → apple"]
-    p2 --> p3["predict → is"]
-    p3 --> p4["predict → fruit"]
-    p4 --> stop["No more → stop"]
+    start["Start: i"]:::input --> p1["predict → like"]:::process
+    p1 --> p2["predict → apple"]:::process
+    p2 --> p3["predict → is"]:::process
+    p3 --> p4["predict → fruit"]:::output
+    p4 --> stop["No more → stop"]:::dim
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2.5px
 ```
 
 Result: `"i like apple is fruit"`

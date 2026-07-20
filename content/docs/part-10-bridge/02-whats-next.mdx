@@ -18,10 +18,10 @@ flowchart TD
     A["Mini GPT<br/>270K params"]:::process --> B["nanoGPT<br/>10M–124M"]:::next
     B --> C["Llama 3<br/>8B–70B"]:::output
     C --> D["GPT-4<br/>~1.8T (est.)"]:::highlight
-    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
-    classDef next fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
-    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
-    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef next fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
+    classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
 ## The Scaling Laws
@@ -49,9 +49,9 @@ flowchart LR
     B --> C["Tokenize (BPE)"]:::process
     C --> D["Pretrain"]:::process
     D --> E["Base model"]:::output
-    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
-    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
-    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
 Same objective as our course: **minimize cross-entropy on next token** — just 10¹²× more data.
@@ -83,9 +83,9 @@ flowchart TD
     B --> C["Hugging Face Transformers"]:::next
     C --> D["Fine-tune with LoRA"]:::next
     D --> E["Read Llama/GPT papers"]:::output
-    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
-    classDef next fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
-    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef next fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
 ## Recommended Resources

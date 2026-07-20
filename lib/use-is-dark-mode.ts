@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from 'react';
 
+function readDark(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('dark');
+}
+
 /** Detect Fumadocs / class-based dark mode without next-themes */
 export function useIsDarkMode(): boolean {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(readDark);
 
   useEffect(() => {
     const root = document.documentElement;

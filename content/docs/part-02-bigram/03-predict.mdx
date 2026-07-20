@@ -24,11 +24,16 @@ predict("fruit") →  "is"      (count=1)
 
 ```mermaid
 flowchart TD
-    input["Input: like"] --> table["Count Table"]
-    table --> apple["apple: 2 (50%)"]
-    table --> banana["banana: 1 (25%)"]
-    table --> mango["mango: 1 (25%)"]
-    apple --> pick["Pick: apple (argmax)"]
+    input["Input: like"]:::input --> table["Count Table"]:::process
+    table --> apple["apple: 2 (50%)"]:::output
+    table --> banana["banana: 1 (25%)"]:::dim
+    table --> mango["mango: 1 (25%)"]:::dim
+    apple --> pick["Pick: apple (argmax)"]:::highlight
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2.5px
+    classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
 ## কোড

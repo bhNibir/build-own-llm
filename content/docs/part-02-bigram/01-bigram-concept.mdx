@@ -38,12 +38,15 @@ is → fruit
 ```mermaid
 flowchart TD
     subgraph bigram [Bigram Model]
-        w1[1 word context] --> pred1[Next word]
+        w1["1 word context"]:::input --> pred1["Next word"]:::output
     end
     subgraph llm [Transformer LLM]
-        wN[N words context] --> attn[Attention]
-        attn --> pred2[Next word]
+        wN["N words context"]:::input --> attn["Attention"]:::process
+        attn --> pred2["Next word"]:::output
     end
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
 | | Bigram | GPT |

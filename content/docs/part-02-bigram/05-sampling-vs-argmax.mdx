@@ -48,13 +48,18 @@ Random number: 0.6
 ```mermaid
 flowchart TD
     subgraph argmax [Argmax]
-        a1["like"] --> a2["always apple"]
+        a1["like"]:::input --> a2["always apple"]:::highlight
     end
     subgraph sampling [Sampling]
-        s1["like"] --> s2["apple 72%"]
-        s1 --> s3["banana 18%"]
-        s1 --> s4["mango 10%"]
+        s1["like"]:::input --> s2["apple 72%"]:::output
+        s1 --> s3["banana 18%"]:::process
+        s1 --> s4["mango 10%"]:::dim
     end
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2.5px
+    classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
 | | Argmax | Sampling |
@@ -85,13 +90,17 @@ $$P_i = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}$$
 
 ```mermaid
 flowchart TD
-    A[Training Data] --> B[Count Table]
-    B --> C[Predict]
-    C --> D[Generate]
-    D --> E{Strategy?}
-    E --> F[Argmax: deterministic]
-    E --> G[Sampling: creative]
-    style G fill:#90EE90
+    A["Training Data"]:::input --> B["Count Table"]:::process
+    B --> C["Predict"]:::output
+    C --> D["Generate"]:::process
+    D --> E{"Strategy?"}:::dim
+    E --> F["Argmax: deterministic"]:::highlight
+    E --> G["Sampling: creative"]:::output
+    classDef input fill:#C7D2FE,color:#1E1B4B,stroke:#4338CA,stroke-width:2.5px
+    classDef process fill:#A7F3D0,color:#064E3B,stroke:#047857,stroke-width:2.5px
+    classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2.5px
+    classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
 🎉 তুমি তোমার **প্রথম Language Model** বানালে, train করলে, এবং text generate করলে!

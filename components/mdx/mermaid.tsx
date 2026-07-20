@@ -97,11 +97,11 @@ export function Mermaid({ chart }: { chart: string }) {
       ref={containerRef}
       className={cn(
         'mermaid-diagram my-6 not-prose overflow-x-auto rounded-2xl border-2 border-indigo-200/70 bg-white p-5 shadow-sm',
-        'dark:border-indigo-800/50 dark:bg-slate-900 dark:text-slate-100',
+        'dark:border-indigo-800/50 dark:bg-slate-900',
         '[&>svg]:mx-auto [&>svg]:block [&>svg]:h-auto [&>svg]:min-h-[80px] [&>svg]:max-w-full',
         '[&_.nodeLabel]:text-sm [&_.edgeLabel]:text-xs',
-        'dark:[&_.nodeLabel]:!text-slate-100 dark:[&_foreignObject_div]:!text-slate-100 dark:[&_foreignObject_span]:!text-slate-100',
-        'dark:[&_.node_text]:![fill:#f1f5f9]',
+        '[&_.nodeLabel]:!text-slate-800 [&_foreignObject_div]:!text-slate-800 [&_foreignObject_span]:!text-slate-800',
+        '[&_.node_text]:![fill:#1e293b]',
       )}
       dangerouslySetInnerHTML={{ __html: svg }}
     />
