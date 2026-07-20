@@ -1,0 +1,78 @@
+---
+title: Part 5 — Mini GPT
+description: Transformer Block থেকে সম্পূর্ণ Mini GPT — coming soon
+---
+
+# Part 5: Mini GPT (Transformer)
+
+> 🔜 **Coming soon** — এই Part এখনো লেখা হচ্ছে।
+
+## এই Part-এ কী শিখবে?
+
+সব কিছু মিলিয়ে একটি **সম্পূর্ণ Transformer-based Language Model** বানাবো — Karpathy-এর nanoGPT-এর মতো, কিন্তু TypeScript-এ, zero library।
+
+```mermaid
+flowchart TD
+    A[Text Input] --> B[Tokenizer]
+    B --> C[Token IDs]
+    C --> D[Embedding + Position]
+    D --> E[Transformer Block]
+    E --> F[LayerNorm]
+    F --> G[MLP Feed Forward]
+    G --> H[Residual Connection]
+    H --> I[Output Logits]
+    I --> J[Softmax]
+    J --> K[Next Token]
+    style E fill:#FFD700
+```
+
+## Transformer Block
+
+GPT-এর একটি সম্পূর্ণ block:
+
+```mermaid
+flowchart TD
+    input[Input] --> norm1[LayerNorm]
+    norm1 --> attn[Multi-Head Attention]
+    attn --> res1["+ (Residual)"]
+    input --> res1
+    res1 --> norm2[LayerNorm]
+    norm2 --> mlp[MLP Feed Forward]
+    mlp --> res2["+ (Residual)"]
+    res1 --> res2
+    res2 --> output[Output]
+```
+
+## Topics Preview
+
+| Component | কাজ |
+|-----------|-----|
+| **Embedding** | Token ID → vector |
+| **Positional Encoding** | Position information যোগ |
+| **Multi-Head Attention** | Context-aware representation |
+| **LayerNorm** | Training stabilize করা |
+| **MLP (Feed Forward)** | Non-linear transformation |
+| **Residual Connection** | Gradient flow ঠিক রাখা |
+
+## Final Goal
+
+~500-700 lines TypeScript, কোনো ML framework ছাড়া:
+
+```bash
+bun part-05   # Train mini GPT + generate text
+```
+
+## Roadmap — পুরো Journey
+
+```mermaid
+flowchart LR
+    P1["Part 1: Tokenizer ✅"] --> P2["Part 2: Bigram ✅"]
+    P2 --> P3["Part 3: Neural Net 🔜"]
+    P3 --> P4["Part 4: Attention 🔜"]
+    P4 --> P5["Part 5: Mini GPT 🔜"]
+    style P5 fill:#FFD700
+```
+
+তুমি Part 1-2 শেষ করলে — তুমি ইতিমধ্যে একটি working language model বানিয়েছো! Part 3-5 তোমাকে GPT-level understanding-এ নিয়ে যাবে।
+
+**আগের Part:** [Part 4 — Attention](/docs/part-04-attention)

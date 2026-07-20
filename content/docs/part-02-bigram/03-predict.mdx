@@ -1,0 +1,85 @@
+---
+title: Predict
+description: Count table দিয়ে next word predict করা
+---
+
+# Predict (Argmax)
+
+Training শেষ। এখন model দিয়ে **predict** করব — মানে next word বলব।
+
+## Argmax = সবচেয়ে বেশি count
+
+সবচেয়ে simple strategy: যার count সবচেয়ে বেশি, সেটাই pick করো।
+
+```
+predict("i")     →  "like"    (count=3, একমাত্র option)
+predict("like")  →  "apple"   (count=2, সবচেয়ে বেশি)
+predict("apple") →  "is"      (count=1)
+predict("fruit") →  "is"      (count=1)
+```
+
+## Probability সহ
+
+```mermaid
+flowchart TD
+    input["Input: like"] --> table["Count Table"]
+    table --> apple["apple: 2 (50%)"]
+    table --> banana["banana: 1 (25%)"]
+    table --> mango["mango: 1 (25%)"]
+    apple --> pick["Pick: apple (argmax)"]
+```
+
+## কোড
+
+```ts
+predict(word: string): string | null {
+  const row = this.table.get(word);
+  if (!row) return null;
+
+  let bestWord = '';
+  let bestCount = -1;
+
+  for (const [next, count] of row) {
+    if (count > bestCount) {
+      bestWord = next;
+      bestCount = count;
+    }
+  }
+
+  return bestWord;
+}
+```
+
+## Probability Function
+
+```ts
+probabilities(word: string): Map<string, number> {
+  const row = this.table.get(word);
+  const total = sum of all counts;
+  return count / total for each next word;
+}
+```
+
+## Run করো
+
+```bash
+bun part-02
+```
+
+Output:
+
+```
+--- Predict (argmax) ---
+  i → like (P=1.00)
+  like → apple (P=0.50)
+  apple → is (P=1.00)
+  fruit → is (P=1.00)
+```
+
+## তুমি কী শিখলে?
+
+- **Predict** = count table থেকে সবচেয়ে likely next word
+- **Argmax** = highest probability/count pick করা
+- Model এখন training data-র pattern follow করে
+
+**পরের lesson:** [Generate](/docs/part-02-bigram/04-generate)

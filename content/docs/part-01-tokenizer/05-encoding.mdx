@@ -1,0 +1,74 @@
+---
+title: Encoding
+description: Sentence কে number list-এ convert করা
+---
+
+# Encoding / Decoding
+
+Vocabulary আছে। এখন sentence কে number list-এ convert করব — এটাই **Encoding**। উল্টোটা **Decoding**।
+
+## Encoding
+
+Sentence → Number list
+
+```
+"i like apple"  →  [7, 9, 0]
+"fruit is healthy"  →  [4, 8, 5]
+```
+
+প্রতিটা word-কে তার vocabulary ID-তে map করা।
+
+## Decoding
+
+Number list → Sentence (উল্টো)
+
+```
+[4, 8, 5]  →  "fruit is healthy"
+```
+
+## কোড
+
+```ts
+export function encode(sentence: string, vocab: Vocabulary): number[] {
+  return tokenize(sentence).map((word) => vocab.stoi[word]);
+}
+
+export function decode(ids: number[], vocab: Vocabulary): string {
+  return ids.map((id) => vocab.itos[id]).join(' ');
+}
+```
+
+## গুরুত্বপূর্ণ বোঝাপড়া
+
+> Model এখনও word বুঝে না। শুধু **number** বুঝে।
+>
+> `"apple"` দেখে না → `0` দেখে
+> `"like"` দেখে না → `9` দেখে
+
+এটাই Tokenizer + Vocabulary + Encoding-এর মূল উদ্দেশ্য।
+
+## Run করো
+
+```bash
+bun part-01
+```
+
+Output:
+
+```
+--- Encoding ---
+"i like apple" → [7, 9, 0]
+"i like banana" → [7, 9, 1]
+"i like mango" → [7, 9, 10]
+
+--- Decoding ---
+[4, 8, 5] → "fruit is healthy"
+```
+
+## তুমি কী শিখলে?
+
+- **Encode** = text → numbers
+- **Decode** = numbers → text
+- Model শুধু number array নিয়ে কাজ করে
+
+**পরের lesson:** [Training Pairs](/docs/part-01-tokenizer/06-training-pairs)

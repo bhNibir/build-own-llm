@@ -1,0 +1,89 @@
+---
+title: Vocabulary
+description: Unique word-এর list এবং ID mapping
+---
+
+# Vocabulary
+
+Tokenizer sentence কে word-এ ভাগ করল। এখন প্রশ্ন: model কীভাবে এই word-গুলো বুঝবে?
+
+উত্তর: **number দিয়ে**।
+
+## Vocabulary তৈরি
+
+Dataset-এর সব unique word collect করো, তারপর প্রতিটাকে একটা ID দাও:
+
+```mermaid
+flowchart LR
+    dataset[Dataset] --> unique[Unique Words]
+    unique --> sorted[Sorted List]
+    sorted --> mapping["Word → ID map"]
+```
+
+## আমাদের Vocabulary
+
+| Word | ID |
+|------|----|
+| apple | 0 |
+| banana | 1 |
+| eat | 2 |
+| eats | 3 |
+| fruit | 4 |
+| healthy | 5 |
+| he | 6 |
+| i | 7 |
+| is | 8 |
+| like | 9 |
+| mango | 10 |
+| you | 11 |
+
+মোট **12টা unique word** = Vocabulary size = 12
+
+## কোড
+
+`code/part-01/vocabulary.ts`:
+
+```ts
+export function buildVocab(): Vocabulary {
+  const words = new Set<string>();
+
+  for (const sentence of dataset) {
+    for (const word of tokenize(sentence)) {
+      words.add(word);
+    }
+  }
+
+  const sorted = Array.from(words).sort();
+  const stoi: Record<string, number> = {};
+  const itos: Record<number, string> = {};
+
+  sorted.forEach((word, index) => {
+    stoi[word] = index;
+    itos[index] = word;
+  });
+
+  return { stoi, itos, size: sorted.length };
+}
+```
+
+দুটো map:
+- **stoi** (string → int): `"apple"` → `0`
+- **itos** (int → string): `0` → `"apple"`
+
+## GPT-এর Vocabulary
+
+| Model | Vocab Size |
+|-------|-----------|
+| আমাদের | 12 |
+| GPT-2 | 50,257 |
+| GPT-4 | ~100,000 |
+
+স্কেল আলাদা, concept same।
+
+## তুমি কী শিখলে?
+
+- **Vocabulary** = সব unique token-এর list + ID mapping
+- Model শুধু number বুঝে, string নয়
+- `stoi` এবং `itos` দুটো direction-এ lookup
+
+**পরের lesson:** [Encoding](/docs/part-01-tokenizer/05-encoding)

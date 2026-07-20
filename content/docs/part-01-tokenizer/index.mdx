@@ -1,0 +1,41 @@
+---
+title: Part 1 — Tokenizer
+description: Text কে number-এ convert করা — LLM-এর প্রথম ধাপ
+---
+
+# Part 1: Tokenizer + Vocabulary
+
+এই Part-এ আমরা **কোনো AI বানাবো না**। শুধু data prepare করব — যেটা না বুঝলে পরের কিছুই পরিষ্কার হবে না।
+
+## এই Part-এ কী শিখবে?
+
+```mermaid
+flowchart LR
+    A[Dataset] --> B[Tokenizer]
+    B --> C[Vocabulary]
+    C --> D[Encoding]
+    D --> E[Training Pairs]
+```
+
+| Lesson | Topic |
+|--------|-------|
+| [01](/docs/part-01-tokenizer/01-llm-kivabe-kaj-kore) | LLM আসলে কী করে? |
+| [02](/docs/part-01-tokenizer/02-dataset) | Dataset / Corpus |
+| [03](/docs/part-01-tokenizer/03-tokenizer) | Tokenizer |
+| [04](/docs/part-01-tokenizer/04-vocabulary) | Vocabulary |
+| [05](/docs/part-01-tokenizer/05-encoding) | Encoding / Decoding |
+| [06](/docs/part-01-tokenizer/06-training-pairs) | Training Pairs |
+
+## কোড রান করো
+
+```bash
+bun part-01
+```
+
+## মনে রাখো
+
+> Model কখনো `"apple"` string দেখে না। শুধু `2` (একটা number) দেখে। Tokenizer-এর কাজ হলো এই conversion করা।
+
+<Cards>
+  <Card title="Lesson 01: LLM কীভাবে কাজ করে" href="/docs/part-01-tokenizer/01-llm-kivabe-kaj-kore" />
+</Cards>

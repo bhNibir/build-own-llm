@@ -1,0 +1,11 @@
+{
+  "title": "Part 2: Bigram LM",
+  "pages": [
+    "index",
+    "01-bigram-concept",
+    "02-count-model",
+    "03-predict",
+    "04-generate",
+    "05-sampling-vs-argmax"
+  ]
+}

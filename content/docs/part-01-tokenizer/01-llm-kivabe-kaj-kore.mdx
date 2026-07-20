@@ -1,0 +1,84 @@
+---
+title: LLM কীভাবে কাজ করে?
+description: Next token prediction — LLM-এর মূল ধারণা
+---
+
+# LLM কীভাবে কাজ করে?
+
+একটা LLM আসলে **"next token prediction machine"**।
+
+মানে, তুমি কিছু text দিলে সে বলে: "পরেরটা কী হওয়া উচিত?"
+
+```mermaid
+flowchart TD
+    input["Input: i like"] --> model[Language Model]
+    model --> apple["apple (72%)"]
+    model --> banana["banana (18%)"]
+    model --> mango["mango (10%)"]
+```
+
+## উদাহরণ
+
+তুমি লিখলে:
+
+```
+i like
+```
+
+Model ভাবে:
+
+```
+apple   → 72% chance
+banana  → 18% chance
+mango   → 10% chance
+```
+
+তারপর একটা pick করে → `apple`
+
+আবার:
+
+```
+i like apple
+```
+
+Model ভাবে:
+
+```
+is → 100% chance
+```
+
+এভাবে একটার পর একটা word generate করে পুরো sentence তৈরি হয়।
+
+## পুরো Pipeline
+
+```mermaid
+flowchart TD
+    text[Text] --> tokenizer[Tokenizer]
+    tokenizer --> vocab[Vocabulary]
+    vocab --> embedding[Embedding]
+    embedding --> transformer[Transformer]
+    transformer --> logits[Logits]
+    logits --> softmax[Softmax]
+    softmax --> nextToken[Next Token]
+```
+
+আমরা এখন **শুধু প্রথম ২টা step** করব (Tokenizer + Vocabulary)। বাকিগুলো পরের Part-এ।
+
+## GPT-4 vs আমাদের Model
+
+| | GPT-4 | আমাদের Tiny Model |
+|---|---|---|
+| Training data | Trillions of tokens | ~30 words |
+| Vocabulary | ~100,000 tokens | 12 words |
+| Parameters | Billions | ~144 (Part 2-তে) |
+| Architecture | Transformer | Bigram (Part 2) |
+
+স্কেল আলাদা, কিন্তু **idea একই**: আগের text দেখে next token predict করা।
+
+## তুমি কী শিখলে?
+
+- LLM = next token prediction machine
+- Input text → Model → Probability distribution → Pick one token
+- আমরা ছোট scale-এ same idea implement করব
+
+**পরের lesson:** [Dataset তৈরি করো](/docs/part-01-tokenizer/02-dataset)

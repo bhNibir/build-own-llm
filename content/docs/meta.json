@@ -1,0 +1,12 @@
+{
+  "title": "শুরু করো",
+  "pages": [
+    "index",
+    "---",
+    "part-01-tokenizer",
+    "part-02-bigram",
+    "part-03-neural-network",
+    "part-04-attention",
+    "part-05-mini-gpt"
+  ]
+}
