@@ -343,7 +343,7 @@ Every lesson uses **one primary `<ConceptAnim slug="part-NN/lesson" />`** — co
 4. **Data-bound** — fruit corpus; `P(apple|i like) = 72%`, banana 18%, mango 10%
 5. **Motion** with `prefers-reduced-motion` via `useReducedMotion`
 6. **3D only when spatial intuition helps** — e.g. embedding space (M6); attention stays 2D heatmap
-7. **Lesson-specific animations** — 40+ named anims in `components/diagrams/` (not generic reuse)
+7. **Sketch styles (Excalidraw):** `solid` | `hachure` | `cross-hatch` fills; `solid` | `dashed` | `dotted` strokes — see `sketch-styles.ts` + `SketchBox` / Mermaid post-processor
 
 **Shared primitives:** `components/diagrams/diagram-ui.tsx` — `ConceptFrame`, `StepChip`, `FlowConnector`, `ModelBadge`, `StepDots`
 

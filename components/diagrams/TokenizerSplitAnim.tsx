@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActiveRing, FlowConnector } from './diagram-ui';
+import { ActiveRing, FlowConnector, SketchBox } from './diagram-ui';
 
 const DEFAULT = { input: 'I Like Apple', tokens: ['i', 'like', 'apple'] };
 
@@ -25,6 +25,8 @@ export function TokenizerSplitAnim({
   }, [paused]);
 
   const text = step === 0 ? `"${input}"` : `"${input.toLowerCase()}"`;
+  const fills = ['solid', 'hachure', 'cross-hatch'] as const;
+  const strokes = ['solid', 'dashed', 'dotted'] as const;
 
   return (
     <div className="space-y-4">
@@ -32,12 +34,25 @@ export function TokenizerSplitAnim({
         Step {step + 1}/3: {['Input', 'lowercase', 'split'][step]}
       </p>
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <div className="relative rounded-lg border border-fd-border bg-fd-muted/30 px-4 py-2 font-mono text-sm">
+        <div className="relative">
           <ActiveRing active={step <= 1} />
-          {text}
+          <SketchBox
+            fillStyle={fills[step]}
+            strokeStyle={strokes[step]}
+            palette="blue"
+            active={step <= 1}
+            className="font-mono text-sm"
+          >
+            {text}
+          </SketchBox>
         </div>
         <FlowConnector />
-        <div className="flex min-h-[48px] flex-wrap justify-center gap-1.5 rounded-lg border border-fd-border bg-fd-muted/20 px-3 py-2">
+        <SketchBox
+          fillStyle={step >= 2 ? 'cross-hatch' : 'solid'}
+          strokeStyle={step >= 2 ? 'solid' : 'dotted'}
+          palette="green"
+          className="flex min-h-[48px] min-w-[140px] flex-wrap justify-center gap-1.5"
+        >
           {step < 2 ? (
             <span className="text-xs text-fd-muted-foreground">…</span>
           ) : (
@@ -47,13 +62,13 @@ export function TokenizerSplitAnim({
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.1 }}
-                className="rounded border border-emerald-400/60 bg-emerald-50 px-2 py-0.5 font-mono text-xs dark:bg-emerald-950/30"
+                className="font-mono text-xs"
               >
                 {tok}
               </motion.span>
             ))
           )}
-        </div>
+        </SketchBox>
       </div>
     </div>
   );

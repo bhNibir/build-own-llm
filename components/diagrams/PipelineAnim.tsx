@@ -4,15 +4,23 @@ import { motion } from 'motion/react';
 import { Type, List, Hash, Brain, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
+import { SketchBox } from './diagram-ui';
+import type { SketchFillStyle, SketchStrokeStyle } from './sketch-styles';
 import type { ConceptExample } from './lesson-concepts';
 
-const NODES: { label: string; icon: LucideIcon }[] = [
-  { label: 'Text', icon: Type },
-  { label: 'Tokenizer', icon: Type },
-  { label: 'Vocab', icon: List },
-  { label: 'Encode', icon: Hash },
-  { label: 'Model', icon: Brain },
-  { label: 'Predict', icon: Target },
+const NODES: {
+  label: string;
+  icon: LucideIcon;
+  fill: SketchFillStyle;
+  stroke: SketchStrokeStyle;
+  palette: 'blue' | 'green' | 'amber' | 'violet' | 'rose';
+}[] = [
+  { label: 'Text', icon: Type, fill: 'solid', stroke: 'solid', palette: 'blue' },
+  { label: 'Tokenizer', icon: Type, fill: 'hachure', stroke: 'dashed', palette: 'green' },
+  { label: 'Vocab', icon: List, fill: 'cross-hatch', stroke: 'solid', palette: 'violet' },
+  { label: 'Encode', icon: Hash, fill: 'hachure', stroke: 'dotted', palette: 'amber' },
+  { label: 'Model', icon: Brain, fill: 'solid', stroke: 'dashed', palette: 'rose' },
+  { label: 'Predict', icon: Target, fill: 'cross-hatch', stroke: 'solid', palette: 'green' },
 ];
 
 export function PipelineAnim({
@@ -40,23 +48,26 @@ export function PipelineAnim({
       <div className="flex min-w-max items-center justify-center gap-1 px-2">
         {NODES.map((node, i) => {
           const Icon = node.icon;
+          const isActive = active === i;
+          const isDone = active > i;
           return (
             <div key={node.label} className="flex items-center">
-              <motion.div
-                className={`flex flex-col items-center rounded-lg border px-2.5 py-2 sm:px-3 ${
-                  active === i
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
-                    : active > i
-                      ? 'border-emerald-400/60 bg-emerald-50/50 dark:bg-emerald-950/20'
-                      : 'border-fd-border bg-fd-muted/20'
-                }`}
-                animate={active === i ? { scale: 1.04 } : { scale: 1 }}
-              >
-                <Icon className="h-4 w-4 text-fd-foreground" />
-                <span className="mt-1 text-[10px] font-medium">{node.label}</span>
+              <motion.div animate={isActive ? { scale: 1.05 } : { scale: 1 }}>
+                <SketchBox
+                  fillStyle={isDone ? 'solid' : node.fill}
+                  strokeStyle={isDone ? 'solid' : node.stroke}
+                  palette={isDone ? 'green' : node.palette}
+                  active={isActive}
+                  className="flex flex-col items-center px-2.5 py-2 sm:px-3"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="mt-1 text-[10px] font-medium">{node.label}</span>
+                </SketchBox>
               </motion.div>
               {i < NODES.length - 1 && (
-                <div className="mx-0.5 h-px w-4 bg-fd-border sm:w-6" />
+                <div
+                  className={`mx-0.5 h-px w-4 sm:w-6 ${isDone ? 'border-t-2 border-solid border-emerald-500' : 'border-t-2 border-dashed border-fd-border'}`}
+                />
               )}
             </div>
           );

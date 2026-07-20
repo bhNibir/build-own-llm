@@ -69,3 +69,90 @@ html > body[data-scroll-locked] {
     animation: none;
   }
 }
+
+/* Mermaid — preserve classDef text contrast; sketch-style edges */
+.mermaid-diagram svg .edgeLabel {
+  background-color: var(--mermaid-edge-bg, #fffef9) !important;
+  color: #1e293b !important;
+}
+.dark .mermaid-diagram svg .edgeLabel {
+  background-color: #25262b !important;
+  color: #e9ecef !important;
+}
+.mermaid-diagram svg .node rect,
+.mermaid-diagram svg .node polygon,
+.mermaid-diagram svg .node path {
+  stroke-width: 2px;
+}
+
+/* Excalidraw-style sketch fills for ConceptAnim boxes */
+:root {
+  --sketch-border-blue: #1971c2;
+  --sketch-text-blue: #1e293b;
+  --sketch-bg-blue: #e7f5ff;
+  --sketch-hatch-blue: #1971c2;
+  --sketch-border-green: #099268;
+  --sketch-text-green: #1e293b;
+  --sketch-bg-green: #e6fcf5;
+  --sketch-hatch-green: #099268;
+  --sketch-border-amber: #f08c00;
+  --sketch-text-amber: #1e293b;
+  --sketch-bg-amber: #fff9db;
+  --sketch-hatch-amber: #f08c00;
+  --sketch-border-rose: #e03131;
+  --sketch-text-rose: #1e293b;
+  --sketch-bg-rose: #ffe3e3;
+  --sketch-hatch-rose: #e03131;
+  --sketch-border-violet: #7950f2;
+  --sketch-text-violet: #1e293b;
+  --sketch-bg-violet: #f3f0ff;
+  --sketch-hatch-violet: #7950f2;
+  --sketch-border-neutral: #495057;
+  --sketch-text-neutral: #1e293b;
+  --sketch-bg-neutral: #f8f9fa;
+  --sketch-hatch-neutral: #868e96;
+}
+
+.sketch-palette-blue { --sk-bg: var(--sketch-bg-blue); --sk-hatch: var(--sketch-hatch-blue); --sk-border: var(--sketch-border-blue); }
+.sketch-palette-green { --sk-bg: var(--sketch-bg-green); --sk-hatch: var(--sketch-hatch-green); --sk-border: var(--sketch-border-green); }
+.sketch-palette-amber { --sk-bg: var(--sketch-bg-amber); --sk-hatch: var(--sketch-hatch-amber); --sk-border: var(--sketch-border-amber); }
+.sketch-palette-rose { --sk-bg: var(--sketch-bg-rose); --sk-hatch: var(--sketch-hatch-rose); --sk-border: var(--sketch-border-rose); }
+.sketch-palette-violet { --sk-bg: var(--sketch-bg-violet); --sk-hatch: var(--sketch-hatch-violet); --sk-border: var(--sketch-border-violet); }
+.sketch-palette-neutral { --sk-bg: var(--sketch-bg-neutral); --sk-hatch: var(--sketch-hatch-neutral); --sk-border: var(--sketch-border-neutral); }
+
+.sketch-fill-solid {
+  background-color: var(--sk-bg);
+  border-color: var(--sk-border);
+}
+
+.sketch-fill-hachure {
+  background-color: var(--sk-bg);
+  border-color: var(--sk-border);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    color-mix(in srgb, var(--sk-hatch) 28%, transparent) 5px,
+    color-mix(in srgb, var(--sk-hatch) 28%, transparent) 6px
+  );
+}
+
+.sketch-fill-cross {
+  background-color: var(--sk-bg);
+  border-color: var(--sk-border);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 6px,
+      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 7px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 6px,
+      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 7px
+    );
+}

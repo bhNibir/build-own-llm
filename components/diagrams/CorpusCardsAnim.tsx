@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
+import { DataLabel, SketchBox } from './diagram-ui';
 import { FRUIT_DATASET } from './shared-data';
 
 export function CorpusCardsAnim({ paused }: { paused?: boolean }) {
@@ -9,30 +10,41 @@ export function CorpusCardsAnim({ paused }: { paused?: boolean }) {
 
   useEffect(() => {
     if (paused) return;
-    const t = setInterval(() => setHighlight((h) => (h + 1) % FRUIT_DATASET.length), 1200);
+    const t = setInterval(() => setHighlight((h) => (h + 1) % FRUIT_DATASET.length), 1400);
     return () => clearInterval(t);
   }, [paused]);
 
+  const current = FRUIT_DATASET[highlight];
+
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <DataLabel bn="Corpus = সব training sentence" en="training dataset" />
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={highlight}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="text-center font-mono text-sm font-medium"
+        >
+          Reading {highlight + 1}/{FRUIT_DATASET.length}: &quot;{current}&quot;
+        </motion.p>
+      </AnimatePresence>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
         {FRUIT_DATASET.map((s, i) => (
-          <motion.div
-            key={s}
-            className={`rounded-lg border px-2 py-1.5 text-center font-mono text-[11px] ${
-              highlight === i
-                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30'
-                : 'border-fd-border bg-fd-muted/20'
-            }`}
-            animate={highlight === i ? { scale: 1.03 } : { scale: 1 }}
-          >
-            {s}
+          <motion.div key={s} animate={highlight === i ? { scale: 1.04 } : { scale: 1 }}>
+            <SketchBox
+              fillStyle={highlight === i ? 'hachure' : 'solid'}
+              strokeStyle={highlight === i ? 'solid' : 'dotted'}
+              palette={highlight === i ? 'blue' : 'neutral'}
+              active={highlight === i}
+              className="text-center font-mono text-[11px] leading-tight"
+            >
+              {s}
+            </SketchBox>
           </motion.div>
         ))}
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">
-        Corpus = {FRUIT_DATASET.length} sentences — model এগুলো দেখে pattern শেখে
-      </p>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
+import { DataLabel } from './diagram-ui';
 
 const DEFAULT_TOKENS = ['i', 'like', 'apple'];
 const DEFAULT_WEIGHTS = [
@@ -19,91 +20,78 @@ export function AttentionFlowAnim({
   example?: ConceptExample;
 }) {
   const [activeRow, setActiveRow] = useState(0);
-  const [activeCol, setActiveCol] = useState(-1);
+  const [activeCol, setActiveCol] = useState(0);
 
   const tokens = example?.tokens ?? DEFAULT_TOKENS;
-  const weights = example?.probs
-    ? [example.probs]
-    : DEFAULT_WEIGHTS;
+  const matrix = DEFAULT_WEIGHTS;
 
   useEffect(() => {
     if (paused) return;
-    let col = -1;
+    let col = 0;
+    let row = 0;
     const tick = () => {
       col += 1;
-      if (col > tokens.length - 1) {
-        setActiveRow((r) => (r + 1) % tokens.length);
+      if (col >= tokens.length) {
         col = 0;
+        row = (row + 1) % tokens.length;
+        setActiveRow(row);
       }
       setActiveCol(col);
     };
-    tick();
     const t = setInterval(tick, 900);
     return () => clearInterval(t);
   }, [paused, tokens.length]);
 
-  const matrix = weights.length >= tokens.length ? DEFAULT_WEIGHTS : DEFAULT_WEIGHTS;
-
   return (
     <div className="space-y-4">
-      <div className="flex justify-center gap-8">
+      <DataLabel bn="Query × Key = attention score" en="scaled dot-product" />
+      <div className="flex justify-center gap-6">
         <div className="text-center">
-          <p className="mb-2 text-xs font-semibold text-violet-600">Query</p>
+          <p className="mb-2 text-xs font-semibold text-fd-muted-foreground">Query</p>
           {tokens.map((t, i) => (
-            <motion.div
+            <div
               key={t + i}
-              layout
-              className={`mb-1 rounded px-3 py-1 font-mono text-sm ${
-                activeRow === i ? 'bg-violet-500 text-white' : 'bg-fd-muted'
+              className={`mb-1 rounded border-2 px-3 py-1 font-mono text-sm ${
+                activeRow === i
+                  ? 'border-violet-500 bg-violet-50 text-violet-900 dark:bg-violet-950/40 dark:text-violet-100'
+                  : 'border-dashed border-fd-border'
               }`}
-              animate={activeRow === i ? { scale: 1.05 } : { scale: 1 }}
             >
               {t}
-            </motion.div>
+            </div>
           ))}
         </div>
-
-        <div className="flex flex-col items-center justify-center gap-1 text-2xl text-indigo-500">
-          <motion.span animate={{ x: [0, 4, 0] }} transition={{ repeat: Infinity, duration: 1.2 }}>
-            →
-          </motion.span>
-          <span className="text-xs font-normal text-fd-muted-foreground">scores</span>
-        </div>
-
+        <div className="flex items-center text-fd-muted-foreground">×</div>
         <div className="text-center">
-          <p className="mb-2 text-xs font-semibold text-emerald-600">Keys</p>
+          <p className="mb-2 text-xs font-semibold text-fd-muted-foreground">Key</p>
           {tokens.map((t, i) => (
-            <motion.div
+            <div
               key={t + i}
-              layout
-              className={`mb-1 rounded px-3 py-1 font-mono text-sm ${
-                activeCol === i ? 'bg-emerald-500 text-white' : 'bg-fd-muted'
+              className={`mb-1 rounded border-2 px-3 py-1 font-mono text-sm ${
+                activeCol === i
+                  ? 'border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100'
+                  : 'border-dashed border-fd-border'
               }`}
-              animate={activeCol === i ? { scale: 1.05 } : { scale: 1 }}
             >
               {t}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
-      <div className="mx-auto max-w-[240px]">
-        <p className="mb-2 text-center text-xs font-semibold">Attention weights</p>
+      <div className="mx-auto max-w-[220px]">
+        <p className="mb-2 text-center text-xs font-medium">Attention weights</p>
         <div className="grid grid-cols-3 gap-1">
           {matrix.flatMap((row, r) =>
             row.map((w, c) => (
               <motion.div
                 key={`${r}-${c}`}
-                className="flex h-12 items-center justify-center rounded font-mono text-xs text-white"
-                style={{
-                  backgroundColor: `rgba(79, 70, 229, ${Math.max(w, 0.15)})`,
-                }}
-                animate={
+                className={`flex h-11 items-center justify-center rounded border-2 font-mono text-xs ${
                   activeRow === r && activeCol === c
-                    ? { scale: 1.1, boxShadow: '0 0 0 2px rgb(251 191 36)' }
-                    : { scale: 1, boxShadow: '0 0 0 0px transparent' }
-                }
-                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    ? 'border-amber-500 bg-amber-50 text-amber-900 dark:bg-amber-950/40'
+                    : 'border-fd-border bg-fd-muted/30 text-fd-foreground'
+                }`}
+                animate={activeRow === r && activeCol === c ? { scale: 1.08 } : { scale: 1 }}
               >
                 {w.toFixed(1)}
               </motion.div>
@@ -111,9 +99,6 @@ export function AttentionFlowAnim({
           )}
         </div>
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">
-        প্রতিটা Query সব Key-এর সাথে compare → weight বেশি = বেশি focus
-      </p>
     </div>
   );
 }

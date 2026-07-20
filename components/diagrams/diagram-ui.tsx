@@ -5,6 +5,13 @@ import { motion } from 'motion/react';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowRight, Brain } from 'lucide-react';
 import type { ReactNode } from 'react';
+import {
+  sketchFillClass,
+  sketchStrokeClass,
+  type SketchFillStyle,
+  type SketchPalette,
+  type SketchStrokeStyle,
+} from './sketch-styles';
 
 export function ConceptFrame({
   caption,
@@ -19,11 +26,15 @@ export function ConceptFrame({
     <figure className="my-8 not-prose">
       <div
         className={cn(
-          'overflow-hidden rounded-2xl border border-fd-border bg-fd-card shadow-sm',
+          'overflow-hidden rounded-xl p-4 sm:p-6',
+          /* Excalidraw-style sketch frame */
+          'border-2 border-dashed border-[#495057]/35 bg-[#FFFEF9]',
+          'shadow-[2px_3px_0_0_rgba(73,80,87,0.12)]',
+          'dark:border-[#ADB5BD]/35 dark:bg-[#25262B] dark:shadow-[2px_3px_0_0_rgba(0,0,0,0.25)]',
           'min-h-[220px]',
         )}
       >
-        <div className="flex min-h-[200px] flex-col justify-center p-4 sm:p-6">{children}</div>
+        <div className="flex min-h-[200px] flex-col justify-center">{children}</div>
         {hint && (
           <div className="border-t border-fd-border bg-fd-muted/30 px-4 py-2 text-center text-xs text-fd-muted-foreground">
             {hint}
@@ -120,12 +131,49 @@ export function ActiveRing({ active }: { active: boolean }) {
   if (!active) return null;
   return (
     <motion.span
-      className="pointer-events-none absolute inset-0 rounded-lg ring-2 ring-indigo-400/80 ring-offset-1 ring-offset-fd-card"
-      layoutId="active-ring"
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+      className="pointer-events-none absolute inset-0 rounded-lg ring-2 ring-indigo-400/80 ring-offset-1 ring-offset-transparent"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     />
   );
 }
+
+export function SketchBox({
+  children,
+  fillStyle = 'solid',
+  strokeStyle = 'solid',
+  palette = 'blue',
+  active,
+  className,
+}: {
+  children: ReactNode;
+  fillStyle?: SketchFillStyle;
+  strokeStyle?: SketchStrokeStyle;
+  palette?: keyof typeof import('./sketch-styles').sketchPalettes;
+  active?: boolean;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        'relative rounded-lg border-2 px-3 py-2 text-sm',
+        sketchFillClass(fillStyle, palette),
+        sketchStrokeClass(strokeStyle),
+        active && 'ring-2 ring-indigo-400/60 ring-offset-1',
+        className,
+      )}
+      style={{
+        borderColor: active ? undefined : `var(--sketch-border-${palette})`,
+        color: `var(--sketch-text-${palette})`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export type { SketchFillStyle, SketchStrokeStyle, SketchPalette };
 
 export function MonoBox({
   children,

@@ -13,13 +13,15 @@ description: Sentence কে word-এ ভাগ করা
 
 ```mermaid
 flowchart LR
-    A["📝 I Like Apple"]:::input --> B["🔡 lowercase"]:::process
-    B --> C["✂️ split"]:::process
-    C --> D["🔤 i · like · apple"]:::output
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
-    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
+    A["I Like Apple"]:::input --> B["lowercase"]:::process
+    B --> C["split"]:::process
+    C --> D["i · like · apple"]:::output
+    classDef input fill:#E7F5FF,color:#1E293B,stroke:#1971C2,stroke-width:2px
+    classDef process fill:#E6FCF5,color:#1E293B,stroke:#099268,stroke-width:2px
+    classDef output fill:#FFF9DB,color:#1E293B,stroke:#F08C00,stroke-width:2px
 ```
+
+> Sketch styles: **input** = solid · **process** = hachure + dashed · **output** = cross-hatch
 
 Computer string বুঝে না। তাই প্রথম কাজ: sentence কে ছোট ছোট **token**-এ ভাগ করা।
 
