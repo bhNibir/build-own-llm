@@ -331,14 +331,21 @@ Every runnable code surface shares:
 
 Sandbox preamble injects `log.step(msg)`, `log.data(label, val)`, `log.ok(msg)` for consistent section headers.
 
-### 7.5 Concept diagram rules
+### 7.5 Concept diagram rules (golden visual system)
 
-Every `<ConceptAnim>` must:
+Every lesson uses **one primary `<ConceptAnim slug="part-NN/lesson" />`** — config from [`lesson-concepts.ts`](components/diagrams/lesson-concepts.ts).
 
-1. Use **actual lesson example data** via `example={{ input, tokens, probs, labels }}` when applicable
-2. Animate with **Motion** (`motion/react`) and respect `prefers-reduced-motion`
-3. Appear on **all 49 lessons** (theory lessons get concept-only; code lessons get data + playground)
-4. Map slugs via `components/diagrams/lesson-concepts.ts`
+**Design rules:**
+
+1. **One idea = one animated figure** — no duplicate Illustration / TokenFlow / Mermaid for the same concept
+2. **2D default** — Lucide icons + neutral `bg-fd-card` chips; **no emoji on saturated fills**
+3. **Stable layout** — `min-h-[220px]` ConceptFrame; no overflowing absolute labels
+4. **Data-bound** — fruit corpus; `P(apple|i like) = 72%`, banana 18%, mango 10%
+5. **Motion** with `prefers-reduced-motion` via `useReducedMotion`
+6. **3D only when spatial intuition helps** — e.g. embedding space (M6); attention stays 2D heatmap
+7. **Lesson-specific animations** — 40+ named anims in `components/diagrams/` (not generic reuse)
+
+**Shared primitives:** `components/diagrams/diagram-ui.tsx` — `ConceptFrame`, `StepChip`, `FlowConnector`, `ModelBadge`, `StepDots`
 
 ### 7.6 Visualizer
 
@@ -483,8 +490,8 @@ fruit is healthy
 | Item | Status | Notes |
 |------|--------|-------|
 | Mermaid on lessons | Done | ~55 blocks |
-| `<ConceptAnim>` | Done | All 49 lessons |
-| Diagrams use lesson data | Done | `example` prop + lesson-concepts.ts |
+| `<ConceptAnim>` lesson-specific | Done | 40+ anims, slug auto-wiring |
+| Diagrams use lesson data | Done | `lesson-concepts.ts` + `shared-data.ts` |
 | Live viz from Run output | Done | `viz` prop on softmax, train, self-attention |
 | Motion animations | Done | All 7 ConceptAnim components |
 | Animated toolbar icons | Done | Motion-enhanced Run/Copy/Reset |

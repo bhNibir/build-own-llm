@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActivePulse } from './ConceptAnim';
+import { ActiveRing } from './diagram-ui';
 
 const DEFAULT_SENTENCE = ['i', 'like', 'apple'];
 const DEFAULT_PAIRS = [
@@ -90,7 +90,7 @@ export function BigramScanAnim({
             }`}
             animate={idx === i ? { scale: 1.02 } : { scale: 1 }}
           >
-            <ActivePulse active={idx === i} />
+            <ActiveRing active={idx === i} />
             <span>
               {p.from} → {p.to}
             </span>

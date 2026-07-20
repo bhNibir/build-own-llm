@@ -5,7 +5,7 @@ description: Position-wise MLP — attention-এর পর non-linear transform
 
 # 🔧 Feed-Forward Network (FFN)
 
-<ConceptAnim name="llm-pipeline" caption="Feed-forward network" />
+<ConceptAnim slug="part-08-transformer/03-ffn" />
 
 Attention tokens-এর মধ্যে information mix করে। **FFN** প্রতিটা token-এ independently **non-linear transformation** apply করে — "think deeper" step।
 
@@ -33,8 +33,6 @@ $$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
 - Expand: `D → 4D` (typically 4× embedding size)
 - Activation: **GELU** (GPT) or ReLU
 - Project back: `4D → D`
-
-<Illustration name="neuron-diagram" />
 
 ## Why 4× Expansion?
 

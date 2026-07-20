@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { Activity } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { FlowArrow } from './ConceptAnim';
+import { FlowConnector } from './diagram-ui';
 
 const STEPS = ['Forward', 'Loss', 'Backward', 'Update'];
 
@@ -54,7 +54,7 @@ export function TrainLoopAnim({ paused }: { paused?: boolean }) {
                 />
               )}
             </motion.div>
-            {i < STEPS.length - 1 && <FlowArrow className="hidden sm:flex" />}
+            {i < STEPS.length - 1 && <FlowConnector className="hidden sm:flex" />}
           </div>
         ))}
       </div>

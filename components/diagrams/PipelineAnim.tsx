@@ -1,16 +1,18 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
+import { Type, List, Hash, Brain, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import type { ConceptExample } from './lesson-concepts';
 
-const NODES = [
-  { emoji: '📝', label: 'Text', color: 'bg-indigo-500' },
-  { emoji: '🔤', label: 'Tokenizer', color: 'bg-violet-500' },
-  { emoji: '📖', label: 'Vocab', color: 'bg-purple-500' },
-  { emoji: '🔢', label: 'Encode', color: 'bg-fuchsia-500' },
-  { emoji: '🧠', label: 'Model', color: 'bg-pink-500' },
-  { emoji: '🎯', label: 'Predict', color: 'bg-rose-500' },
+const NODES: { label: string; icon: LucideIcon }[] = [
+  { label: 'Text', icon: Type },
+  { label: 'Tokenizer', icon: Type },
+  { label: 'Vocab', icon: List },
+  { label: 'Encode', icon: Hash },
+  { label: 'Model', icon: Brain },
+  { label: 'Predict', icon: Target },
 ];
 
 export function PipelineAnim({
@@ -28,66 +30,37 @@ export function PipelineAnim({
     return () => clearInterval(t);
   }, [paused]);
 
-  const inputHint = example?.input ? `"${example.input}"` : null;
-
   return (
-    <div className="overflow-x-auto pb-2">
-      {inputHint && (
-        <p className="mb-3 text-center font-mono text-sm text-indigo-600 dark:text-indigo-400">
-          Input: {inputHint}
+    <div className="space-y-3 overflow-x-auto pb-1">
+      {example?.input && (
+        <p className="text-center font-mono text-sm text-fd-muted-foreground">
+          Input: &quot;{example.input}&quot;
         </p>
       )}
-      <div className="flex min-w-max items-center justify-center gap-0 px-2">
-        {NODES.map((node, i) => (
-          <div key={node.label} className="flex items-center">
-            <motion.div
-              layout
-              className={`relative flex flex-col items-center rounded-xl px-3 py-3 sm:px-4 ${
-                active === i
-                  ? `${node.color} text-white shadow-xl ring-4 ring-white/30`
-                  : active > i
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
-                    : 'bg-fd-muted text-fd-muted-foreground'
-              }`}
-              animate={active === i ? { scale: 1.1 } : { scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            >
-              <span className="text-2xl">{node.emoji}</span>
-              <span className="mt-1 text-xs font-semibold">{node.label}</span>
-              <AnimatePresence>
-                {active === i && (
-                  <motion.span
-                    className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-medium text-indigo-600 dark:text-indigo-400"
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    processing…
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.div>
-            {i < NODES.length - 1 && (
-              <div className="relative mx-0.5 flex w-6 items-center sm:w-10">
-                <motion.div
-                  className="h-1 w-full rounded"
-                  animate={{
-                    backgroundColor: active > i ? 'rgb(52 211 153)' : 'var(--color-fd-border)',
-                  }}
-                />
-                {active === i && (
-                  <motion.span
-                    className="absolute text-indigo-500"
-                    animate={{ x: [0, 12, 0] }}
-                    transition={{ repeat: Infinity, duration: 1 }}
-                  >
-                    ▶
-                  </motion.span>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="flex min-w-max items-center justify-center gap-1 px-2">
+        {NODES.map((node, i) => {
+          const Icon = node.icon;
+          return (
+            <div key={node.label} className="flex items-center">
+              <motion.div
+                className={`flex flex-col items-center rounded-lg border px-2.5 py-2 sm:px-3 ${
+                  active === i
+                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
+                    : active > i
+                      ? 'border-emerald-400/60 bg-emerald-50/50 dark:bg-emerald-950/20'
+                      : 'border-fd-border bg-fd-muted/20'
+                }`}
+                animate={active === i ? { scale: 1.04 } : { scale: 1 }}
+              >
+                <Icon className="h-4 w-4 text-fd-foreground" />
+                <span className="mt-1 text-[10px] font-medium">{node.label}</span>
+              </motion.div>
+              {i < NODES.length - 1 && (
+                <div className="mx-0.5 h-px w-4 bg-fd-border sm:w-6" />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

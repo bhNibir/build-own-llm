@@ -5,7 +5,7 @@ description: Embedding vector থেকে next-token logits — neural bigram
 
 # ⚖️ Weight Matrix W
 
-<ConceptAnim name="next-token" caption="Weight matrix → logits" />
+<ConceptAnim slug="part-06-neural-lm/02-weight-matrix" />
 
 Embedding vector পেলাম — এখন **next token predict** করতে হবে। Weight matrix `W` embedding-কে **logits**-এ convert করে।
 
@@ -44,8 +44,6 @@ W = [[0.5, 0.2, -0.3],
 logits = W @ embed = [0.18, 0.0, -0.16]
 probs  = softmax(logits) ≈ [0.45, 0.37, 0.18]
 ```
-
-<Illustration name="matrix-grid" />
 
 ## Softmax = Probability
 

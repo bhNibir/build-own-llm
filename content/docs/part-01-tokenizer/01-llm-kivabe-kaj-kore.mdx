@@ -3,24 +3,13 @@ title: LLM কীভাবে কাজ করে?
 description: Next token prediction — LLM-এর মূল ধারণা
 ---
 
-# 🧠 LLM কীভাবে কাজ করে?
+# LLM কীভাবে কাজ করে?
 
-<ConceptAnim name="next-token" caption="Context দেখে model পরের token-এর probability বের করে" />
+<ConceptAnim slug="part-01-tokenizer/01-llm-kivabe-kaj-kore" />
 
 একটা LLM আসলে **"next token prediction machine"**।
 
 মানে, তুমি কিছু text দিলে সে বলে: "পরেরটা কী হওয়া উচিত?"
-
-```mermaid
-flowchart TD
-    input["📝 Input: i like"]:::input --> model["🧠 Language Model"]:::process
-    model --> apple["🍎 apple 72%"]:::out
-    model --> banana["🍌 banana 18%"]:::out
-    model --> mango["🥭 mango 10%"]:::out
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
-    classDef out fill:#F59E0B,color:#fff,stroke:#D97706
-```
 
 ## উদাহরণ
 
@@ -49,30 +38,14 @@ i like apple
 Model ভাবে:
 
 ```
-is → 100% chance
+(end of sentence — model learns from corpus)
 ```
 
 এভাবে একটার পর একটা word generate করে পুরো sentence তৈরি হয়।
 
-## পুরো Pipeline
+## Module 1 focus — data pipeline
 
-<ConceptAnim name="llm-pipeline" caption="Text থেকে prediction — step-by-step data flow" />
-
-```mermaid
-flowchart TD
-    text["📝 Text"]:::a --> tokenizer["🔤 Tokenizer"]:::b
-    tokenizer --> vocab["📖 Vocabulary"]:::b
-    vocab --> embedding["🔢 Embedding"]:::b
-    embedding --> transformer["🧠 Transformer"]:::b
-    transformer --> logits["📊 Logits"]:::b
-    logits --> softmax["⚡ Softmax"]:::b
-    softmax --> nextToken["🎯 Next Token"]:::c
-    classDef a fill:#4F46E5,color:#fff
-    classDef b fill:#10B981,color:#fff
-    classDef c fill:#F59E0B,color:#fff
-```
-
-আমরা এখন **শুধু প্রথম ২টা step** করব (Tokenizer + Vocabulary)। বাকিগুলো পরের Part-এ।
+<ConceptAnim name="pipeline-zoom" caption="এই Module-এ Tokenizer → Vocab → Encode → Pairs" />
 
 ## GPT-4 vs আমাদের Model
 

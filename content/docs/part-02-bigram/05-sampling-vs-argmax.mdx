@@ -5,7 +5,7 @@ description: কেন LLM random text generate করে
 
 # Sampling vs Argmax
 
-<ConceptAnim name="softmax-bars" caption="Sampling vs always picking max" />
+<ConceptAnim slug="part-02-bigram/05-sampling-vs-argmax" />
 
 আগের lesson-এ দেখলাম argmax দিয়ে generate করলে **সবসময় same output**। কিন্তু ChatGPT তো প্রতিবার আলাদা answer দেয় — কেন?
 
@@ -49,9 +49,9 @@ flowchart TD
         a1["like"] --> a2["always apple"]
     end
     subgraph sampling [Sampling]
-        s1["like"] --> s2["apple 50%"]
-        s1 --> s3["banana 25%"]
-        s1 --> s4["mango 25%"]
+        s1["like"] --> s2["apple 72%"]
+        s1 --> s3["banana 18%"]
+        s1 --> s4["mango 10%"]
     end
 ```
 
