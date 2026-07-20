@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 import { VOCAB } from './shared-data';
 
 const ROWS = 4;
@@ -26,13 +26,13 @@ export function EmbeddingLookupAnim({ paused }: { paused?: boolean }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-start justify-center gap-4">
-        <MonoBox active className="text-center">
+        <SketchBox fillStyle="solid" palette="blue" active className="text-center">
           <span className="text-xs text-fd-muted-foreground">token ID</span>
           <div className="text-lg font-bold text-indigo-600">{HIGHLIGHT_ID}</div>
           <div className="font-mono text-sm">{apple}</div>
-        </MonoBox>
+        </SketchBox>
 
-        <div className="text-fd-muted-foreground self-center">→ row</div>
+        <div className="self-center text-fd-muted-foreground">→ row</div>
 
         <div className="overflow-x-auto">
           <p className="mb-1 text-center text-xs font-semibold">E (embedding matrix)</p>
@@ -55,15 +55,16 @@ export function EmbeddingLookupAnim({ paused }: { paused?: boolean }) {
                 {Array.from({ length: COLS }, (_, c) => (
                   <motion.div
                     key={`${r}-${c}`}
-                    className={`flex h-7 items-center justify-center font-mono text-[10px] ${
-                      r === HIGHLIGHT_ID
-                        ? 'bg-indigo-500 text-white'
-                        : 'border border-fd-border bg-fd-muted/30 text-fd-foreground'
-                    }`}
                     animate={r === HIGHLIGHT_ID && pulse ? { scale: 1.08 } : { scale: 1 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   >
-                    {cellValue(r, c)}
+                    <SketchBox
+                      fillStyle="solid"
+                      palette={r === HIGHLIGHT_ID ? 'blue' : 'neutral'}
+                      className="flex h-7 items-center justify-center px-1 py-0 font-mono text-[10px]"
+                    >
+                      {cellValue(r, c)}
+                    </SketchBox>
                   </motion.div>
                 ))}
               </div>

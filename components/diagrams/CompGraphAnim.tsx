@@ -2,9 +2,14 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, StepChip } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const NODES = ['a', 'b', 'c'];
+const HINTS = [
+  { bn: 'ইনপুট', en: 'input' },
+  { bn: 'লুকানো', en: 'hidden' },
+  { bn: 'আউটপুট', en: 'output' },
+];
 
 export function CompGraphAnim({ paused }: { paused?: boolean }) {
   const [active, setActive] = useState(0);
@@ -17,12 +22,19 @@ export function CompGraphAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Computational graph" en="forward pass" />
+      <DataLabel bn="কম্পিউটেশনাল গ্রাফ — সামনে এগোয়" en="forward pass" />
       <div className="flex items-center justify-center">
         {NODES.map((n, i) => (
           <div key={n} className="flex items-center">
             <motion.div animate={{ scale: active === i ? 1.1 : 1 }} transition={{ type: 'spring', stiffness: 300, damping: 22 }}>
-              <StepChip label={n} active={active === i} done={active > i} />
+              <SketchBox
+                fillStyle={active === i ? 'hachure' : 'solid'}
+                palette={active === i ? 'blue' : active > i ? 'green' : 'neutral'}
+                active={active === i}
+                className="px-3 py-1.5 font-mono text-sm font-medium"
+              >
+                {n}
+              </SketchBox>
             </motion.div>
             {i < NODES.length - 1 && (
               <motion.div animate={{ opacity: active > i ? 1 : 0.35 }}>
@@ -32,22 +44,16 @@ export function CompGraphAnim({ paused }: { paused?: boolean }) {
           </div>
         ))}
       </div>
-      <div className="flex justify-center gap-4 text-xs text-fd-muted-foreground">
-        <MonoHint label="input" show={active >= 0} />
-        <MonoHint label="hidden" show={active >= 1} />
-        <MonoHint label="output" show={active >= 2} />
+      <div className="flex justify-center gap-4">
+        {HINTS.map((h, i) => (
+          <motion.div key={h.en} animate={{ opacity: active >= i ? 1 : 0.3 }}>
+            <SketchBox fillStyle="solid" palette="neutral" className="px-2 py-0.5 font-mono text-xs">
+              {h.bn}
+              <span className="ml-1 text-indigo-600 dark:text-indigo-400">({h.en})</span>
+            </SketchBox>
+          </motion.div>
+        ))}
       </div>
     </div>
-  );
-}
-
-function MonoHint({ label, show }: { label: string; show: boolean }) {
-  return (
-    <motion.span
-      className="rounded border border-fd-border px-2 py-0.5 font-mono"
-      animate={{ opacity: show ? 1 : 0.3 }}
-    >
-      {label}
-    </motion.span>
   );
 }

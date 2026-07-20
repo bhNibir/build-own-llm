@@ -33,6 +33,7 @@ import { LayerStackAnim } from './LayerStackAnim';
 import { MlpForwardAnim } from './MlpForwardAnim';
 import { XorPlotAnim } from './XorPlotAnim';
 import { EmbeddingLookupAnim } from './EmbeddingLookupAnim';
+import { EmbeddingSpace3D } from './EmbeddingSpace3D';
 import { LogitsMatmulAnim } from './LogitsMatmulAnim';
 import { DependencyLinesAnim } from './DependencyLinesAnim';
 import { QkvSplitAnim } from './QkvSplitAnim';
@@ -85,6 +86,7 @@ const concepts: Record<string, ComponentType<AnimProps>> = {
   'mlp-forward': MlpForwardAnim,
   'xor-plot': XorPlotAnim,
   'embedding-lookup': EmbeddingLookupAnim,
+  'embedding-space-3d': EmbeddingSpace3D,
   'logits-matmul': LogitsMatmulAnim,
   'dependency-lines': DependencyLinesAnim,
   'qkv-split': QkvSplitAnim,

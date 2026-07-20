@@ -9,6 +9,17 @@ description: Sentence কে number list-এ convert করা
 
 Vocabulary আছে। এখন sentence কে number list-এ convert করব — এটাই **Encoding**। উল্টোটা **Decoding**।
 
+```mermaid
+flowchart LR
+    A["i like apple"]:::input --> B["Encode"]:::process
+    B --> C["7, 9, 0"]:::output
+    C --> D["Decode"]:::process
+    D --> E["i like apple"]:::input
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+```
+
 ## Encoding
 
 Sentence → Number list

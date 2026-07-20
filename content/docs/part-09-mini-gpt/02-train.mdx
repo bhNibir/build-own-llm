@@ -3,7 +3,7 @@ title: Train Mini GPT
 description: Fruit dataset-এ ~500-line TypeScript training loop
 ---
 
-# 🏋️ Train Mini GPT
+# Train Mini GPT
 
 <ConceptAnim slug="part-09-mini-gpt/02-train" />
 
@@ -15,22 +15,18 @@ Architecture বুঝলাম — এখন **train** করব fruit dataset-
 
 ```mermaid
 flowchart TD
-    A["📂 Fruit dataset"]:::data --> B["🔀 Batches"]:::batch
-    B --> C["➡️ Forward (4 blocks)"]:::fwd
-    C --> D["📉 Cross-entropy loss"]:::loss
-    D --> E["⬅️ Backprop"]:::bwd
-    E --> F["🔄 Adam update"]:::upd
-    F --> G{"Converged?"}:::check
+    A["Fruit dataset"]:::input --> B["Batches"]:::process
+    B --> C["Forward (4 blocks)"]:::process
+    C --> D["Cross-entropy loss"]:::output
+    D --> E["Backprop"]:::process
+    E --> F["Adam update"]:::process
+    F --> G{"Converged?"}:::highlight
     G -->|No| B
-    G -->|Yes| H["💾 Saved weights"]:::done
-    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef batch fill:#10B981,color:#fff,stroke:#047857
-    classDef fwd fill:#6366F1,color:#fff,stroke:#4338CA
-    classDef loss fill:#EF4444,color:#fff,stroke:#DC2626
-    classDef bwd fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef upd fill:#8B5CF6,color:#fff,stroke:#7C3AED
-    classDef check fill:#EC4899,color:#fff,stroke:#DB2777
-    classDef done fill:#10B981,color:#fff,stroke:#047857
+    G -->|Yes| H["Saved weights"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 ## Training Loop

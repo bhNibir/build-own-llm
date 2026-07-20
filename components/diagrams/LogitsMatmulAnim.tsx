@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const E = [0.3, 0.5, 0.2];
 const W = [
@@ -32,14 +32,15 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
           <p className="mb-1 text-xs font-semibold">E (1×d)</p>
           <div className="flex flex-col gap-0.5">
             {E.map((v, i) => (
-              <motion.div
+              <SketchBox
                 key={i}
-                className={`rounded border px-3 py-1 font-mono text-xs ${
-                  step === 0 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40' : 'border-fd-border bg-fd-muted/30'
-                }`}
+                fillStyle="solid"
+                palette={step === 0 ? 'blue' : 'neutral'}
+                active={step === 0}
+                className="px-3 py-1 font-mono text-xs"
               >
                 {v.toFixed(1)}
-              </motion.div>
+              </SketchBox>
             ))}
           </div>
         </div>
@@ -51,16 +52,14 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
           <div className="grid grid-cols-3 gap-0.5">
             {W.flatMap((row, r) =>
               row.map((v, c) => (
-                <motion.div
+                <SketchBox
                   key={`${r}-${c}`}
-                  className={`flex h-7 w-9 items-center justify-center font-mono text-[10px] ${
-                    step > 0 && step - 1 === c
-                      ? 'bg-emerald-500 text-white'
-                      : 'border border-fd-border bg-fd-muted/30'
-                  }`}
+                  fillStyle="solid"
+                  palette={step > 0 && step - 1 === c ? 'green' : 'neutral'}
+                  className="flex h-7 w-9 items-center justify-center px-0 py-0 font-mono text-[10px]"
                 >
                   {v.toFixed(1)}
-                </motion.div>
+                </SketchBox>
               )),
             )}
           </div>
@@ -74,14 +73,16 @@ export function LogitsMatmulAnim({ paused }: { paused?: boolean }) {
             {logits.map((z, i) => (
               <motion.div
                 key={LABELS[i]}
-                className={`rounded border px-3 py-1 font-mono text-xs ${
-                  step > 0 && step - 1 === i
-                    ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/40'
-                    : 'border-fd-border bg-fd-muted/30'
-                }`}
                 animate={step > 0 && step - 1 === i ? { scale: 1.06 } : { scale: 1 }}
               >
-                {z.toFixed(2)}
+                <SketchBox
+                  fillStyle="solid"
+                  palette={step > 0 && step - 1 === i ? 'violet' : 'neutral'}
+                  active={step > 0 && step - 1 === i}
+                  className="px-3 py-1 font-mono text-xs"
+                >
+                  {z.toFixed(2)}
+                </SketchBox>
               </motion.div>
             ))}
           </div>

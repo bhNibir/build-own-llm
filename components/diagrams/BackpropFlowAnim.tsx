@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, StepChip } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const NODES = ['c', 'b', 'a'];
 
@@ -17,12 +17,19 @@ export function BackpropFlowAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Backpropagation" en="grad flows backward" />
+      <DataLabel bn="ব্যাকপ্রপ — গ্র্যাডিয়েন্ট পেছনে যায়" en="grad flows backward" />
       <div className="flex items-center justify-center">
         {NODES.map((n, i) => (
           <div key={n} className="flex items-center">
             <motion.div animate={{ scale: edge === i ? 1.1 : 1 }} transition={{ type: 'spring', stiffness: 300, damping: 22 }}>
-              <StepChip label={n} active={edge === i} done={edge > i} />
+              <SketchBox
+                fillStyle={edge === i ? 'hachure' : 'solid'}
+                palette={edge === i ? 'violet' : edge > i ? 'green' : 'neutral'}
+                active={edge === i}
+                className="px-3 py-1.5 font-mono text-sm font-medium"
+              >
+                {n}
+              </SketchBox>
             </motion.div>
             {i < NODES.length - 1 && (
               <motion.div
@@ -44,7 +51,7 @@ export function BackpropFlowAnim({ paused }: { paused?: boolean }) {
           </div>
         ))}
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">loss at c → chain rule → update a</p>
+      <DataLabel bn="loss at c → chain rule → update a" en="backprop" />
     </div>
   );
 }

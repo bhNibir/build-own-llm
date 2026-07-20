@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const RAW = [1.0, 3.0, 2.0, 8.0, 4.0];
 const mean = RAW.reduce((a, b) => a + b, 0) / RAW.length;
@@ -25,22 +25,29 @@ export function LayernormScaleAnim({ paused }: { paused?: boolean }) {
           <p className="mb-2 text-xs font-semibold">input x</p>
           <div className="flex gap-1">
             {RAW.map((v, i) => (
-              <motion.div
+              <SketchBox
                 key={i}
-                className={`rounded border px-2 py-1 font-mono text-xs ${
-                  step === 0 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40' : 'border-fd-border bg-fd-muted/30'
-                }`}
+                fillStyle="solid"
+                palette={step === 0 ? 'blue' : 'neutral'}
+                active={step === 0}
+                className="px-2 py-1 font-mono text-xs"
               >
                 {v}
-              </motion.div>
+              </SketchBox>
             ))}
           </div>
         </div>
 
         {step >= 1 && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-xs">
-            <p className="font-semibold text-emerald-600">μ = {mean.toFixed(2)}</p>
-            {step >= 2 && <p className="font-semibold text-violet-600">σ² = {variance.toFixed(2)}</p>}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col justify-center gap-1 text-center text-xs">
+            <SketchBox fillStyle="solid" palette="green" className="px-2 py-1 font-semibold">
+              μ = {mean.toFixed(2)}
+            </SketchBox>
+            {step >= 2 && (
+              <SketchBox fillStyle="solid" palette="violet" className="px-2 py-1 font-semibold">
+                σ² = {variance.toFixed(2)}
+              </SketchBox>
+            )}
           </motion.div>
         )}
 
@@ -49,9 +56,9 @@ export function LayernormScaleAnim({ paused }: { paused?: boolean }) {
             <p className="mb-2 text-xs font-semibold">normalized</p>
             <div className="flex gap-1">
               {normed.map((v, i) => (
-                <div key={i} className="rounded border border-indigo-500 bg-indigo-500 px-2 py-1 font-mono text-xs text-white">
+                <SketchBox key={i} fillStyle="solid" palette="blue" active className="px-2 py-1 font-mono text-xs">
                   {v.toFixed(2)}
-                </div>
+                </SketchBox>
               ))}
             </div>
           </motion.div>

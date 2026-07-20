@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 const ARCS = [{ from: 0, to: 2, label: 'long-range' }];
@@ -40,21 +40,24 @@ export function DependencyLinesAnim({ paused }: { paused?: boolean }) {
         </svg>
 
         <div className="absolute bottom-0 flex w-full justify-between px-6">
-          {TOKENS.map((t, i) => (
-            <motion.div
-              key={t}
-              className={`relative rounded-lg border px-4 py-2 font-mono text-sm ${
-                active === 1 && (i === arc.from || i === arc.to)
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
-                  : 'border-fd-border bg-fd-muted/30'
-              }`}
-              animate={
-                active === 1 && (i === arc.from || i === arc.to) ? { y: -4 } : { y: 0 }
-              }
-            >
-              {t}
-            </motion.div>
-          ))}
+          {TOKENS.map((t, i) => {
+            const lit = active === 1 && (i === arc.from || i === arc.to);
+            return (
+              <motion.div
+                key={t}
+                animate={lit ? { y: -4 } : { y: 0 }}
+              >
+                <SketchBox
+                  fillStyle={lit ? 'hachure' : 'solid'}
+                  palette={lit ? 'blue' : 'neutral'}
+                  active={lit}
+                  className="px-4 py-2 font-mono text-sm"
+                >
+                  {t}
+                </SketchBox>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
       <DataLabel bn="দূরের token-এর উপর নির্ভর — attention-এর মূল কারণ" en="dependency" />

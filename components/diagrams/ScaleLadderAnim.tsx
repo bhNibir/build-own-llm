@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const RUNGS = [
   { name: 'Fruit Mini GPT', params: '~270K', tokens: '30 words', active: true },
@@ -26,21 +26,21 @@ export function ScaleLadderAnim({ paused }: { paused?: boolean }) {
         {RUNGS.map((rung, i) => (
           <motion.div
             key={rung.name}
-            className={`flex items-center gap-3 rounded-lg border py-2 pl-3 pr-4 ${
-              step === i
-                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
-                : i === 0
-                  ? 'border-emerald-400/50 bg-emerald-50/50 dark:bg-emerald-950/20'
-                  : 'border-fd-border bg-fd-muted/20'
-            }`}
             style={{ marginLeft: `${i * 12}px` }}
             animate={step === i ? { scale: 1.02 } : { scale: 1 }}
           >
-            <div className="flex-1">
-              <p className="text-sm font-medium">{rung.name}</p>
-              <p className="text-[10px] text-fd-muted-foreground">{rung.tokens}</p>
-            </div>
-            <span className="font-mono text-xs font-semibold text-indigo-600">{rung.params}</span>
+            <SketchBox
+              fillStyle={step === i ? 'hachure' : 'solid'}
+              palette={step === i ? 'blue' : i === 0 ? 'green' : 'neutral'}
+              active={step === i}
+              className="flex items-center gap-3 py-2 pl-3 pr-4"
+            >
+              <div className="flex-1">
+                <p className="text-sm font-medium">{rung.name}</p>
+                <p className="text-[10px] text-fd-muted-foreground">{rung.tokens}</p>
+              </div>
+              <span className="font-mono text-xs font-semibold text-indigo-600">{rung.params}</span>
+            </SketchBox>
           </motion.div>
         ))}
       </div>

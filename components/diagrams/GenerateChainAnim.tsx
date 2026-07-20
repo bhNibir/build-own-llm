@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, StepChip } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const CHAIN = ['i', 'like', 'apple', 'i', 'like'];
 
@@ -19,30 +19,41 @@ export function GenerateChainAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Autoregressive generation" en="one token at a time" />
+      <DataLabel bn="একটা একটা করে token তৈরি" en="autoregressive generation" />
       <div className="flex flex-wrap items-center justify-center gap-1">
-        {visible.map((w, i) => (
-          <div key={`${w}-${i}`} className="flex items-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            >
-              <StepChip label={w} active={i === visible.length - 1} done={i < visible.length - 1} />
-            </motion.div>
-            {i < visible.length - 1 && <FlowConnector />}
-          </div>
-        ))}
+        {visible.map((w, i) => {
+          const isLast = i === visible.length - 1;
+          const isDone = i < visible.length - 1;
+          return (
+            <div key={`${w}-${i}`} className="flex items-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+              >
+                <SketchBox
+                  fillStyle={isLast ? 'hachure' : 'solid'}
+                  palette={isLast ? 'blue' : isDone ? 'green' : 'neutral'}
+                  active={isLast}
+                  className="px-3 py-1.5 font-mono text-sm font-medium"
+                >
+                  {w}
+                </SketchBox>
+              </motion.div>
+              {i < visible.length - 1 && <FlowConnector />}
+            </div>
+          );
+        })}
         {len < CHAIN.length && (
           <>
             <FlowConnector />
-            <StepChip label="..." />
+            <SketchBox fillStyle="solid" palette="neutral" className="px-3 py-1.5 font-mono text-sm">
+              ...
+            </SketchBox>
           </>
         )}
       </div>
-      <p className="text-center font-mono text-xs text-fd-muted-foreground">
-        context → model → next token → append → repeat
-      </p>
+      <DataLabel bn="context → model → next → append → repeat" en="generation loop" />
     </div>
   );
 }

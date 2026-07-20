@@ -1,9 +1,9 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const DEFAULT_TOKENS = ['i', 'like', 'apple'];
 const DEFAULT_WEIGHTS = [
@@ -21,60 +21,66 @@ export function AttentionFlowAnim({
 }) {
   const [activeRow, setActiveRow] = useState(0);
   const [activeCol, setActiveCol] = useState(0);
-
   const tokens = example?.tokens ?? DEFAULT_TOKENS;
   const matrix = DEFAULT_WEIGHTS;
+  const rowRef = useRef(0);
+  const colRef = useRef(0);
 
   useEffect(() => {
     if (paused) return;
-    let col = 0;
-    let row = 0;
+    rowRef.current = 0;
+    colRef.current = 0;
+    setActiveRow(0);
+    setActiveCol(0);
+
     const tick = () => {
-      col += 1;
+      let col = colRef.current + 1;
+      let row = rowRef.current;
       if (col >= tokens.length) {
         col = 0;
         row = (row + 1) % tokens.length;
-        setActiveRow(row);
       }
+      colRef.current = col;
+      rowRef.current = row;
       setActiveCol(col);
+      setActiveRow(row);
     };
+
     const t = setInterval(tick, 900);
     return () => clearInterval(t);
   }, [paused, tokens.length]);
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Query × Key = attention score" en="scaled dot-product" />
+      <DataLabel bn="প্রতিটি Query সব Key-এর সাথে compare করে" en="attention scores" />
       <div className="flex justify-center gap-6">
         <div className="text-center">
-          <p className="mb-2 text-xs font-semibold text-fd-muted-foreground">Query</p>
+          <p className="mb-2 text-xs font-semibold text-violet-600 dark:text-violet-300">Query</p>
           {tokens.map((t, i) => (
-            <div
+            <SketchBox
               key={t + i}
-              className={`mb-1 rounded border-2 px-3 py-1 font-mono text-sm ${
-                activeRow === i
-                  ? 'border-violet-500 bg-violet-50 text-violet-900 dark:bg-violet-950/40 dark:text-violet-100'
-                  : 'border-dashed border-fd-border'
-              }`}
+              fillStyle="solid"
+              palette={activeRow === i ? 'violet' : 'neutral'}
+              active={activeRow === i}
+              className="mb-1 font-mono text-sm"
             >
               {t}
-            </div>
+            </SketchBox>
           ))}
         </div>
         <div className="flex items-center text-fd-muted-foreground">×</div>
         <div className="text-center">
-          <p className="mb-2 text-xs font-semibold text-fd-muted-foreground">Key</p>
+          <p className="mb-2 text-xs font-semibold text-emerald-600 dark:text-emerald-300">Key</p>
           {tokens.map((t, i) => (
-            <div
+            <SketchBox
               key={t + i}
-              className={`mb-1 rounded border-2 px-3 py-1 font-mono text-sm ${
-                activeCol === i
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100'
-                  : 'border-dashed border-fd-border'
-              }`}
+              fillStyle="solid"
+              palette={activeCol === i ? 'green' : 'neutral'}
+              active={activeCol === i}
+              className="mb-1 font-mono text-sm"
             >
               {t}
-            </div>
+            </SketchBox>
           ))}
         </div>
       </div>
@@ -86,9 +92,9 @@ export function AttentionFlowAnim({
             row.map((w, c) => (
               <motion.div
                 key={`${r}-${c}`}
-                className={`flex h-11 items-center justify-center rounded border-2 font-mono text-xs ${
+                className={`flex h-11 items-center justify-center rounded-lg border-2 font-mono text-xs ${
                   activeRow === r && activeCol === c
-                    ? 'border-amber-500 bg-amber-50 text-amber-900 dark:bg-amber-950/40'
+                    ? 'border-amber-500 bg-amber-50 text-amber-900 dark:bg-amber-950/50 dark:text-amber-100'
                     : 'border-fd-border bg-fd-muted/30 text-fd-foreground'
                 }`}
                 animate={activeRow === r && activeCol === c ? { scale: 1.08 } : { scale: 1 }}

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const POINTS = [
   { x: 20, y: 80, label: '0,0', out: 0 },
@@ -26,7 +26,7 @@ export function XorPlotAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="XOR problem" en="non-linear boundary" />
+      <DataLabel bn="XOR সমস্যা — নন-লিনিয়ার সীমানা" en="non-linear boundary" />
       <div className="flex flex-wrap items-start justify-center gap-6">
         <svg viewBox="0 0 100 100" className="h-36 w-36 rounded-lg border border-fd-border">
           <motion.line
@@ -50,12 +50,16 @@ export function XorPlotAnim({ paused }: { paused?: boolean }) {
               />
             ))}
           </div>
-          <MonoBox active className="text-center text-sm">loss = {loss.toFixed(2)}</MonoBox>
+          <SketchBox fillStyle="solid" palette="blue" active className="text-center text-sm">
+            loss = {loss.toFixed(2)}
+          </SketchBox>
         </div>
       </div>
       <div className="flex justify-center gap-2">
         {POINTS.map((p) => (
-          <MonoBox key={p.label} className="text-[10px]">{p.label}→{p.out}</MonoBox>
+          <SketchBox key={p.label} fillStyle="solid" palette={p.out ? 'green' : 'neutral'} className="text-[10px]">
+            {p.label}→{p.out}
+          </SketchBox>
         ))}
       </div>
     </div>

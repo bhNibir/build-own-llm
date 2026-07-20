@@ -108,7 +108,10 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   'part-05-neural-network/03-mlp': { name: 'mlp-forward', caption: 'Signal through stacked layers' },
   'part-05-neural-network/04-xor': { name: 'xor-plot', caption: 'XOR: decision boundary + loss' },
   // Module 6
-  'part-06-neural-lm/01-embedding': { name: 'embedding-lookup', caption: 'Word ID → embedding row lookup' },
+  'part-06-neural-lm/01-embedding': {
+    name: 'embedding-space-3d',
+    caption: 'Similar words কাছাকাছি — embedding vector space',
+  },
   'part-06-neural-lm/02-weight-matrix': { name: 'logits-matmul', caption: 'E × W → logits' },
   'part-06-neural-lm/03-loss': {
     name: 'softmax-bars',

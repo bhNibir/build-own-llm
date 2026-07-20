@@ -3,7 +3,7 @@ title: What's Next
 description: Scaling, pretraining, fine-tuning — Mini GPT থেকে GPT-4
 ---
 
-# 🚀 What's Next?
+# What's Next?
 
 <ConceptAnim slug="part-10-bridge/02-whats-next" />
 
@@ -15,13 +15,13 @@ Mini GPT + nanoGPT = **architecture understood**। Production LLM (GPT-4, Llama
 
 ```mermaid
 flowchart TD
-    A["🎓 Mini GPT<br/>270K params"]:::mini --> B["📖 nanoGPT<br/>10M–124M"]:::nano
-    B --> C["🦙 Llama 3<br/>8B–70B"]:::llama
-    C --> D["🤖 GPT-4<br/>~1.8T (est.)"]:::gpt4
-    classDef mini fill:#10B981,color:#fff,stroke:#047857
-    classDef nano fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef llama fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef gpt4 fill:#6366F1,color:#fff,stroke:#4338CA
+    A["Mini GPT<br/>270K params"]:::process --> B["nanoGPT<br/>10M–124M"]:::next
+    B --> C["Llama 3<br/>8B–70B"]:::output
+    C --> D["GPT-4<br/>~1.8T (est.)"]:::highlight
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef next fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 ## The Scaling Laws
@@ -45,15 +45,13 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    A["🌐 Web crawl"]:::data --> B["🧹 Clean + dedupe"]:::clean
-    B --> C["🔤 Tokenize (BPE)"]:::tok
-    C --> D["🏋️ Pretrain"]:::train
-    D --> E["💾 Base model"]:::base
-    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef clean fill:#10B981,color:#fff,stroke:#047857
-    classDef tok fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef train fill:#EF4444,color:#fff,stroke:#DC2626
-    classDef base fill:#6366F1,color:#fff,stroke:#4338CA
+    A["Web crawl"]:::input --> B["Clean + dedupe"]:::process
+    B --> C["Tokenize (BPE)"]:::process
+    C --> D["Pretrain"]:::process
+    D --> E["Base model"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 Same objective as our course: **minimize cross-entropy on next token** — just 10¹²× more data.
@@ -81,15 +79,13 @@ Same objective as our course: **minimize cross-entropy on next token** — just 
 
 ```mermaid
 flowchart TD
-    A["✅ This course"]:::done --> B["nanoGPT + GPU train"]:::next1
-    B --> C["Hugging Face Transformers"]:::next2
-    C --> D["Fine-tune with LoRA"]:::next3
-    D --> E["Read Llama/GPT papers"]:::next4
-    classDef done fill:#10B981,color:#fff,stroke:#047857
-    classDef next1 fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef next2 fill:#6366F1,color:#fff,stroke:#4338CA
-    classDef next3 fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef next4 fill:#EC4899,color:#fff,stroke:#DB2777
+    A["This course"]:::process --> B["nanoGPT + GPU train"]:::next
+    B --> C["Hugging Face Transformers"]:::next
+    C --> D["Fine-tune with LoRA"]:::next
+    D --> E["Read Llama/GPT papers"]:::output
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef next fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 ## Recommended Resources
@@ -106,7 +102,7 @@ flowchart TD
 ✅ **তুমি course শেষ করেছো** — tokenizer থেকে transformer block পর্যন্ত সব build করেছো। এটা 99% developers-এর চেয়ে বেশি LLM internals knowledge।
 </Callout>
 
-## Course Complete! 🎉
+## Course Complete!
 
 ```
 Module 0:  Intro ✅

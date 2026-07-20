@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const V = [1, 2];
 const SCALE = 28;
@@ -22,7 +22,7 @@ export function VectorAxisAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Vector on 2D grid" en="v = [1, 2]" />
+      <DataLabel bn="ভেক্টর ২D গ্রিডে" en="v = [1, 2]" />
       <svg viewBox="0 0 200 140" className="mx-auto h-36 w-full max-w-xs">
         {[0, 1, 2, 3, 4].map((i) => (
           <g key={i}>
@@ -46,7 +46,9 @@ export function VectorAxisAnim({ paused }: { paused?: boolean }) {
         <circle cx={tip.x} cy={tip.y} r={3} className="fill-indigo-500" />
       </svg>
       <div className="flex justify-center">
-        <MonoBox active={show} className="font-semibold">v = [{V.join(', ')}]</MonoBox>
+        <SketchBox fillStyle="solid" palette={show ? 'blue' : 'neutral'} active={show} className="font-semibold">
+          v = [{V.join(', ')}]
+        </SketchBox>
       </div>
     </div>
   );

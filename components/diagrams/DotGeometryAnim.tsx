@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const A = [3, 1];
 const B = [1, 2];
@@ -25,7 +25,7 @@ export function DotGeometryAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Dot product = projection × length" en="a·b" />
+      <DataLabel bn="ডট প্রোডাক্ট = প্রজেকশন × দৈর্ঘ্য" en="a·b" />
       <svg viewBox="0 0 180 130" className="mx-auto h-32 w-full max-w-xs">
         <line x1={O.x} y1={O.y} x2={O.x + B[0] * SCALE} y2={O.y - B[1] * SCALE} stroke="currentColor" className="text-emerald-600" strokeWidth={2} strokeDasharray={phase >= 1 ? '0' : '4 3'} />
         <line x1={O.x} y1={O.y} x2={O.x + A[0] * SCALE} y2={O.y - A[1] * SCALE} stroke="currentColor" className="text-indigo-500" strokeWidth={2} />
@@ -37,9 +37,15 @@ export function DotGeometryAnim({ paused }: { paused?: boolean }) {
         <circle cx={O.x} cy={O.y} r={2.5} className="fill-fd-foreground" />
       </svg>
       <div className="flex flex-wrap justify-center gap-2">
-        <MonoBox active={phase === 0}>a = [{A.join(',')}]</MonoBox>
-        <MonoBox active={phase === 1}>b = [{B.join(',')}]</MonoBox>
-        <MonoBox active={phase === 2}>a·b = {DOT}</MonoBox>
+        <SketchBox fillStyle="solid" palette={phase === 0 ? 'blue' : 'neutral'} active={phase === 0}>
+          a = [{A.join(',')}]
+        </SketchBox>
+        <SketchBox fillStyle="solid" palette={phase === 1 ? 'green' : 'neutral'} active={phase === 1}>
+          b = [{B.join(',')}]
+        </SketchBox>
+        <SketchBox fillStyle="solid" palette={phase === 2 ? 'violet' : 'neutral'} active={phase === 2}>
+          a·b = {DOT}
+        </SketchBox>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const VALUES = [
   { label: 'x', data: 2.0, grad: 0.0 },
@@ -25,7 +25,7 @@ export function ValueTapeAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Value tape" en="data + grad" />
+      <DataLabel bn="Value টেপ — data ও grad একসাথে" en="data + grad" />
       <div className="mx-auto max-w-xs overflow-hidden rounded-lg border border-fd-border">
         <div className="grid grid-cols-3 border-b border-fd-border bg-fd-muted/40 text-xs font-semibold">
           <span className="px-3 py-1.5">name</span>
@@ -39,8 +39,17 @@ export function ValueTapeAnim({ paused }: { paused?: boolean }) {
             animate={{ backgroundColor: step === i ? 'rgba(99,102,241,0.08)' : 'transparent' }}
           >
             <span className="px-3 py-2 font-mono text-sm">{v.label}</span>
-            <MonoBox className="m-1 border-0 bg-transparent px-2 py-1 text-center text-sm">{v.data.toFixed(1)}</MonoBox>
-            <MonoBox active={step > i} className="m-1 px-2 py-1 text-center text-sm">{v.grad.toFixed(1)}</MonoBox>
+            <SketchBox fillStyle="solid" palette="neutral" className="m-1 border-0 bg-transparent px-2 py-1 text-center font-mono text-sm">
+              {v.data.toFixed(1)}
+            </SketchBox>
+            <SketchBox
+              fillStyle="solid"
+              palette={step > i ? 'violet' : 'neutral'}
+              active={step > i}
+              className="m-1 px-2 py-1 text-center font-mono text-sm"
+            >
+              {v.grad.toFixed(1)}
+            </SketchBox>
           </motion.div>
         ))}
       </div>

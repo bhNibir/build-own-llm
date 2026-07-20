@@ -9,6 +9,7 @@ export type SketchPalette = {
   hatch: string;
 };
 
+/** Light-mode pastel palettes (default) */
 export const sketchPalettes: Record<string, SketchPalette> = {
   blue: { bg: '#E7F5FF', border: '#1971C2', text: '#1E293B', hatch: '#1971C2' },
   green: { bg: '#E6FCF5', border: '#099268', text: '#1E293B', hatch: '#099268' },
@@ -18,33 +19,58 @@ export const sketchPalettes: Record<string, SketchPalette> = {
   neutral: { bg: '#F8F9FA', border: '#495057', text: '#1E293B', hatch: '#868E96' },
 };
 
+/** Dark-mode palettes — saturated fills + light text for Mermaid/SketchBox */
+export const sketchPalettesDark: Record<string, SketchPalette> = {
+  blue: { bg: '#1E1B4B', border: '#818CF8', text: '#E0E7FF', hatch: '#818CF8' },
+  green: { bg: '#064E3B', border: '#34D399', text: '#D1FAE5', hatch: '#34D399' },
+  amber: { bg: '#78350F', border: '#FBBF24', text: '#FEF3C7', hatch: '#FBBF24' },
+  rose: { bg: '#881337', border: '#FB7185', text: '#FFE4E6', hatch: '#FB7185' },
+  violet: { bg: '#4C1D95', border: '#A78BFA', text: '#EDE9FE', hatch: '#A78BFA' },
+  neutral: { bg: '#1E293B', border: '#94A3B8', text: '#CBD5E1', hatch: '#94A3B8' },
+};
+
+export function getSketchPalettes(isDark = false): Record<string, SketchPalette> {
+  return isDark ? sketchPalettesDark : sketchPalettes;
+}
+
 /** Mermaid classDef name → sketch fill + stroke */
 export const mermaidSketchStyles: Record<
   string,
   { fill: SketchFillStyle; stroke: SketchStrokeStyle; palette: keyof typeof sketchPalettes }
 > = {
   input: { fill: 'solid', stroke: 'solid', palette: 'blue' },
-  process: { fill: 'hachure', stroke: 'dashed', palette: 'green' },
-  output: { fill: 'cross-hatch', stroke: 'solid', palette: 'amber' },
-  highlight: { fill: 'cross-hatch', stroke: 'dotted', palette: 'rose' },
-  matrix: { fill: 'hachure', stroke: 'solid', palette: 'violet' },
-  dim: { fill: 'solid', stroke: 'dotted', palette: 'neutral' },
-  weight: { fill: 'hachure', stroke: 'dashed', palette: 'green' },
+  process: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  output: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  highlight: { fill: 'solid', stroke: 'solid', palette: 'rose' },
+  matrix: { fill: 'solid', stroke: 'solid', palette: 'violet' },
+  dim: { fill: 'solid', stroke: 'solid', palette: 'neutral' },
+  weight: { fill: 'solid', stroke: 'solid', palette: 'green' },
   a: { fill: 'solid', stroke: 'solid', palette: 'blue' },
-  b: { fill: 'hachure', stroke: 'dashed', palette: 'green' },
-  c: { fill: 'cross-hatch', stroke: 'solid', palette: 'amber' },
-  out: { fill: 'cross-hatch', stroke: 'solid', palette: 'amber' },
-  train: { fill: 'solid', stroke: 'dashed', palette: 'blue' },
-  model: { fill: 'hachure', stroke: 'solid', palette: 'green' },
-  gpt: { fill: 'cross-hatch', stroke: 'solid', palette: 'amber' },
-  attn: { fill: 'hachure', stroke: 'dotted', palette: 'rose' },
-  mlp: { fill: 'cross-hatch', stroke: 'dashed', palette: 'rose' },
-  block: { fill: 'hachure', stroke: 'solid', palette: 'violet' },
-  data: { fill: 'solid', stroke: 'dotted', palette: 'blue' },
-  lookup: { fill: 'hachure', stroke: 'solid', palette: 'green' },
-  vector: { fill: 'cross-hatch', stroke: 'solid', palette: 'amber' },
+  b: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  c: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  out: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  train: { fill: 'solid', stroke: 'solid', palette: 'blue' },
+  model: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  gpt: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  attn: { fill: 'solid', stroke: 'solid', palette: 'rose' },
+  mlp: { fill: 'solid', stroke: 'solid', palette: 'rose' },
+  block: { fill: 'solid', stroke: 'solid', palette: 'violet' },
+  data: { fill: 'solid', stroke: 'solid', palette: 'blue' },
+  lookup: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  vector: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  scalar: { fill: 'solid', stroke: 'solid', palette: 'blue' },
+  embed: { fill: 'solid', stroke: 'solid', palette: 'violet' },
+  layer: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  bad: { fill: 'solid', stroke: 'solid', palette: 'rose' },
+  good: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  fail: { fill: 'solid', stroke: 'solid', palette: 'rose' },
+  success: { fill: 'solid', stroke: 'solid', palette: 'green' },
   done: { fill: 'solid', stroke: 'solid', palette: 'green' },
-  next: { fill: 'hachure', stroke: 'dashed', palette: 'blue' },
+  next: { fill: 'solid', stroke: 'solid', palette: 'blue' },
+  next1: { fill: 'solid', stroke: 'solid', palette: 'blue' },
+  next2: { fill: 'solid', stroke: 'solid', palette: 'green' },
+  next3: { fill: 'solid', stroke: 'solid', palette: 'amber' },
+  next4: { fill: 'solid', stroke: 'solid', palette: 'violet' },
 };
 
 export function strokeDasharray(style: SketchStrokeStyle): string | null {

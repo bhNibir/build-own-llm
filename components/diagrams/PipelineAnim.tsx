@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { Type, List, Hash, Brain, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { LucideIcon } from 'lucide-react';
-import { SketchBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 import type { SketchFillStyle, SketchStrokeStyle } from './sketch-styles';
 import type { ConceptExample } from './lesson-concepts';
 
@@ -16,11 +16,11 @@ const NODES: {
   palette: 'blue' | 'green' | 'amber' | 'violet' | 'rose';
 }[] = [
   { label: 'Text', icon: Type, fill: 'solid', stroke: 'solid', palette: 'blue' },
-  { label: 'Tokenizer', icon: Type, fill: 'hachure', stroke: 'dashed', palette: 'green' },
-  { label: 'Vocab', icon: List, fill: 'cross-hatch', stroke: 'solid', palette: 'violet' },
-  { label: 'Encode', icon: Hash, fill: 'hachure', stroke: 'dotted', palette: 'amber' },
-  { label: 'Model', icon: Brain, fill: 'solid', stroke: 'dashed', palette: 'rose' },
-  { label: 'Predict', icon: Target, fill: 'cross-hatch', stroke: 'solid', palette: 'green' },
+  { label: 'Tokenizer', icon: Type, fill: 'solid', stroke: 'solid', palette: 'green' },
+  { label: 'Vocab', icon: List, fill: 'solid', stroke: 'solid', palette: 'violet' },
+  { label: 'Encode', icon: Hash, fill: 'solid', stroke: 'solid', palette: 'amber' },
+  { label: 'Model', icon: Brain, fill: 'solid', stroke: 'solid', palette: 'rose' },
+  { label: 'Predict', icon: Target, fill: 'solid', stroke: 'solid', palette: 'green' },
 ];
 
 export function PipelineAnim({
@@ -40,6 +40,7 @@ export function PipelineAnim({
 
   return (
     <div className="space-y-3 overflow-x-auto pb-1">
+      <DataLabel bn="LLM pipeline — ধাপে ধাপে" en="text → predict" />
       {example?.input && (
         <p className="text-center font-mono text-sm text-fd-muted-foreground">
           Input: &quot;{example.input}&quot;
@@ -54,8 +55,8 @@ export function PipelineAnim({
             <div key={node.label} className="flex items-center">
               <motion.div animate={isActive ? { scale: 1.05 } : { scale: 1 }}>
                 <SketchBox
-                  fillStyle={isDone ? 'solid' : node.fill}
-                  strokeStyle={isDone ? 'solid' : node.stroke}
+                  fillStyle={isActive ? 'hachure' : 'solid'}
+                  strokeStyle="solid"
                   palette={isDone ? 'green' : node.palette}
                   active={isActive}
                   className="flex flex-col items-center px-2.5 py-2 sm:px-3"

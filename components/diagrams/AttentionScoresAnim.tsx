@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 const SCORES = [
@@ -27,9 +27,9 @@ export function AttentionScoresAnim({ paused }: { paused?: boolean }) {
         <div className="text-center">
           <p className="mb-1 text-xs font-semibold text-indigo-600">Q</p>
           {TOKENS.map((t) => (
-            <div key={t} className="mb-1 rounded border border-fd-border bg-fd-muted/30 px-2 py-0.5 font-mono text-xs">
+            <SketchBox key={t} fillStyle="solid" palette="blue" className="mb-1 px-2 py-0.5 font-mono text-xs">
               {t}
-            </div>
+            </SketchBox>
           ))}
         </div>
 
@@ -45,13 +45,16 @@ export function AttentionScoresAnim({ paused }: { paused?: boolean }) {
                 return (
                   <motion.div
                     key={`${r}-${c}`}
-                    className={`flex h-10 w-10 items-center justify-center rounded font-mono text-xs ${
-                      on ? 'bg-indigo-500 text-white' : 'border border-dashed border-fd-border bg-fd-muted/20 text-fd-muted-foreground'
-                    }`}
                     animate={on && idx === filled - 1 ? { scale: [1, 1.12, 1] } : { scale: 1 }}
                     transition={{ duration: 0.3 }}
                   >
-                    {on ? s.toFixed(1) : '·'}
+                    <SketchBox
+                      fillStyle="solid"
+                      palette={on ? 'blue' : 'neutral'}
+                      className="flex h-10 w-10 items-center justify-center px-0 py-0 font-mono text-xs"
+                    >
+                      {on ? s.toFixed(1) : '·'}
+                    </SketchBox>
                   </motion.div>
                 );
               }),

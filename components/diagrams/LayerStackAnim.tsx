@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const LAYERS = [
   { label: 'input', size: 3 },
@@ -21,7 +21,7 @@ export function LayerStackAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Layer stack" en="3 → 4 → 2 neurons" />
+      <DataLabel bn="স্তর স্ট্যাক — নিউরন সংখ্যা" en="3 → 4 → 2 neurons" />
       <div className="flex items-end justify-center gap-4">
         {LAYERS.map((layer, li) => (
           <div key={layer.label} className="flex items-end gap-3">
@@ -38,7 +38,13 @@ export function LayerStackAnim({ paused }: { paused?: boolean }) {
                   transition={{ type: 'spring', stiffness: 300, damping: 22 }}
                 />
               ))}
-              <span className="mt-1 text-[10px] font-mono text-fd-muted-foreground">{layer.label}</span>
+              <SketchBox
+                fillStyle={active === li ? 'hachure' : 'solid'}
+                palette={active === li ? 'blue' : 'neutral'}
+                className="mt-1 px-2 py-0.5 font-mono text-[10px]"
+              >
+                {layer.label}
+              </SketchBox>
             </div>
             {li < LAYERS.length - 1 && <FlowConnector className="mb-6" />}
           </div>

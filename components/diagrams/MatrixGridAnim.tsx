@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const MATRIX = [
   [1, 2, 3],
@@ -30,7 +30,7 @@ export function MatrixGridAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Matrix shape 2×3" en="rows × cols" />
+      <DataLabel bn="ম্যাট্রিক্স আকার ২×৩" en="rows × cols" />
       <div className="flex justify-center gap-1">
         {MATRIX.map((row, r) => (
           <div key={r} className="flex flex-col gap-1">
@@ -38,16 +38,21 @@ export function MatrixGridAnim({ paused }: { paused?: boolean }) {
               const active = mode === 'row' ? r === idx : c === idx;
               return (
                 <motion.div key={c} animate={{ scale: active ? 1.08 : 1 }} transition={{ type: 'spring', stiffness: 300, damping: 22 }}>
-                  <MonoBox active={active} className="min-w-[2.5rem] text-center">{val}</MonoBox>
+                  <SketchBox
+                    fillStyle="solid"
+                    palette={active ? 'blue' : 'neutral'}
+                    active={active}
+                    className="min-w-[2.5rem] text-center font-mono"
+                  >
+                    {val}
+                  </SketchBox>
                 </motion.div>
               );
             })}
           </div>
         ))}
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">
-        Highlighting {mode} {idx}
-      </p>
+      <DataLabel bn={`Highlighting ${mode} ${idx}`} en={mode === 'row' ? 'row scan' : 'col scan'} />
     </div>
   );
 }

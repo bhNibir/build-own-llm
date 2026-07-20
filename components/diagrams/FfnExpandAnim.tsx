@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const LAYERS = [
   { label: 'd', width: 48, nodes: 3 },
@@ -22,37 +22,40 @@ export function FfnExpandAnim({ paused }: { paused?: boolean }) {
   return (
     <div className="space-y-4">
       <div className="flex items-end justify-center gap-2">
-        {LAYERS.map((layer, i) => (
-          <div key={layer.label + i} className="flex items-end gap-2">
-            {i > 0 && <FlowConnector />}
-            <motion.div
-              className="flex flex-col items-center gap-1"
-              animate={step === i || (step === 3 && i === 2) ? { scale: 1.04 } : { scale: 1 }}
-            >
-              <div
-                className={`flex items-end justify-center gap-0.5 rounded-lg border p-2 ${
-                  step === i || (step === 3 && i === 2)
-                    ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
-                    : 'border-fd-border bg-fd-muted/20'
-                }`}
-                style={{ minWidth: layer.width }}
+        {LAYERS.map((layer, i) => {
+          const lit = step === i || (step === 3 && i === 2);
+          return (
+            <div key={layer.label + i} className="flex items-end gap-2">
+              {i > 0 && <FlowConnector />}
+              <motion.div
+                className="flex flex-col items-center gap-1"
+                animate={lit ? { scale: 1.04 } : { scale: 1 }}
               >
-                {Array.from({ length: layer.nodes }, (_, n) => (
-                  <motion.div
-                    key={n}
-                    className="w-2 rounded-t bg-indigo-500/70"
-                    animate={{
-                      height: step >= i ? 12 + n * 4 : 8,
-                    }}
-                    transition={{ delay: n * 0.04 }}
-                  />
-                ))}
-              </div>
-              <span className="font-mono text-xs font-semibold">{layer.label}</span>
-              {i === 1 && <span className="text-[10px] text-fd-muted-foreground">ReLU</span>}
-            </motion.div>
-          </div>
-        ))}
+                <SketchBox
+                  fillStyle={lit ? 'hachure' : 'solid'}
+                  palette={lit ? (i === 1 ? 'amber' : 'blue') : 'neutral'}
+                  active={lit}
+                  className="flex items-end justify-center gap-0.5 p-2"
+                >
+                  <div className="flex items-end justify-center gap-0.5" style={{ minWidth: layer.width }}>
+                    {Array.from({ length: layer.nodes }, (_, n) => (
+                      <motion.div
+                        key={n}
+                        className="w-2 rounded-t bg-indigo-500/70"
+                        animate={{
+                          height: step >= i ? 12 + n * 4 : 8,
+                        }}
+                        transition={{ delay: n * 0.04 }}
+                      />
+                    ))}
+                  </div>
+                </SketchBox>
+                <span className="font-mono text-xs font-semibold">{layer.label}</span>
+                {i === 1 && <span className="text-[10px] text-fd-muted-foreground">ReLU</span>}
+              </motion.div>
+            </div>
+          );
+        })}
       </div>
       <DataLabel bn="FFN প্রথমে expand (4d), তারপর compress" en="d → 4d → d" />
     </div>

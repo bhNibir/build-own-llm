@@ -42,18 +42,18 @@ Example: `"i like apple"` sentence-এ attention weights:
   title="Self-Attention: i like apple"
 />
 
-**Reading the heatmap:**
-- Row `"i"`: mostly attends to itself (0.7)
+**Heatmap কীভাবে পড়বে:**
+- Row `"i"`: বেশিরভাগ নিজের দিকেই (0.7)
 - Row `"like"`: strong self-attention (0.8)
-- Row `"apple"`: attends to `"like"` (0.3) and itself (0.5) — verb-object link!
+- Row `"apple"`: `"like"` (0.3) এবং নিজের (0.5) দিকে — verb–object link!
 
 ## Full Implementation
 
 <StepReveal steps={[
-  { emoji: "📥", title: "Input X", body: "3 embeddings (3 × D)" },
-  { emoji: "🔍", title: "Q, K, V", body: "Same X, different projections" },
-  { emoji: "📊", title: "Attention weights", body: "3×3 matrix — who looks at whom" },
-  { emoji: "📤", title: "Output", body: "3 context-enriched vectors" }
+  { title: "Input X", body: "3 embeddings (3 × D)" },
+  { title: "Q, K, V", body: "Same X, different projections" },
+  { title: "Attention weights", body: "3×3 matrix — কে কাকে দেখে" },
+  { title: "Output", body: "3 context-enriched vectors" }
 ]} />
 
 ## Causal vs Full

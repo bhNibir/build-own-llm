@@ -2,10 +2,11 @@
 
 import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { FlowConnector, StepDots } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 import { VOCAB } from './shared-data';
 
-const STEPS = ['Collect unique words', 'Sort alphabetically', 'Assign ID numbers'];
+const STEPS_BN = ['অনন্য শব্দ সংগ্রহ', 'বর্ণানুক্রমে সাজাও', 'ID নম্বর দাও'];
+const STEPS_EN = ['Collect unique words', 'Sort alphabetically', 'Assign ID numbers'];
 
 export function VocabMapAnim({ paused }: { paused?: boolean }) {
   const [step, setStep] = useState(0);
@@ -21,9 +22,7 @@ export function VocabMapAnim({ paused }: { paused?: boolean }) {
   return (
     <div className="space-y-4">
       <StepDots total={3} current={step} onSelect={setStep} />
-      <p className="text-center text-xs font-medium text-fd-foreground">
-        {STEPS[step]}
-      </p>
+      <DataLabel bn={STEPS_BN[step]} en={STEPS_EN[step]} />
 
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <AnimatePresence mode="wait">
@@ -34,12 +33,15 @@ export function VocabMapAnim({ paused }: { paused?: boolean }) {
             className="flex max-w-[280px] flex-wrap justify-center gap-1"
           >
             {(step === 0 ? words.slice(0, 6) : words).map((w) => (
-              <span
+              <SketchBox
                 key={w}
-                className="rounded border-2 border-dashed border-fd-border bg-fd-muted/30 px-2 py-0.5 font-mono text-xs"
+                fillStyle="solid"
+                palette="neutral"
+                strokeStyle="solid"
+                className="px-2 py-0.5 font-mono text-xs"
               >
                 {w}
-              </span>
+              </SketchBox>
             ))}
             {step === 0 && (
               <span className="px-1 text-xs text-fd-muted-foreground">+{words.length - 6} more…</span>
@@ -56,21 +58,23 @@ export function VocabMapAnim({ paused }: { paused?: boolean }) {
               className="grid max-h-[140px] grid-cols-3 gap-1 overflow-y-auto sm:grid-cols-4"
             >
               {VOCAB.map((v) => (
-                <div
+                <SketchBox
                   key={v.word}
-                  className="flex items-center gap-1 rounded border-2 border-indigo-300/60 bg-indigo-50/80 px-1.5 py-1 font-mono text-[10px] dark:bg-indigo-950/40"
+                  fillStyle="solid"
+                  palette="blue"
+                  className="flex items-center gap-1 px-1.5 py-1 font-mono text-[10px]"
                 >
                   <span className="rounded bg-indigo-200 px-1 font-bold text-indigo-900 dark:bg-indigo-800 dark:text-indigo-100">
                     {v.id}
                   </span>
                   {v.word}
-                </div>
+                </SketchBox>
               ))}
             </motion.div>
           </>
         )}
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">Vocab size = {VOCAB.length} words</p>
+      <DataLabel bn={`Vocab size = ${VOCAB.length} শব্দ`} en="vocabulary" />
     </div>
   );
 }

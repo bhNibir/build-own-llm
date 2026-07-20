@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const DIM = 8;
 const POS = 2;
@@ -27,12 +27,12 @@ export function PositionalSineAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <p className="text-center text-xs font-mono text-indigo-600">position = {POS}</p>
+      <DataLabel bn={`পজিশন = ${POS}`} en="PE(pos)" />
       <div className="flex flex-wrap justify-center gap-4">
         {[
-          { label: 'token embed', vals: embed, show: phase >= 0 },
-          { label: 'pos encode', vals: posEnc, show: phase >= 1 },
-          { label: 'sum', vals: combined, show: phase >= 2 },
+          { label: 'token embed', vals: embed, show: phase >= 0, palette: 'neutral' as const },
+          { label: 'pos encode', vals: posEnc, show: phase >= 1, palette: 'green' as const },
+          { label: 'sum', vals: combined, show: phase >= 2, palette: 'blue' as const },
         ].map((block) => (
           <motion.div
             key={block.label}
@@ -40,7 +40,13 @@ export function PositionalSineAnim({ paused }: { paused?: boolean }) {
             animate={{ opacity: block.show ? 1 : 0.35, scale: block.show ? 1 : 0.97 }}
             className="text-center"
           >
-            <p className="mb-1 text-xs font-semibold">{block.label}</p>
+            <SketchBox
+              fillStyle="solid"
+              palette={block.show ? block.palette : 'neutral'}
+              className="mb-1 px-2 py-0.5 text-xs font-semibold"
+            >
+              {block.label}
+            </SketchBox>
             <div className="flex h-16 items-end gap-0.5">
               {block.vals.map((v, i) => (
                 <motion.div

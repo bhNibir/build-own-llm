@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const ROWS = ['i', 'like', 'apple'];
 const COLS = ['like', 'apple', 'i'];
@@ -23,7 +23,7 @@ export function CountTableAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Bigram count table" en="C[from][to]" />
+      <DataLabel bn="Bigram count টেবিল" en="C[from][to]" />
       <div className="overflow-x-auto">
         <table className="mx-auto border-collapse text-sm">
           <thead>
@@ -45,7 +45,12 @@ export function CountTableAnim({ paused }: { paused?: boolean }) {
                   const val = BASE[r][c];
                   return (
                     <td key={c} className="border border-fd-border p-1">
-                      <MonoBox active={active && pulse} className="relative min-w-[2.5rem] text-center">
+                      <SketchBox
+                        fillStyle="solid"
+                        palette={active && pulse ? 'green' : 'neutral'}
+                        active={active && pulse}
+                        className="relative min-w-[2.5rem] text-center font-mono"
+                      >
                         {val}
                         {active && pulse && (
                           <motion.span
@@ -57,7 +62,7 @@ export function CountTableAnim({ paused }: { paused?: boolean }) {
                             +1
                           </motion.span>
                         )}
-                      </MonoBox>
+                      </SketchBox>
                     </td>
                   );
                 })}

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, MonoBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const INPUTS = [
   { x: 0.8, w: 0.5 },
@@ -24,28 +24,34 @@ export function NeuronSumAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="Neuron" en="Σ xᵢwᵢ + b → ReLU" />
+      <DataLabel bn="নিউরন — ওয়েটেড যোগফল + ReLU" en="Σ xᵢwᵢ + b → ReLU" />
       <div className="flex flex-wrap items-center justify-center gap-2">
         {INPUTS.map((p, i) => (
           <div key={i} className="flex items-center gap-1">
-            <MonoBox active={phase < 3 && phase === i} className="text-xs">
+            <SketchBox
+              fillStyle="solid"
+              palette={phase < 3 && phase === i ? 'blue' : 'neutral'}
+              active={phase < 3 && phase === i}
+              className="font-mono text-xs"
+            >
               {p.x}×{p.w}
-            </MonoBox>
+            </SketchBox>
             {i < INPUTS.length - 1 && <span className="text-fd-muted-foreground">+</span>}
           </div>
         ))}
         <span className="text-fd-muted-foreground">+ {BIAS}</span>
         <FlowConnector />
-        <MonoBox active={phase === 1}>{sum.toFixed(2)}</MonoBox>
+        <SketchBox fillStyle="solid" palette={phase === 1 ? 'amber' : 'neutral'} active={phase === 1}>
+          {sum.toFixed(2)}
+        </SketchBox>
         <FlowConnector />
-        <MonoBox active={phase >= 2}>{out.toFixed(2)}</MonoBox>
+        <SketchBox fillStyle="solid" palette={phase >= 2 ? 'green' : 'neutral'} active={phase >= 2}>
+          {out.toFixed(2)}
+        </SketchBox>
       </div>
-      <motion.p
-        className="text-center text-xs text-fd-muted-foreground"
-        animate={{ opacity: phase === 3 ? 1 : 0.5 }}
-      >
-        weighted sum → activation
-      </motion.p>
+      <motion.div animate={{ opacity: phase === 3 ? 1 : 0.5 }}>
+        <DataLabel bn="ওয়েটেড যোগফল → অ্যাক্টিভেশন" en="weighted sum → activation" />
+      </motion.div>
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const N_BLOCKS = 4;
 
@@ -18,29 +18,30 @@ export function GptStackAnim({ paused }: { paused?: boolean }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-col items-center gap-1">
-        <motion.div
-          className={`rounded-lg border px-4 py-1.5 text-xs font-mono ${
-            signal === 0 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40' : 'border-fd-border bg-fd-muted/30'
-          }`}
+        <SketchBox
+          fillStyle="solid"
+          palette={signal === 0 ? 'blue' : 'neutral'}
+          active={signal === 0}
+          className="px-4 py-1.5 font-mono text-xs"
         >
           token + pos embed
-        </motion.div>
+        </SketchBox>
 
         <span className="text-fd-muted-foreground">↓</span>
 
         {Array.from({ length: N_BLOCKS }, (_, i) => (
           <div key={i} className="flex flex-col items-center gap-1">
-            <motion.div
-              className={`w-36 rounded-lg border py-2 text-center text-xs font-medium ${
-                signal === i + 1
-                  ? 'border-indigo-500 bg-indigo-500 text-white'
-                  : signal > i + 1
-                    ? 'border-emerald-400/60 bg-emerald-50/60 dark:bg-emerald-950/30'
-                    : 'border-fd-border bg-fd-muted/20'
-              }`}
-              animate={signal === i + 1 ? { scale: 1.03 } : { scale: 1 }}
-            >
-              Block {i + 1}
+            <motion.div animate={signal === i + 1 ? { scale: 1.03 } : { scale: 1 }}>
+              <SketchBox
+                fillStyle={signal === i + 1 ? 'hachure' : 'solid'}
+                palette={
+                  signal === i + 1 ? 'blue' : signal > i + 1 ? 'green' : 'neutral'
+                }
+                active={signal === i + 1}
+                className="w-36 py-2 text-center text-xs font-medium"
+              >
+                Block {i + 1}
+              </SketchBox>
             </motion.div>
             {i < N_BLOCKS - 1 && <span className="text-fd-muted-foreground">↓</span>}
           </div>
@@ -48,13 +49,14 @@ export function GptStackAnim({ paused }: { paused?: boolean }) {
 
         <span className="text-fd-muted-foreground">↓</span>
 
-        <motion.div
-          className={`rounded-lg border px-4 py-1.5 text-xs font-mono ${
-            signal === N_BLOCKS + 1 ? 'border-violet-500 bg-violet-50 dark:bg-violet-950/40' : 'border-fd-border bg-fd-muted/30'
-          }`}
+        <SketchBox
+          fillStyle="solid"
+          palette={signal === N_BLOCKS + 1 ? 'violet' : 'neutral'}
+          active={signal === N_BLOCKS + 1}
+          className="px-4 py-1.5 font-mono text-xs"
         >
           lm_head → logits
-        </motion.div>
+        </SketchBox>
       </div>
       <DataLabel bn="Nটি block stack — signal উপরে উঠে" en="n_layer" />
     </div>

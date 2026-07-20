@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActiveRing } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const DEFAULT_SENTENCE = ['i', 'like', 'apple'];
 const DEFAULT_PAIRS = [
@@ -38,25 +38,26 @@ export function BigramScanAnim({
   return (
     <div className="space-y-4">
       <div className="flex justify-center gap-2">
-        {sentence.map((w, i) => (
-          <motion.span
-            key={i}
-            layout
-            className={`rounded-xl px-4 py-2 font-mono font-semibold ${
-              idx < pairs.length && (i === idx || i === idx + 1)
-                ? 'bg-indigo-500 text-white shadow-lg'
-                : 'bg-fd-muted text-fd-foreground'
-            }`}
-            animate={
-              idx < pairs.length && (i === idx || i === idx + 1)
-                ? { scale: 1.1 }
-                : { scale: 1 }
-            }
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            {w}
-          </motion.span>
-        ))}
+        {sentence.map((w, i) => {
+          const lit = idx < pairs.length && (i === idx || i === idx + 1);
+          return (
+            <motion.div
+              key={i}
+              layout
+              animate={lit ? { scale: 1.1 } : { scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <SketchBox
+                fillStyle={lit ? 'hachure' : 'solid'}
+                palette={lit ? 'blue' : 'neutral'}
+                active={lit}
+                className="px-4 py-2 font-mono font-semibold"
+              >
+                {w}
+              </SketchBox>
+            </motion.div>
+          );
+        })}
       </div>
 
       <div className="relative mx-auto max-w-xs">
@@ -83,26 +84,25 @@ export function BigramScanAnim({
           <motion.div
             key={p.from + p.to}
             layout
-            className={`relative flex items-center justify-between rounded-lg border-2 px-3 py-2 font-mono text-sm ${
-              idx === i
-                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40'
-                : 'border-fd-border opacity-50'
-            }`}
             animate={idx === i ? { scale: 1.02 } : { scale: 1 }}
           >
-            <ActiveRing active={idx === i} />
-            <span>
-              {p.from} → {p.to}
-            </span>
-            <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs text-white">
-              +1
-            </span>
+            <SketchBox
+              fillStyle={idx === i ? 'hachure' : 'solid'}
+              palette={idx === i ? 'green' : 'neutral'}
+              active={idx === i}
+              className={`flex items-center justify-between font-mono text-sm ${idx !== i ? 'opacity-50' : ''}`}
+            >
+              <span>
+                {p.from} → {p.to}
+              </span>
+              <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs text-white">
+                +1
+              </span>
+            </SketchBox>
           </motion.div>
         ))}
       </div>
-      <p className="text-center text-xs text-fd-muted-foreground">
-        Scanner বাম থেকে ডানে যায় — প্রতিটি pair-এর count +1
-      </p>
+      <DataLabel bn="Scanner বাম থেকে ডানে যায় — প্রতিটি pair-এর count +1" en="bigram scan" />
     </div>
   );
 }

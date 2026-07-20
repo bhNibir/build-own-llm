@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const TOKENS = ['i', 'like', 'apple'];
 
@@ -25,20 +25,25 @@ export function ContextWindowAnim({ paused }: { paused?: boolean }) {
             animate={{ scale: i === pos ? 1.06 : 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 24 }}
           >
-            <MonoBox active={i === pos} className="min-w-[4rem] text-center font-semibold">
+            <SketchBox
+              fillStyle={i === pos ? 'hachure' : 'solid'}
+              palette={i === pos ? 'blue' : 'neutral'}
+              active={i === pos}
+              className="min-w-[4rem] text-center font-semibold"
+            >
               {w}
-            </MonoBox>
+            </SketchBox>
           </motion.div>
         ))}
       </div>
       <div className="flex items-center justify-center gap-2">
-        <MonoBox active className="text-center">
+        <SketchBox fillStyle="solid" palette="blue" active className="text-center">
           {TOKENS[pos]}
-        </MonoBox>
+        </SketchBox>
         <span className="text-xs text-fd-muted-foreground">→ predict next</span>
-        <MonoBox className="text-center text-fd-muted-foreground">
+        <SketchBox fillStyle="solid" palette="neutral" className="text-center text-fd-muted-foreground">
           {TOKENS[pos + 1] ?? '?'}
-        </MonoBox>
+        </SketchBox>
       </div>
     </div>
   );

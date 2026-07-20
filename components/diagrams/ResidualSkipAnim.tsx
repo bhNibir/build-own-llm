@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
   const [phase, setPhase] = useState(0);
@@ -16,26 +16,29 @@ export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
   return (
     <div className="space-y-4">
       <div className="relative mx-auto flex max-w-xs flex-col items-center gap-2">
-        <motion.div
-          className={`rounded-lg border px-6 py-2 font-mono text-sm ${
-            phase === 0 ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40' : 'border-fd-border bg-fd-muted/30'
-          }`}
+        <SketchBox
+          fillStyle={phase === 0 ? 'hachure' : 'solid'}
+          palette={phase === 0 ? 'blue' : 'neutral'}
+          active={phase === 0}
+          className="px-6 py-2 font-mono text-sm"
         >
           x
-        </motion.div>
+        </SketchBox>
 
         <div className="relative flex w-full justify-center">
           <motion.div
             className="absolute -left-2 top-0 h-full w-8 rounded-l-full border-l-2 border-t-2 border-indigo-400"
             animate={{ opacity: phase >= 2 ? 1 : 0.3 }}
           />
-          <motion.div
-            className={`z-10 rounded-lg border px-6 py-2 font-mono text-sm ${
-              phase === 1 ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40' : 'border-fd-border bg-fd-muted/30'
-            }`}
-            animate={phase === 1 ? { scale: 1.04 } : { scale: 1 }}
-          >
-            sublayer(x)
+          <motion.div animate={phase === 1 ? { scale: 1.04 } : { scale: 1 }}>
+            <SketchBox
+              fillStyle={phase === 1 ? 'hachure' : 'solid'}
+              palette={phase === 1 ? 'green' : 'neutral'}
+              active={phase === 1}
+              className="z-10 px-6 py-2 font-mono text-sm"
+            >
+              sublayer(x)
+            </SketchBox>
           </motion.div>
         </div>
 
@@ -46,13 +49,14 @@ export function ResidualSkipAnim({ paused }: { paused?: boolean }) {
           +
         </motion.div>
 
-        <motion.div
-          className={`rounded-lg border px-6 py-2 font-mono text-sm font-semibold ${
-            phase >= 2 ? 'border-violet-500 bg-violet-500 text-white' : 'border-fd-border bg-fd-muted/30'
-          }`}
+        <SketchBox
+          fillStyle={phase >= 2 ? 'hachure' : 'solid'}
+          palette={phase >= 2 ? 'violet' : 'neutral'}
+          active={phase >= 2}
+          className="px-6 py-2 font-mono text-sm font-semibold"
         >
           x + sublayer(x)
-        </motion.div>
+        </SketchBox>
       </div>
       <DataLabel bn="মূল signal skip করে যোগ হয় — gradient flow সহজ" en="residual" />
     </div>

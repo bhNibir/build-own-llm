@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, FlowConnector, StepChip } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const LAYERS = ['input', 'hidden', 'output'];
 
@@ -17,7 +17,7 @@ export function MlpForwardAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <DataLabel bn="MLP forward pass" en="signal propagates" />
+      <DataLabel bn="MLP ফরওয়ার্ড পাস — সিগন্যাল এগোয়" en="signal propagates" />
       <div className="flex items-center justify-center">
         {LAYERS.map((l, i) => (
           <div key={l} className="flex items-center">
@@ -28,7 +28,14 @@ export function MlpForwardAnim({ paused }: { paused?: boolean }) {
               }}
               transition={{ type: 'spring', stiffness: 280, damping: 22 }}
             >
-              <StepChip label={l} active={pulse === i} done={pulse > i} />
+              <SketchBox
+                fillStyle={pulse === i ? 'hachure' : 'solid'}
+                palette={pulse === i ? 'blue' : pulse > i ? 'green' : 'neutral'}
+                active={pulse === i}
+                className="px-3 py-1.5 font-mono text-sm font-medium"
+              >
+                {l}
+              </SketchBox>
             </motion.div>
             {i < LAYERS.length - 1 && (
               <motion.div className="relative" animate={{ opacity: pulse > i ? 1 : 0.3 }}>

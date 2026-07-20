@@ -4,48 +4,48 @@ description: Zero থেকে TypeScript দিয়ে LLM কীভাবে
 ---
 
 <Callout type="idea">
-💡 **LangChain বা OpenAI API নয়** — এখানে তুমি LLM-এর ভেতরের engine নিজে build করবে।
+**LangChain বা OpenAI API নয়** — এখানে তুমি LLM-এর ভেতরের engine নিজে build করবে।
 </Callout>
 
-যদি তুমি **LLM-এর ভেতরের কাজ সত্যিই বুঝতে চাও**, তাহলে আমি **LangChain, Ollama, OpenAI API** দিয়ে শুরু করতে বলব না। ওগুলো LLM *ব্যবহার* করা শেখায়, LLM *কীভাবে কাজ করে* সেটা শেখায় না।
+যদি তুমি **LLM-এর ভেতরের কাজ সত্যিই বুঝতে চাও**, তাহলে **LangChain, Ollama, OpenAI API** দিয়ে শুরু করো না। ওগুলো LLM *ব্যবহার* শেখায় — *কীভাবে কাজ করে* শেখায় না।
 
-এই course-এ আমরা **শূন্য থেকে** TypeScript দিয়ে একটি ছোট **Language Model** বানাবো — কোনো TensorFlow, PyTorch বা ML library ছাড়া। প্রতিটি lesson-এ **browser-এ সরাসরি code edit করে run** করতে পারবে। Terminal লাগবে না।
+এই course-এ আমরা **শূন্য থেকে** TypeScript দিয়ে একটি ছোট Language Model বানাবো। প্রতিটি lesson-এ browser-এ code edit করে run করতে পারবে।
 
-## Interactive Learning
+## Interactive শেখা কীভাবে
 
-প্রতিটি code lesson-এ built-in **Playground** আছে:
+- Code editor — browser-এ edit
+- **Run** — সাথে সাথে colorful console output
+- **Copy / Reset** — freely experiment করো
+- Concept animation + Mermaid diagram
 
-- Code editor — সরাসরি browser-এ edit করো
-- **▶ Run** button — instant output
-- **Reset** button — original code-এ ফিরে যাও
-- Console output — `console.log` result দেখো
-- Colorful diagrams, animations, structured math blocks
-
-<Illustration name="token-pipeline" />
-
-## Full 10-Module Path
+## পুরো 10-Module Path
 
 ```mermaid
 flowchart TD
-    M0["0️⃣ Intro"]:::done --> M1["1️⃣ Tokenizer"]:::done
-    M1 --> M2["2️⃣ Bigram"]:::done
-    M2 --> M3["3️⃣ Math"]:::done
-    M3 --> M4["4️⃣ Autograd"]:::done
-    M4 --> M5["5️⃣ Neural Net"]:::done
-    M5 --> M6["6️⃣ Neural LM"]:::done
-    M6 --> M7["7️⃣ Attention"]:::done
-    M7 --> M8["8️⃣ Transformer"]:::done
-    M8 --> M9["9️⃣ Mini GPT"]:::done
-    M9 --> M10["🔟 Production"]:::done
-    classDef done fill:#10B981,color:#fff,stroke:#047857
+    M0["M0 Intro"]:::input --> M1["M1 Tokenizer"]:::process
+    M1 --> M2["M2 Bigram"]:::process
+    M2 --> M3["M3 Math"]:::output
+    M3 --> M4["M4 Autograd"]:::output
+    M4 --> M5["M5 Neural Net"]:::output
+    M5 --> M6["M6 Neural LM"]:::highlight
+    M6 --> M7["M7 Attention"]:::highlight
+    M7 --> M8["M8 Transformer"]:::matrix
+    M8 --> M9["M9 Mini GPT"]:::matrix
+    M9 --> M10["M10 Bridge"]:::dim
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
+    classDef matrix fill:#F5F3FF,color:#4C1D95,stroke:#7C3AED,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
-| Module | Topic | Lessons |
+| Module | বিষয় | Lessons |
 |--------|-------|---------|
-| [0 — Intro](/docs/part-00-intro) | What is LLM, roadmap | 3 |
-| [1 — Tokenizer](/docs/part-01-tokenizer) | Data pipeline | 6 |
-| [2 — Bigram](/docs/part-02-bigram) | First language model | 5 |
-| [3 — Math](/docs/part-03-math) | Vectors, matrices, softmax | 5 |
+| [0 — Intro](/docs/part-00-intro) | LLM কী, roadmap | 3 |
+| [1 — Tokenizer](/docs/part-01-tokenizer) | Text → numbers | 6 |
+| [2 — Bigram](/docs/part-02-bigram) | প্রথম language model | 5 |
+| [3 — Math](/docs/part-03-math) | Vector, matrix, softmax | 5 |
 | [4 — Autograd](/docs/part-04-autograd) | Computational graph | 4 |
 | [5 — Neural Net](/docs/part-05-neural-network) | Neuron, MLP, XOR | 4 |
 | [6 — Neural LM](/docs/part-06-neural-lm) | Embedding, training | 5 |
@@ -57,9 +57,7 @@ flowchart TD
 ## শুরু করো
 
 <Cards>
-  <Card title="Module 0: Introduction" href="/docs/part-00-intro" description="LLM mental model + full roadmap" />
+  <Card title="শুরু করো — Lesson 0.1" href="/docs/part-00-intro/01-what-is-llm" description="LLM = next-token prediction — mental model" />
+  <Card title="Module 0: পরিচিতি" href="/docs/part-00-intro" description="কেন scratch থেকে + roadmap" />
   <Card title="Module 1: Tokenizer" href="/docs/part-01-tokenizer" description="Text → numbers — interactive playground" />
-  <Card title="Module 2: Bigram" href="/docs/part-02-bigram" description="তোমার প্রথম Language Model" />
 </Cards>
-
-**49 lessons total** — see `PRD.md` in the repo root for the full curriculum.

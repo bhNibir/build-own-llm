@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const POINTS = [
   { w: 3.5, loss: 2.8 },
@@ -27,7 +27,7 @@ export function GdStepAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Gradient descent" en="W ← W − η∇L" />
+      <DataLabel bn="গ্র্যাডিয়েন্ট ডিসেন্ট — ধাপে ধাপে নামে" en="W ← W − η∇L" />
       <svg viewBox="0 0 180 110" className="mx-auto h-32 w-full max-w-sm">
         <path
           d={POINTS.map((p, i) => `${i === 0 ? 'M' : 'L'}${20 + (p.w / 4) * 140},${20 + (p.loss / 3) * 80}`).join(' ')}
@@ -45,8 +45,12 @@ export function GdStepAnim({ paused }: { paused?: boolean }) {
         />
       </svg>
       <div className="flex justify-center gap-3">
-        <MonoBox active>W = {pt.w.toFixed(1)}</MonoBox>
-        <MonoBox>L = {pt.loss.toFixed(2)}</MonoBox>
+        <SketchBox fillStyle="solid" palette="blue" active>
+          W = {pt.w.toFixed(1)}
+        </SketchBox>
+        <SketchBox fillStyle="solid" palette="amber">
+          L = {pt.loss.toFixed(2)}
+        </SketchBox>
       </div>
     </div>
   );

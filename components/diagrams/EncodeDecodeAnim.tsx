@@ -3,7 +3,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { ArrowLeftRight } from 'lucide-react';
-import { FlowConnector, SketchBox } from './diagram-ui';
+import { DataLabel, FlowConnector, SketchBox } from './diagram-ui';
 
 const PAIRS = [
   { word: 'i', id: 7 },
@@ -31,9 +31,13 @@ export function EncodeDecodeAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <p className="flex items-center justify-center gap-1 text-xs font-medium">
+      <DataLabel
+        bn={dir === 'encode' ? 'Encode: শব্দ → ID' : 'Decode: ID → শব্দ'}
+        en={dir === 'encode' ? 'word → ID' : 'ID → word'}
+      />
+      <p className="flex items-center justify-center gap-1 text-xs font-medium text-fd-muted-foreground">
         <ArrowLeftRight className="h-3.5 w-3.5" />
-        {dir === 'encode' ? 'Encode: word → ID' : 'Decode: ID → word'}
+        bidirectional map
       </p>
       <div className="flex items-center justify-center gap-3">
         <motion.div
@@ -41,7 +45,7 @@ export function EncodeDecodeAnim({ paused }: { paused?: boolean }) {
           initial={{ opacity: 0, x: dir === 'encode' ? -6 : 6 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <SketchBox fillStyle="hachure" strokeStyle="solid" palette="blue" active className="font-mono text-sm">
+          <SketchBox fillStyle="solid" strokeStyle="solid" palette="blue" active className="font-mono text-sm">
             {dir === 'encode' ? `"${pair.word}"` : pair.id}
           </SketchBox>
         </motion.div>
@@ -51,14 +55,12 @@ export function EncodeDecodeAnim({ paused }: { paused?: boolean }) {
           initial={{ opacity: 0, x: dir === 'encode' ? 6 : -6 }}
           animate={{ opacity: 1, x: 0 }}
         >
-          <SketchBox fillStyle="cross-hatch" strokeStyle="dashed" palette="green" className="font-mono text-sm">
+          <SketchBox fillStyle="solid" strokeStyle="solid" palette="green" className="font-mono text-sm">
             {dir === 'encode' ? pair.id : `"${pair.word}"`}
           </SketchBox>
         </motion.div>
       </div>
-      <p className="text-center text-[10px] text-fd-muted-foreground">
-        Full sentence: &quot;i like apple&quot; ↔ [7, 9, 0]
-      </p>
+      <DataLabel bn='পূর্ণ বাক্য: "i like apple" ↔ [7, 9, 0]' en="sentence ↔ ids" />
     </div>
   );
 }

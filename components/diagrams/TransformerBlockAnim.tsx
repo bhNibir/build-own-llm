@@ -2,9 +2,10 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const STEPS = ['LayerNorm', 'Attention', '+ Residual', 'LayerNorm', 'FFN', '+ Residual'];
+const PALETTES = ['blue', 'violet', 'green', 'blue', 'amber', 'green'] as const;
 
 export function TransformerBlockAnim({ paused }: { paused?: boolean }) {
   const [active, setActive] = useState(0);
@@ -21,15 +22,18 @@ export function TransformerBlockAnim({ paused }: { paused?: boolean }) {
         {STEPS.map((label, i) => (
           <motion.div
             key={label + i}
-            className={`relative rounded-lg border px-3 py-2 text-center text-xs font-medium ${
-              active === i
-                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/40'
-                : 'border-fd-border bg-fd-muted/30'
-            }`}
             animate={active === i ? { x: 4, scale: 1.02 } : { x: 0, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+            className="relative"
           >
-            {label}
+            <SketchBox
+              fillStyle={active === i ? 'hachure' : 'solid'}
+              palette={active === i ? PALETTES[i] : 'neutral'}
+              active={active === i}
+              className="px-3 py-2 text-center text-xs font-medium"
+            >
+              {label}
+            </SketchBox>
             {label.startsWith('+') && (
               <span className="absolute -left-3 top-1/2 h-0.5 w-3 -translate-y-1/2 bg-indigo-400" />
             )}

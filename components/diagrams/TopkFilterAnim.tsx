@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 import { NEXT_AFTER_I_LIKE } from './shared-data';
 
 const K = 2;
@@ -24,7 +24,7 @@ export function TopkFilterAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-4">
-      <p className="text-center text-xs font-mono text-indigo-600">top-k = {K}</p>
+      <DataLabel bn={`শুধু top-${K} রাখি`} en={`top-k = ${K}`} />
       <div className="flex justify-center gap-5">
         {items.map((item) => {
           const filtered = phase === 1 && !keep.has(item.label);
@@ -41,9 +41,13 @@ export function TopkFilterAnim({ paused }: { paused?: boolean }) {
                   transition={{ type: 'spring', stiffness: 120, damping: 18 }}
                 />
               </div>
-              <span className={`text-xs ${filtered ? 'text-fd-muted-foreground line-through' : ''}`}>
+              <SketchBox
+                fillStyle="solid"
+                palette={filtered ? 'neutral' : 'green'}
+                className={`px-2 py-0.5 font-mono text-[11px] ${filtered ? 'line-through opacity-60' : ''}`}
+              >
                 {(item.p * 100).toFixed(0)}%
-              </span>
+              </SketchBox>
             </div>
           );
         })}

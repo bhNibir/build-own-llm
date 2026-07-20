@@ -2,13 +2,28 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+@theme {
+  --font-bn: var(--font-bn), 'Noto Sans Bengali', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-sans), Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+}
+
 html {
   scrollbar-gutter: stable;
+  font-family: var(--font-bn), var(--font-sans);
 }
 
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
+}
+
+.font-bn {
+  font-family: var(--font-bn), var(--font-sans);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
 }
 
 @keyframes token-flow {
@@ -70,14 +85,14 @@ html > body[data-scroll-locked] {
   }
 }
 
-/* Mermaid — preserve classDef text contrast; sketch-style edges */
+/* Mermaid edge labels */
 .mermaid-diagram svg .edgeLabel {
-  background-color: var(--mermaid-edge-bg, #fffef9) !important;
+  background-color: #ffffff !important;
   color: #1e293b !important;
 }
 .dark .mermaid-diagram svg .edgeLabel {
-  background-color: #25262b !important;
-  color: #e9ecef !important;
+  background-color: #1e293b !important;
+  color: #f1f5f9 !important;
 }
 .mermaid-diagram svg .node rect,
 .mermaid-diagram svg .node polygon,
@@ -85,74 +100,105 @@ html > body[data-scroll-locked] {
   stroke-width: 2px;
 }
 
-/* Excalidraw-style sketch fills for ConceptAnim boxes */
+/* Modern colorful palette — light */
 :root {
-  --sketch-border-blue: #1971c2;
-  --sketch-text-blue: #1e293b;
-  --sketch-bg-blue: #e7f5ff;
-  --sketch-hatch-blue: #1971c2;
-  --sketch-border-green: #099268;
-  --sketch-text-green: #1e293b;
-  --sketch-bg-green: #e6fcf5;
-  --sketch-hatch-green: #099268;
-  --sketch-border-amber: #f08c00;
-  --sketch-text-amber: #1e293b;
-  --sketch-bg-amber: #fff9db;
-  --sketch-hatch-amber: #f08c00;
-  --sketch-border-rose: #e03131;
-  --sketch-text-rose: #1e293b;
-  --sketch-bg-rose: #ffe3e3;
-  --sketch-hatch-rose: #e03131;
-  --sketch-border-violet: #7950f2;
-  --sketch-text-violet: #1e293b;
-  --sketch-bg-violet: #f3f0ff;
-  --sketch-hatch-violet: #7950f2;
-  --sketch-border-neutral: #495057;
+  --sketch-border-blue: #4f46e5;
+  --sketch-text-blue: #1e1b4b;
+  --sketch-bg-blue: #eef2ff;
+  --sketch-hatch-blue: #6366f1;
+  --sketch-border-green: #059669;
+  --sketch-text-green: #064e3b;
+  --sketch-bg-green: #ecfdf5;
+  --sketch-hatch-green: #10b981;
+  --sketch-border-amber: #d97706;
+  --sketch-text-amber: #78350f;
+  --sketch-bg-amber: #fffbeb;
+  --sketch-hatch-amber: #f59e0b;
+  --sketch-border-rose: #e11d48;
+  --sketch-text-rose: #881337;
+  --sketch-bg-rose: #fff1f2;
+  --sketch-hatch-rose: #f43f5e;
+  --sketch-border-violet: #7c3aed;
+  --sketch-text-violet: #4c1d95;
+  --sketch-bg-violet: #f5f3ff;
+  --sketch-hatch-violet: #8b5cf6;
+  --sketch-border-neutral: #64748b;
   --sketch-text-neutral: #1e293b;
-  --sketch-bg-neutral: #f8f9fa;
-  --sketch-hatch-neutral: #868e96;
+  --sketch-bg-neutral: #f8fafc;
+  --sketch-hatch-neutral: #94a3b8;
 }
 
-.sketch-palette-blue { --sk-bg: var(--sketch-bg-blue); --sk-hatch: var(--sketch-hatch-blue); --sk-border: var(--sketch-border-blue); }
-.sketch-palette-green { --sk-bg: var(--sketch-bg-green); --sk-hatch: var(--sketch-hatch-green); --sk-border: var(--sketch-border-green); }
-.sketch-palette-amber { --sk-bg: var(--sketch-bg-amber); --sk-hatch: var(--sketch-hatch-amber); --sk-border: var(--sketch-border-amber); }
-.sketch-palette-rose { --sk-bg: var(--sketch-bg-rose); --sk-hatch: var(--sketch-hatch-rose); --sk-border: var(--sketch-border-rose); }
-.sketch-palette-violet { --sk-bg: var(--sketch-bg-violet); --sk-hatch: var(--sketch-hatch-violet); --sk-border: var(--sketch-border-violet); }
-.sketch-palette-neutral { --sk-bg: var(--sketch-bg-neutral); --sk-hatch: var(--sketch-hatch-neutral); --sk-border: var(--sketch-border-neutral); }
+/* Dark mode palette */
+.dark {
+  --sketch-border-blue: #818cf8;
+  --sketch-text-blue: #e0e7ff;
+  --sketch-bg-blue: #1e1b4b;
+  --sketch-hatch-blue: #6366f1;
+  --sketch-border-green: #34d399;
+  --sketch-text-green: #d1fae5;
+  --sketch-bg-green: #064e3b;
+  --sketch-hatch-green: #10b981;
+  --sketch-border-amber: #fbbf24;
+  --sketch-text-amber: #fef3c7;
+  --sketch-bg-amber: #78350f;
+  --sketch-hatch-amber: #f59e0b;
+  --sketch-border-rose: #fb7185;
+  --sketch-text-rose: #ffe4e6;
+  --sketch-bg-rose: #881337;
+  --sketch-hatch-rose: #f43f5e;
+  --sketch-border-violet: #a78bfa;
+  --sketch-text-violet: #ede9fe;
+  --sketch-bg-violet: #4c1d95;
+  --sketch-hatch-violet: #8b5cf6;
+  --sketch-border-neutral: #94a3b8;
+  --sketch-text-neutral: #f1f5f9;
+  --sketch-bg-neutral: #1e293b;
+  --sketch-hatch-neutral: #64748b;
+}
+
+.sketch-palette-blue { --sk-bg: var(--sketch-bg-blue); --sk-hatch: var(--sketch-hatch-blue); --sk-border: var(--sketch-border-blue); --sk-text: var(--sketch-text-blue); }
+.sketch-palette-green { --sk-bg: var(--sketch-bg-green); --sk-hatch: var(--sketch-hatch-green); --sk-border: var(--sketch-border-green); --sk-text: var(--sketch-text-green); }
+.sketch-palette-amber { --sk-bg: var(--sketch-bg-amber); --sk-hatch: var(--sketch-hatch-amber); --sk-border: var(--sketch-border-amber); --sk-text: var(--sketch-text-amber); }
+.sketch-palette-rose { --sk-bg: var(--sketch-bg-rose); --sk-hatch: var(--sketch-hatch-rose); --sk-border: var(--sketch-border-rose); --sk-text: var(--sketch-text-rose); }
+.sketch-palette-violet { --sk-bg: var(--sketch-bg-violet); --sk-hatch: var(--sketch-hatch-violet); --sk-border: var(--sketch-border-violet); --sk-text: var(--sketch-text-violet); }
+.sketch-palette-neutral { --sk-bg: var(--sketch-bg-neutral); --sk-hatch: var(--sketch-hatch-neutral); --sk-border: var(--sketch-border-neutral); --sk-text: var(--sketch-text-neutral); }
 
 .sketch-fill-solid {
   background-color: var(--sk-bg);
   border-color: var(--sk-border);
+  color: var(--sk-text);
 }
 
 .sketch-fill-hachure {
   background-color: var(--sk-bg);
   border-color: var(--sk-border);
+  color: var(--sk-text);
   background-image: repeating-linear-gradient(
     45deg,
     transparent,
     transparent 5px,
-    color-mix(in srgb, var(--sk-hatch) 28%, transparent) 5px,
-    color-mix(in srgb, var(--sk-hatch) 28%, transparent) 6px
+    color-mix(in srgb, var(--sk-hatch) 22%, transparent) 5px,
+    color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px
   );
 }
 
 .sketch-fill-cross {
   background-color: var(--sk-bg);
   border-color: var(--sk-border);
+  color: var(--sk-text);
   background-image:
     repeating-linear-gradient(
       45deg,
       transparent,
       transparent 6px,
-      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px,
-      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 7px
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 7px
     ),
     repeating-linear-gradient(
       -45deg,
       transparent,
       transparent 6px,
-      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 6px,
-      color-mix(in srgb, var(--sk-hatch) 22%, transparent) 7px
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 6px,
+      color-mix(in srgb, var(--sk-hatch) 18%, transparent) 7px
     );
 }

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
-import { DataLabel, MonoBox } from './diagram-ui';
+import { DataLabel, SketchBox } from './diagram-ui';
 
 const A = [[1, 2], [3, 4]];
 const B = [[5, 6], [7, 8]];
@@ -28,7 +28,7 @@ export function MatmulVisualAnim({ paused }: { paused?: boolean }) {
 
   return (
     <div className="space-y-3">
-      <DataLabel bn="Matrix multiply" en="C = A × B" />
+      <DataLabel bn="ম্যাট্রিক্স গুণ" en="C = A × B" />
       <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
         <MatrixView m={A} highlightRow={cell.r} />
         <span className="font-mono text-fd-muted-foreground">×</span>
@@ -36,9 +36,7 @@ export function MatmulVisualAnim({ paused }: { paused?: boolean }) {
         <span className="font-mono text-fd-muted-foreground">=</span>
         <MatrixView m={C} highlightCell={cell} />
       </div>
-      <p className="text-center font-mono text-xs text-fd-muted-foreground">
-        C[{cell.r}][{cell.c}] = row·col dot product
-      </p>
+      <DataLabel bn={`C[${cell.r}][${cell.c}] = row·col dot product`} en="cell compute" />
     </div>
   );
 }
@@ -60,7 +58,14 @@ function MatrixView({
               : highlightRow === r || highlightCol === c;
             return (
               <motion.div key={c} animate={{ scale: active ? 1.1 : 1 }}>
-                <MonoBox active={active} className="min-w-[2rem] px-2 py-1 text-center text-xs">{v}</MonoBox>
+                <SketchBox
+                  fillStyle="solid"
+                  palette={active ? 'blue' : 'neutral'}
+                  active={active}
+                  className="min-w-[2rem] px-2 py-1 text-center font-mono text-xs"
+                >
+                  {v}
+                </SketchBox>
               </motion.div>
             );
           })}
