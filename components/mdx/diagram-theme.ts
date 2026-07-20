@@ -152,22 +152,21 @@ export function normalizeMermaidChart(chart: string, isDark: boolean): string {
   let result = chart;
   const defs = isDark ? { ...excalidrawClassDefs, ...DARK_CLASSDEFS } : excalidrawClassDefs;
 
-  result = result.replace(
-    /classDef\s+(\w+)\s+fill:#[0-9A-Fa-f]{3,8},color:#fff(?:fff)?,stroke:#[0-9A-Fa-f]{3,8}/gi,
-    (_match, name: string) => {
-      const style = defs[name.toLowerCase()] ?? defs.input;
-      return `classDef ${name} ${style}`;
-    },
-  );
-
-  // Also rewrite any remaining color:#fff classDefs
-  result = result.replace(
-    /classDef\s+(\w+)\s+[^;\n]*color:#fff[^;\n]*/gi,
-    (_match, name: string) => {
-      const style = defs[name.toLowerCase()] ?? defs.input;
-      return `classDef ${name} ${style}`;
-    },
-  );
+  // Rewrite every known classDef to theme-safe colors (not only white-text ones)
+  result = result.replace(/classDef\s+(\w+)\s+[^\n]+/gi, (match, name: string) => {
+    const key = name.toLowerCase();
+    const style = defs[key];
+    if (style) return `classDef ${name} ${style}`;
+    // Unknown name with white text on saturated fill → use readable dark/light preset
+    if (/color:#fff(?:fff)?/i.test(match)) {
+      return `classDef ${name} ${isDark ? defs.input : 'fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px'}`;
+    }
+    if (isDark && /color:#(?:0{3,6}|1[eE]293[bB]|1[eE]1[bB]4[bB]|000)\b/i.test(match)) {
+      // Dark text classDef in dark mode → force light text + dark pastel fill
+      return `classDef ${name} ${defs.input}`;
+    }
+    return match;
+  });
 
   result = result.replace(/["'][\u{1F300}-\u{1F9FF}\u2600-\u27BF]\s*/gu, '"');
   return result;

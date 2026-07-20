@@ -100,6 +100,24 @@ html > body[data-scroll-locked] {
   stroke-width: 2px;
 }
 
+/* Dark mode: Mermaid HTML/SVG labels must stay light on dark node fills */
+.dark .mermaid-diagram .nodeLabel,
+.dark .mermaid-diagram .node .label,
+.dark .mermaid-diagram .node foreignObject,
+.dark .mermaid-diagram .node foreignObject div,
+.dark .mermaid-diagram .node foreignObject span,
+.dark .mermaid-diagram .node foreignObject p,
+.dark .mermaid-diagram .cluster-label,
+.dark .mermaid-diagram .cluster span {
+  color: #f1f5f9 !important;
+}
+.dark .mermaid-diagram .node text,
+.dark .mermaid-diagram .node tspan,
+.dark .mermaid-diagram .cluster text,
+.dark .mermaid-diagram .label text {
+  fill: #f1f5f9 !important;
+}
+
 /* Modern colorful palette — light */
 :root {
   --sketch-border-blue: #4f46e5;

@@ -32,11 +32,45 @@ function patternUrl(fill: SketchFillStyle, palette: string): string | null {
   return `url(#${id})`;
 }
 
-/** Post-process Mermaid SVG — solid fills by default, theme-aware edges + fills */
+function forceLabelColor(root: Element, color: string) {
+  // SVG text nodes use fill=, HTML labels use color
+  root.querySelectorAll('text, tspan').forEach((el) => {
+    el.setAttribute('fill', color);
+    el.removeAttribute('stroke');
+    if (el instanceof SVGElement) {
+      el.style.fill = color;
+      el.style.color = color;
+    }
+  });
+
+  root.querySelectorAll('span, p, div, a, label, .nodeLabel, .edgeLabel').forEach((el) => {
+    if (el instanceof HTMLElement || el instanceof SVGElement) {
+      el.style.setProperty('color', color, 'important');
+      el.style.setProperty('fill', color, 'important');
+      // Drop Mermaid inline color that fights our theme
+      const style = el.getAttribute('style');
+      if (style && /color\s*:/i.test(style)) {
+        el.setAttribute(
+          'style',
+          style.replace(/color\s*:\s*[^;]+;?/gi, '') + `color:${color} !important;`,
+        );
+      }
+    }
+  });
+
+  root.querySelectorAll('foreignObject').forEach((fo) => {
+    if (fo instanceof SVGElement) {
+      fo.style.color = color;
+    }
+  });
+}
+
+/** Post-process Mermaid SVG — solid fills by default, theme-aware edges + readable labels */
 export function enhanceMermaidSvg(svg: string, isDark = false): string {
   if (typeof DOMParser === 'undefined') return svg;
 
   const edgeColor = isDark ? '#A5B4FC' : '#4F46E5';
+  const defaultLabel = isDark ? '#F1F5F9' : '#1E293B';
   const palettes = getSketchPalettes(isDark);
 
   try {
@@ -48,6 +82,17 @@ export function enhanceMermaidSvg(svg: string, isDark = false): string {
     const defs = doc.createElementNS('http://www.w3.org/2000/svg', 'defs');
     defs.innerHTML = buildSketchPatternDefs(isDark).replace(/^<defs>|<\/defs>$/g, '');
     root.insertBefore(defs, root.firstChild);
+
+    // Override Mermaid-injected <style> label colors that ignore dark fills
+    root.querySelectorAll('style').forEach((styleEl) => {
+      let css = styleEl.textContent ?? '';
+      if (isDark) {
+        css = css
+          .replace(/color:\s*#(?:0{3,8}|1[Ee]293[Bb]|1[Ee]1[Bb]4[Bb]|000(?:000)?)\b/gi, `color:${defaultLabel}`)
+          .replace(/fill:\s*#(?:0{3,8}|1[Ee]293[Bb]|1[Ee]1[Bb]4[Bb]|000(?:000)?)\b/gi, `fill:${defaultLabel}`);
+      }
+      styleEl.textContent = css;
+    });
 
     root.querySelectorAll('g.node').forEach((node) => {
       const className = node.getAttribute('class') ?? '';
@@ -64,13 +109,23 @@ export function enhanceMermaidSvg(svg: string, isDark = false): string {
       if (dash) shape.setAttribute('stroke-dasharray', dash);
       else shape.removeAttribute('stroke-dasharray');
 
-      // Ensure label text stays readable
-      node.querySelectorAll('span, foreignObject, .nodeLabel, p').forEach((el) => {
-        if (el instanceof HTMLElement || el instanceof SVGElement) {
-          el.style.color = palette.text;
+      forceLabelColor(node, palette.text);
+    });
+
+    // Edge / cluster labels
+    root.querySelectorAll('g.edgeLabel, .edgeLabel, .cluster, .cluster-label').forEach((el) => {
+      forceLabelColor(el, defaultLabel);
+    });
+
+    // Safety net: any leftover dark text fills in dark mode
+    if (isDark) {
+      root.querySelectorAll('text, tspan').forEach((el) => {
+        const fill = (el.getAttribute('fill') || '').toLowerCase();
+        if (!fill || fill === 'none' || fill === '#000' || fill === '#000000' || fill === '#1e293b' || fill === '#1e1b4b') {
+          el.setAttribute('fill', defaultLabel);
         }
       });
-    });
+    }
 
     root.querySelectorAll('.edgePath path, .flowchart-link').forEach((path) => {
       path.setAttribute('stroke', edgeColor);
