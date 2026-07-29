@@ -5,7 +5,7 @@ description: একটার পর একটা word predict করে sentence
 
 # Sentence Generate
 
-<ConceptAnim name="next-token" caption="Generate: i like apple …" />
+<ConceptAnim slug="part-02-bigram/04-generate" />
 
 এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা।
 
@@ -15,11 +15,15 @@ description: একটার পর একটা word predict করে sentence
 
 ```mermaid
 flowchart LR
-    start["Start: i"] --> p1["predict → like"]
-    p1 --> p2["predict → apple"]
-    p2 --> p3["predict → is"]
-    p3 --> p4["predict → fruit"]
-    p4 --> stop["No more → stop"]
+    start["Start: i"]:::input --> p1["predict → like"]:::process
+    p1 --> p2["predict → apple"]:::process
+    p2 --> p3["predict → is"]:::process
+    p3 --> p4["predict → fruit"]:::output
+    p4 --> stop["No more → stop"]:::dim
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
 Result: `"i like apple is fruit"`

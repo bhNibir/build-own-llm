@@ -3,12 +3,12 @@ title: Embedding Matrix
 description: Word ID থেকে learned vector — count table-এর smart alternative
 ---
 
-# 📊 Embedding Matrix
+# Embedding Matrix
 
-<ConceptAnim name="llm-pipeline" caption="Embedding lookup table" />
+<ConceptAnim slug="part-06-neural-lm/01-embedding" />
 
 <Callout type="idea">
-💡 **Embedding** মানে: প্রতিটা word/token-এর জন্য একটা **learned vector**। Similar word-এর vector কাছাকাছি হবে।
+**Embedding** মানে: প্রতিটা word/token-এর জন্য একটা **learned vector**। Similar word-এর vector কাছাকাছি হবে।
 </Callout>
 
 Bigram model-এ `like → { apple: 2, banana: 1 }` count table ছিল। Neural LM-এ আমরা **embedding matrix** `E` ব্যবহার করি:
@@ -20,11 +20,11 @@ $$E \in \mathbb{R}^{V \times D}$$
 
 ```mermaid
 flowchart TD
-    A["🔤 'apple' → ID 3"]:::input --> B["📋 Row 3 of E"]:::lookup
+    A["apple → ID 0"]:::input --> B["Row 0 of E"]:::lookup
     B --> C["[0.2, -0.5, 0.8, ...]"]:::vector
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef lookup fill:#10B981,color:#fff,stroke:#047857
-    classDef vector fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef lookup fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef vector fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 ## Lookup = Matrix Row
@@ -53,7 +53,24 @@ ID 2 ("apple") → [0.7,  0.2, -0.3,  0.1]
   { emoji: "3️⃣", title: "Vector out", body: "D-dimensional representation" }
 ]} />
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+Token ID দিয়ে embedding row pick — নীচের snippet চালাও, তারপর Playground-এ experiment করো।
+
+<CodeRun title="Embedding lookup" height={220}>{`// Embedding matrix E — প্রতিটা row একটা word vector
+const words = ['i', 'like', 'apple'];
+const E = [
+  [0.1, 0.3, -0.2, 0.5],
+  [0.4, -0.1, 0.6, 0.2],
+  [0.7, 0.2, -0.3, 0.1],
+];
+
+const id = 1; // "like"
+log.step('Embedding lookup');
+log.data('Token', words[id]);
+log.data('ID', id);
+log.data('Vector E[id]', E[id]);
+log.ok('row pick সম্পন্ন');`}</CodeRun>
 
 <Playground id="part-06/embedding" title="Embedding Lookup" />
 

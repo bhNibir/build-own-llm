@@ -3,34 +3,17 @@ title: LLM কীভাবে কাজ করে?
 description: Next token prediction — LLM-এর মূল ধারণা
 ---
 
-# 🧠 LLM কীভাবে কাজ করে?
+# LLM কীভাবে কাজ করে?
 
-<ConceptAnim name="next-token" caption="Context দেখে model পরের token-এর probability বের করে" />
+<ConceptAnim slug="part-01-tokenizer/01-llm-kivabe-kaj-kore" />
 
 একটা LLM আসলে **"next token prediction machine"**।
 
 মানে, তুমি কিছু text দিলে সে বলে: "পরেরটা কী হওয়া উচিত?"
 
-```mermaid
-flowchart TD
-    input["📝 Input: i like"]:::input --> model["🧠 Language Model"]:::process
-    model --> apple["🍎 apple 72%"]:::out
-    model --> banana["🍌 banana 18%"]:::out
-    model --> mango["🥭 mango 10%"]:::out
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
-    classDef out fill:#F59E0B,color:#fff,stroke:#D97706
-```
-
 ## উদাহরণ
 
-তুমি লিখলে:
-
-```
-i like
-```
-
-Model ভাবে:
+তুমি লিখলে `i like` — model ভাবে:
 
 ```
 apple   → 72% chance
@@ -38,41 +21,9 @@ banana  → 18% chance
 mango   → 10% chance
 ```
 
-তারপর একটা pick করে → `apple`
+তারপর একটা pick করে → `apple`। আবার context বাড়ে: `i like apple` — এভাবে sentence তৈরি হয়।
 
-আবার:
-
-```
-i like apple
-```
-
-Model ভাবে:
-
-```
-is → 100% chance
-```
-
-এভাবে একটার পর একটা word generate করে পুরো sentence তৈরি হয়।
-
-## পুরো Pipeline
-
-<ConceptAnim name="llm-pipeline" caption="Text থেকে prediction — step-by-step data flow" />
-
-```mermaid
-flowchart TD
-    text["📝 Text"]:::a --> tokenizer["🔤 Tokenizer"]:::b
-    tokenizer --> vocab["📖 Vocabulary"]:::b
-    vocab --> embedding["🔢 Embedding"]:::b
-    embedding --> transformer["🧠 Transformer"]:::b
-    transformer --> logits["📊 Logits"]:::b
-    logits --> softmax["⚡ Softmax"]:::b
-    softmax --> nextToken["🎯 Next Token"]:::c
-    classDef a fill:#4F46E5,color:#fff
-    classDef b fill:#10B981,color:#fff
-    classDef c fill:#F59E0B,color:#fff
-```
-
-আমরা এখন **শুধু প্রথম ২টা step** করব (Tokenizer + Vocabulary)। বাকিগুলো পরের Part-এ।
+এই Module-এ আমরা pipeline-এর **প্রথম অংশ** করব: Tokenizer → Vocabulary → Encoding → Training Pairs।
 
 ## GPT-4 vs আমাদের Model
 
@@ -80,15 +31,15 @@ flowchart TD
 |---|---|---|
 | Training data | Trillions of tokens | ~30 words |
 | Vocabulary | ~100,000 tokens | 12 words |
-| Parameters | Billions | ~144 (Part 2-তে) |
-| Architecture | Transformer | Bigram (Part 2) |
+| Parameters | Billions | ~144 (Module 2) |
+| Architecture | Transformer | Bigram (Module 2) |
 
-স্কেল আলাদা, কিন্তু **idea একই**: আগের text দেখে next token predict করা।
+স্কেল আলাদা, কিন্তু **idea একই**।
 
 ## তুমি কী শিখলে?
 
 - LLM = next token prediction machine
-- Input text → Model → Probability distribution → Pick one token
+- Input → Model → Probability → Pick one token
 - আমরা ছোট scale-এ same idea implement করব
 
 **পরের lesson:** [Dataset তৈরি করো](/docs/part-01-tokenizer/02-dataset)

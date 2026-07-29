@@ -5,13 +5,11 @@ description: Scalar vs vector — LLM-এ data represent করার প্র�
 
 # 🔢 Scalars and Vectors
 
-<ConceptAnim name="llm-pipeline" caption="Vectors = building blocks" />
+<ConceptAnim slug="part-03-math/01-scalar-vector" />
 
 <Callout type="idea">
 💡 **Scalar** = একটা number। **Vector** = number-এর ordered list। Embedding, weight — সব vector/matrix format-এ store হয়।
 </Callout>
-
-<Illustration name="matrix-grid" />
 
 ## Scalar কী?
 
@@ -70,6 +68,8 @@ flowchart LR
 
 ## Vector Class (Skeleton)
 
+`add`, `scale`, `length` — এই operations নীচের Playground-এ live try করো; পুরো `Vector` class সেখানেই implement করা আছে।
+
 ## LLM-এ কেন দরকার?
 
 ```mermaid
@@ -85,16 +85,16 @@ flowchart TD
 - Layer input/output সব **vector**
 - Attention-এ similarity = **dot product** (পরের lesson)
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-03/scalar-vector" title="Vector Operations" />
 
 ## ✅ তুমি কী শিখলে?
 
-- **Scalar** = single number (loss, learning rate)
-- **Vector** = ordered list of numbers (embedding, activations)
-- Vector operations: add, scale, length
-- LLM-এ প্রতিটা token একটা high-dimensional vector
+- **Scalar** = একটা number (loss, learning rate)
+- **Vector** = number-এর ordered list (embedding, activation)
+- Vector operations: add, scale, length — element-wise কাজ করে
+- LLM-এ প্রতিটা token একটা high-dimensional vector হয়ে যায়
 
 **আগের lesson:** [Module 3 Overview](/docs/part-03-math)
 

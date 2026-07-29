@@ -1,3 +1,5 @@
+import { NEXT_AFTER_I_LIKE } from './shared-data';
+
 export type ConceptExample = {
   input?: string;
   tokens?: string[];
@@ -10,26 +12,40 @@ export type ConceptConfig = {
   name: string;
   caption: string;
   example?: ConceptExample;
+  mode?: 'bigram' | 'neural' | 'gpt';
 };
 
-/** Default concept animation per lesson slug (path without .mdx) */
+const FRUIT_NEXT: ConceptExample = {
+  tokens: ['i', 'like'],
+  labels: NEXT_AFTER_I_LIKE.labels,
+  probs: NEXT_AFTER_I_LIKE.probs,
+};
+
+/** Single source of truth: lesson slug → concept animation */
 export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
+  // Module 0
   'part-00-intro/01-what-is-llm': {
     name: 'next-token',
-    caption: 'Example: "i like" → predict apple (50%)',
+    caption: 'P(apple | i like) ≈ 72% — next-token prediction',
+    example: FRUIT_NEXT,
   },
   'part-00-intro/02-why-from-scratch': {
-    name: 'llm-pipeline',
-    caption: 'Transparent pipeline vs black-box API',
+    name: 'blackbox-vs-glass',
+    caption: 'API black box vs transparent pipeline',
   },
-  'part-00-intro/03-roadmap': { name: 'llm-pipeline', caption: '10-module learning path' },
+  'part-00-intro/03-roadmap': {
+    name: 'roadmap-spine',
+    caption: '10-module path: Intro → Data → Foundations → Architecture → Bridge',
+  },
+  // Module 1
   'part-01-tokenizer/01-llm-kivabe-kaj-kore': {
     name: 'next-token',
-    caption: 'Fruit dataset: P(apple | i like) = 72%',
+    caption: 'Context দেখে পরের token-এর probability',
+    example: FRUIT_NEXT,
   },
   'part-01-tokenizer/02-dataset': {
-    name: 'llm-pipeline',
-    caption: '10 fruit sentences → tokenizer → model',
+    name: 'corpus-cards',
+    caption: '10 fruit sentences — training corpus',
   },
   'part-01-tokenizer/03-tokenizer': {
     name: 'tokenizer-split',
@@ -37,73 +53,120 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
     example: { input: 'I Like Apple', tokens: ['i', 'like', 'apple'] },
   },
   'part-01-tokenizer/04-vocabulary': {
-    name: 'tokenizer-split',
-    caption: '12 unique words in fruit corpus',
+    name: 'vocab-map',
+    caption: '12 unique words → sorted → ID mapping',
   },
   'part-01-tokenizer/05-encoding': {
-    name: 'llm-pipeline',
-    caption: 'Word → ID mapping from vocabulary',
+    name: 'encode-decode',
+    caption: '"i like apple" ↔ [7, 9, 0]',
   },
   'part-01-tokenizer/06-training-pairs': {
     name: 'bigram-scan',
-    caption: 'Pairs: (i→like), (like→apple), …',
+    caption: 'Pairs: (i→like), (like→apple), … — 20 total',
+    example: { tokens: ['i', 'like', 'apple'] },
   },
+  // Module 2
   'part-02-bigram/01-bigram-concept': {
-    name: 'bigram-scan',
+    name: 'context-window',
     caption: 'Context window = 1 word',
   },
   'part-02-bigram/02-count-model': {
-    name: 'bigram-scan',
+    name: 'count-table',
     caption: 'Count: like→apple appears 2 times',
-    example: { tokens: ['i', 'like', 'apple'] },
   },
-  'part-02-bigram/03-predict': { name: 'next-token', caption: 'Argmax from count table' },
-  'part-02-bigram/04-generate': { name: 'next-token', caption: 'Autoregressive: i → like → apple' },
+  'part-02-bigram/03-predict': {
+    name: 'bigram-predict',
+    caption: 'Count → normalize → argmax = apple',
+  },
+  'part-02-bigram/04-generate': {
+    name: 'generate-chain',
+    caption: 'Bigram autoregressive: i → like → apple',
+    mode: 'bigram',
+  },
   'part-02-bigram/05-sampling-vs-argmax': {
-    name: 'softmax-bars',
-    caption: 'Temperature changes bar heights',
+    name: 'sampling-bars',
+    caption: 'Argmax সবসময় একই; sampling লটারি',
+    example: { probs: NEXT_AFTER_I_LIKE.probs, labels: NEXT_AFTER_I_LIKE.labels },
   },
-  'part-03-math/01-scalar-vector': { name: 'llm-pipeline', caption: 'Vectors = foundation of embeddings' },
-  'part-03-math/02-matrix': { name: 'llm-pipeline', caption: 'Matrix stores embedding weights' },
-  'part-03-math/03-dot-product': { name: 'attention-flow', caption: 'Dot product = similarity score' },
-  'part-03-math/04-matmul': { name: 'llm-pipeline', caption: 'Matmul powers attention and FFN' },
+  // Module 3
+  'part-03-math/01-scalar-vector': { name: 'vector-axis', caption: 'Vectors = building blocks of embeddings' },
+  'part-03-math/02-matrix': { name: 'matrix-grid', caption: 'Matrix stores weights (rows × cols)' },
+  'part-03-math/03-dot-product': { name: 'dot-geometry', caption: 'Dot product = similarity / projection' },
+  'part-03-math/04-matmul': { name: 'matmul-visual', caption: 'Matmul: row × column sweep' },
   'part-03-math/05-softmax': {
     name: 'softmax-bars',
-    caption: 'z=[2,1,0] → P≈[66%,24%,9%]',
+    caption: 'z=[2,1,0] → P≈[66%, 24%, 9%]',
     example: { probs: [0.665, 0.245, 0.09], labels: ['apple', 'banana', 'mango'] },
   },
-  'part-04-autograd/01-computational-graph': { name: 'train-loop', caption: 'Forward → backward graph' },
-  'part-04-autograd/02-value': { name: 'train-loop', caption: 'Value tracks gradients' },
-  'part-04-autograd/03-backprop': { name: 'train-loop', caption: 'Chain rule backward pass' },
-  'part-04-autograd/04-gradient-descent': { name: 'train-loop', caption: 'W ← W − η∇L' },
-  'part-05-neural-network/01-neuron': { name: 'llm-pipeline', caption: 'Neuron: weighted sum + activation' },
-  'part-05-neural-network/02-layer': { name: 'llm-pipeline', caption: 'Layer = matrix of neurons' },
-  'part-05-neural-network/03-mlp': { name: 'llm-pipeline', caption: 'Stack layers → MLP' },
-  'part-05-neural-network/04-xor': { name: 'train-loop', caption: 'XOR: loss drops over epochs' },
-  'part-06-neural-lm/01-embedding': { name: 'llm-pipeline', caption: 'Word ID → vector lookup' },
-  'part-06-neural-lm/02-weight-matrix': { name: 'next-token', caption: 'W × embedding → logits' },
-  'part-06-neural-lm/03-loss': { name: 'softmax-bars', caption: 'Cross-entropy measures error' },
-  'part-06-neural-lm/04-train': { name: 'train-loop', caption: '200 epochs on fruit data' },
-  'part-06-neural-lm/05-generate': { name: 'next-token', caption: 'Sample from trained LM' },
-  'part-07-attention/01-why-attention': { name: 'attention-flow', caption: 'Long-range dependencies' },
-  'part-07-attention/02-qkv': { name: 'attention-flow', caption: 'Q·K = relevance score' },
-  'part-07-attention/03-scaled-dot-product': { name: 'attention-flow', caption: 'Softmax(QK^T/√d)' },
+  // Module 4
+  'part-04-autograd/01-computational-graph': { name: 'comp-graph', caption: 'Forward computational graph' },
+  'part-04-autograd/02-value': { name: 'value-tape', caption: 'Value tracks data + gradient' },
+  'part-04-autograd/03-backprop': { name: 'backprop-flow', caption: 'Chain rule — backward pass' },
+  'part-04-autograd/04-gradient-descent': { name: 'gd-step', caption: 'W ← W − η∇L' },
+  // Module 5
+  'part-05-neural-network/01-neuron': { name: 'neuron-sum', caption: 'Neuron: weighted sum + activation' },
+  'part-05-neural-network/02-layer': { name: 'layer-stack', caption: 'Layer = matrix of neurons' },
+  'part-05-neural-network/03-mlp': { name: 'mlp-forward', caption: 'Signal through stacked layers' },
+  'part-05-neural-network/04-xor': { name: 'xor-plot', caption: 'XOR: decision boundary + loss' },
+  // Module 6
+  'part-06-neural-lm/01-embedding': {
+    name: 'embedding-space-3d',
+    caption: 'Similar words কাছাকাছি — embedding vector space',
+  },
+  'part-06-neural-lm/02-weight-matrix': { name: 'logits-matmul', caption: 'E × W → logits' },
+  'part-06-neural-lm/03-loss': {
+    name: 'loss-bars',
+    caption: 'Cross-entropy: −log(P_true)',
+    example: { probs: [0.5, 0.3, 0.2], labels: ['apple', 'banana', 'mango'] },
+  },
+  'part-06-neural-lm/04-train': {
+    name: 'train-loop',
+    caption: 'Neural LM — epochs-এ loss কমে',
+    mode: 'neural',
+  },
+  'part-06-neural-lm/05-generate': {
+    name: 'generate-chain',
+    caption: 'Neural LM sample generation',
+    mode: 'neural',
+  },
+  // Module 7
+  'part-07-attention/01-why-attention': { name: 'dependency-lines', caption: 'Long-range token dependencies' },
+  'part-07-attention/02-qkv': { name: 'qkv-split', caption: 'Embedding → Query, Key, Value' },
+  'part-07-attention/03-scaled-dot-product': { name: 'attention-scores', caption: 'Q·Kᵀ scores → softmax' },
   'part-07-attention/04-self-attention': {
     name: 'attention-flow',
     caption: '"i like apple" attention weights',
     example: { tokens: ['i', 'like', 'apple'] },
   },
-  'part-07-attention/05-multi-head': { name: 'attention-flow', caption: 'Parallel attention heads' },
-  'part-08-transformer/01-positional': { name: 'llm-pipeline', caption: 'Position encoding added' },
-  'part-08-transformer/02-layer-norm': { name: 'train-loop', caption: 'Normalize activations' },
-  'part-08-transformer/03-ffn': { name: 'llm-pipeline', caption: 'Position-wise MLP' },
-  'part-08-transformer/04-residual': { name: 'train-loop', caption: 'x + sublayer(x)' },
-  'part-08-transformer/05-block': { name: 'llm-pipeline', caption: 'Full transformer block' },
-  'part-09-mini-gpt/01-gpt-architecture': { name: 'llm-pipeline', caption: 'Stack N transformer blocks' },
-  'part-09-mini-gpt/02-train': { name: 'train-loop', caption: 'Train Mini GPT on fruit corpus' },
-  'part-09-mini-gpt/03-generate': { name: 'next-token', caption: 'Generate fruit sentences' },
-  'part-09-mini-gpt/04-temperature': { name: 'softmax-bars', caption: 'Temperature widens/narrows bars' },
-  'part-09-mini-gpt/05-top-k': { name: 'softmax-bars', caption: 'Top-k filters low prob tokens' },
-  'part-10-bridge/01-reading-nanogpt': { name: 'llm-pipeline', caption: 'Map course → nanoGPT code' },
-  'part-10-bridge/02-whats-next': { name: 'llm-pipeline', caption: 'Scale to production LLM' },
+  'part-07-attention/05-multi-head': { name: 'multi-head-parallel', caption: 'Parallel attention heads' },
+  // Module 8
+  'part-08-transformer/01-positional': { name: 'positional-sine', caption: 'Position encoding added to embed' },
+  'part-08-transformer/02-layer-norm': { name: 'layernorm-scale', caption: 'LayerNorm: mean/var normalize' },
+  'part-08-transformer/03-ffn': { name: 'ffn-expand', caption: 'FFN: d → 4d → d' },
+  'part-08-transformer/04-residual': { name: 'residual-skip', caption: 'Residual: x + sublayer(x)' },
+  'part-08-transformer/05-block': { name: 'transformer-block', caption: 'Full transformer block' },
+  // Module 9
+  'part-09-mini-gpt/01-gpt-architecture': { name: 'gpt-stack', caption: 'Stack N transformer blocks' },
+  'part-09-mini-gpt/02-train': {
+    name: 'train-loop',
+    caption: 'Mini GPT train — transformer epochs',
+    mode: 'gpt',
+  },
+  'part-09-mini-gpt/03-generate': {
+    name: 'generate-chain',
+    caption: 'Mini GPT autoregressive generation',
+    mode: 'gpt',
+  },
+  'part-09-mini-gpt/04-temperature': {
+    name: 'temp-softmax',
+    caption: 'Temperature widens/narrows distribution',
+  },
+  'part-09-mini-gpt/05-top-k': { name: 'topk-filter', caption: 'Top-k filters low-probability tokens' },
+  // Module 10
+  'part-10-bridge/01-reading-nanogpt': { name: 'code-map', caption: 'Course modules → nanoGPT files' },
+  'part-10-bridge/02-whats-next': { name: 'scale-ladder', caption: 'Fruit model → production LLM scale' },
 };
+
+export function getLessonConcept(slug: string): ConceptConfig | undefined {
+  return LESSON_CONCEPTS[slug];
+}

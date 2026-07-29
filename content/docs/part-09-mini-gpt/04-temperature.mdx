@@ -5,7 +5,7 @@ description: Randomness control — temperature scaling logits
 
 # 🌡️ Temperature
 
-<ConceptAnim name="softmax-bars" caption="Temperature sampling" />
+<ConceptAnim slug="part-09-mini-gpt/04-temperature" />
 
 Generation-এ **কতটা random** হবে? **Temperature** parameter logits scale করে — low = deterministic, high = creative (sometimes nonsense)।
 
@@ -33,6 +33,14 @@ $$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
 | T → 0 | Argmax (deterministic) | Factual answers |
 | T = 1 | Default model distribution | Balanced |
 | T > 1 | Flatter distribution | Creative writing |
+
+<MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+  <div>১. Logits: <code>z = [2, 1, 0]</code> (তিনটা token-এর raw score)</div>
+  <div>২. <strong>T = 0.5</strong>: <code>z/T = [4, 2, 0]</code> → exp ≈ <code>[54.6, 7.39, 1]</code>, sum ≈ 63.0</div>
+  <div>৩. Softmax (T=0.5): ≈ <code>[0.87, 0.12, 0.02]</code> — খুব peaked, প্রায় সবসময় প্রথম token</div>
+  <div>৪. <strong>T = 2</strong>: <code>z/T = [1, 0.5, 0]</code> → exp ≈ <code>[2.72, 1.65, 1]</code>, sum ≈ 5.37</div>
+  <div>৫. Softmax (T=2): ≈ <code>[0.51, 0.31, 0.19]</code> — flatter, বেশি random / creative</div>
+</MathPractical>
 
 ## Example
 

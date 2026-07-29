@@ -5,15 +5,13 @@ description: Norm → Attn → Res → Norm → FFN → Res — complete assembl
 
 # 🏗️ Full Transformer Block
 
-<ConceptAnim name="llm-pipeline" caption="Transformer block assembly" />
+<ConceptAnim slug="part-08-transformer/05-block" />
 
 সব piece ready — এখন **assemble**: LayerNorm → Multi-Head Attention → Residual → LayerNorm → FFN → Residual। এটাই GPT-এর core building block।
 
 <Callout type="tip">
 ✅ GPT = N transformer blocks stacked + final LayerNorm + output projection to vocabulary.
 </Callout>
-
-<Illustration name="transformer-block" />
 
 ```mermaid
 flowchart TD

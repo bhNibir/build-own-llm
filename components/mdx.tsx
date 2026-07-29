@@ -8,6 +8,7 @@ import {
   Formula,
   MathIntuition,
   MathLesson,
+  MathPractical,
   SymbolTable,
   WorkedExample,
 } from './mdx/math/MathLesson';
@@ -31,6 +32,7 @@ export function getMDXComponents(components?: MDXComponents) {
     TokenFlow,
     MathLesson,
     MathIntuition,
+    MathPractical,
     SymbolTable,
     Formula,
     WorkedExample,

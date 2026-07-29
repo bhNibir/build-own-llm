@@ -5,7 +5,7 @@ description: Embedding vector থেকে next-token logits — neural bigram
 
 # ⚖️ Weight Matrix W
 
-<ConceptAnim name="next-token" caption="Weight matrix → logits" />
+<ConceptAnim slug="part-06-neural-lm/02-weight-matrix" />
 
 Embedding vector পেলাম — এখন **next token predict** করতে হবে। Weight matrix `W` embedding-কে **logits**-এ convert করে।
 
@@ -45,15 +45,13 @@ logits = W @ embed = [0.18, 0.0, -0.16]
 probs  = softmax(logits) ≈ [0.45, 0.37, 0.18]
 ```
 
-<Illustration name="matrix-grid" />
-
 ## Softmax = Probability
 
 Raw logits negative/positive যেকোনো হতে পারে। **Softmax** সব positive probability-তে convert করে (sum = 1):
 
 $$\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$$
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-06/weight-matrix" title="Weight Matrix Forward Pass" />
 

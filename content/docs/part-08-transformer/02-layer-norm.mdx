@@ -5,7 +5,7 @@ description: Activation normalize — training stable রাখে
 
 # 📏 LayerNorm
 
-<ConceptAnim name="train-loop" caption="Layer normalization" />
+<ConceptAnim slug="part-08-transformer/02-layer-norm" />
 
 Deep network-এ activation values explode বা vanish হতে পারে। **LayerNorm** প্রতিটা token-এর vector normalize করে — training stable রাখে।
 
@@ -35,6 +35,15 @@ $$\text{LayerNorm}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} 
 - `γ`, `β` = learned scale and shift
 - `ε` = tiny constant (divide-by-zero prevent)
 
+<MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+  <div>১. দেওয়া vector: <code>x = [2, 4, 6]</code> (একটা token-এর ৩-dim activation)</div>
+  <div>২. Mean: <code>μ = (2 + 4 + 6) / 3 = 4</code></div>
+  <div>৩. Variance: <code>σ² = [(2−4)² + (4−4)² + (6−4)²] / 3 = (4 + 0 + 4) / 3 = 8/3 ≈ 2.667</code></div>
+  <div>৪. Std: <code>σ = √(8/3) ≈ 1.633</code> (ε ≈ 0 ধরে)</div>
+  <div>৫. Normalize: <code>(x − μ) / σ ≈ [−1.225, 0, 1.225]</code></div>
+  <div>৬. γ = 1, β = 0 হলে output একই — learned γ, β পরে rescale/shift করে</div>
+</MathPractical>
+
 ## Why Per-Token?
 
 BatchNorm batch dimension-এ normalize করে — language model-এ sequence length variable, তাই **per-token LayerNorm** better fit।
@@ -61,8 +70,8 @@ Norm **before** each sub-layer (Pre-LN) — modern GPT standard.
 
 ## ✅ তুমি কী শিখলে?
 
-- LayerNorm stabilizes activations per token
-- Pre-LN: normalize before attention/FFN
-- Learned γ, β allow model to rescale after norm
+- LayerNorm প্রতিটা token-এর activation stabilize করে
+- Pre-LN: attention/FFN-এর আগে normalize
+- Learned γ, β দিয়ে model norm-এর পর rescale করতে পারে
 
 **পরের lesson:** [Feed-Forward Network](/docs/part-08-transformer/03-ffn)

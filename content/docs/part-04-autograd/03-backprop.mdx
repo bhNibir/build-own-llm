@@ -5,7 +5,7 @@ description: Chain rule দিয়ে loss থেকে সব parameter-এ g
 
 # ⬅️ Backpropagation
 
-<ConceptAnim name="train-loop" caption="Backprop chain rule" />
+<ConceptAnim slug="part-04-autograd/03-backprop" />
 
 <Callout type="idea">
 💡 **Backpropagation** = computational graph reverse traverse করে chain rule apply। Loss থেকে শুরু, root পর্যন্ত gradient flow।
@@ -63,11 +63,14 @@ Backward (bottom-up in diagram = reverse topo order):
   <Formula>
     {`$$\\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial x}$$`}
   </Formula>
-  <WorkedExample>
-    a=2, b=-3, c=10 → L=16{'\n'}
-    After backward():{'\n'}
-    ∂L/∂a = -24, ∂L/∂b = 16, ∂L/∂c = 8
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. দেওয়া: <code>a = 2</code>, <code>b = −3</code>, <code>c = 10</code> — এবং <code>L = (a×b + c)²</code></div>
+    <div>২. Forward: <code>a×b = −6</code>, <code>−6 + 10 = 4</code>, <code>L = 4² = 16</code></div>
+    <div>৩. Seed: <code>∂L/∂L = 1</code></div>
+    <div>৪. Square: <code>∂L/∂(inner) = 2 × 4 × 1 = 8</code></div>
+    <div>৫. Add: <code>∂L/∂(a×b) = 8</code>, <code>∂L/∂c = 8</code></div>
+    <div>৬. Multiply: <code>∂L/∂a = 8 × b = 8 × (−3) = −24</code>, <code>∂L/∂b = 8 × a = 16</code></div>
+  </MathPractical>
   <CodeLink>Playground-এ backward() run করে grad values verify করো ↓</CodeLink>
 </MathLesson>
 
