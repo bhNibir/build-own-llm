@@ -10,7 +10,7 @@ description: Fruit dataset-এ ~500-line TypeScript training loop
 Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
 
 <Callout type="warn">
-⚠️ Browser-এ training slow — Nodepod runtime use করে real training run করব (~500 lines TypeScript)।
+⚠️ পুরো training browser-এ **esbuild-wasm runtime**-এ চলে (~500 lines TypeScript) — dataset ছোট বলে কয়েক second-এ train হয়।
 </Callout>
 
 ```mermaid
