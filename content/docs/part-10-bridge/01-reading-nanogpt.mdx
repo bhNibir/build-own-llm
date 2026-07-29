@@ -64,10 +64,37 @@ flowchart TD
 ## CausalSelfAttention — Side by Side
 
 **Our code (Module 7):**
-<CodeRun title="Self-attention (our TS)" height={160} editable={false} autoRun={false}>{`const scores = matmul(Q, transpose(K)) / Math.sqrt(d_k);
-const weights = causalSoftmax(scores);  // mask future
+<CodeRun title="Self-attention (our TS)" height={320} editable={false}>{`// Causal self-attention — same formula as nanoGPT, fully runnable
+const d_k = 2;
+const Q = [[1, 0], [0, 1], [1, 1]]; // 3 tokens
+const K = [[1, 0], [0, 1], [1, 1]];
+const V = [[1, 0], [0, 1], [0.5, 0.5]];
+
+const transpose = (M: number[][]) => M[0].map((_, j) => M.map((r) => r[j]));
+const matmul = (A: number[][], B: number[][]) =>
+  A.map((row) => transpose(B).map((col) => row.reduce((s, v, k) => s + v * col[k], 0)));
+
+// softmax each row, masking future tokens (j > i)
+function causalSoftmax(scores: number[][]): number[][] {
+  return scores.map((row, i) => {
+    const masked = row.map((v, j) => (j > i ? -Infinity : v));
+    const max = Math.max(...masked);
+    const exp = masked.map((v) => Math.exp(v - max));
+    const sum = exp.reduce((a, b) => a + b, 0);
+    return exp.map((e) => e / sum);
+  });
+}
+
+const scale = Math.sqrt(d_k);
+const scores = matmul(Q, transpose(K)).map((row) => row.map((v) => v / scale));
+const weights = causalSoftmax(scores); // mask future
 const output = matmul(weights, V);
-console.log('Attention output shape:', output.length);`}</CodeRun>
+
+log.step('Causal Self-Attention');
+log.data('weights (row i attends to <= i)', weights.map((r) => r.map((v) => Number(v.toFixed(2)))));
+log.data('output', output.map((r) => r.map((v) => Number(v.toFixed(2)))));
+log.data('output shape', output.length + ' x ' + output[0].length);
+log.ok('same softmax(QK^T / sqrt(d_k)) . V — now with causal mask');`}</CodeRun>
 
 **nanoGPT (model.py):**
 ```python
