@@ -15,7 +15,7 @@ Embedding vector পেলাম — এখন **next token predict** করত�
 
 ```mermaid
 flowchart LR
-    A["📊 embed(x)"]:::input --> B["⚖️ W @ embed"]:::matmul
+    A["📊 embed(x)"]:::input --> B["⚖️ embed @ W"]:::matmul
     B --> C["📈 logits"]:::output
     C --> D["🎯 softmax → probs"]:::softmax
     classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
@@ -41,8 +41,8 @@ embed("like") = [0.4, -0.1]
 W = [[0.5, 0.2, -0.3],
      [0.1, 0.8,  0.4]]
 
-logits = W @ embed = [0.18, 0.0, -0.16]
-probs  = softmax(logits) ≈ [0.45, 0.37, 0.18]
+logits = embed @ W = [0.19, 0.0, -0.16]
+probs  = softmax(logits) ≈ [0.40, 0.33, 0.28]
 ```
 
 ## Softmax = Probability
