@@ -5,7 +5,7 @@ description: Gradient দিয়ে weight update — model train করার
 
 # 📉 Gradient Descent
 
-<ConceptAnim name="train-loop" caption="Gradient descent update" />
+<ConceptAnim slug="part-04-autograd/04-gradient-descent" />
 
 <Callout type="idea">
 💡 **Gradient** বলে loss কোন direction-এ বাড়ছে। **Gradient descent** = opposite direction-এ small step — loss কমাতে weight update।
@@ -26,11 +26,12 @@ description: Gradient দিয়ে weight update — model train করার
   <Formula>
     {`$$w \\leftarrow w - \\alpha \\cdot \\frac{\\partial L}{\\partial w}$$`}
   </Formula>
-  <WorkedExample>
-    w = 3.0, ∂L/∂w = 4.0, α = 0.1{'\n'}
-    w_new = 3.0 - 0.1 × 4.0 = 2.6{'\n'}
-    (loss decreases because we moved opposite to gradient)
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. দেওয়া: <code>w = 3.0</code>, <code>∂L/∂w = 4.0</code>, learning rate <code>α = 0.1</code></div>
+    <div>২. Update rule: <code>w ← w − α · ∂L/∂w</code></div>
+    <div>৩. গণনা: <code>w_new = 3.0 − 0.1 × 4.0 = 3.0 − 0.4 = 2.6</code></div>
+    <div>৪. Gradient ধনাত্মক → weight কমিয়েছি — loss কমানোর দিকে সরেছি</div>
+  </MathPractical>
   <CodeLink>Playground-এ training loop run করো ↓</CodeLink>
 </MathLesson>
 

@@ -1,20 +1,23 @@
 ---
-title: Part 1 — Tokenizer
+title: Module 1 — Tokenizer
 description: Text কে number-এ convert করা — LLM-এর প্রথম ধাপ
 ---
 
-# Part 1: Tokenizer + Vocabulary
+# Module 1: Tokenizer + Vocabulary
 
-এই Part-এ আমরা **কোনো AI বানাবো না**। শুধু data prepare করব — যেটা না বুঝলে পরের কিছুই পরিষ্কার হবে না।
+এই Module-এ আমরা **কোনো AI বানাবো না**। শুধু data prepare করব — যেটা না বুঝলে পরের কিছুই পরিষ্কার হবে না।
 
-## এই Part-এ কী শিখবে?
+## এই Module-এ কী শিখবে?
 
 ```mermaid
 flowchart LR
-    A[Dataset] --> B[Tokenizer]
-    B --> C[Vocabulary]
-    C --> D[Encoding]
-    D --> E[Training Pairs]
+    A["Dataset"]:::input --> B["Tokenizer"]:::process
+    B --> C["Vocabulary"]:::output
+    C --> D["Encoding"]:::process
+    D --> E["Training Pairs"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 | Lesson | Topic |
@@ -32,6 +35,4 @@ flowchart LR
 
 > Model কখনো `"apple"` string দেখে না। শুধু `2` (একটা number) দেখে। Tokenizer-এর কাজ হলো এই conversion করা।
 
-<Cards>
-  <Card title="Lesson 01: LLM কীভাবে কাজ করে" href="/docs/part-01-tokenizer/01-llm-kivabe-kaj-kore" />
-</Cards>
+**শুরু করো:** [Lesson 01 — LLM কীভাবে কাজ করে](/docs/part-01-tokenizer/01-llm-kivabe-kaj-kore)

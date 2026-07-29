@@ -5,7 +5,7 @@ description: কেন LLM random text generate করে
 
 # Sampling vs Argmax
 
-<ConceptAnim name="softmax-bars" caption="Sampling vs always picking max" />
+<ConceptAnim slug="part-02-bigram/05-sampling-vs-argmax" />
 
 আগের lesson-এ দেখলাম argmax দিয়ে generate করলে **সবসময় same output**। কিন্তু ChatGPT তো প্রতিবার আলাদা answer দেয় — কেন?
 
@@ -41,18 +41,25 @@ Random number: 0.6
 
 ## কোড
 
+নীচের playground-এ Argmax vs Sampling চালিয়ে দেখো — Run বারবার চাপলে sampling output প্রতিবার আলাদা হবে।
+
 ## Comparison
 
 ```mermaid
 flowchart TD
     subgraph argmax [Argmax]
-        a1["like"] --> a2["always apple"]
+        a1["like"]:::input --> a2["always apple"]:::highlight
     end
     subgraph sampling [Sampling]
-        s1["like"] --> s2["apple 50%"]
-        s1 --> s3["banana 25%"]
-        s1 --> s4["mango 25%"]
+        s1["like"]:::input --> s2["apple 50%"]:::output
+        s1 --> s3["banana 25%"]:::process
+        s1 --> s4["mango 25%"]:::dim
     end
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 | | Argmax | Sampling |
@@ -83,17 +90,21 @@ $$P_i = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}$$
 
 ```mermaid
 flowchart TD
-    A[Training Data] --> B[Count Table]
-    B --> C[Predict]
-    C --> D[Generate]
-    D --> E{Strategy?}
-    E --> F[Argmax: deterministic]
-    E --> G[Sampling: creative]
-    style G fill:#90EE90
+    A["Training Data"]:::input --> B["Count Table"]:::process
+    B --> C["Predict"]:::output
+    C --> D["Generate"]:::process
+    D --> E{"Strategy?"}:::dim
+    E --> F["Argmax: deterministic"]:::highlight
+    E --> G["Sampling: creative"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 🎉 তুমি তোমার **প্রথম Language Model** বানালে, train করলে, এবং text generate করলে!
 
-কিন্তু Bigram model-এর limitation আছে — সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে। সেটা Part 3-5-এ।
+কিন্তু Bigram model-এর limitation আছে — সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে — সেটা [Module 5 — Neural Network](/docs/part-05-neural-network) এবং পরের modules-এ।
 
-**পরের Part:** [Part 3 — Neural Network](/docs/part-03-neural-network)
+**পরের Module:** [Module 3 — Math Foundations](/docs/part-03-math)

@@ -5,7 +5,7 @@ description: Training data থেকে count table বানানো
 
 # Count-based Training
 
-<ConceptAnim name="bigram-scan" caption="Scanner sentence traverse করে — প্রতিটি bigram pair count +1" />
+<ConceptAnim slug="part-02-bigram/02-count-model" />
 
 Bigram model-এর training খুব simple: **গুনে রাখো** কোন word-এর পরে কোন word কতবার এসেছে।
 
@@ -17,8 +17,8 @@ flowchart TD
     A --> C["like → apple +1"]:::process
     D["📝 i like banana"]:::input --> E["i → like +1"]:::process
     D --> F["like → banana +1"]:::process
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
 ```
 
 ## Step by Step
@@ -77,7 +77,7 @@ Data structure: `Map<currentWord, Map<nextWord, count>>`
   </Formula>
   <WorkedExample>
     P(like | i) = 3/3 = 1.0{'\n'}
-    P(apple | like) = 2/(2+1+1) = 0.5
+    P(apple | i like) = 2/(2+1+1) = 0.5
   </WorkedExample>
   <CodeLink>Playground-এ count table run করো ↓</CodeLink>
 </MathLesson>

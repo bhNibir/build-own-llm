@@ -31,16 +31,17 @@ function tokenize(sentence: string): string[] {
   return sentence.toLowerCase().trim().split(/\\s+/);
 }
 
-console.log('=== Tokenizer Demo ===\\n');
+log.step('Tokenizer Demo');
 
 const example = 'I Like Apple';
-console.log('Input:  "' + example + '"');
+log.data('Input', example);
 const tokens = tokenize(example);
-console.log('Tokens: [' + tokens.map((w) => '"' + w + '"').join(', ') + ']');
+log.data('Tokens', tokens);
+log.ok('lowercase + split সম্পন্ন');
 
-console.log('\\n--- All sentences tokenized ---');
+log.step('Sample sentences');
 for (const sentence of dataset.slice(0, 4)) {
-  console.log('"' + sentence + '" → [' + tokenize(sentence).join(', ') + ']');
+  log.data(sentence, tokenize(sentence));
 }
 `,
     },
@@ -71,14 +72,16 @@ function buildVocab(): { stoi: Record<string, number>; size: number } {
   return { stoi, size: sorted.length };
 }
 
-console.log('=== Vocabulary Demo ===\\n');
+log.step('Vocabulary Demo');
 
 const vocab = buildVocab();
-console.log('Word → ID:');
+log.data('Vocab size', vocab.size);
+
+log.step('Word → ID');
 for (const [word, id] of Object.entries(vocab.stoi)) {
-  console.log('  ' + word + ' → ' + id);
+  log.data(word, id);
 }
-console.log('\\nVocab size: ' + vocab.size);
+log.ok('12 unique words mapped');
 `,
     },
   },
@@ -112,16 +115,19 @@ function decode(ids: number[]): string {
   return ids.map((id) => itos[id]).join(' ');
 }
 
-console.log('=== Encoding / Decoding Demo ===\\n');
+log.step('Encoding / Decoding Demo');
 
+log.step('Encode');
 for (const sentence of ['i like apple', 'fruit is healthy', 'you eat mango']) {
   const ids = encode(sentence);
-  console.log('"' + sentence + '" → [' + ids.join(', ') + ']');
+  log.data(sentence, ids);
 }
 
-console.log('\\n--- Decode back ---');
+log.step('Decode back');
 const ids = encode('fruit is healthy');
-console.log('[' + ids.join(', ') + '] → "' + decode(ids) + '"');
+log.data('IDs', ids);
+log.data('Decoded', decode(ids));
+log.ok('encode ↔ decode round-trip OK');
 `,
     },
   },
@@ -140,8 +146,8 @@ function tokenize(s: string): string[] {
   return s.toLowerCase().trim().split(/\\s+/);
 }
 
-console.log('=== Training Pairs Demo ===\\n');
-console.log('Model learns: current word → next word\\n');
+log.step('Training Pairs Demo');
+log.data('Rule', 'current word → next word');
 
 const pairs: [string, string][] = [];
 for (const sentence of dataset) {
@@ -151,22 +157,23 @@ for (const sentence of dataset) {
   }
 }
 
-console.log('Total pairs: ' + pairs.length);
-console.log('\\nAll pairs:');
+log.data('Total pairs', pairs.length);
+
+log.step('All pairs');
 for (const [current, next] of pairs) {
-  console.log('  "' + current + '" → "' + next + '"');
+  log.data(current, next);
 }
 
-console.log('\\n--- Pattern summary ---');
+log.step('Pattern summary');
 const counts: Record<string, Record<string, number>> = {};
 for (const [a, b] of pairs) {
   if (!counts[a]) counts[a] = {};
   counts[a][b] = (counts[a][b] ?? 0) + 1;
 }
 for (const [word, nexts] of Object.entries(counts)) {
-  const entries = Object.entries(nexts).map(([n, c]) => n + '=' + c).join(', ');
-  console.log('  ' + word + ' → { ' + entries + ' }');
+  log.data(word, nexts);
 }
+log.ok(pairs.length + ' bigram pairs built');
 `,
     },
   },
@@ -202,18 +209,18 @@ class BigramModel {
   }
 }
 
-console.log('=== Bigram Count Model ===\\n');
+log.step('Bigram Count Model');
 
 const model = new BigramModel();
 model.train();
 
-console.log('Trained count table:\\n');
+log.step('Trained count table');
 for (const [word, row] of model.table) {
-  const entries = Array.from(row.entries())
-    .map(([next, count]) => next + '=' + count)
-    .join(', ');
-  console.log('  ' + word + ' → { ' + entries + ' }');
+  const entries: Record<string, number> = {};
+  for (const [next, count] of row) entries[next] = count;
+  log.data(word, entries);
 }
+log.ok('count table ready');
 `,
     },
   },
@@ -267,17 +274,19 @@ class BigramModel {
   }
 }
 
-console.log('=== Predict (argmax) ===\\n');
+log.step('Predict (argmax)');
 
 const model = new BigramModel();
 model.train();
 
+log.step('Next-word predictions');
 for (const word of ['i', 'like', 'apple', 'fruit', 'is']) {
   const next = model.predict(word);
   const probs = model.probabilities(word);
   const prob = next ? probs.get(next) : undefined;
-  console.log('  ' + word + ' → ' + next + '  (P=' + (prob?.toFixed(2) ?? 'N/A') + ')');
+  log.data(word, next + ' (P=' + (prob?.toFixed(2) ?? 'N/A') + ')');
 }
+log.ok('argmax predictions done');
 `,
     },
   },
@@ -331,18 +340,19 @@ class BigramModel {
   }
 }
 
-console.log('=== Generate (autoregressive) ===\\n');
+log.step('Generate (autoregressive)');
 
 const model = new BigramModel();
 model.train();
 
-console.log('Starting from "i", predict next word repeatedly:\\n');
+log.step('Start from "i"');
 for (let i = 0; i < 3; i++) {
-  console.log('  ' + model.generate('i'));
+  log.data('run ' + (i + 1), model.generate('i'));
 }
 
-console.log('\\nStarting from "you":');
-console.log('  ' + model.generate('you'));
+log.step('Start from "you"');
+log.data('run 1', model.generate('you'));
+log.ok('autoregressive generation done');
 `,
     },
   },
@@ -419,22 +429,23 @@ class BigramModel {
   }
 }
 
-console.log('=== Argmax vs Sampling ===\\n');
+log.step('Argmax vs Sampling');
 
 const model = new BigramModel();
 model.train();
 
-console.log('like → apple (50%), banana (25%), mango (25%)\\n');
+log.data('like →', 'apple 50%, banana 25%, mango 25%');
 
-console.log('Argmax (always same):');
+log.step('Argmax (always same)');
 for (let i = 0; i < 3; i++) {
-  console.log('  ' + model.generateArgmax('i'));
+  log.data('run ' + (i + 1), model.generateArgmax('i'));
 }
 
-console.log('\\nSampling (different each run):');
+log.step('Sampling (different each run)');
 for (let i = 0; i < 5; i++) {
-  console.log('  ' + model.generateSample('i'));
+  log.data('run ' + (i + 1), model.generateSample('i'));
 }
+log.ok('argmax vs sampling compared');
 `,
     },
   },

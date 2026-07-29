@@ -1,9 +1,9 @@
 # Product Requirements Document: Interactive LLM Learning Platform
 
 **Project:** নিজের LLM বানাও (Build Your Own LLM)  
-**Version:** 2.0  
+**Version:** 3.0  
 **Last updated:** 2026-07-20  
-**Status:** Structure complete (49 lessons). Interactive polish v2 complete — Shiki editor, CodeRun, Motion diagrams, live viz.
+**Status:** Structure complete. UX v3 — Bangla fonts, modern colorful diagrams, guided learner path.
 
 ---
 
@@ -331,14 +331,23 @@ Every runnable code surface shares:
 
 Sandbox preamble injects `log.step(msg)`, `log.data(label, val)`, `log.ok(msg)` for consistent section headers.
 
-### 7.5 Concept diagram rules
+### 7.5 Concept diagram rules (UX v3)
 
-Every `<ConceptAnim>` must:
+Every lesson uses **one primary `<ConceptAnim slug="…" />`** from [`lesson-concepts.ts`](components/diagrams/lesson-concepts.ts).
 
-1. Use **actual lesson example data** via `example={{ input, tokens, probs, labels }}` when applicable
-2. Animate with **Motion** (`motion/react`) and respect `prefers-reduced-motion`
-3. Appear on **all 49 lessons** (theory lessons get concept-only; code lessons get data + playground)
-4. Map slugs via `components/diagrams/lesson-concepts.ts`
+**Design rules:**
+
+1. **One idea = one animated figure** — no duplicate Mermaid for the same concept
+2. **Excalidraw color system** — fill = same hue as border at lower contrast; bright borders; dark-mode tokens required
+3. **Bangla typography** — Noto Sans Bengali (`--font-bn`) for prose; JetBrains Mono for code
+4. **Stable layout** — `min-h-[220px]` ConceptFrame; Bangla `DataLabel` + English term
+5. **Data-bound** — fruit corpus; `P(apple|i like) ≈ 72% / 18% / 10%`
+6. **Motion** with `prefers-reduced-motion`
+7. **3D only when spatial** — `embedding-space-3d` on Module 6.1; attention stays 2D heatmap
+8. `SketchBox` default fill = solid; hachure/cross-hatch for emphasis only
+9. **Stroke styles** — boxes default `solid`; connectors `dashed`/`dotted` per diagram meaning
+
+**Shared primitives:** `components/diagrams/diagram-ui.tsx` — `ConceptFrame`, `StepChip`, `FlowConnector`, `ModelBadge`, `StepDots`, `SketchBox`
 
 ### 7.6 Visualizer
 
@@ -451,7 +460,9 @@ fruit is healthy
 | Phase 2 | 3–6 | ✅ Complete |
 | Phase 3 | 7–8 | ✅ Complete (visualizers) |
 | Phase 4 | 9–10 | ✅ Complete (GenerateControls) |
-| **Phase 5** | **Interactive polish v2** | ✅ Complete — Shiki, CodeRun, Motion, live viz, checklist |
+| **Phase 5** | **Interactive polish v2** | ✅ Complete — Shiki, CodeRun, Motion, live viz |
+| **Phase 6** | **UX v3 (Bangla + colorful)** | ✅ Complete — Noto Bengali, SketchBox, Mermaid dark, log.step, EmbeddingSpace3D |
+| **Phase 7** | **Editor + clarity polish** | ✅ Complete — CodeMirror 6, StepDots/PlotFrame, MathPractical, unique anims |
 
 ---
 
@@ -463,7 +474,9 @@ fruit is healthy
 |------|--------|-------|
 | Module 0–10 lesson files | Done | 64 MDX files incl. indexes |
 | 49 lesson curriculum | Done | All modules present |
-| Bangla prose + English terms | Done | Consistent across modules |
+| Bangla prose + English terms | Done | Noto Sans Bengali + guided path |
+| Home/docs CTA → Lesson 0.1 | Done | Guided learner journey |
+| MathPractical collapsible | Done | Closed-by-default numeric walkthroughs |
 | Prev/next navigation | Done | Per-lesson links |
 | Theory-only lessons (12) | Done by design | M0, 1.1, 1.2, 2.1, 4.1, 7.1, 9.1, M10 |
 
@@ -474,19 +487,22 @@ fruit is healthy
 | Full-lesson `<Playground>` | Done | 37/37 code lessons |
 | Static ` ```ts ` blocks runnable | Done | Replaced with Playground or CodeRun |
 | Copy button on code | Done | RunnerToolbar on Playground + CodeRun |
-| Syntax-highlighted editor | Done | Shiki CodeEditor |
-| Colorful semantic console | Done | ColorConsole |
+| Syntax-highlighted editor | Done | **CodeMirror 6** (scroll, wrap, resize, fullscreen) |
+| Colorful semantic console | Done | ColorConsole + `log.step` / `log.data` / `log.ok` |
 | Single runtime (esbuild-wasm) | Done | Nodepod removed |
 
 ### Visual learning
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Mermaid on lessons | Done | ~55 blocks |
-| `<ConceptAnim>` | Done | All 49 lessons |
-| Diagrams use lesson data | Done | `example` prop + lesson-concepts.ts |
+| Mermaid on lessons | Done | Dark-aware classDefs + sketch palettes |
+| `<ConceptAnim>` lesson-specific | Done | Unique mappings + StepDots + PlotFrame |
+| Diagrams use lesson data | Done | `lesson-concepts.ts` + `shared-data.ts` |
+| Embedding space 3D (M6.1) | Done | CSS perspective `embedding-space-3d` |
+| Stack CSS 3D | Done | GPT / Transformer block / Layer stack |
+| KaTeX Formula strings | Done | Client `KatexFormula` renderer |
 | Live viz from Run output | Done | `viz` prop on softmax, train, self-attention |
-| Motion animations | Done | All 7 ConceptAnim components |
+| Motion animations | Done | ConceptAnim registry |
 | Animated toolbar icons | Done | Motion-enhanced Run/Copy/Reset |
 
 ### Maintainer
@@ -495,7 +511,7 @@ fruit is healthy
 |------|--------|-------|
 | `bun run build` passes | Done | ~199 static pages |
 | CLI scripts part-01 … part-09 | Done | `bun run part-NN` |
-| PRD reflects v2 UX | Done | This document |
+| PRD reflects editor polish | Done | This document |
 
 ---
 

@@ -5,7 +5,7 @@ description: 2D grid of numbers — neural network weights store করার fo
 
 # 📊 Matrices
 
-<ConceptAnim name="llm-pipeline" caption="Matrix stores weights" />
+<ConceptAnim slug="part-03-math/02-matrix" />
 
 <Callout type="idea">
 💡 **Matrix** = number-এর 2D table। Neural network-এর **weight matrix** সব layer-এর core data structure।
@@ -46,6 +46,8 @@ GPT-3-এ **175 billion** parameters — প্রতিটা parameter matrix-
 
 ## Matrix Class
 
+`get` / `set` / `zeros` — নীচের Playground-এ matrix class চালিয়ে shape ও cell access দেখো।
+
 ## Shape Rules (Preview)
 
 Matrix operations-এ **shape compatibility** critical:
@@ -72,14 +74,14 @@ Inner dimensions match করতে হবে — না হলে error।
   title="2×3 Matrix"
 />
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-03/matrix" title="Matrix Class" />
 
 ## ✅ তুমি কী শিখলে?
 
-- **Matrix** = 2D array of numbers with shape `(rows, cols)`
-- Neural network weights = matrices
+- **Matrix** = number-এর 2D array, shape `(rows, cols)`
+- Neural network-এর weight = matrix
 - `get/set` দিয়ে cell access, `zeros()` দিয়ে initialize
 - Shape compatibility matmul-এ critical
 

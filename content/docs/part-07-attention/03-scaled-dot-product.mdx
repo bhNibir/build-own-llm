@@ -5,7 +5,7 @@ description: Attention formula — softmax(QK^T / √d) × V
 
 # ⚡ Scaled Dot-Product Attention
 
-<ConceptAnim name="attention-flow" caption="Scaled dot-product attention" />
+<ConceptAnim slug="part-07-attention/03-scaled-dot-product" />
 
 Q, K, V define করলাম — এখন **formula**: dot product, scale, softmax, weighted sum।
 
@@ -27,12 +27,13 @@ Q, K, V define করলাম — এখন **formula**: dot product, scale, so
   <Formula>
     {`$$\\text{Attention}(Q, K, V) = \\text{softmax}\\left(\\frac{QK^T}{\\sqrt{d_k}}\\right) V$$`}
   </Formula>
-  <WorkedExample>
-    n=3 tokens, d_k=2{'\n'}
-    scores = Q @ K^T / √2{'\n'}
-    weights = softmax(scores)  // each row sums to 1{'\n'}
-    output = weights @ V       // (3 × d_v)
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. ছোট ২×২ score matrix (QKᵀ): <code>[[2, 0], [1, 1]]</code>, এবং <code>d_k = 4</code> → <code>√d_k = 2</code></div>
+    <div>২. Scale: প্রতিটা ÷ ২ → <code>[[1.0, 0.0], [0.5, 0.5]]</code></div>
+    <div>৩. Row-০ softmax: <code>e¹≈2.718</code>, <code>e⁰=1</code>, sum≈3.718 → weights ≈ <code>[0.73, 0.27]</code></div>
+    <div>৪. Row-১ softmax: <code>e⁰·⁵≈1.649</code> দুবার, sum≈3.298 → weights ≈ <code>[0.50, 0.50]</code></div>
+    <div>৫. প্রতিটা row sum = 1 — এখন এই weights দিয়ে V-এর weighted average নেওয়া যায়</div>
+  </MathPractical>
   <CodeLink>Playground-এ formula step-by-step run করো ↓</CodeLink>
 </MathLesson>
 
@@ -68,14 +69,14 @@ Dimension বড় হলে dot products বড় হয় → softmax **sat
   { emoji: "4️⃣", title: "× V", body: "Weighted information mix" }
 ]} />
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-07/scaled-dot-product" title="Scaled Dot-Product Attention" />
 
 ## ✅ তুমি কী শিখলে?
 
 - Attention = softmax(QK^T/√d_k) × V
-- Scaling prevents gradient issues
-- Output = context-mixed representation per token
+- Scaling gradient সমস্যা কমায়
+- Output = প্রতিটা token-এর context-mixed representation
 
 **পরের lesson:** [Self-Attention](/docs/part-07-attention/04-self-attention)

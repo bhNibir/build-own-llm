@@ -5,7 +5,7 @@ description: N transformer blocks stacked — full Mini GPT stack
 
 # 🏛️ GPT Architecture
 
-<ConceptAnim name="llm-pipeline" caption="GPT = stack of blocks" />
+<ConceptAnim slug="part-09-mini-gpt/01-gpt-architecture" />
 
 সব building block এক জায়গায় — **GPT architecture**। Token in → transformer blocks → next token out।
 
@@ -90,7 +90,7 @@ flowchart TD
 | Language | TypeScript | Python/PyTorch |
 | Size | ~500 lines | ~300 lines |
 | Dataset | Fruit sentences | Shakespeare |
-| Runtime | Browser (Nodepod) | GPU |
+| Runtime | Browser (esbuild-wasm) | GPU |
 
 <Callout type="tip">
 ✅ Architecture **identical** — শুধু language এবং scale different। Module 10-এ nanoGPT line-by-line পড়ব।
