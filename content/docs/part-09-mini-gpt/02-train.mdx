@@ -10,19 +10,19 @@ description: Fruit dataset-এ ~500-line TypeScript training loop
 Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
 
 <Callout type="warn">
-⚠️ Browser-এ training slow — Nodepod runtime use করে real training run করব (~500 lines TypeScript)।
+⚠️ Browser-এ full transformer training ভারী — এই Playground-এ **simplified word-level trainer** দেখাবে। Architecture lesson-এ যা শিখেছ, সেই loop-এর same pattern: forward → loss → backward → update।
 </Callout>
 
 ```mermaid
 flowchart TD
-    A["📂 Fruit dataset"]:::data --> B["🔀 Batches"]:::batch
-    B --> C["➡️ Forward (4 blocks)"]:::fwd
+    A["📂 Fruit dataset"]:::data --> B["🔀 Training pairs"]:::batch
+    B --> C["➡️ Forward (embed + W)"]:::fwd
     C --> D["📉 Cross-entropy loss"]:::loss
     D --> E["⬅️ Backprop"]:::bwd
-    E --> F["🔄 Adam update"]:::upd
-    F --> G{"Converged?"}:::check
+    E --> F["🔄 Weight update"]:::upd
+    F --> G{"Epoch done?"}:::check
     G -->|No| B
-    G -->|Yes| H["💾 Saved weights"]:::done
+    G -->|Yes| H["💾 Trained weights"]:::done
     classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
     classDef batch fill:#10B981,color:#fff,stroke:#047857
     classDef fwd fill:#6366F1,color:#fff,stroke:#4338CA
@@ -44,26 +44,29 @@ Fruit sentences from Module 1:
 ```
 "i like apple"
 "apple is fruit"
-"banana is healthy"
+"fruit is healthy"
 "i like banana"
 ...
 ```
 
+<Callout type="tip">
+💡 Full Mini GPT-তে 4টি transformer block + Adam optimizer থাকে। Playground-এ fruit dataset-এ **word-level neural LM** train করব — same training loop, ছোট architecture।
+</Callout>
+
 <StepReveal steps={[
   { emoji: "📂", title: "Load data", body: "Tokenized fruit sentences" },
-  { emoji: "🔀", title: "Batch", body: "Random windows of length T" },
-  { emoji: "🧠", title: "Forward", body: "4 transformer blocks" },
-  { emoji: "📉", title: "Loss + update", body: "Cross-entropy + Adam" }
+  { emoji: "🔀", title: "Pairs", body: "Bigram-style (word → next word)" },
+  { emoji: "🧠", title: "Forward", body: "Embedding + weight matrix → logits" },
+  { emoji: "📉", title: "Loss + update", body: "Cross-entropy + gradient descent" }
 ]} />
 
-## What Gets Trained
+## What Gets Trained (Playground)
 
-| Parameter | Shape | Count |
-|-----------|-------|-------|
-| Token embed | V × D | ~2K |
-| Pos embed | T × D | ~2K |
-| 4 blocks | ~16D² each | ~260K |
-| LM head | D × V | ~2K |
+| Parameter | Shape | Role |
+|-----------|-------|------|
+| Embedding E | V × D | Word ID → vector |
+| Weight W | V × D | Vector → logits |
+| LM head (full GPT) | D × V | Module 9 architecture lesson-এ |
 
 ## Interactive Demo
 
@@ -71,8 +74,8 @@ Fruit sentences from Module 1:
 
 ## ✅ তুমি কী শিখলে?
 
-- Full GPT training loop in TypeScript
-- Loss should decrease over steps
-- All weights (embed, blocks, head) learned jointly
+- Full GPT training loop-এর pattern: forward → loss → backward → update
+- Browser Playground-এ fruit dataset-এ simplified trainer run করা যায়
+- Loss gradually কমতে থাকলে model শিখছে
 
 **পরের lesson:** [Generate Text](/docs/part-09-mini-gpt/03-generate)

@@ -20,21 +20,21 @@ export default function HomePage() {
           href="/docs/part-01-tokenizer/03-tokenizer"
           className="px-6 py-2.5 rounded-lg border border-fd-border font-medium hover:bg-fd-accent transition-colors"
         >
-          Try Playground
+          Try Playground — Tokenizer
         </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-fd-muted-foreground w-full max-w-lg">
         <div className="rounded-lg border border-fd-border p-3">
-          <p className="font-medium text-fd-foreground mb-1">Edit Code</p>
-          <p>Browser-এ সরাসরি TypeScript লিখো</p>
+          <p className="font-medium text-fd-foreground mb-1">কোড লিখো</p>
+          <p>Browser-এ সরাসরি TypeScript edit করো</p>
         </div>
         <div className="rounded-lg border border-fd-border p-3">
-          <p className="font-medium text-fd-foreground mb-1">Run Instantly</p>
-          <p>Run চাপলেই output দেখো</p>
+          <p className="font-medium text-fd-foreground mb-1">তৎক্ষণাৎ Run</p>
+          <p>Run চাপলেই colorful output দেখো</p>
         </div>
         <div className="rounded-lg border border-fd-border p-3">
-          <p className="font-medium text-fd-foreground mb-1">Bangla Guide</p>
+          <p className="font-medium text-fd-foreground mb-1">বাংলা গাইড</p>
           <p>English terms, বাংলায় ব্যাখ্যা</p>
         </div>
       </div>
