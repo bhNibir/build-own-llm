@@ -19,14 +19,14 @@ flowchart LR
     p1 --> p2["predict → apple"]:::process
     p2 --> p3["predict → is"]:::process
     p3 --> p4["predict → fruit"]:::output
-    p4 --> stop["No more → stop"]:::dim
+    p4 --> stop["is ↔ fruit loop → max length"]:::dim
     classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
     classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
     classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
     classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
-Result: `"i like apple is fruit"`
+Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ আটকে যায়।
 
 ## Step by Step
 
@@ -36,8 +36,10 @@ Step 2:  "i like"      → predict → "apple"    → "i like apple"
 Step 3:  "i like apple"→ predict → "is"       → "i like apple is"
 Step 4:  ...apple is"  → predict → "fruit"    → "i like apple is fruit"
 Step 5:  ...is fruit"  → predict → "is"       → "i like apple is fruit is"
-Step 6:  ...fruit is"  → predict → ???        → stop (no more data)
+Step 6:  ...fruit is"  → predict → "fruit"    → "...is fruit is fruit"  (is ↔ fruit loop)
 ```
+
+`is`-এর সবচেয়ে বড় count `fruit` (৩ বার), আর `fruit → is` — তাই argmax `is ↔ fruit`-এ আটকে যায়। তাই max length (এখানে ১০ step) পর্যন্ত চলে থামে, `null` prediction পেলে আগে থামত।
 
 ## কোড
 
