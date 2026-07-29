@@ -37,19 +37,26 @@ export function NextTokenAnim({
       }))
     : DEFAULT_OPTIONS;
 
+  const firstWord = options[0]?.word ?? 'apple';
+  const optionsKey = options.map((o) => `${o.word}:${o.pct}`).join('|');
+
   useEffect(() => {
     if (paused) return;
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
     const cycle = () => {
       setPhase(0);
       setPicked(null);
-      setTimeout(() => setPhase(1), 800);
-      setTimeout(() => setPhase(2), 2000);
-      setTimeout(() => setPicked(options[0]?.word ?? 'apple'), 2800);
+      timeouts.push(setTimeout(() => setPhase(1), 800));
+      timeouts.push(setTimeout(() => setPhase(2), 2000));
+      timeouts.push(setTimeout(() => setPicked(firstWord), 2800));
     };
     cycle();
     const t = setInterval(cycle, 4500);
-    return () => clearInterval(t);
-  }, [paused, options]);
+    return () => {
+      clearInterval(t);
+      for (const id of timeouts) clearTimeout(id);
+    };
+  }, [paused, firstWord, optionsKey]);
 
   return (
     <div className="space-y-5">

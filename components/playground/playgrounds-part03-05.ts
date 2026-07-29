@@ -436,7 +436,7 @@ console.log('=== 2-Layer MLP Forward Pass ===\\n');
 
 const x = [0.5, 0.8];
 
-// Layer 1: 2 inputs → 3 hidden neurons
+// Layer 1: 2 inputs → 3 hidden neurons (each row = one neuron's weights)
 const W1 = [[0.4, -0.6], [0.3, 0.7], [-0.2, 0.5]];
 const b1 = [-0.1, 0.2, -0.3];
 const h = layer(x, W1, b1);
@@ -444,13 +444,13 @@ const h = layer(x, W1, b1);
 console.log('Input:  [' + x.join(', ') + ']');
 console.log('Hidden: [' + h.map((v) => v.toFixed(4)).join(', ') + ']  (3 neurons)');
 
-// Layer 2: 3 hidden → 1 output neuron
-const W2 = [[0.5], [-0.4], [0.6]];
+// Layer 2: 3 hidden → 1 output neuron (one row with 3 weights)
+const W2 = [[0.5, -0.4, 0.6]];
 const b2 = [0.1];
 const y = layer(h, W2, b2);
 
 console.log('Output: ' + y[0].toFixed(4) + '  (1 neuron)');
-console.log('\\nData flow: input → hidden (sigmoid) → output (sigmoid)');
+console.log('\\nData flow: input(2) → hidden(3) → output(1)');
 `,
     },
   },

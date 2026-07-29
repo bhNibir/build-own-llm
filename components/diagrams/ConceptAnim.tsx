@@ -60,7 +60,7 @@ export function ConceptAnim({
     >
       <div className="border-b border-indigo-200/60 bg-indigo-600/10 px-4 py-2 dark:border-indigo-800/60">
         <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700 dark:text-indigo-300">
-          Live concept — real example
+          Live concept — বাস্তব উদাহরণ
         </span>
       </div>
       <div className="p-4 sm:p-6">

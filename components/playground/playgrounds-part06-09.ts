@@ -48,19 +48,34 @@ for (const id of sentence) {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
     files: {
-      '/index.ts': `// Char-level bigram: W[current][next] = logit for next char
-const chars = ['.', 'a', 'b', 'c'];
-const stoi: Record<string, number> = { '.': 0, a: 1, b: 2, c: 3 };
-const itos: Record<number, string> = { 0: '.', 1: 'a', 2: 'b', 3: 'c' };
-const V = chars.length;
+      '/index.ts': `// Word-level neural bigram: embed(x) → W @ embed → logits over vocab
+const vocab = ['i', 'like', 'apple', 'banana', 'fruit', 'is'];
+const stoi: Record<string, number> = Object.fromEntries(vocab.map((w, i) => [w, i]));
+const V = vocab.length;
+const D = 3;
 
-// Small weight matrix (rows = current char, cols = next char logits)
-const W: number[][] = [
-  [0.1, 0.8, 0.3, 0.2], // after "."
-  [0.2, 0.1, 0.6, 0.4], // after "a"
-  [0.3, 0.5, 0.1, 0.7], // after "b"
-  [0.4, 0.2, 0.3, 0.1], // after "c"
+// Embedding matrix E ∈ R^{V×D} (hand-set for clear demo)
+const E: number[][] = [
+  [1, 0, 0], // i → like
+  [0, 1, 0], // like → apple
+  [0, 0, 0], // apple (unused in demo)
+  [0, 0, 0], // banana
+  [0, 0, 1], // fruit → is
+  [0, 0, 0], // is
 ];
+
+// Weight matrix W ∈ R^{D×V} — columns = next-token logits for: i like apple banana fruit is
+const W: number[][] = [
+  [0.0, 3.0, 0.1, 0.1, 0.0, 0.0], // dim0 ("i") → like
+  [0.0, 0.1, 3.0, 2.0, 0.2, 0.1], // dim1 ("like") → apple
+  [0.0, 0.1, 0.2, 0.1, 0.3, 3.0], // dim2 ("fruit") → is
+];
+
+function matVec(matrix: number[][], vec: number[]): number[] {
+  return matrix[0].map((_, j) =>
+    matrix.reduce((sum, row, i) => sum + row[j] * vec[i], 0),
+  );
+}
 
 function softmax(logits: number[]): number[] {
   const max = Math.max(...logits);
@@ -69,23 +84,23 @@ function softmax(logits: number[]): number[] {
   return exps.map((e) => e / sum);
 }
 
-function forward(currentId: number): { logits: number[]; probs: number[] } {
-  const logits = W[currentId].slice();
-  const probs = softmax(logits);
-  return { logits, probs };
+function forward(token: string): { logits: number[]; probs: number[] } {
+  const emb = E[stoi[token]];
+  const logits = matVec(W, emb);
+  return { logits, probs: softmax(logits) };
 }
 
-console.log('=== Weight Matrix → Logits → Probs ===\\n');
-console.log('Vocab: ' + chars.join(' ') + '\\n');
+console.log('=== Embedding → Weight Matrix → Softmax ===\\n');
+console.log('Vocab: ' + vocab.join(', ') + '\\n');
 
-for (const ch of ['.', 'a', 'b']) {
-  const id = stoi[ch];
-  const { logits, probs } = forward(id);
-  console.log('Current char "' + ch + '" (id=' + id + '):');
+for (const word of ['i', 'like', 'fruit']) {
+  const { logits, probs } = forward(word);
+  console.log('Current word "' + word + '":');
+  console.log('  embed:  [' + E[stoi[word]].map((v) => v.toFixed(2)).join(', ') + ']');
   console.log('  logits: [' + logits.map((l) => l.toFixed(2)).join(', ') + ']');
   console.log('  probs:  [' + probs.map((p) => p.toFixed(3)).join(', ') + ']');
   const best = probs.indexOf(Math.max(...probs));
-  console.log('  argmax next: "' + itos[best] + '"\\n');
+  console.log('  argmax next: "' + vocab[best] + '"\\n');
 }
 `,
     },
@@ -95,7 +110,7 @@ for (const ch of ['.', 'a', 'b']) {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
     files: {
-      '/index.ts': `// Cross-entropy loss: -log(P(correct token))
+      '/index.ts': `// Cross-entropy loss: -log(P(correct next token))
 function softmax(logits: number[]): number[] {
   const max = Math.max(...logits);
   const exps = logits.map((l) => Math.exp(l - max));
@@ -108,16 +123,17 @@ function crossEntropy(logits: number[], targetId: number): number {
   return -Math.log(probs[targetId] + 1e-9);
 }
 
-const vocab = ['.', 'a', 'b', 'c'];
+const vocab = ['apple', 'banana', 'mango', 'fruit'];
 
 console.log('=== Cross-Entropy Loss ===\\n');
+console.log('Context: "like" → next fruit word\\n');
 console.log('Loss = -log(P(correct next token))\\n');
 
 const examples: [number[], number, string][] = [
-  [[2.0, 0.5, 0.1, 0.3], 0, 'good prediction (target prob high)'],
-  [[0.1, 0.2, 0.3, 2.5], 3, 'good prediction'],
-  [[0.0, 0.0, 0.0, 0.0], 1, 'uniform (uncertain)'],
-  [[2.0, 0.1, 0.1, 0.1], 2, 'bad prediction (target prob low)'],
+  [[2.0, 0.5, 0.1, 0.3], 0, 'good — high P(apple)'],
+  [[0.1, 0.2, 0.3, 2.5], 3, 'good — high P(fruit)'],
+  [[0.0, 0.0, 0.0, 0.0], 1, 'uncertain — uniform probs'],
+  [[2.0, 0.1, 0.1, 0.1], 2, 'bad — predicted apple, target mango'],
 ];
 
 for (const [logits, target, label] of examples) {
@@ -125,6 +141,7 @@ for (const [logits, target, label] of examples) {
   const loss = crossEntropy(logits, target);
   console.log(label + ':');
   console.log('  logits:  [' + logits.join(', ') + ']');
+  console.log('  probs:   [' + probs.map((p) => p.toFixed(3)).join(', ') + ']');
   console.log('  target:  "' + vocab[target] + '" (id=' + target + ')');
   console.log('  P(target): ' + probs[target].toFixed(4));
   console.log('  loss:      ' + loss.toFixed(4) + '\\n');
@@ -139,20 +156,29 @@ console.log('Lower loss = model more confident on correct token.');
     template: 'vanilla-ts',
     activeFile: '/index.ts',
     files: {
-      '/index.ts': `// Tiny char bigram neural LM — train from scratch
-const words = ['ab', 'abc', 'cab'];
-const chars = Array.from(new Set(words.join(''))).sort();
-const vocab = ['.'].concat(chars);
+      '/index.ts': `// Word-level neural bigram LM on fruit dataset — train from scratch
+const dataset = [
+  'i like apple', 'i like banana', 'i like mango',
+  'you like apple', 'you eat mango', 'he eats banana',
+  'apple is fruit', 'banana is fruit', 'mango is fruit', 'fruit is healthy',
+];
+
+function tokenize(s: string): string[] {
+  return s.toLowerCase().trim().split(/\\s+/);
+}
+
+const vocabSet = new Set<string>();
+for (const s of dataset) for (const w of tokenize(s)) vocabSet.add(w);
+const vocab = Array.from(vocabSet).sort();
 const stoi: Record<string, number> = {};
-const itos: Record<number, string> = {};
-vocab.forEach((c, i) => { stoi[c] = i; itos[i] = c; });
+vocab.forEach((w, i) => { stoi[w] = i; });
 const V = vocab.length;
 
 type Pair = [number, number];
 const pairs: Pair[] = [];
-for (const w of words) {
-  const chs = ['.'].concat(w.split('')).concat(['.']);
-  for (let i = 0; i < chs.length - 1; i++) pairs.push([stoi[chs[i]], stoi[chs[i + 1]]]);
+for (const s of dataset) {
+  const toks = tokenize(s);
+  for (let i = 0; i < toks.length - 1; i++) pairs.push([stoi[toks[i]], stoi[toks[i + 1]]]);
 }
 
 function randMatrix(rows: number, cols: number): number[][] {
@@ -168,21 +194,21 @@ function softmax(logits: number[]): number[] {
   return exps.map((e) => e / sum);
 }
 
+// Simplified: one-hot style — row W[token] = next-token logits (embedding dim collapsed)
 const W = randMatrix(V, V);
-const epochs = 50;
-const lr = 5;
+const epochs = 80;
+const lr = 3;
 
-console.log('=== Training Loop (50 epochs) ===\\n');
-console.log('Vocab: ' + vocab.join(' '));
-console.log('Pairs: ' + pairs.length + '\\n');
+console.log('=== Neural LM Training (80 epochs) ===\\n');
+console.log('Vocab (' + V + '): ' + vocab.join(', '));
+console.log('Training pairs: ' + pairs.length + '\\n');
 
 for (let epoch = 0; epoch < epochs; epoch++) {
   let totalLoss = 0;
   const dW = Array.from({ length: V }, () => new Array(V).fill(0));
 
   for (const [xi, yi] of pairs) {
-    const logits = W[xi];
-    const probs = softmax(logits);
+    const probs = softmax(W[xi]);
     totalLoss += -Math.log(probs[yi] + 1e-9);
     for (let j = 0; j < V; j++) dW[xi][j] += probs[j] - (j === yi ? 1 : 0);
   }
@@ -196,6 +222,8 @@ for (let epoch = 0; epoch < epochs; epoch++) {
     console.log('Epoch ' + epoch + ': avg loss = ' + (totalLoss / n).toFixed(4));
   }
 }
+
+console.log('\\n✓ Trained on fruit word pairs — loss should drop over epochs.');
 `,
     },
   },
@@ -204,20 +232,30 @@ for (let epoch = 0; epoch < epochs; epoch++) {
     template: 'vanilla-ts',
     activeFile: '/index.ts',
     files: {
-      '/index.ts': `// Train tiny model, then sample next chars autoregressively
-const words = ['ab', 'abc', 'cab', 'ab'];
-const chars = Array.from(new Set(words.join(''))).sort();
-const vocab = ['.'].concat(chars);
+      '/index.ts': `// Train word-level neural LM on fruit data, then generate autoregressively
+const dataset = [
+  'i like apple', 'i like banana', 'i like mango',
+  'you like apple', 'you eat mango', 'he eats banana',
+  'apple is fruit', 'banana is fruit', 'mango is fruit', 'fruit is healthy',
+];
+
+function tokenize(s: string): string[] {
+  return s.toLowerCase().trim().split(/\\s+/);
+}
+
+const vocabSet = new Set<string>();
+for (const s of dataset) for (const w of tokenize(s)) vocabSet.add(w);
+const vocab = Array.from(vocabSet).sort();
 const stoi: Record<string, number> = {};
 const itos: Record<number, string> = {};
-vocab.forEach((c, i) => { stoi[c] = i; itos[i] = c; });
+vocab.forEach((w, i) => { stoi[w] = i; itos[i] = w; });
 const V = vocab.length;
 
 type Pair = [number, number];
 const pairs: Pair[] = [];
-for (const w of words) {
-  const chs = ['.'].concat(w.split('')).concat(['.']);
-  for (let i = 0; i < chs.length - 1; i++) pairs.push([stoi[chs[i]], stoi[chs[i + 1]]]);
+for (const s of dataset) {
+  const toks = tokenize(s);
+  for (let i = 0; i < toks.length - 1; i++) pairs.push([stoi[toks[i]], stoi[toks[i + 1]]]);
 }
 
 function randMatrix(rows: number, cols: number): number[][] {
@@ -234,7 +272,7 @@ function softmax(logits: number[]): number[] {
 }
 
 const W = randMatrix(V, V);
-const lr = 5;
+const lr = 3;
 
 for (let epoch = 0; epoch < 80; epoch++) {
   const dW = Array.from({ length: V }, () => new Array(V).fill(0));
@@ -258,22 +296,24 @@ function sample(probs: number[]): number {
   return probs.length - 1;
 }
 
-function generate(maxLen = 8): string {
-  let idx = stoi['.'];
-  let out = '';
+function generate(startWord: string, maxLen = 6): string {
+  const out = [startWord];
+  let idx = stoi[startWord];
   for (let i = 0; i < maxLen; i++) {
     idx = sample(softmax(W[idx]));
-    if (itos[idx] === '.') break;
-    out += itos[idx];
+    out.push(itos[idx]);
   }
-  return out;
+  return out.join(' ');
 }
 
-console.log('=== Generate from Trained Weights ===\\n');
-console.log('Training data: ' + words.join(', '));
-console.log('Vocab: ' + vocab.join(' ') + '\\n');
-console.log('Sampled strings (each run differs):');
-for (let i = 0; i < 5; i++) console.log('  ' + generate());
+console.log('=== Generate from Trained Neural LM ===\\n');
+console.log('Fruit dataset → learned weights → sample next word\\n');
+
+for (const start of ['i', 'you', 'fruit']) {
+  console.log('Seed "' + start + '":');
+  for (let n = 0; n < 3; n++) console.log('  ' + generate(start));
+  console.log('');
+}
 `,
     },
   },
@@ -477,11 +517,11 @@ const out = matMul(attn, V);
 console.log('=== Self-Attention (3 words) ===\\n');
 console.log('Sentence: "' + words.join(' ') + '"\\n');
 
-console.log('Attention weights (rows attend to cols):');
-console.log('       ' + words.map((w) => w.padStart(6)).join(''));
+console.log('Attention weights matrix:');
 for (let i = 0; i < words.length; i++) {
-  const row = attn[i].map((w) => w.toFixed(3).padStart(6)).join('');
-  console.log(words[i].padEnd(6) + row);
+  console.log(
+    '  ' + words[i] + ' → [' + attn[i].map((w) => w.toFixed(3)).join(', ') + ']',
+  );
 }
 
 console.log('\\nOutput vectors (context-aware):');
@@ -897,7 +937,8 @@ const W = randMatrix(V, V);
 const epochs = 30;
 const lr = 3;
 
-console.log('=== Mini GPT Training (30 epochs) ===\\n');
+console.log('=== Mini GPT Training Demo (30 epochs) ===\\n');
+console.log('Simplified word-level next-token model (browser-friendly)');
 console.log('Vocab size: ' + V);
 console.log('Training pairs: ' + pairs.length + '\\n');
 

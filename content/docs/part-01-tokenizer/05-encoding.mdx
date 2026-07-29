@@ -9,6 +9,18 @@ description: Sentence কে number list-এ convert করা
 
 Vocabulary আছে। এখন sentence কে number list-এ convert করব — এটাই **Encoding**। উল্টোটা **Decoding**।
 
+```mermaid
+flowchart LR
+    A["📝 Text"]:::text --> B["Encode"]:::enc
+    B --> C["🔢 IDs"]:::ids
+    C --> D["Decode"]:::dec
+    D --> E["📝 Text"]:::text
+    classDef text fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef enc fill:#10B981,color:#fff,stroke:#047857
+    classDef ids fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef dec fill:#6366F1,color:#fff,stroke:#4338CA
+```
+
 ## Encoding
 
 Sentence → Number list
@@ -27,8 +39,6 @@ Number list → Sentence (উল্টো)
 ```
 [4, 8, 5]  →  "fruit is healthy"
 ```
-
-## কোড
 
 ## গুরুত্বপূর্ণ বোঝাপড়া
 

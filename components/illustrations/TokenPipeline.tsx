@@ -2,6 +2,9 @@ export function TokenPipeline() {
   return (
     <svg viewBox="0 0 480 120" className="h-auto w-full max-w-lg" aria-hidden>
       <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#6366F1" />
+        </marker>
         <linearGradient id="tp1" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#4F46E5" />
           <stop offset="100%" stopColor="#7C3AED" />

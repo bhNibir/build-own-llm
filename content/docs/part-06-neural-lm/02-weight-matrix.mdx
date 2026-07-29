@@ -33,17 +33,15 @@ $$W \in \mathbb{R}^{D \times V}$$
 
 ## Example Walkthrough
 
-Vocabulary = 3 words, D = 2:
+Playground-এ fruit words + D = 3 embedding:
 
 ```
-embed("like") = [0.4, -0.1]
-
-W = [[0.5, 0.2, -0.3],
-     [0.1, 0.8,  0.4]]
-
-logits = W @ embed = [0.18, 0.0, -0.16]
-probs  = softmax(logits) ≈ [0.45, 0.37, 0.18]
+embed("i")    = [1, 0, 0]  → argmax next ≈ "like"
+embed("like") = [0, 1, 0]  → argmax next ≈ "apple"
+embed("fruit")= [0, 0, 1]  → argmax next ≈ "is"
 ```
+
+General form: `logits = W @ embed(x)`, then `softmax(logits)` → next-word probabilities.
 
 <Illustration name="matrix-grid" />
 

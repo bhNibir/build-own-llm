@@ -22,9 +22,15 @@ export function AttentionFlowAnim({
   const [activeCol, setActiveCol] = useState(-1);
 
   const tokens = example?.tokens ?? DEFAULT_TOKENS;
-  const weights = example?.probs
-    ? [example.probs]
-    : DEFAULT_WEIGHTS;
+  const matrix =
+    Array.isArray(example?.probs) &&
+    example.probs.length === tokens.length &&
+    tokens.length >= 2
+      ? // single attention row provided — repeat as demo matrix fallback
+        DEFAULT_WEIGHTS.map((row, i) =>
+          i === 0 ? example.probs! : row.slice(0, tokens.length),
+        )
+      : DEFAULT_WEIGHTS.map((row) => row.slice(0, tokens.length));
 
   useEffect(() => {
     if (paused) return;
@@ -41,8 +47,6 @@ export function AttentionFlowAnim({
     const t = setInterval(tick, 900);
     return () => clearInterval(t);
   }, [paused, tokens.length]);
-
-  const matrix = weights.length >= tokens.length ? DEFAULT_WEIGHTS : DEFAULT_WEIGHTS;
 
   return (
     <div className="space-y-4">

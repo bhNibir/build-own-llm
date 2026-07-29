@@ -40,8 +40,8 @@ flowchart LR
 
 | | Bigram | Neural LM |
 |---|--------|-----------|
-| Memory | Count table | Learned E + W |
-| Quality | Limited patterns | Richer (same context window) |
+| Memory | Count table | Learned weights |
+| Quality | Fixed counts | Soft probabilities |
 | Sampling | Same idea | Same idea |
 
 <Illustration name="llm-predict" />
@@ -50,12 +50,12 @@ flowchart LR
 
 ```
 Seed: "i"
-→ i like apple
-→ i like apple is fruit
-→ i like banana is healthy
+→ i like apple is fruit …
+→ i like banana is fruit …
+→ i like mango is fruit …
 ```
 
-Output **random** — same seed + different sample = different text!
+Output **random** — same seed + different sample = different text! Dataset-এ `"banana is fruit"` আছে, `"banana is healthy"` নেই।
 
 ## Interactive Demo
 

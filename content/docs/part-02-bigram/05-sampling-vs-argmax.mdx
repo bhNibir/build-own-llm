@@ -39,8 +39,6 @@ Random number: 0.6
 
 পরের বার random number ভিন্ন হলে ভিন্ন word pick হবে।
 
-## কোড
-
 ## Comparison
 
 ```mermaid
@@ -53,13 +51,17 @@ flowchart TD
         s1 --> s3["banana 25%"]
         s1 --> s4["mango 25%"]
     end
+    classDef a fill:#EF4444,color:#fff,stroke:#DC2626
+    classDef s fill:#10B981,color:#fff,stroke:#047857
+    class a1,a2 a
+    class s1,s2,s3,s4 s
 ```
 
 | | Argmax | Sampling |
 |---|---|---|
 | Output | সবসময় same | প্রতিবার different |
 | Strategy | Highest probability | Random by probability |
-| Used by | Search engines | ChatGPT, creative writing |
+| Used by | Search / deterministic demos | ChatGPT, creative writing |
 
 ## Interactive Demo
 
@@ -77,23 +79,29 @@ $$P_i = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}$$
 - $T = 1$: normal sampling
 - $T > 1$: more random/creative
 
-আমাদের model-এ temperature নেই, কিন্তু concept same।
+আমাদের Bigram model-এ temperature নেই, কিন্তু concept same — Module 9-এ দেখবে।
 
 ## Part 2 শেষ — তুমি কী শিখলে?
 
 ```mermaid
 flowchart TD
-    A[Training Data] --> B[Count Table]
-    B --> C[Predict]
-    C --> D[Generate]
-    D --> E{Strategy?}
-    E --> F[Argmax: deterministic]
-    E --> G[Sampling: creative]
-    style G fill:#90EE90
+    A["📂 Training Data"]:::data --> B["📊 Count Table"]:::table
+    B --> C["🎯 Predict"]:::pred
+    C --> D["✨ Generate"]:::gen
+    D --> E{"Strategy?"}:::check
+    E --> F["Argmax: deterministic"]:::arg
+    E --> G["Sampling: creative"]:::samp
+    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef table fill:#6366F1,color:#fff,stroke:#4338CA
+    classDef pred fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef gen fill:#EC4899,color:#fff,stroke:#DB2777
+    classDef check fill:#8B5CF6,color:#fff,stroke:#7C3AED
+    classDef arg fill:#EF4444,color:#fff,stroke:#DC2626
+    classDef samp fill:#10B981,color:#fff,stroke:#047857
 ```
 
 🎉 তুমি তোমার **প্রথম Language Model** বানালে, train করলে, এবং text generate করলে!
 
-কিন্তু Bigram model-এর limitation আছে — সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে। সেটা Part 3-5-এ।
+কিন্তু Bigram model-এর limitation আছে — সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে। পরের modules-এ math → neural net → attention → Mini GPT।
 
-**পরের Part:** [Part 3 — Neural Network](/docs/part-03-neural-network)
+**পরের Module:** [Module 3 — Math Foundations](/docs/part-03-math)

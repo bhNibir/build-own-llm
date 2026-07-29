@@ -41,38 +41,33 @@ Two+ layers with activation = **non-linear decision boundaries** — can solve X
   { emoji: "🔄", title: "Forward chain", body: "Each layer feeds the next" }
 ]} />
 
-## MLP Class
+## Example: 2 → 3 → 1 MLP (demo)
 
-## Example: 2 → 4 → 1 MLP
-
-XOR problem-এর জন্য typical architecture:
+নিচের playground-এ simple forward pass:
 
 ```
-Input:  2 neurons (x₁, x₂)
-Hidden: 4 neurons (ReLU)
-Output: 1 neuron (sigmoid → 0 or 1)
+Input:  2 neurons
+Hidden: 3 neurons (sigmoid)
+Output: 1 neuron (sigmoid)
 ```
+
+XOR lesson-এ আমরা **2 → 4 → 1** train করব।
 
 ```mermaid
 flowchart TD
     X1["x₁"]:::in --> H1["h₁"]:::hidden
     X1 --> H2["h₂"]:::hidden
     X1 --> H3["h₃"]:::hidden
-    X1 --> H4["h₄"]:::hidden
     X2["x₂"]:::in --> H1
     X2 --> H2
     X2 --> H3
-    X2 --> H4
     H1 --> Y["ŷ"]:::out
     H2 --> Y
     H3 --> Y
-    H4 --> Y
     classDef in fill:#4F46E5,color:#fff,stroke:#3730A3
     classDef hidden fill:#8B5CF6,color:#fff,stroke:#6D28D9
     classDef out fill:#10B981,color:#fff,stroke:#047857
 ```
-
-## Training an MLP
 
 ## MLP vs GPT
 
@@ -91,9 +86,8 @@ flowchart TD
 
 - **MLP** = stack of Layer objects
 - Hidden layers learn non-linear features
-- Architecture defined by size array: `[nIn, h1, h2, nOut]`
-- `forward()` chains layers, `parameters()` collects all weights
-- Foundation architecture — XOR next!
+- Demo architecture: `2 → 3 → 1` forward pass
+- Next lesson: train `2 → 4 → 1` on XOR
 
 **আগের lesson:** [Layer](/docs/part-05-neural-network/02-layer)
 

@@ -32,9 +32,9 @@ export function TokenizerSplitAnim({
   return (
     <div className="space-y-4">
       <p className="text-center text-sm font-medium">
-        Step {step + 1}/3:{' '}
+        ধাপ {step + 1}/3:{' '}
         <span className="text-indigo-600 dark:text-indigo-400">
-          {step === 0 ? 'Input' : step === 1 ? 'lowercase' : 'split'}
+          {step === 0 ? 'Input' : step === 1 ? 'lowercase' : 'split → tokens'}
         </span>
       </p>
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -50,7 +50,7 @@ export function TokenizerSplitAnim({
         <FlowArrow />
         <div className="relative flex min-h-[72px] flex-wrap justify-center gap-2 rounded-xl border-2 border-emerald-400 bg-emerald-50 px-4 py-3 dark:bg-emerald-950/30">
           {step < 2 ? (
-            <span className="animate-pulse text-sm text-fd-muted-foreground">waiting…</span>
+            <span className="animate-pulse text-sm text-fd-muted-foreground">অপেক্ষা…</span>
           ) : (
             tokens.map((tok, i) => (
               <motion.span

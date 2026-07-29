@@ -9,6 +9,17 @@ description: Training corpus — model যা দেখে শেখে
 
 Model কোনো magic দিয়ে শেখে না। সে **data দেখে** শেখে। এই data-কে বলে **corpus** বা **training dataset**।
 
+```mermaid
+flowchart LR
+    A["📂 Corpus<br/>10 sentences"]:::data --> B["🔤 Tokenizer"]:::tok
+    B --> C["📚 Vocabulary"]:::vocab
+    C --> D["🧠 Model"]:::model
+    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef tok fill:#10B981,color:#fff,stroke:#047857
+    classDef vocab fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef model fill:#EC4899,color:#fff,stroke:#DB2777
+```
+
 ## আমাদের Dataset
 
 মাত্র ১০টা sentence:
