@@ -1,5 +1,6 @@
 'use client';
 
+import { useIsDarkMode } from '@/lib/use-is-dark-mode';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ColorConsole } from './ColorConsole';
 import { CodeEditor } from './CodeEditor';
@@ -18,24 +19,11 @@ export type CodeRunProps = {
   editable?: boolean;
 };
 
-function useIsDarkMode(): boolean {
-  const [isDark, setIsDark] = useState(false);
-  useEffect(() => {
-    const root = document.documentElement;
-    const update = () => setIsDark(root.classList.contains('dark'));
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(root, { attributes: true, attributeFilter: ['class'] });
-    return () => observer.disconnect();
-  }, []);
-  return isDark;
-}
-
 export function CodeRun({
   children,
   id,
   title,
-  height = 200,
+  height = 280,
   autoRun = true,
   editable = true,
 }: CodeRunProps) {
@@ -99,7 +87,14 @@ export function CodeRun({
           }}
           onCopy={async () => navigator.clipboard.writeText(code)}
         />
-        <CodeEditor value={code} onChange={setCode} readOnly={!editable} height={height} isDark={isDark} />
+        <CodeEditor
+          value={code}
+          onChange={setCode}
+          readOnly={!editable}
+          height={height}
+          isDark={isDark}
+          onRun={() => void runCode(code)}
+        />
         <div className="border-t border-fd-border bg-[#0d1117]">
           <ColorConsole lines={output} emptyLabel={ready ? '(no output)' : ''} />
         </div>

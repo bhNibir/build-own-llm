@@ -3,9 +3,9 @@ title: Train XOR
 description: 2-layer network দিয়ে XOR gate solve — non-linearity-র proof
 ---
 
-# ❌ Train XOR
+# Train XOR
 
-<ConceptAnim name="train-loop" caption="XOR training loop" />
+<ConceptAnim slug="part-05-neural-network/04-xor" />
 
 <Callout type="idea">
 💡 **XOR** = classic test — single neuron/layer solve করতে পারে না। 2-layer MLP + gradient descent = first "magic" moment!
@@ -97,6 +97,8 @@ Hidden layer input space-কে **transform** করে যেখানে outpu
 
 ## Training Code Sketch
 
+Epoch loop-এ loss কমে — নীচের Playground-এ XOR train করে curve দেখো।
+
 ## Loss During Training
 
 <LossChart
@@ -119,7 +121,7 @@ flowchart TD
 
 🎉 তুমি **neural network** বানিয়ে **train** করলে! পরের Module-এ এটাকে **language model**-এ apply করব।
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-05/xor" title="XOR Training" />
 

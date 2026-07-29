@@ -5,7 +5,7 @@ description: দুটো vector-এর similarity measure — attention-এর 
 
 # ⚡ Dot Product
 
-<ConceptAnim name="attention-flow" caption="Dot product = similarity" />
+<ConceptAnim slug="part-03-math/03-dot-product" />
 
 <Callout type="idea">
 💡 **Dot product** দুটো vector-কে একটা **scalar**-এ compress করে। Value বেশি = vectors "aligned" — attention-এ exactly এটাই measure হয়।
@@ -27,10 +27,12 @@ description: দুটো vector-এর similarity measure — attention-এর 
   <Formula>
     {`$$\\mathbf{a} \\cdot \\mathbf{b} = \\sum_{i=1}^{n} a_i \\cdot b_i$$`}
   </Formula>
-  <WorkedExample>
-    a = [1, 2, 3], b = [4, 5, 6]{'\n'}
-    a · b = (1×4) + (2×5) + (3×6) = 4 + 10 + 18 = 32
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. দেওয়া: <code>a = [1, 2, 3]</code>, <code>b = [4, 5, 6]</code></div>
+    <div>২. জোড়ায় গুণ: <code>1×4 = 4</code>, <code>2×5 = 10</code>, <code>3×6 = 18</code></div>
+    <div>৩. সব যোগ: <code>4 + 10 + 18 = 32</code></div>
+    <div>৪. ফল: <code>a · b = 32</code> (একটা scalar — similarity score)</div>
+  </MathPractical>
   <CodeLink>Playground-এ different vectors try করো ↓</CodeLink>
 </MathLesson>
 
@@ -63,8 +65,8 @@ apple  = [0.8, 0.2, 0.1]
 fruit  = [0.7, 0.3, 0.0]
 car    = [0.1, 0.9, 0.8]
 
-apple · fruit = 0.65  ← high (similar meaning)
-apple · car   = 0.25  ← low (different meaning)
+apple · fruit = 0.62  ← high (similar meaning)
+apple · car   = 0.34  ← low (different meaning)
 ```
 
 Embedding space-এ semantically similar words-এর dot product বেশি হয়।
@@ -87,16 +89,16 @@ score(i, j) = Query[i] · Key[j]
 
 Query token `i` Key token `j`-কে কত "relevant" মনে করে — dot product দিয়ে measure।
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-03/dot-product" title="Dot Product Calculator" />
 
 ## ✅ তুমি কী শিখলে?
 
-- **Dot product** = element-wise multiply + sum → single scalar
-- High dot product = vectors are similar / aligned
-- Attention scores = Query · Key dot products
-- Same dimension required — otherwise error
+- **Dot product** = element-wise multiply + sum → একটা scalar
+- High dot product মানে vectors similar / aligned
+- Attention score = Query · Key dot product
+- Same dimension লাগে — না হলে error
 
 **আগের lesson:** [Matrices](/docs/part-03-math/02-matrix)
 

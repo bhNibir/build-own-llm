@@ -5,9 +5,15 @@ description: Training corpus — model যা দেখে শেখে
 
 # Dataset (Training Corpus)
 
-<ConceptAnim name="llm-pipeline" caption="10 fruit sentences corpus" />
+<ConceptAnim slug="part-01-tokenizer/02-dataset" />
 
 Model কোনো magic দিয়ে শেখে না। সে **data দেখে** শেখে। এই data-কে বলে **corpus** বা **training dataset**।
+
+```mermaid
+flowchart LR
+    A["10 fruit sentences"]:::input --> B["Corpus"]:::process
+    B --> C["Tokenizer"]:::output
+```
 
 ## আমাদের Dataset
 
@@ -28,11 +34,9 @@ fruit is healthy
 
 বাস্তব GPT-4 **trillions of tokens** দেখে train হয়। আমরা মাত্র ~৩০টা word দিয়ে শুরু করছি — same idea, ছোট scale।
 
-## কোড
+## কোডে দেখো
 
-`code/shared/data.ts`:
-
-<CodeRun title="Fruit dataset" height={220} editable={false}>{`export const dataset = [
+<CodeRun title="Fruit dataset" height={220}>{`const dataset = [
   'i like apple',
   'i like banana',
   'i like mango',
@@ -45,9 +49,10 @@ fruit is healthy
   'fruit is healthy',
 ];
 
-console.log('=== Fruit Dataset ===');
-console.log('Sentences:', dataset.length);
-for (const s of dataset) console.log('  -', s);`}</CodeRun>
+log.step('Fruit Dataset');
+log.data('Sentences', dataset.length);
+for (const s of dataset) console.log('  -', s);
+log.ok('Corpus ready');`}</CodeRun>
 
 ## কেন এত ছোট?
 
@@ -60,22 +65,17 @@ for (const s of dataset) console.log('  -', s);`}</CodeRun>
 
 ## Dataset থেকে কী শেখা যায়?
 
-Model এই data থেকে pattern শিখবে:
+Model এই data থেকে pattern শিখবে (Module 2 preview):
 
 ```
 i → like        (৩ বার)
 like → apple    (২ বার)
 like → banana   (১ বার)
-apple → is      (১ বার)
-fruit → is      (১ বার)
 ```
-
-এই pattern-ই পরে **prediction**-এ ব্যবহার হবে।
 
 ## তুমি কী শিখলে?
 
 - **Corpus** = model যা দেখে শেখে
 - ছোট dataset দিয়েও LLM-এর core idea বোঝা যায়
-- Dataset `code/shared/data.ts`-এ আছে — সব Part এটাই ব্যবহার করবে
 
 **পরের lesson:** [Tokenizer](/docs/part-01-tokenizer/03-tokenizer)

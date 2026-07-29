@@ -3,9 +3,9 @@ title: Training Loop
 description: 200 epoch forward + backward + update — model শেখা শুরু
 ---
 
-# 🔄 Training Loop
+# Training Loop
 
-<ConceptAnim name="train-loop" caption="Forward → Loss → Backward → Update — loop until loss drops" />
+<ConceptAnim slug="part-06-neural-lm/04-train" />
 
 Embedding, weight matrix, loss — সব ready।
 
@@ -15,20 +15,17 @@ Embedding, weight matrix, loss — সব ready।
 
 ```mermaid
 flowchart TD
-    A["📂 Training pairs"]:::data --> B["➡️ Forward"]:::fwd
-    B --> C["📉 Loss"]:::loss
-    C --> D["⬅️ Backward"]:::bwd
-    D --> E["🔄 Update weights"]:::upd
-    E --> F{"Epoch done?"}:::check
+    A["Training pairs"]:::input --> B["Forward"]:::process
+    B --> C["Loss"]:::output
+    C --> D["Backward"]:::process
+    D --> E["Update weights"]:::process
+    E --> F{"Epoch done?"}:::highlight
     F -->|No| B
-    F -->|Yes| G["✅ Trained model"]:::done
-    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef fwd fill:#10B981,color:#fff,stroke:#047857
-    classDef loss fill:#EF4444,color:#fff,stroke:#DC2626
-    classDef bwd fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef upd fill:#6366F1,color:#fff,stroke:#4338CA
-    classDef check fill:#8B5CF6,color:#fff,stroke:#7C3AED
-    classDef done fill:#10B981,color:#fff,stroke:#047857
+    F -->|Yes| G["Trained model"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 ## Loop Structure
@@ -58,7 +55,7 @@ Training চলাকালীন loss কমতে থাকে:
 | `epochs` | 200 | Full dataset passes |
 | `D` | 16–64 | Embedding dimension |
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-06/train" title="200-Epoch Training Loop" viz="loss" />
 

@@ -3,60 +3,58 @@ title: Tokenizer
 description: Sentence কে word-এ ভাগ করা
 ---
 
-# 🔤 Tokenizer
+# Tokenizer
 
-<Callout type="idea">
-💡 Computer string বুঝে না — প্রথম step: sentence কে **token**-এ ভাগ করা।
-</Callout>
+<ConceptAnim slug="part-01-tokenizer/03-tokenizer" />
 
-<ConceptAnim name="tokenizer-split" caption="Tokenizer: sentence → lowercase → whitespace split → tokens" />
+Computer string বুঝে না — প্রথম step: sentence কে **token**-এ ভাগ করা।
 
 ```mermaid
 flowchart LR
-    A["📝 I Like Apple"]:::input --> B["🔡 lowercase"]:::process
-    B --> C["✂️ split"]:::process
-    C --> D["🔤 i · like · apple"]:::output
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
-    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
+    A["I Like Apple"]:::input --> B["lowercase"]:::process
+    B --> C["split"]:::process
+    C --> D["i · like · apple"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
-
-Computer string বুঝে না। তাই প্রথম কাজ: sentence কে ছোট ছোট **token**-এ ভাগ করা।
 
 ## আমাদের Tokenizer
 
-সবচেয়ে simple version — whitespace দিয়ে split:
+সবচেয়ে simple version — whitespace দিয়ে split + lowercase:
 
-## উদাহরণ
-
-Input:
-
-```
-"I Like Apple"
-```
-
-Output:
-
-```
-["i", "like", "apple"]
-```
-
-তিনটা কাজ করলো:
 1. **lowercase** — `"I"` → `"i"` (model-এর কাছে same word)
 2. **trim** — আগে-পিছে space সরানো
 3. **split** — space দিয়ে ভাগ
+
+## উদাহরণ
+
+Input: `"I Like Apple"` → Output: `["i", "like", "apple"]`
 
 ## Real LLM-এ কী হয়?
 
 | Level | Example | Used by |
 |-------|---------|---------|
-| Character | `["a","p","p","l","e"]` | আমাদের Part 3 reference |
-| Word | `["i","like","apple"]` | আমরা এখন (Part 1-2) |
+| Character | `["a","p","p","l","e"]` | Char-level Neural LM (Module 6) |
+| Word | `["i","like","apple"]` | আমরা এখন (Module 1–2) |
 | Subword (BPE) | `["i"," like"," app","le"]` | GPT, Llama |
 
-GPT **BPE (Byte Pair Encoding)** ব্যবহার করে — rare word-কে ছোট piece-এ ভাগ করে। কিন্তু idea same: text → tokens।
+GPT **BPE (Byte Pair Encoding)** ব্যবহার করে — idea same: text → tokens।
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+Whitespace split + lowercase — নীচের snippet চালাও, তারপর Playground-এ নিজের sentence try করো।
+
+<CodeRun title="Tokenizer" height={200}>{`// Sentence কে token-এ ভাগ করো
+function tokenize(text: string): string[] {
+  return text.trim().toLowerCase().split(/\\s+/).filter(Boolean);
+}
+
+const input = 'I Like Apple';
+log.step('Tokenizer');
+log.data('Input', input);
+log.data('Tokens', tokenize(input));
+log.ok('lowercase + split সম্পন্ন');`}</CodeRun>
 
 <Playground id="part-01/tokenizer" title="Tokenizer Demo" />
 

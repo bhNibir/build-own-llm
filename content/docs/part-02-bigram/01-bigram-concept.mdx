@@ -5,9 +5,7 @@ description: একটা word দেখে পরেরটা predict করা
 
 # 🔗 Bigram কী?
 
-<ConceptAnim name="bigram-scan" caption="One word context window" />
-
-<Illustration name="bigram-window" />
+<ConceptAnim slug="part-02-bigram/01-bigram-concept" />
 
 **Bigram** মানে দুটো consecutive word-এর pair।
 
@@ -40,12 +38,15 @@ is → fruit
 ```mermaid
 flowchart TD
     subgraph bigram [Bigram Model]
-        w1[1 word context] --> pred1[Next word]
+        w1["1 word context"]:::input --> pred1["Next word"]:::output
     end
     subgraph llm [Transformer LLM]
-        wN[N words context] --> attn[Attention]
-        attn --> pred2[Next word]
+        wN["N words context"]:::input --> attn["Attention"]:::process
+        attn --> pred2["Next word"]:::output
     end
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 | | Bigram | GPT |

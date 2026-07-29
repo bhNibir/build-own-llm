@@ -13,10 +13,13 @@ Part 1-এ আমরা data prepare করলাম। এখন **প্রথ
 
 ```mermaid
 flowchart LR
-    A[Training Pairs] --> B[Count Table]
-    B --> C[Predict]
-    C --> D[Generate]
-    D --> E[Sampling]
+    A["Training Pairs"]:::input --> B["Count Table"]:::process
+    B --> C["Predict"]:::output
+    C --> D["Generate"]:::process
+    D --> E["Sampling"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 | Lesson | Topic |

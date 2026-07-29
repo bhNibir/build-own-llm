@@ -25,21 +25,23 @@ function lookup(tokenId: number): number[] {
   return E[tokenId];
 }
 
-console.log('=== Embedding Lookup ===\\n');
-console.log('Vocab: [' + vocab.map((w, i) => i + '="' + w + '"').join(', ') + ']');
-console.log('Embedding dim: ' + embedDim + '\\n');
+log.step('Embedding Lookup');
+log.data('Vocab', vocab.map((w, i) => i + '="' + w + '"'));
+log.data('Embedding dim', embedDim);
 
+log.step('ID → vector');
 for (const [id, word] of vocab.entries()) {
   const vec = lookup(id);
-  console.log('ID ' + id + ' ("' + word + '") → [' + vec.map((v) => v.toFixed(2)).join(', ') + ']');
+  log.data('ID ' + id + ' ("' + word + '")', vec.map((v) => v.toFixed(2)));
 }
 
-console.log('\\n--- Sentence "i like apple" as vectors ---');
+log.step('Sentence "i like apple" as vectors');
 const sentence = [0, 1, 2];
 for (const id of sentence) {
   const vec = lookup(id);
-  console.log('  ' + vocab[id] + ' → [' + vec.map((v) => v.toFixed(2)).join(', ') + ']');
+  log.data(vocab[id], vec.map((v) => v.toFixed(2)));
 }
+log.ok('embedding lookup done');
 `,
     },
   },
@@ -84,19 +86,20 @@ function forward(word: string): { embed: number[]; logits: number[]; probs: numb
   return { embed, logits, probs };
 }
 
-console.log('=== Weight Matrix Forward Pass (word-level) ===\\n');
-console.log('Vocab: ' + vocab.join(', '));
-console.log('Embedding dim D = ' + D + '\\n');
+log.step('Weight Matrix Forward Pass (word-level)');
+log.data('Vocab', vocab.join(', '));
+log.data('Embedding dim D', D);
 
 for (const word of ['like', 'apple', 'mango']) {
   const { embed, logits, probs } = forward(word);
-  console.log('Input word: "' + word + '"');
-  console.log('  embed:  [' + embed.map((v) => v.toFixed(2)).join(', ') + ']');
-  console.log('  logits: [' + logits.map((l) => l.toFixed(2)).join(', ') + ']');
-  console.log('  probs:  [' + probs.map((p) => p.toFixed(3)).join(', ') + ']');
+  log.step('Input "' + word + '"');
+  log.data('embed', embed.map((v) => v.toFixed(2)));
+  log.data('logits', logits.map((l) => l.toFixed(2)));
+  log.data('probs', probs.map((p) => p.toFixed(3)));
   const best = probs.indexOf(Math.max(...probs));
-  console.log('  argmax next: "' + vocab[best] + '"\\n');
+  log.data('argmax next', vocab[best]);
 }
+log.ok('logits → probs via softmax');
 `,
     },
   },
@@ -120,8 +123,8 @@ function crossEntropy(logits: number[], targetId: number): number {
 
 const vocab = ['.', 'a', 'b', 'c'];
 
-console.log('=== Cross-Entropy Loss ===\\n');
-console.log('Loss = -log(P(correct next token))\\n');
+log.step('Cross-Entropy Loss');
+log.data('Formula', 'Loss = -log(P(correct next token))');
 
 const examples: [number[], number, string][] = [
   [[2.0, 0.5, 0.1, 0.3], 0, 'good prediction (target prob high)'],
@@ -133,14 +136,14 @@ const examples: [number[], number, string][] = [
 for (const [logits, target, label] of examples) {
   const probs = softmax(logits);
   const loss = crossEntropy(logits, target);
-  console.log(label + ':');
-  console.log('  logits:  [' + logits.join(', ') + ']');
-  console.log('  target:  "' + vocab[target] + '" (id=' + target + ')');
-  console.log('  P(target): ' + probs[target].toFixed(4));
-  console.log('  loss:      ' + loss.toFixed(4) + '\\n');
+  log.step(label);
+  log.data('logits', logits);
+  log.data('target', '"' + vocab[target] + '" (id=' + target + ')');
+  log.data('P(target)', probs[target].toFixed(4));
+  log.data('loss', loss.toFixed(4));
 }
 
-console.log('Lower loss = model more confident on correct token.');
+log.ok('lower loss = more confident on correct token');
 `,
     },
   },
@@ -199,9 +202,10 @@ const W = randMatrix(V, D);
 const epochs = 200;
 const lr = 0.5;
 
-console.log('=== Neural LM Training (200 epochs) ===\\n');
-console.log('Vocab size: ' + V + ', embed dim: ' + D);
-console.log('Training pairs: ' + pairs.length + '\\n');
+log.step('Neural LM Training (200 epochs)');
+log.data('Vocab size', V);
+log.data('Embed dim', D);
+log.data('Training pairs', pairs.length);
 
 for (let epoch = 0; epoch < epochs; epoch++) {
   let totalLoss = 0;
@@ -232,9 +236,10 @@ for (let epoch = 0; epoch < epochs; epoch++) {
   }
 
   if (epoch % 40 === 0 || epoch === epochs - 1) {
-    console.log('Epoch ' + epoch + ': avg loss = ' + (totalLoss / n).toFixed(4));
+    log.data('Epoch ' + epoch, 'avg loss = ' + (totalLoss / n).toFixed(4));
   }
 }
+log.ok('training complete');
 `,
     },
   },
@@ -336,13 +341,12 @@ function generate(startWord: string, maxLen = 8): string {
   return out.join(' ');
 }
 
-console.log('=== Neural LM Generation (fruit dataset) ===\\n');
-console.log('Vocab: ' + sorted.join(', ') + '\\n');
+log.step('Neural LM Generation (fruit dataset)');
+log.data('Vocab', sorted.join(', '));
 
 for (const start of ['i', 'you', 'fruit']) {
-  console.log('Seed "' + start + '":');
-  for (let n = 0; n < 3; n++) console.log('  ' + generate(start));
-  console.log('');
+  log.step('Seed "' + start + '"');
+  for (let n = 0; n < 3; n++) log.data('sample ' + (n + 1), generate(start));
 }
 `,
     },
@@ -412,18 +416,18 @@ function fmt(v: number[]): string {
   return '[' + v.map((x) => x.toFixed(2)).join(', ') + ']';
 }
 
-console.log('=== Query, Key, Value ===\\n');
-console.log('Sentence: "' + words.join(' ') + '"');
-console.log('d_model = ' + dModel + '\\n');
+log.step('Query, Key, Value');
+log.data('Sentence', words.join(' '));
+log.data('d_model', dModel);
 
 for (let i = 0; i < words.length; i++) {
-  console.log('Token "' + words[i] + '":');
-  console.log('  x  = ' + fmt(X[i]));
-  console.log('  Q  = x·Wq = ' + fmt(Q[i]));
-  console.log('  K  = x·Wk = ' + fmt(K[i]));
-  console.log('  V  = x·Wv = ' + fmt(V[i]));
-  console.log('');
+  log.step('Token "' + words[i] + '"');
+  log.data('x', fmt(X[i]));
+  log.data('Q = x·Wq', fmt(Q[i]));
+  log.data('K = x·Wk', fmt(K[i]));
+  log.data('V = x·Wv', fmt(V[i]));
 }
+log.ok('Q, K, V computed');
 `,
     },
   },
@@ -466,8 +470,9 @@ function matVec(M: number[][], x: number[]): number[] {
 }
 
 const scale = Math.sqrt(dK);
-console.log('=== Scaled Dot-Product Attention ===\\n');
-console.log('d_k = ' + dK + ', scale = sqrt(d_k) = ' + scale.toFixed(3) + '\\n');
+log.step('Scaled Dot-Product Attention');
+log.data('d_k', dK);
+log.data('scale = sqrt(d_k)', scale.toFixed(3));
 
 for (let i = 0; i < Q.length; i++) {
   const rawScores = K.map((k) => dot(Q[i], k));
@@ -475,12 +480,13 @@ for (let i = 0; i < Q.length; i++) {
   const weights = softmax(scaledScores);
   const out = matVec(V, weights);
 
-  console.log('Query row ' + i + ':');
-  console.log('  Q·K^T (raw):     [' + rawScores.map((s) => s.toFixed(2)).join(', ') + ']');
-  console.log('  scaled /√d_k:    [' + scaledScores.map((s) => s.toFixed(2)).join(', ') + ']');
-  console.log('  softmax weights: [' + weights.map((w) => w.toFixed(3)).join(', ') + ']');
-  console.log('  output = Σ w·V:  [' + out.map((v) => v.toFixed(3)).join(', ') + ']\\n');
+  log.step('Query row ' + i);
+  log.data('Q·K^T (raw)', rawScores.map((s) => s.toFixed(2)));
+  log.data('scaled /√d_k', scaledScores.map((s) => s.toFixed(2)));
+  log.data('softmax weights', weights.map((w) => w.toFixed(3)));
+  log.data('output = Σ w·V', out.map((v) => v.toFixed(3)));
 }
+log.ok('scaled attention done');
 `,
     },
   },
@@ -544,20 +550,21 @@ for (let i = 0; i < scores.length; i++) {
 const attn = softmaxRows(scores);
 const out = matMul(attn, V);
 
-console.log('=== Self-Attention (3 words) ===\\n');
-console.log('Sentence: "' + words.join(' ') + '"\\n');
+log.step('Self-Attention (3 words)');
+log.data('Sentence', words.join(' '));
 
-console.log('Attention weights (rows attend to cols):');
+log.step('Attention weights (rows attend to cols)');
 console.log('       ' + words.map((w) => w.padStart(6)).join(''));
 for (let i = 0; i < words.length; i++) {
   const row = attn[i].map((w) => w.toFixed(3).padStart(6)).join('');
   console.log(words[i].padEnd(6) + row);
 }
 
-console.log('\\nOutput vectors (context-aware):');
+log.step('Output vectors (context-aware)');
 for (let i = 0; i < words.length; i++) {
-  console.log('  "' + words[i] + '" → [' + out[i].map((v) => v.toFixed(2)).join(', ') + ']');
+  log.data(words[i], out[i].map((v) => v.toFixed(2)));
 }
+log.ok('self-attention done');
 `,
     },
   },
@@ -609,8 +616,8 @@ function attentionHead(Q: number[][], K: number[][], V: number[][]): number[][] 
   return out;
 }
 
-console.log('=== Multi-Head Attention (2 heads) ===\\n');
-console.log('Sentence: "' + words.join(' ') + '"\\n');
+log.step('Multi-Head Attention (2 heads)');
+log.data('Sentence', words.join(' '));
 
 const headOutputs: number[][][] = [];
 for (let h = 0; h < numHeads; h++) {
@@ -620,21 +627,21 @@ for (let h = 0; h < numHeads; h++) {
   const out = attentionHead(Q, K, V);
   headOutputs.push(out);
 
-  console.log('Head ' + h + ' attention weights:');
+  log.step('Head ' + h + ' attention weights');
   for (let i = 0; i < words.length; i++) {
     const scores = K.map((k) => dot(Q[i], k) / Math.sqrt(headDim));
     const w = softmax(scores);
-    console.log('  "' + words[i] + '" → [' + w.map((x) => x.toFixed(3)).join(', ') + ']');
+    log.data(words[i], w.map((x) => x.toFixed(3)));
   }
-  console.log('');
 }
 
 // Concatenate heads
 const concat = X.map((_, i) => headOutputs[0][i].concat(headOutputs[1][i]));
-console.log('Concatenated output (head0 || head1):');
+log.step('Concatenated output (head0 || head1)');
 for (let i = 0; i < words.length; i++) {
-  console.log('  "' + words[i] + '" → [' + concat[i].map((v) => v.toFixed(2)).join(', ') + ']');
+  log.data(words[i], concat[i].map((v) => v.toFixed(2)));
 }
+log.ok('multi-head concat done');
 `,
     },
   },
@@ -669,17 +676,19 @@ const tokenEmbed: number[][] = [
 ];
 const words = ['i', 'like', 'apple', 'fruit'];
 
-console.log('=== Positional Encoding (sin/cos) ===\\n');
-console.log('max_len=' + maxLen + ', d_model=' + dModel + '\\n');
+log.step('Positional Encoding (sin/cos)');
+log.data('max_len', maxLen);
+log.data('d_model', dModel);
 
 for (let pos = 0; pos < maxLen; pos++) {
   const pe = positionalEncoding(pos, dModel);
   const combined = add(tokenEmbed[pos], pe);
-  console.log('pos ' + pos + ' ("' + words[pos] + '"):');
-  console.log('  token:    [' + tokenEmbed[pos].map((v) => v.toFixed(2)).join(', ') + ']');
-  console.log('  + PE:     [' + pe.map((v) => v.toFixed(3)).join(', ') + ']');
-  console.log('  = input:  [' + combined.map((v) => v.toFixed(3)).join(', ') + ']\\n');
+  log.step('pos ' + pos + ' ("' + words[pos] + '")');
+  log.data('token', tokenEmbed[pos].map((v) => v.toFixed(2)));
+  log.data('+ PE', pe.map((v) => v.toFixed(3)));
+  log.data('= input', combined.map((v) => v.toFixed(3)));
 }
+log.ok('positional encoding added');
 `,
     },
   },
@@ -706,8 +715,8 @@ const vectors: [string, number[]][] = [
   ['already centered', [-1.0, 0.0, 1.0, 0.0]],
 ];
 
-console.log('=== Layer Normalization ===\\n');
-console.log('Formula: (x - μ) / σ · γ + β\\n');
+log.step('Layer Normalization');
+log.data('Formula', '(x - μ) / σ · γ + β');
 
 for (const [label, x] of vectors) {
   const mean = x.reduce((a, v) => a + v, 0) / x.length;
@@ -716,12 +725,15 @@ for (const [label, x] of vectors) {
   const outMean = y.reduce((a, v) => a + v, 0) / y.length;
   const outVar = y.reduce((a, v) => a + (v - outMean) ** 2, 0) / y.length;
 
-  console.log(label + ':');
-  console.log('  input:  [' + x.map((v) => v.toFixed(2)).join(', ') + ']');
-  console.log('  μ=' + mean.toFixed(3) + ', σ²=' + variance.toFixed(3));
-  console.log('  output: [' + y.map((v) => v.toFixed(3)).join(', ') + ']');
-  console.log('  out μ≈' + outMean.toFixed(3) + ', out σ²≈' + outVar.toFixed(3) + '\\n');
+  log.step(label);
+  log.data('input', x.map((v) => v.toFixed(2)));
+  log.data('μ', mean.toFixed(3));
+  log.data('σ²', variance.toFixed(3));
+  log.data('output', y.map((v) => v.toFixed(3)));
+  log.data('out μ', outMean.toFixed(3));
+  log.data('out σ²', outVar.toFixed(3));
 }
+log.ok('layer norm stabilizes activations');
 `,
     },
   },
@@ -769,17 +781,18 @@ const tokens = [
   { word: 'apple', x: [0, 0, 1, 0] },
 ];
 
-console.log('=== Feed-Forward Network ===\\n');
-console.log('d_model=' + dModel + ' → d_ff=' + dFF + ' → d_model=' + dModel + '\\n');
+log.step('Feed-Forward Network');
+log.data('dims', dModel + ' → ' + dFF + ' → ' + dModel);
 
 for (const { word, x } of tokens) {
   const hidden = matVec(W1, x).map((v, i) => relu(v + b1[i]));
   const out = ffn(x);
-  console.log('Token "' + word + '":');
-  console.log('  input:   [' + x.join(', ') + ']');
-  console.log('  hidden:  [' + hidden.map((v) => v.toFixed(2)).join(', ') + ']  (after ReLU)');
-  console.log('  output:  [' + out.map((v) => v.toFixed(3)).join(', ') + ']\\n');
+  log.step('Token "' + word + '"');
+  log.data('input', x);
+  log.data('hidden (ReLU)', hidden.map((v) => v.toFixed(2)));
+  log.data('output', out.map((v) => v.toFixed(3)));
 }
+log.ok('FFN forward done');
 `,
     },
   },
@@ -803,26 +816,24 @@ function fakeFFN(x: number[]): number[] {
 }
 
 const x = [0.5, -0.3, 0.8, 0.1];
-const words = ['like'];
 
-console.log('=== Residual Connections ===\\n');
-console.log('Skip connection: y = x + F(x)\\n');
-
-console.log('Input x: [' + x.map((v) => v.toFixed(2)).join(', ') + ']\\n');
+log.step('Residual Connections');
+log.data('Skip connection', 'y = x + F(x)');
+log.data('Input x', x.map((v) => v.toFixed(2)));
 
 const attnOut = fakeAttention(x);
 const afterAttn = add(x, attnOut);
-console.log('After attention sublayer:');
-console.log('  F_attn(x) = [' + attnOut.map((v) => v.toFixed(3)).join(', ') + ']');
-console.log('  x + F_attn(x) = [' + afterAttn.map((v) => v.toFixed(3)).join(', ') + ']\\n');
+log.step('After attention sublayer');
+log.data('F_attn(x)', attnOut.map((v) => v.toFixed(3)));
+log.data('x + F_attn(x)', afterAttn.map((v) => v.toFixed(3)));
 
 const ffnOut = fakeFFN(afterAttn);
 const afterFFN = add(afterAttn, ffnOut);
-console.log('After FFN sublayer:');
-console.log('  F_ffn(h) = [' + ffnOut.map((v) => v.toFixed(3)).join(', ') + ']');
-console.log('  h + F_ffn(h) = [' + afterFFN.map((v) => v.toFixed(3)).join(', ') + ']\\n');
+log.step('After FFN sublayer');
+log.data('F_ffn(h)', ffnOut.map((v) => v.toFixed(3)));
+log.data('h + F_ffn(h)', afterFFN.map((v) => v.toFixed(3)));
 
-console.log('Gradients flow through the + path directly — easier to train deep nets.');
+log.ok('residuals help gradients flow');
 `,
     },
   },
@@ -873,29 +884,29 @@ function ffn(x: number[]): number[] {
 }
 
 function transformerBlock(X: number[][]): number[][] {
-  console.log('Step 1: LayerNorm before attention');
+  log.step('LayerNorm before attention');
   const norm1 = X.map(layerNorm);
-  console.log('  norm1[0] = [' + norm1[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('norm1[0]', norm1[0].map((v) => v.toFixed(3)));
 
-  console.log('Step 2: Self-attention');
+  log.step('Self-attention');
   const attn = selfAttention(norm1);
-  console.log('  attn[0]  = [' + attn[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('attn[0]', attn[0].map((v) => v.toFixed(3)));
 
-  console.log('Step 3: Residual add (x + attn)');
+  log.step('Residual add (x + attn)');
   const res1 = X.map((row, i) => add(row, attn[i]));
-  console.log('  res1[0]  = [' + res1[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('res1[0]', res1[0].map((v) => v.toFixed(3)));
 
-  console.log('Step 4: LayerNorm before FFN');
+  log.step('LayerNorm before FFN');
   const norm2 = res1.map(layerNorm);
-  console.log('  norm2[0] = [' + norm2[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('norm2[0]', norm2[0].map((v) => v.toFixed(3)));
 
-  console.log('Step 5: Feed-forward');
+  log.step('Feed-forward');
   const ff = norm2.map(ffn);
-  console.log('  ff[0]    = [' + ff[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('ff[0]', ff[0].map((v) => v.toFixed(3)));
 
-  console.log('Step 6: Residual add (h + ff)');
+  log.step('Residual add (h + ff)');
   const out = res1.map((row, i) => add(row, ff[i]));
-  console.log('  out[0]   = [' + out[0].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data('out[0]', out[0].map((v) => v.toFixed(3)));
 
   return out;
 }
@@ -907,15 +918,16 @@ const X: number[][] = [
   [0, 0, 1, 0],
 ];
 
-console.log('=== Transformer Block ===\\n');
-console.log('Input: "' + words.join(' ') + '"\\n');
+log.step('Transformer Block');
+log.data('Input', words.join(' '));
 
 const out = transformerBlock(X);
 
-console.log('\\nFinal block output:');
+log.step('Final block output');
 for (let i = 0; i < words.length; i++) {
-  console.log('  "' + words[i] + '" → [' + out[i].map((v) => v.toFixed(3)).join(', ') + ']');
+  log.data(words[i], out[i].map((v) => v.toFixed(3)));
 }
+log.ok('transformer block forward done');
 `,
     },
   },
@@ -968,9 +980,10 @@ const W = randMatrix(V, D);
 const epochs = 80;
 const lr = 0.5;
 
-console.log('=== Mini GPT Training (simplified word LM) ===\\n');
-console.log('Vocab size: ' + V + ', embed dim: ' + D);
-console.log('Training pairs: ' + pairs.length + '\\n');
+log.step('Mini GPT Training (simplified word LM)');
+log.data('Vocab size', V);
+log.data('Embed dim', D);
+log.data('Training pairs', pairs.length);
 
 for (let epoch = 0; epoch < epochs; epoch++) {
   let totalLoss = 0;
@@ -1000,9 +1013,10 @@ for (let epoch = 0; epoch < epochs; epoch++) {
   }
 
   if (epoch % 10 === 0 || epoch === epochs - 1) {
-    console.log('Epoch ' + epoch + ': avg loss = ' + (totalLoss / n).toFixed(4));
+    log.data('Epoch ' + epoch, 'avg loss = ' + (totalLoss / n).toFixed(4));
   }
 }
+log.ok('mini GPT training done');
 `,
     },
   },
@@ -1085,14 +1099,14 @@ function generate(startWord: string, maxLen = 8): string {
   return out.join(' ');
 }
 
-console.log('=== Autoregressive Generation ===\\n');
-console.log('Start word → predict next → repeat\\n');
+log.step('Autoregressive Generation');
+log.data('Rule', 'start word → predict next → repeat');
 
 for (const start of ['i', 'you', 'fruit']) {
-  console.log('From "' + start + '":');
-  for (let n = 0; n < 3; n++) console.log('  ' + generate(start));
-  console.log('');
+  log.step('From "' + start + '"');
+  for (let n = 0; n < 3; n++) log.data('run ' + (n + 1), generate(start));
 }
+log.ok('autoregressive samples ready');
 `,
     },
   },
@@ -1126,30 +1140,28 @@ function sample(probs: number[]): number {
 const vocab = ['like', 'eat', 'eats', 'is'];
 const logits = [2.0, 0.5, 0.3, 0.1]; // "like" is strongest after "i"
 
-console.log('=== Temperature Sampling ===\\n');
-console.log('Context: "i" → next word logits:');
+log.step('Temperature Sampling');
+log.data('Context', 'i → next word logits');
 for (let i = 0; i < vocab.length; i++) {
-  console.log('  ' + vocab[i] + ': ' + logits[i]);
+  log.data(vocab[i], logits[i]);
 }
 
-console.log('\\nBase probs (T=1.0): [' + softmax(logits).map((p) => p.toFixed(3)).join(', ') + ']');
+log.data('Base probs (T=1.0)', softmax(logits).map((p) => p.toFixed(3)));
 
 for (const temp of [0.5, 1.0, 2.0]) {
   const probs = softmaxWithTemp(logits, temp);
-  console.log('\\nT=' + temp + ' → probs: [' + probs.map((p) => p.toFixed(3)).join(', ') + ']');
-  console.log('  5 samples from "i":');
+  log.step('T=' + temp);
+  log.data('probs', probs.map((p) => p.toFixed(3)));
   const counts: Record<string, number> = {};
   for (let i = 0; i < 5; i++) {
     const idx = sample(probs);
     const word = vocab[idx];
     counts[word] = (counts[word] ?? 0) + 1;
   }
-  for (const [word, count] of Object.entries(counts)) {
-    console.log('    ' + word + ' ×' + count);
-  }
+  log.data('5 samples', counts);
 }
 
-console.log('\\nT<1 = sharper (more deterministic), T>1 = flatter (more random)');
+log.ok('T<1 sharper, T>1 flatter');
 `,
     },
   },
@@ -1185,33 +1197,31 @@ function sample(probs: number[]): number {
 const vocab = ['like', 'eat', 'eats', 'is', 'apple', 'banana'];
 const logits = [2.5, 1.8, 0.4, 0.3, 0.2, 0.1];
 
-console.log('=== Top-k Sampling ===\\n');
-console.log('Context: "i" → logits:');
+log.step('Top-k Sampling');
+log.data('Context', 'i → logits');
 for (let i = 0; i < vocab.length; i++) {
-  console.log('  ' + vocab[i].padEnd(8) + logits[i]);
+  log.data(vocab[i], logits[i]);
 }
 
-console.log('\\nFull softmax: [' + softmax(logits).map((p) => p.toFixed(3)).join(', ') + ']');
+log.data('Full softmax', softmax(logits).map((p) => p.toFixed(3)));
 
 for (const k of [1, 2, 3]) {
   const filtered = topKFilter(logits, k);
   const probs = softmax(filtered);
   const allowed = vocab.filter((_, i) => filtered[i] !== -Infinity);
-  console.log('\\nTop-k=' + k + ' (only ' + allowed.join(', ') + '):');
-  console.log('  probs: [' + probs.map((p) => (p > 0 ? p.toFixed(3) : '0.000')).join(', ') + ']');
-  console.log('  5 samples:');
+  log.step('Top-k=' + k);
+  log.data('allowed', allowed.join(', '));
+  log.data('probs', probs.map((p) => (p > 0 ? p.toFixed(3) : '0.000')));
   const counts: Record<string, number> = {};
   for (let i = 0; i < 5; i++) {
     const idx = sample(probs);
     const word = vocab[idx];
     counts[word] = (counts[word] ?? 0) + 1;
   }
-  for (const [word, count] of Object.entries(counts)) {
-    console.log('    ' + word + ' ×' + count);
-  }
+  log.data('5 samples', counts);
 }
 
-console.log('\\nTop-k removes unlikely tokens — less nonsense, still some variety.');
+log.ok('top-k cuts unlikely tokens');
 `,
     },
   },

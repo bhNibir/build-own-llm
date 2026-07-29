@@ -5,7 +5,7 @@ description: Multi-Layer Perceptron — layers stack করে complex function 
 
 # 🏗️ MLP (Multi-Layer Perceptron)
 
-<ConceptAnim name="llm-pipeline" caption="Multi-layer perceptron" />
+<ConceptAnim slug="part-05-neural-network/03-mlp" />
 
 <Callout type="idea">
 💡 **MLP** = multiple layer stack। Hidden layers non-linear transform করে — XOR, image classification, language modeling-এর ancestor।
@@ -43,6 +43,8 @@ Two+ layers with activation = **non-linear decision boundaries** — can solve X
 
 ## MLP Class
 
+Layer stack — নীচের Playground-এ `[nIn, h1, nOut]` architecture দিয়ে MLP forward দেখো।
+
 ## Example: 2 → 4 → 1 MLP
 
 XOR problem-এর জন্য typical architecture:
@@ -74,6 +76,8 @@ flowchart TD
 
 ## Training an MLP
 
+Forward → loss → backprop → weight update — পুরো loop নীচের Playground ও পরের XOR lesson-এ দেখবে।
+
 ## MLP vs GPT
 
 | | MLP | GPT |
@@ -83,7 +87,7 @@ flowchart TD
 | Context | None | Attention over all tokens |
 | Same idea? | Stack layers + train with GD | ✓ (much more complex) |
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-05/mlp" title="Multi-Layer Perceptron" />
 

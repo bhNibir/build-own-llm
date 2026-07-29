@@ -5,7 +5,7 @@ description: Token position যোগ করা — attention order-agnostic, po
 
 # 📍 Positional Encoding
 
-<ConceptAnim name="llm-pipeline" caption="Positional encoding" />
+<ConceptAnim slug="part-08-transformer/01-positional" />
 
 Attention **order-agnostic** — `"i like apple"` এবং `"apple like i"` same attention weights পাবে (embedding same হলে)। Position info manually যোগ করতে হবে।
 
@@ -37,11 +37,12 @@ flowchart LR
     {`$$PE_{(pos, 2i)} = \\sin\\left(\\frac{pos}{10000^{2i/d_{model}}}\\right)$$`}
     {`$$PE_{(pos, 2i+1)} = \\cos\\left(\\frac{pos}{10000^{2i/d_{model}}}\\right)$$`}
   </Formula>
-  <WorkedExample>
-    pos=0: PE ≈ [0, 1, 0, 1, ...] (sin=0, cos=1){'\n'}
-    pos=1: PE ≈ [0.84, 0.54, 0.01, 1.0, ...]{'\n'}
-    Different positions → different patterns
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. প্রথম dimension-জোড়া (i = 0): <code>10000⁰ = 1</code> → <code>PE = [sin(pos), cos(pos)]</code></div>
+    <div>২. Position 0: <code>sin(0) = 0</code>, <code>cos(0) = 1</code> → PE ≈ <code>[0, 1, …]</code></div>
+    <div>৩. Position 1: <code>sin(1) ≈ 0.841</code>, <code>cos(1) ≈ 0.540</code> → PE ≈ <code>[0.841, 0.540, …]</code></div>
+    <div>৪. ভিন্ন position → ভিন্ন sin/cos pattern — model order বুঝতে পারে</div>
+  </MathPractical>
   <CodeLink>Playground-এ positional encoding add করো ↓</CodeLink>
 </MathLesson>
 

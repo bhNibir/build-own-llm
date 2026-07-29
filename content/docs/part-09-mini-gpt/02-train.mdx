@@ -3,14 +3,14 @@ title: Train Mini GPT
 description: Fruit dataset-এ ~500-line TypeScript training loop
 ---
 
-# 🏋️ Train Mini GPT
+# Train Mini GPT
 
-<ConceptAnim name="train-loop" caption="Train Mini GPT" />
+<ConceptAnim slug="part-09-mini-gpt/02-train" />
 
 Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
 
 <Callout type="warn">
-⚠️ Browser-এ full transformer training ভারী — এই Playground-এ **simplified word-level trainer** দেখাবে। Architecture lesson-এ যা শিখেছ, সেই loop-এর same pattern: forward → loss → backward → update।
+⚠️ Browser-এ full transformer training ভারী — এই Playground-এ **simplified word-level trainer** চলে (**esbuild-wasm** runtime)। Architecture lesson-এ যা শিখেছ, সেই loop-এর same pattern: forward → loss → backward → update।
 </Callout>
 
 ```mermaid

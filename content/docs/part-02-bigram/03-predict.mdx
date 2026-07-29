@@ -5,7 +5,7 @@ description: Count table দিয়ে next word predict করা
 
 # Predict (Argmax)
 
-<ConceptAnim name="next-token" caption="Argmax prediction from counts" />
+<ConceptAnim slug="part-02-bigram/03-predict" />
 
 Training শেষ। এখন model দিয়ে **predict** করব — মানে next word বলব।
 
@@ -24,12 +24,46 @@ predict("fruit") →  "is"      (count=1)
 
 ```mermaid
 flowchart TD
-    input["Input: like"] --> table["Count Table"]
-    table --> apple["apple: 2 (50%)"]
-    table --> banana["banana: 1 (25%)"]
-    table --> mango["mango: 1 (25%)"]
-    apple --> pick["Pick: apple (argmax)"]
+    input["Input: like"]:::input --> table["Count Table"]:::process
+    table --> apple["apple: 2 (50%)"]:::output
+    table --> banana["banana: 1 (25%)"]:::dim
+    table --> mango["mango: 1 (25%)"]:::dim
+    apple --> pick["Pick: apple (argmax)"]:::highlight
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
+
+## কোড
+
+Count table থেকে probability বের করে argmax pick — নীচের snippet ও Playground-এ input দিয়ে next word দেখো।
+
+<CodeRun title="Argmax predict" height={220}>{`// Count table থেকে সবচেয়ে বেশি count pick
+const counts = {
+  i: { like: 3 },
+  like: { apple: 2, banana: 1, mango: 1 },
+};
+
+function predict(word: string): string {
+  const row = counts[word as keyof typeof counts] ?? {};
+  let best = '';
+  let bestCount = -1;
+  for (const [w, c] of Object.entries(row)) {
+    if (c > bestCount) {
+      best = w;
+      bestCount = c;
+    }
+  }
+  return best;
+}
+
+log.step('Argmax predict');
+for (const w of ['i', 'like']) {
+  log.data(w + ' →', predict(w));
+}
+log.ok('highest count pick');`}</CodeRun>
 
 ## Interactive Demo
 
