@@ -26,16 +26,16 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   // Module 0
   'part-00-intro/01-what-is-llm': {
     name: 'next-token',
-    caption: 'P(apple | i like) ≈ 72% — next-token prediction',
+    caption: 'উদাহরণ: "i like" → apple (৫০%)',
     example: FRUIT_NEXT,
   },
   'part-00-intro/02-why-from-scratch': {
     name: 'blackbox-vs-glass',
-    caption: 'API black box vs transparent pipeline',
+    caption: 'API black box vs স্বচ্ছ pipeline',
   },
   'part-00-intro/03-roadmap': {
     name: 'roadmap-spine',
-    caption: '10-module path: Intro → Data → Foundations → Architecture → Bridge',
+    caption: '১০টি module — Intro থেকে Mini GPT পর্যন্ত',
   },
   // Module 1
   'part-01-tokenizer/01-llm-kivabe-kaj-kore': {
@@ -45,7 +45,7 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-01-tokenizer/02-dataset': {
     name: 'corpus-cards',
-    caption: '10 fruit sentences — training corpus',
+    caption: '১০টি fruit sentence — training corpus',
   },
   'part-01-tokenizer/03-tokenizer': {
     name: 'tokenizer-split',
@@ -54,7 +54,7 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-01-tokenizer/04-vocabulary': {
     name: 'vocab-map',
-    caption: '12 unique words → sorted → ID mapping',
+    caption: '১২টি unique word → sorted → Word→ID map',
   },
   'part-01-tokenizer/05-encoding': {
     name: 'encode-decode',
@@ -62,17 +62,17 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-01-tokenizer/06-training-pairs': {
     name: 'bigram-scan',
-    caption: 'Pairs: (i→like), (like→apple), … — 20 total',
+    caption: 'Pairs: (i→like), (like→apple), … — মোট ~২০টি',
     example: { tokens: ['i', 'like', 'apple'] },
   },
   // Module 2
   'part-02-bigram/01-bigram-concept': {
     name: 'context-window',
-    caption: 'Context window = 1 word',
+    caption: 'Context window = ১টি word',
   },
   'part-02-bigram/02-count-model': {
     name: 'count-table',
-    caption: 'Count: like→apple appears 2 times',
+    caption: 'Count: like→apple ২ বার দেখা গেছে',
   },
   'part-02-bigram/03-predict': {
     name: 'bigram-predict',
@@ -89,24 +89,24 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
     example: { probs: NEXT_AFTER_I_LIKE.probs, labels: NEXT_AFTER_I_LIKE.labels },
   },
   // Module 3
-  'part-03-math/01-scalar-vector': { name: 'vector-axis', caption: 'Vectors = building blocks of embeddings' },
-  'part-03-math/02-matrix': { name: 'matrix-grid', caption: 'Matrix stores weights (rows × cols)' },
+  'part-03-math/01-scalar-vector': { name: 'vector-axis', caption: 'Vector = embedding-এর ভিত্তি' },
+  'part-03-math/02-matrix': { name: 'matrix-grid', caption: 'Matrix = weight storage (rows × cols)' },
   'part-03-math/03-dot-product': { name: 'dot-geometry', caption: 'Dot product = similarity / projection' },
   'part-03-math/04-matmul': { name: 'matmul-visual', caption: 'Matmul: row × column sweep' },
   'part-03-math/05-softmax': {
     name: 'softmax-bars',
-    caption: 'z=[2,1,0] → P≈[66%, 24%, 9%]',
+    caption: 'z=[2,1,0] → P≈[৬৬%, ২৪%, ৯%]',
     example: { probs: [0.665, 0.245, 0.09], labels: ['apple', 'banana', 'mango'] },
   },
   // Module 4
   'part-04-autograd/01-computational-graph': { name: 'comp-graph', caption: 'Forward computational graph' },
-  'part-04-autograd/02-value': { name: 'value-tape', caption: 'Value tracks data + gradient' },
+  'part-04-autograd/02-value': { name: 'value-tape', caption: 'Value class data + gradient track করে' },
   'part-04-autograd/03-backprop': { name: 'backprop-flow', caption: 'Chain rule — backward pass' },
   'part-04-autograd/04-gradient-descent': { name: 'gd-step', caption: 'W ← W − η∇L' },
   // Module 5
   'part-05-neural-network/01-neuron': { name: 'neuron-sum', caption: 'Neuron: weighted sum + activation' },
-  'part-05-neural-network/02-layer': { name: 'layer-stack', caption: 'Layer = matrix of neurons' },
-  'part-05-neural-network/03-mlp': { name: 'mlp-forward', caption: 'Signal through stacked layers' },
+  'part-05-neural-network/02-layer': { name: 'layer-stack', caption: 'Layer = neuron-এর matrix' },
+  'part-05-neural-network/03-mlp': { name: 'mlp-forward', caption: 'Signal stacked layer দিয়ে যায়' },
   'part-05-neural-network/04-xor': { name: 'xor-plot', caption: 'XOR: decision boundary + loss' },
   // Module 6
   'part-06-neural-lm/01-embedding': {
@@ -121,12 +121,12 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-06-neural-lm/04-train': {
     name: 'train-loop',
-    caption: 'Neural LM — epochs-এ loss কমে',
+    caption: 'Neural LM — ২০০ epoch-এ loss কমে',
     mode: 'neural',
   },
   'part-06-neural-lm/05-generate': {
     name: 'generate-chain',
-    caption: 'Neural LM sample generation',
+    caption: 'Trained neural LM থেকে sample',
     mode: 'neural',
   },
   // Module 7
@@ -140,16 +140,16 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-07-attention/05-multi-head': { name: 'multi-head-parallel', caption: 'Parallel attention heads' },
   // Module 8
-  'part-08-transformer/01-positional': { name: 'positional-sine', caption: 'Position encoding added to embed' },
+  'part-08-transformer/01-positional': { name: 'positional-sine', caption: 'Position encoding embed-এ যোগ' },
   'part-08-transformer/02-layer-norm': { name: 'layernorm-scale', caption: 'LayerNorm: mean/var normalize' },
   'part-08-transformer/03-ffn': { name: 'ffn-expand', caption: 'FFN: d → 4d → d' },
   'part-08-transformer/04-residual': { name: 'residual-skip', caption: 'Residual: x + sublayer(x)' },
   'part-08-transformer/05-block': { name: 'transformer-block', caption: 'Full transformer block' },
   // Module 9
-  'part-09-mini-gpt/01-gpt-architecture': { name: 'gpt-stack', caption: 'Stack N transformer blocks' },
+  'part-09-mini-gpt/01-gpt-architecture': { name: 'gpt-stack', caption: 'Nটি transformer block stack' },
   'part-09-mini-gpt/02-train': {
     name: 'train-loop',
-    caption: 'Mini GPT train — transformer epochs',
+    caption: 'Fruit corpus-এ training loop',
     mode: 'gpt',
   },
   'part-09-mini-gpt/03-generate': {
@@ -159,9 +159,9 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-09-mini-gpt/04-temperature': {
     name: 'temp-softmax',
-    caption: 'Temperature widens/narrows distribution',
+    caption: 'Temperature distribution চওড়া/সংকীর্ণ করে',
   },
-  'part-09-mini-gpt/05-top-k': { name: 'topk-filter', caption: 'Top-k filters low-probability tokens' },
+  'part-09-mini-gpt/05-top-k': { name: 'topk-filter', caption: 'Top-k কম prob token বাদ দেয়' },
   // Module 10
   'part-10-bridge/01-reading-nanogpt': { name: 'code-map', caption: 'Course modules → nanoGPT files' },
   'part-10-bridge/02-whats-next': { name: 'scale-ladder', caption: 'Fruit model → production LLM scale' },

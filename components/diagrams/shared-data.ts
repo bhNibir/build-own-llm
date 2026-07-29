@@ -27,10 +27,10 @@ export const VOCAB: { word: string; id: number }[] = [
   { word: 'you', id: 11 },
 ];
 
-/** P(next | "i like") from fruit bigram counts */
+/** P(next | "i like") from fruit bigram counts: 2/4, 1/4, 1/4 */
 export const NEXT_AFTER_I_LIKE = {
   labels: ['apple', 'banana', 'mango'],
-  probs: [0.72, 0.18, 0.1],
+  probs: [0.5, 0.25, 0.25],
 };
 
 export type AnimBaseProps = {

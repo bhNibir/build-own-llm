@@ -26,15 +26,15 @@ export default function HomePage() {
 
       <div className="grid w-full max-w-lg grid-cols-1 gap-4 text-sm text-fd-muted-foreground sm:grid-cols-3">
         <div className="rounded-xl border-2 border-indigo-200/60 bg-indigo-50/40 p-3 dark:border-indigo-800/40 dark:bg-indigo-950/20">
-          <p className="mb-1 font-medium text-fd-foreground">Edit Code</p>
-          <p>Browser-এ সরাসরি TypeScript লিখো</p>
+          <p className="mb-1 font-medium text-fd-foreground">কোড লিখো</p>
+          <p>Browser-এ সরাসরি TypeScript edit করো</p>
         </div>
         <div className="rounded-xl border-2 border-emerald-200/60 bg-emerald-50/40 p-3 dark:border-emerald-800/40 dark:bg-emerald-950/20">
-          <p className="mb-1 font-medium text-fd-foreground">Run Instantly</p>
+          <p className="mb-1 font-medium text-fd-foreground">তৎক্ষণাৎ Run</p>
           <p>Colorful console-এ output দেখো</p>
         </div>
         <div className="rounded-xl border-2 border-amber-200/60 bg-amber-50/40 p-3 dark:border-amber-800/40 dark:bg-amber-950/20">
-          <p className="mb-1 font-medium text-fd-foreground">Bangla Guide</p>
+          <p className="mb-1 font-medium text-fd-foreground">বাংলা গাইড</p>
           <p>English terms, বাংলায় ব্যাখ্যা</p>
         </div>
       </div>

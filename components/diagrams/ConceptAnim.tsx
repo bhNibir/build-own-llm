@@ -149,7 +149,7 @@ export function ConceptAnim({
   }
 
   return (
-    <ConceptFrame caption={caption}>
+    <ConceptFrame caption={caption} hint="লাইভ কনসেপ্ট — বাস্তব উদাহরণ">
       <Component
         paused={reducedMotion ?? false}
         example={example}
