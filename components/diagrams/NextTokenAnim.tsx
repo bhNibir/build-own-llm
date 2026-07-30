@@ -37,6 +37,9 @@ export function NextTokenAnim({
     [lbl, p],
   );
 
+  const firstWord = options[0]?.word ?? 'apple';
+  const optionsKey = options.map((o) => `${o.word}:${o.pct}`).join('|');
+
   useEffect(() => {
     if (paused) return;
     const timeouts: ReturnType<typeof setTimeout>[] = [];
@@ -45,7 +48,7 @@ export function NextTokenAnim({
       setPicked(null);
       timeouts.push(setTimeout(() => setPhase(1), 800));
       timeouts.push(setTimeout(() => setPhase(2), 2000));
-      timeouts.push(setTimeout(() => setPicked(options[0]?.word ?? 'apple'), 2800));
+      timeouts.push(setTimeout(() => setPicked(firstWord), 2800));
     };
     cycle();
     const interval = setInterval(cycle, 4500);
@@ -53,7 +56,7 @@ export function NextTokenAnim({
       clearInterval(interval);
       timeouts.forEach(clearTimeout);
     };
-  }, [paused, options]);
+  }, [paused, firstWord, optionsKey]);
 
   return (
     <div className="space-y-4">

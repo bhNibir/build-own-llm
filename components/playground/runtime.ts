@@ -93,39 +93,55 @@ export function parseVizFromLogs(logs: string[], viz?: string): ParsedViz | null
   if (viz === 'loss') {
     const data: number[] = [];
     for (const line of logs) {
-      const m = line.match(/loss[:\s]+([\d.]+)/i);
+      const m = line.match(/loss\s*[=:]\s*([\d.]+)/i);
       if (m) data.push(parseFloat(m[1]));
     }
     return data.length > 0 ? { type: 'loss', data } : null;
   }
 
   if (viz === 'softmax') {
-    const probs: number[] = [];
     for (const line of logs) {
-      const m = line.match(/([\d.]+)\s*(?:\(|$|\s)/);
-      if (m && line.toLowerCase().includes('softmax')) {
-        probs.push(parseFloat(m[1]));
-      }
+      const lower = line.toLowerCase();
       const arr = line.match(/\[([\d.,\s]+)\]/);
-      if (arr && (line.includes('softmax') || line.includes('prob'))) {
+      if (arr && (lower.includes('softmax') || lower.includes('prob'))) {
         return {
           type: 'softmax',
           probs: arr[1].split(',').map((s) => parseFloat(s.trim())),
         };
       }
     }
-    return probs.length > 0 ? { type: 'softmax', probs } : null;
+    return null;
   }
 
   if (viz === 'attention') {
-    const tokens = ['i', 'like', 'apple'];
-    const weights: number[][] = [];
+    let tokens = ['i', 'like', 'apple'];
     for (const line of logs) {
-      const row = line.match(/\[([\d.,\s]+)\]/);
-      if (row) {
-        weights.push(row[1].split(',').map((s) => parseFloat(s.trim())));
+      const sentence = line.match(/Sentence:\s*"([^"]+)"/i);
+      if (sentence) {
+        tokens = sentence[1].trim().split(/\s+/);
+        break;
       }
     }
+
+    const weights: number[][] = [];
+    let collecting = false;
+    for (const line of logs) {
+      const lower = line.toLowerCase();
+      if (lower.includes('attention') && (lower.includes('weight') || lower.includes('matrix'))) {
+        collecting = true;
+        continue;
+      }
+      if (collecting && lower.includes('output')) break;
+
+      const row = line.match(/\[([\d.,\s-]+)\]/);
+      if (collecting && row) {
+        const parsed = row[1].split(',').map((s) => parseFloat(s.trim()));
+        if (parsed.length === tokens.length && parsed.every((n) => !Number.isNaN(n))) {
+          weights.push(parsed);
+        }
+      }
+    }
+
     if (weights.length >= 2) return { type: 'attention', tokens, weights };
   }
 

@@ -153,8 +153,8 @@ export function ConceptAnim({
       <Component
         paused={reducedMotion ?? false}
         example={example}
-        probs={probs}
-        labels={labels}
+        probs={probs ?? example?.probs}
+        labels={labels ?? example?.labels}
         mode={mode}
       />
     </ConceptFrame>

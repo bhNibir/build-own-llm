@@ -449,13 +449,13 @@ const h = layer(x, W1, b1);
 log.data('Input', x);
 log.data('Hidden (3 neurons)', h.map((v) => v.toFixed(4)));
 
-// Layer 2: 3 hidden → 1 output neuron
-const W2 = [[0.5], [-0.4], [0.6]];
+// Layer 2: 3 hidden → 1 output neuron (one row with 3 weights)
+const W2 = [[0.5, -0.4, 0.6]];
 const b2 = [0.1];
 const y = layer(h, W2, b2);
 
 log.data('Output (1 neuron)', y[0].toFixed(4));
-log.data('Flow', 'input → hidden (sigmoid) → output (sigmoid)');
+log.data('Flow', 'input(2) → hidden(3) → output(1)');
 log.ok('MLP forward pass done');
 `,
     },

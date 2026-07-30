@@ -17,9 +17,13 @@ Dataset-এর সব unique word collect করো, তারপর প্র�
 
 ```mermaid
 flowchart LR
-    dataset[Dataset] --> unique[Unique Words]
-    unique --> sorted[Sorted List]
-    sorted --> mapping["Word → ID map"]
+    dataset["📂 Dataset"]:::d --> unique["✨ Unique Words"]:::u
+    unique --> sorted["🔤 Sorted List"]:::s
+    sorted --> mapping["🔢 Word → ID"]:::m
+    classDef d fill:#4F46E5,color:#fff,stroke:#3730A3
+    classDef u fill:#10B981,color:#fff,stroke:#047857
+    classDef s fill:#F59E0B,color:#fff,stroke:#D97706
+    classDef m fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
 ## আমাদের Vocabulary

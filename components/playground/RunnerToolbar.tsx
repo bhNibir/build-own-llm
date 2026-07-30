@@ -13,7 +13,7 @@ export function RunnerToolbar({
   onCopy,
   running,
   ready,
-  copyLabel = 'Copy',
+  copyLabel = 'কপি',
 }: {
   onRun: () => void;
   onReset: () => void;
@@ -43,7 +43,7 @@ export function RunnerToolbar({
         )}
       >
         <PlayAnimated />
-        {running ? 'Running…' : 'Run'}
+        {running ? 'চলছে…' : 'Run'}
       </button>
       <button
         type="button"
@@ -52,7 +52,7 @@ export function RunnerToolbar({
         className="inline-flex items-center gap-1.5 rounded-md border border-fd-border bg-white px-3 py-1.5 text-sm font-medium hover:bg-fd-muted dark:bg-slate-800 disabled:opacity-40"
       >
         {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <CopyAnimated />}
-        {copied ? 'Copied!' : copyLabel}
+        {copied ? 'কপি হয়েছে!' : copyLabel}
       </button>
       <button
         type="button"
@@ -64,7 +64,7 @@ export function RunnerToolbar({
         Reset
       </button>
       {!ready && (
-        <span className="ml-auto text-xs text-fd-muted-foreground">Loading compiler…</span>
+        <span className="ml-auto text-xs text-fd-muted-foreground">Compiler লোড হচ্ছে…</span>
       )}
     </div>
   );

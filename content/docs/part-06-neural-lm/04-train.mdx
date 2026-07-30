@@ -1,6 +1,6 @@
 ---
 title: Training Loop
-description: 200 epoch forward + backward + update — model শেখা শুরু
+description: Fruit dataset-এ forward + backward + update — model শেখা শুরু
 ---
 
 # Training Loop
@@ -10,7 +10,7 @@ description: 200 epoch forward + backward + update — model শেখা শু
 Embedding, weight matrix, loss — সব ready।
 
 <Callout type="tip">
-✅ Typical neural LM training: **200 epochs** fruit dataset-এ। Loss gradually কমতে থাকবে।
+✅ Browser demo-তে **~200 epochs** fruit word pairs-এ train করি। Loss gradually কমতে থাকবে — Run চাপলে live chart-এ দেখবে।
 </Callout>
 
 ```mermaid
@@ -32,9 +32,9 @@ flowchart TD
 
 <StepReveal steps={[
   { emoji: "1️⃣", title: "Forward", body: "Input token → logits → loss" },
-  { emoji: "2️⃣", title: "Backward", body: "Gradient compute (autograd)" },
-  { emoji: "3️⃣", title: "Update", body: "W, E -= lr × gradient" },
-  { emoji: "4️⃣", title: "Repeat", body: "200 epochs until loss drops" }
+  { emoji: "2️⃣", title: "Backward", body: "Gradient compute (dW from softmax error)" },
+  { emoji: "3️⃣", title: "Update", body: "W -= lr × gradient" },
+  { emoji: "4️⃣", title: "Repeat", body: "~200 epochs until loss drops" }
 ]} />
 
 ## Loss Curve
@@ -49,20 +49,20 @@ Training চলাকালীন loss কমতে থাকে:
 
 ## Hyperparameters
 
-| Param | Typical | Meaning |
-|-------|---------|---------|
-| `lr` | 0.01–0.1 | Learning rate |
+| Param | Demo value | Meaning |
+|-------|------------|---------|
+| `lr` | 3 | Learning rate (toy scale) |
 | `epochs` | 200 | Full dataset passes |
-| `D` | 16–64 | Embedding dimension |
+| Dataset | 10 fruit sentences | Module 1 corpus |
 
 ## কোড চেষ্টা করো
 
-<Playground id="part-06/train" title="200-Epoch Training Loop" viz="loss" />
+<Playground id="part-06/train" title="Fruit Neural LM Training" viz="loss" />
 
 ## ✅ তুমি কী শিখলে?
 
 - Training = repeat forward → loss → backward → update
 - Loss curve should **decrease** over epochs
-- 200 epochs ≈ enough for small fruit dataset
+- Same fruit words as Bigram — এখন learned weights
 
 **পরের lesson:** [Generate](/docs/part-06-neural-lm/05-generate)

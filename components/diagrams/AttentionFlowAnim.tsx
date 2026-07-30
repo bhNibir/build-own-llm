@@ -22,7 +22,14 @@ export function AttentionFlowAnim({
   const [activeRow, setActiveRow] = useState(0);
   const [activeCol, setActiveCol] = useState(0);
   const tokens = example?.tokens ?? DEFAULT_TOKENS;
-  const matrix = DEFAULT_WEIGHTS;
+  const matrix =
+    Array.isArray(example?.probs) &&
+    example.probs.length === tokens.length &&
+    tokens.length >= 2
+      ? DEFAULT_WEIGHTS.map((row, i) =>
+          i === 0 ? example.probs! : row.slice(0, tokens.length),
+        )
+      : DEFAULT_WEIGHTS.map((row) => row.slice(0, tokens.length));
   const rowRef = useRef(0);
   const colRef = useRef(0);
   const cellTotal = tokens.length * tokens.length;
