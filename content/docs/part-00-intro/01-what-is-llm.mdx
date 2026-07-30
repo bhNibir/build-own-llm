@@ -1,15 +1,17 @@
 ---
-title: What is an LLM?
-description: LLM হলো next-token prediction machine
+title: LLM কী?
+description: LLM হলো next-token prediction machine — magic নয়, probability
 ---
 
-# What is an LLM?
+# LLM কী?
 
 <ConceptAnim slug="part-00-intro/01-what-is-llm" />
 
 <Callout type="idea">
-**LLM (Large Language Model)** মূলত একটা machine যেটা context দেখে **পরের token predict** করে — magic নয়, probability math।
+**LLM (Large Language Model)** কোনো জাদু নয়। এটা একটা machine যেটা আগের text (context) দেখে **পরের token-এর probability** হিসাব করে — তারপর একটা pick করে।
 </Callout>
+
+সহজ করে বললে: তুমি একটু লিখলে, model বলে — “এর পরে কী আসা সবচেয়ে সম্ভব?” সেই guess বারবার চালালেই পুরো sentence তৈরি হয়।
 
 ```mermaid
 flowchart LR
@@ -24,25 +26,29 @@ flowchart LR
 
 ## Next-token prediction
 
-তুমি type করো: `"i like"`
+ধরো তুমি লিখলে: `"i like"`
 
-Model ভাবে: `"apple"`, `"banana"`, `"mango"` — কোনটা বেশি likely? Fruit corpus-এর bigram count থেকে **৫০% / ২৫% / ২৫%** (`like → apple` ২বার, `banana`/`mango` ১বার করে)।
+Model vocabulary-র সব সম্ভাব্য পরের word দেখে। আমাদের ছোট fruit corpus-এ `like`-এর পরে `apple` দুবার, `banana` আর `mango` একবার করে এসেছে — তাই প্রায় **৫০% / ২৫% / ২৫%**। কোনো “বুদ্ধি” নেই এখানে; শুধু pattern থেকে probability।
+
+এই একটা ধারণা মাথায় রাখো — পুরো course জুড়ে আমরা এই prediction-কেই ধীরে ধীরে smarter করব।
 
 ## Autoregressive generation
 
-একটা token predict → context-এ add → আবার predict:
+একটা token predict হলেই কাজ শেষ নয়। সেটা context-এ যোগ হয়, আবার predict — এভাবে loop চলে। এই পদ্ধতিকে বলে **autoregressive** generation।
 
 <StepReveal steps={[
-  { title: "Start: i", body: "Seed word দিয়ে শুরু" },
-  { title: "Predict: like", body: "P(like | i)" },
-  { title: "Predict: apple", body: "P(apple | i like)" },
-  { title: "Output: i like apple", body: "Loop until stop" }
+  { title: "শুরু: i", body: "Seed word দিয়ে context তৈরি" },
+  { title: "Predict: like", body: "P(like | i) — শুধু 'i' দেখে" },
+  { title: "Predict: apple", body: "P(apple | i like) — এবার দুটো word দেখে" },
+  { title: "Output: i like apple", body: "চাইলে stop, নাহলে loop চলতে থাকে" }
 ]} />
+
+ChatGPT যে paragraph লেখে, ভেতরে অনেকবার এই একই loop চলে — শুধু model অনেক বড় আর context অনেক লম্বা।
 
 ## তুমি কী শিখলে?
 
-- LLM = **next-token prediction** machine
-- Generation = **autoregressive** loop
-- Output = probability distribution over vocabulary
+- LLM মূলত **next-token prediction** করে
+- Generation মানেই **autoregressive** loop — predict → add → আবার predict
+- Output একটা fixed word নয়; vocabulary-র উপর **probability distribution**
 
-**পরের lesson:** [Why from scratch?](/docs/part-00-intro/02-why-from-scratch)
+**পরের lesson:** [কেন scratch থেকে?](/docs/part-00-intro/02-why-from-scratch)
