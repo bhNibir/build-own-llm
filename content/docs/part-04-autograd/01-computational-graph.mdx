@@ -36,20 +36,20 @@ flowchart LR
 
 প্রতিটা ধাপ মনে রাখা হয় — পরে backward-এ সেই memoryই কাজে লাগে।
 
-## Forward Pass
+## Forward Pass কী
 
 Data **left → right** flow করে। Example: `a=2, b=3, c=2` → `y = 8`
 
 <StepReveal steps={[
-  { emoji: "1️⃣", title: "a × b = 6", body: "Multiply node computes, stores result" },
-  { emoji: "2️⃣", title: "6 + c = 8", body: "Add node receives upstream value" },
+  { emoji: "1️⃣", title: "a × b = 6", body: "Multiply node হিসাব করে, result রাখে" },
+  { emoji: "2️⃣", title: "6 + c = 8", body: "Add node upstream value নেয়" },
   { emoji: "3️⃣", title: "y = 8", body: "Final output ready" },
-  { emoji: "4️⃣", title: "Graph stored", body: "Each node remembers children for backward" }
+  { emoji: "4️⃣", title: "Graph stored", body: "প্রতিটা node backward-এর জন্য child মনে রাখে" }
 ]} />
 
 Forward শুধু উত্তর বের করে না — পুরো পথও রেখে দেয়, যাতে পরে “কে কাকে প্রভাবিত করেছে?” জানা যায়।
 
-## Neural Network Graph
+## Neural Network-এর Graph
 
 আসল network-এও একই idea, শুধু বড়:
 
@@ -85,7 +85,7 @@ flowchart TD
 
 **Autograd** = forward-এ graph build, backward-এ traverse। PyTorch/TensorFlow-ও ভিতরে এটাই করে।
 
-## micrograd Idea
+## micrograd-এর Idea
 
 Andrej Karpathy-র [micrograd](https://github.com/karpathy/micrograd) — প্রায় ১০০ লাইন Python:
 
@@ -95,7 +95,7 @@ Andrej Karpathy-র [micrograd](https://github.com/karpathy/micrograd) — প�
 
 আমরা same pattern TypeScript-এ implement করব। ছোট engine, বড় intuition।
 
-## Chain Rule Preview
+## Chain Rule-এর Preview
 
 Graph থেকে backward pass কেমন দেখায় — শুধু একটু ঝলক:
 
@@ -108,11 +108,11 @@ Graph থেকে backward pass কেমন দেখায় — শুধ�
 
 ## তুমি কী শিখলে?
 
-- **Computational graph** = operations as nodes, data as edges
-- **Forward pass** = left-to-right evaluation
-- **Backward pass** = right-to-left gradient via chain rule
-- Graph enables automatic differentiation (Autograd)
-- micrograd pattern: wrap numbers in `Value` class
+- **Computational graph** = operation node, data edge — হিসাবের পথ আঁকা
+- **Forward pass** = বাম থেকে ডানে evaluate করা
+- **Backward pass** = ডান থেকে বামে chain rule দিয়ে gradient বের করা
+- এই graph-ই **Autograd** (automatic differentiation) সম্ভব করে
+- micrograd pattern: সাধারণ number-কে `Value` class-এ wrap করা
 
 **আগের Module:** [Module 3 — Softmax](/docs/part-03-math/05-softmax)
 

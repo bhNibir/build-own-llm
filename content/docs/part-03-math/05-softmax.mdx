@@ -38,7 +38,7 @@ flowchart LR
 
 এখন sample বা argmax করা যায় — ঠিক Bigram-এর মতো, শুধু উৎস এবার neural net।
 
-## Full Formula
+## পুরো Formula
 
 Idea সহজ: exp দিয়ে সব positive করো, তারপর total দিয়ে ভাগ করে normalize করো।
 
@@ -65,16 +65,16 @@ Idea সহজ: exp দিয়ে সব positive করো, তারপর t
   <CodeLink>Playground-এ same numbers run করো ↓</CodeLink>
 </MathLesson>
 
-## Step by Step
+## ধাপে ধাপে
 
 <StepReveal steps={[
   { emoji: "📈", title: "exp(z_i)", body: "প্রতিটা logit-এ exponential — সব positive" },
-  { emoji: "➕", title: "Sum all exp values", body: "Normalizer = Σ e^z_j" },
-  { emoji: "➗", title: "Divide each by sum", body: "Probability distribution তৈরি" },
-  { emoji: "✅", title: "Verify sum = 1", body: "Sampling / loss-এর জন্য required" }
+  { emoji: "➕", title: "সব exp যোগ", body: "Normalizer = Σ e^z_j" },
+  { emoji: "➗", title: "প্রতিটা ÷ sum", body: "Probability distribution তৈরি" },
+  { emoji: "✅", title: "চেক: sum = 1", body: "Sampling / loss-এর জন্য দরকার" }
 ]} />
 
-## Numerical Stability
+## Numerical Stability কেন দরকার
 
 একটা ফাঁদ আছে। Direct `exp(1000)` = overflow! Production code-এ তাই **max trick** ব্যবহার হয়:
 

@@ -50,7 +50,7 @@ flowchart TD
     classDef output fill:#6366F1,color:#fff,stroke:#4338CA
 ```
 
-## Step by Step
+## ধাপে ধাপে
 
 **Step 1:** Score matrix = `Q @ K^T` → shape `(n, n)` — প্রতিটা token প্রতিটার সাথে কত relevant
 
@@ -60,15 +60,15 @@ flowchart TD
 
 **Step 4:** Output = weights `@ V` → context-aware vectors
 
-## Why Scale by √d_k?
+## √d_k দিয়ে Scale কেন?
 
 Dimension বড় হলে Dot Products বড় হয় → Softmax **saturates** (one weight ≈ 1, rest ≈ 0)। Scaling রাখে scores মাঝামাঝি — gradients healthy থাকে। ছাড়া deep training ভাঙতে পারে।
 
 <StepReveal steps={[
-  { emoji: "1️⃣", title: "QK^T", body: "Pairwise relevance scores" },
-  { emoji: "2️⃣", title: "÷ √d_k", body: "Prevent Softmax saturation" },
-  { emoji: "3️⃣", title: "Softmax", body: "Scores → probabilities" },
-  { emoji: "4️⃣", title: "× V", body: "Weighted information mix" }
+  { emoji: "1️⃣", title: "QK^T", body: "প্রতি জোড়ায় relevance score" },
+  { emoji: "2️⃣", title: "÷ √d_k", body: "Softmax saturate হতে দেয় না" },
+  { emoji: "3️⃣", title: "Softmax", body: "Score → probability" },
+  { emoji: "4️⃣", title: "× V", body: "Weighted info মিক্স" }
 ]} />
 
 ## কোড চেষ্টা করো
@@ -77,8 +77,8 @@ Dimension বড় হলে Dot Products বড় হয় → Softmax **sat
 
 ## তুমি কী শিখলে?
 
-- Attention = Softmax(QK^T/√d_k) × V
-- Scaling gradient সমস্যা কমায়
+- **Attention** = Softmax(QKᵀ/√d_k) × V
+- √d_k দিয়ে **scale** করলে Softmax saturate হয় না — gradient ভালো থাকে
 - Output = প্রতিটা token-এর context-mixed representation
 
 **পরের lesson:** [Self-Attention](/docs/part-07-attention/04-self-attention)

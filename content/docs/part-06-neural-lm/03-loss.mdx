@@ -51,7 +51,7 @@ flowchart TD
   <CodeLink>Playground-এ Loss calculate করো ↓</CodeLink>
 </MathLesson>
 
-## Intuition
+## Intuition — মনে রাখো
 
 | Predicted P(correct) | Loss |
 |---------------------|------|
@@ -61,7 +61,7 @@ flowchart TD
 
 Loss **exponentially** বাড়ে যখন model confident ভুল হয় — তাই training এটাকে hard punish করে।
 
-## Training Signal
+## Training Signal কোথা থেকে
 
 Loss থেকে **gradient** বের করে weights update করি:
 
@@ -76,7 +76,7 @@ $$W \leftarrow W - \eta \cdot \frac{\partial L}{\partial W}$$
 ## তুমি কী শিখলে?
 
 - **Cross-entropy** = `-log P(correct token)`
-- Lower Loss = better predictions
-- Loss drives weight updates via backprop
+- Loss কম মানে prediction ভালো
+- এই Loss-ই backprop দিয়ে weight update চালায়
 
 **পরের lesson:** [Training Loop](/docs/part-06-neural-lm/04-train)

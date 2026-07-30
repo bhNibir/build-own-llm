@@ -13,20 +13,20 @@ description: Chain rule দিয়ে loss থেকে সব parameter-এ g
 
 `Value` class graph বানাতে পারে — এখন সেই graph পেছন দিকে হাঁটাবো। এটাই training-এর হৃদয়: loss দেখে প্রতিটা weight-কে বলা “তুমি কতটা দায়ী?”
 
-## The Algorithm
+## Algorithm কীভাবে চলে
 
 চল ধাপে ধাপে:
 
 <StepReveal steps={[
-  { emoji: "📋", title: "Topological sort", body: "Nodes order — children before parents" },
-  { emoji: "1️⃣", title: "Seed grad = 1", body: "Output node (loss) starts with ∂L/∂L = 1" },
-  { emoji: "⬅️", title: "Reverse loop", body: "Each node calls _backward()" },
-  { emoji: "➕", title: "Accumulate grads", body: "Parents receive gradient contributions" }
+  { emoji: "📋", title: "Topological sort", body: "Node order — child আগে, parent পরে" },
+  { emoji: "1️⃣", title: "Seed grad = 1", body: "Output (loss) node-এ ∂L/∂L = 1 বসাও" },
+  { emoji: "⬅️", title: "Reverse loop", body: "প্রতিটা node `_backward()` ডাকে" },
+  { emoji: "➕", title: "Grad accumulate", body: "Parent-রা gradient contribution পায়" }
 ]} />
 
 Seed দিয়ে শুরু — `∂L/∂L = 1`। তারপর প্রতিটা node তার local rule দিয়ে parent-দের কাছে gradient পাঠায়।
 
-## Chain Rule in Action
+## Chain Rule কাজে
 
 Expression: `L = (a × b + c)²`
 
@@ -55,7 +55,7 @@ Backward (diagram-এ bottom-up = reverse topo order):
 
 প্রতিটা ধাপে local derivative × incoming gradient — এটাই chain rule।
 
-## Worked Example
+## কাজ করা উদাহরণ
 
 সংখ্যা দিয়ে দেখি। `a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
 
@@ -82,7 +82,7 @@ Backward (diagram-এ bottom-up = reverse topo order):
   <CodeLink>Playground-এ backward() run করে grad values verify করো ↓</CodeLink>
 </MathLesson>
 
-## Why Topological Sort?
+## Topological Sort কেন?
 
 Operation order matter করে। Parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
 
@@ -93,7 +93,7 @@ Right order: reverse topo ensures child processed first
 
 Topo sort ভুল হলে gradientও ভুল — bug খুঁজতে গিয়ে অনেক সময় এখানেই আটকায়।
 
-## Debugging Tips
+## Debugging Tips — মনে রাখো
 
 Gradient zero? চেক করো:
 - `_backward` rule correct?
@@ -102,17 +102,17 @@ Gradient zero? চেক করো:
 
 তিনটার মধ্যে একটা miss হলেই training “শেখে” না।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-04/backprop" title="Backpropagation Demo" />
 
 ## তুমি কী শিখলে?
 
-- **Backprop** = reverse topological traversal + chain rule
-- Output node seeded with `grad = 1`
-- Each `_backward()` distributes gradient to parents
-- Topological sort ensures correct order
-- Enables training networks with millions of parameters
+- **Backprop** = reverse topological order-এ chain rule চালানো
+- Output node-এ শুরুতে `grad = 1` বসিয়ে দাও
+- প্রতিটা `_backward()` parent-দের কাছে gradient ভাগ করে দেয়
+- **Topological sort** সঠিক order নিশ্চিত করে
+- তাই লক্ষ লক্ষ parameter-ও train করা যায়
 
 **আগের lesson:** [Value Class](/docs/part-04-autograd/02-value)
 

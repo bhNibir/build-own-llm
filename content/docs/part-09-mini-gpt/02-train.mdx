@@ -33,13 +33,13 @@ flowchart TD
     classDef done fill:#10B981,color:#fff,stroke:#047857
 ```
 
-## Training Loop
+## Training Loop কীভাবে চলে
 
 Loss কমতে থাকলে বুঝবে model শিখছে — নিচের curve-টা typical shape দেখায়:
 
 <LossChart data={[3.2, 2.1, 1.5, 1.0, 0.8, 0.6]} title="Mini GPT Training Loss" />
 
-## Dataset
+## Dataset কী ব্যবহার করি
 
 Fruit sentences — Module 1 থেকেই চেনা corpus:
 
@@ -62,7 +62,7 @@ Fruit sentences — Module 1 থেকেই চেনা corpus:
   { emoji: "📉", title: "Loss + update", body: "Cross-entropy + gradient descent" }
 ]} />
 
-## What Gets Trained (Playground)
+## কী Train হয় (Playground)
 
 | Parameter | Shape | Role |
 |-----------|-------|------|
@@ -70,7 +70,7 @@ Fruit sentences — Module 1 থেকেই চেনা corpus:
 | Weight W | V × D | Vector → logits |
 | LM head (full GPT) | D × V | Module 9 architecture lesson-এ |
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-09/train" title="Train Mini GPT" />
 

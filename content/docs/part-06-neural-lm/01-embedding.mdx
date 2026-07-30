@@ -31,7 +31,7 @@ flowchart TD
     classDef vector fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
-## Lookup = Matrix Row
+## Lookup মানে Matrix Row
 
 Token ID দিয়ে embedding matrix-এর **একটা row** pick করা — এটাই lookup। কোনো জটিল হিসাব নেই; dictionary-তে key দিয়ে value নেওয়ার মতো।
 
@@ -43,7 +43,7 @@ ID 1 ("like")  → [0.4, -0.1,  0.6,  0.2]
 ID 2 ("apple") → [0.7,  0.2, -0.3,  0.1]
 ```
 
-## Count Table vs Embedding
+## Count Table vs Embedding — তফাত
 
 | | Bigram Count | Embedding |
 |---|-------------|-----------|
@@ -82,7 +82,7 @@ log.ok('row pick সম্পন্ন');`}</CodeRun>
 
 ## তুমি কী শিখলে?
 
-- **Embedding matrix** = learned word representations
+- **Embedding matrix** = শেখা word representation-এর table
 - Lookup = token ID দিয়ে একটা row pick করা
 - Similar words → similar vectors (training-এ শেখে)
 

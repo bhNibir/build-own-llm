@@ -24,7 +24,7 @@ flowchart TD
     classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
-## The Scaling Laws
+## Scaling Laws কী বলে
 
 | Factor | Mini GPT | Production |
 |--------|----------|------------|
@@ -37,13 +37,13 @@ flowchart TD
 Scale বাড়লেই quality বাড়ে — এই সম্পর্ককেই বলে **scaling laws**। তোমার fruit model আর GPT-4-এর মধ্যে মূল পার্থক্য এখানেই।
 
 <StepReveal steps={[
-  { emoji: "📊", title: "Pretraining", body: "Next-token prediction on internet-scale data" },
+  { emoji: "📊", title: "Pretraining", body: "Internet-scale data-তে next-token prediction" },
   { emoji: "🎯", title: "Fine-tuning", body: "Task-specific adaptation (SFT)" },
-  { emoji: "👍", title: "RLHF", body: "Human feedback → better responses" },
+  { emoji: "👍", title: "RLHF", body: "Human feedback → ভালো response" },
   { emoji: "⚡", title: "Inference opt", body: "Quantization, KV-cache, speculative decoding" }
 ]} />
 
-## Pretraining Pipeline
+## Pretraining Pipeline কেমন
 
 ```mermaid
 flowchart LR
@@ -58,7 +58,7 @@ flowchart LR
 
 Objective course-এর মতোই: **next token-এর cross-entropy minimize** — শুধু data প্রায় 10¹² গুণ বেশি।
 
-## Fine-Tuning Paths
+## Fine-Tuning-এর রাস্তা
 
 Base model পরে মানুষের কাজে লাগানোর জন্য:
 
@@ -69,7 +69,7 @@ Base model পরে মানুষের কাজে লাগানোর �
 | **RLHF** | Human preference rankings | ChatGPT alignment |
 | **DPO** | Preference pairs (no RL) | Simpler alignment |
 
-## Engineering Beyond Architecture
+## Architecture-এর বাইরে Engineering
 
 Architecture ছাড়াও production-এ এই trickগুলো দেখবে:
 
@@ -81,7 +81,7 @@ Architecture ছাড়াও production-এ এই trickগুলো দে�
 | **KV-cache** | Fast autoregressive inference |
 | **Quantization (GPTQ, AWQ)** | Run 70B on consumer GPU |
 
-## Your Learning Path Forward
+## এগিয়ে যাওয়ার Path
 
 ```mermaid
 flowchart TD
@@ -94,7 +94,7 @@ flowchart TD
     classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
-## Recommended Resources
+## Suggested Resources দেখো
 
 | Resource | Focus |
 |----------|-------|
@@ -108,7 +108,7 @@ flowchart TD
 ✅ **তুমি course শেষ করেছো** — Tokenizer থেকে Transformer Block, Mini GPT পর্যন্ত সব build করেছো। এটা বেশিরভাগ developer-এর চেয়ে বেশি LLM internals knowledge।
 </Callout>
 
-## Course Complete!
+## Course Complete — শেষ!
 
 ```
 Module 0:  Intro ✅
@@ -126,8 +126,8 @@ Module 10: Bridge ✅
 
 ## তুমি কী শিখলে?
 
-- Production LLM = same Transformer, massive scale
-- Pipeline: Pretraining → Fine-tuning → align (RLHF)
-- যেকোনো LLM codebase পড়ার foundation তোমার কাছে আছে
+- Production LLM = একই **Transformer**, শুধু **massive scale** + data + engineering
+- Pipeline: **Pretraining → Fine-tuning → align (RLHF)**
+- যেকোনো LLM codebase পড়ার foundation এখন তোমার কাছে আছে
 
 **শুরু থেকে:** [Course Home](/docs)

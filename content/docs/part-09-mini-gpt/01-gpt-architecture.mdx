@@ -38,7 +38,7 @@ flowchart TD
     classDef out fill:#EF4444,color:#fff,stroke:#DC2626
 ```
 
-## Transformer Block (recap)
+## Transformer Block (সংক্ষেপে)
 
 Module 8-এ যে block assemble করেছ, সেটাই এখানে N বার stack হবে। একটার ভিতর দেখলে এমন:
 
@@ -56,7 +56,7 @@ flowchart TD
     style attn fill:#FFD700
 ```
 
-## Mini GPT Config
+## Mini GPT-এর Config
 
 আমাদের ছোট্ট model — fruit corpus-এ চলবে, browser-এ fit হবে:
 
@@ -71,12 +71,12 @@ flowchart TD
 
 <StepReveal steps={[
   { emoji: "🔤", title: "Embed", body: "Token + positional lookup" },
-  { emoji: "🧱", title: "4 Blocks", body: "Attention + FFN each" },
-  { emoji: "📏", title: "Final Norm", body: "Stabilize before output" },
+  { emoji: "🧱", title: "4 Blocks", body: "প্রতিটাতে Attention + FFN" },
+  { emoji: "📏", title: "Final Norm", body: "Output-এর আগে stabilize" },
   { emoji: "🎯", title: "LM Head", body: "D → V logits" }
 ]} />
 
-## Components Map
+## Componentগুলোর Map
 
 প্রতিটা piece আগে কোন Module-এ এসেছিল — মনে করিয়ে দিই:
 
@@ -89,7 +89,7 @@ flowchart TD
 | Training | 6 | Loss + update |
 | Generation | 2, 6 | Autoregressive |
 
-## vs nanoGPT
+## vs nanoGPT — তফাত
 
 | | Our Mini GPT | Karpathy nanoGPT |
 |---|-------------|------------------|
@@ -104,8 +104,8 @@ flowchart TD
 
 ## তুমি কী শিখলে?
 
-- GPT = embed + Nটা block + LM head
-- Decoder-only, causal attention — শুধু past দেখে
-- আমাদের Mini GPT = same architecture, ছোট scale
+- **GPT** = embed + Nটা Transformer block + LM head
+- Decoder-only, **causal attention** — শুধু past দেখে
+- আমাদের Mini GPT = same architecture, শুধু ছোট scale
 
 **পরের lesson:** [Train Mini GPT](/docs/part-09-mini-gpt/02-train)

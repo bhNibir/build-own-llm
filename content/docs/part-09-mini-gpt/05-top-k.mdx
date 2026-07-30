@@ -26,11 +26,11 @@ flowchart TD
     classDef sample fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
-## Algorithm
+## Algorithm কীভাবে চলে
 
 Softmax → top-k filter → renormalize → sample — নীচের Playground-এ `k` বদলে candidate set দেখো।
 
-## Example
+## উদাহরণ
 
 Probs: `apple=0.4, banana=0.25, mango=0.15, grape=0.1, ...`
 
@@ -41,13 +41,13 @@ Probs: `apple=0.4, banana=0.25, mango=0.15, grape=0.1, ...`
 | k=10 | All tokens | No filtering |
 
 <StepReveal steps={[
-  { emoji: "📊", title: "Softmax probs", body: "Full vocabulary distribution" },
-  { emoji: "🔝", title: "Top-k filter", body: "Keep only k highest" },
-  { emoji: "📐", title: "Renormalize", body: "Filtered probs sum to 1" },
+  { emoji: "📊", title: "Softmax probs", body: "পুরো vocabulary-র distribution" },
+  { emoji: "🔝", title: "Top-k filter", body: "শুধু kটা highest রাখো" },
+  { emoji: "📐", title: "Renormalize", body: "Filter করা probs-এর sum = 1" },
   { emoji: "🎲", title: "Sample", body: "Pick from k candidates" }
 ]} />
 
-## Top-k vs Top-p (nucleus)
+## Top-k vs Top-p (nucleus) — তফাত
 
 | Method | Filter by |
 |--------|-----------|
@@ -58,7 +58,7 @@ Top-k simpler — আমাদের Mini GPT-এ Top-k ব্যবহার �
 
 <GenerateControls defaultTemperature={0.8} defaultTopK={3} />
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-09/top-k" title="Top-k Sampling" />
 

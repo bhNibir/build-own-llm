@@ -33,7 +33,7 @@ flowchart TD
     classDef out fill:#EF4444,color:#fff,stroke:#DC2626
 ```
 
-## Formula
+## Formula দেখো
 
 $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h) W_O$$
 
@@ -49,7 +49,7 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
   <div>৫. Head 2 আলাদা weights → আলাদা pattern; concat → <code>(2 × 4)</code>, তারপর <code>W_O</code> দিয়ে mix</div>
 </MathPractical>
 
-## Why Multiple Heads?
+## Multiple Heads কেন?
 
 | Head | Might learn |
 |------|-------------|
@@ -61,17 +61,17 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 Lesson 7.1-এর `"it"` problem মনে আছে? একটা head ঠিক সেই pronoun→noun link শিখতে পারে — অন্য head অন্য কিছু।
 
 <StepReveal steps={[
-  { emoji: "✂️", title: "Split", body: "D dimensions → h heads × (D/h) each" },
-  { emoji: "⚡", title: "Parallel Attention", body: "Each head independent Q/K/V" },
-  { emoji: "🔗", title: "Concat", body: "Stack all head outputs" },
-  { emoji: "📤", title: "W_o", body: "Final projection back to D" }
+  { emoji: "✂️", title: "Split", body: "D dimension → hটা head × (D/h) করে" },
+  { emoji: "⚡", title: "Parallel Attention", body: "প্রতিটা head আলাদা Q/K/V চালায়" },
+  { emoji: "🔗", title: "Concat", body: "সব head-এর output একসাথে stack" },
+  { emoji: "📤", title: "W_o", body: "শেষে আবার D-তে project" }
 ]} />
 
-## Typical Config
+## Typical Config দেখো
 
 Head সংখ্যা ও `d_model` scale অনুযায়ী বাড়ে — নীচের table ও Playground-এ Multi-Head split দেখো।
 
-## GPT-2 Style
+## GPT-2 Style Config দেখো
 
 | Model | Heads | d_model |
 |-------|-------|---------|
@@ -79,14 +79,14 @@ Head সংখ্যা ও `d_model` scale অনুযায়ী বাড�
 | GPT-2 small | 12 | 768 |
 | GPT-3 | 96 | 12288 |
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-07/multi-head" title="Multi-Head Attention" />
 
 ## তুমি কী শিখলে?
 
-- Multi-Head = parallel Attention with different learned projections
-- Each head captures different relationship patterns
-- Concat + output projection combines all heads
+- **Multi-Head** = একসাথে parallel Attention, প্রতিটা head-এর আলাদা learned projection
+- প্রতিটা head আলাদা relationship pattern ধরে (syntax, coreference, ইত্যাদি)
+- শেষে **concat + output projection** দিয়ে সব head একসাথে মেশানো হয়
 
 **পরের Module:** [Module 8 — Transformer Block](/docs/part-08-transformer)

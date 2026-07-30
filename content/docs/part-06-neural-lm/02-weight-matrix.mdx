@@ -26,7 +26,7 @@ flowchart LR
     classDef softmax fill:#F59E0B,color:#fff,stroke:#D97706
 ```
 
-## Shape
+## Shape কেমন
 
 $$W \in \mathbb{R}^{D \times V}$$
 
@@ -35,7 +35,7 @@ $$W \in \mathbb{R}^{D \times V}$$
 
 `D` ছোট (embedding dim), `V` বড় (vocabulary) — তাই output-এ প্রতিটা possible next word-এর একটা score পাও।
 
-## Example Walkthrough
+## উদাহরণ Walkthrough
 
 Vocabulary = 3 words, D = 2:
 
@@ -51,7 +51,7 @@ probs  = softmax(logits) ≈ [0.40, 0.33, 0.28]
 
 দেখো — count table নেই; learned `W` দিয়েই probability বের হলো।
 
-## Softmax = Probability
+## Softmax দিয়ে Probability
 
 Raw logits negative/positive যেকোনো হতে পারে। **Softmax** সব positive probability-তে convert করে (sum = 1):
 
@@ -65,8 +65,8 @@ $$\text{softmax}(z_i) = \frac{e^{z_i}}{\sum_j e^{z_j}}$$
 
 ## তুমি কী শিখলে?
 
-- **W** maps Embedding → logits over vocabulary
+- **W** Embedding-কে vocabulary-র উপর **logits**-এ map করে
 - Forward pass = embed → matmul → Softmax
-- Neural bigram = learned weights, not counts
+- Neural bigram = count নয়, **learned weights**
 
 **পরের lesson:** [Cross-Entropy Loss](/docs/part-06-neural-lm/03-loss)

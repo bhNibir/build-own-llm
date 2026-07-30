@@ -36,16 +36,16 @@ flowchart TD
     classDef output fill:#EF4444,color:#fff,stroke:#DC2626
 ```
 
-## Complete Code
+## Complete Code দেখো
 
 <StepReveal steps={[
-  { emoji: "1️⃣", title: "Norm → Attn → +", body: "Context mixing with skip" },
-  { emoji: "2️⃣", title: "Norm → FFN → +", body: "Per-token transform with skip" },
-  { emoji: "3️⃣", title: "Stack N blocks", body: "Mini GPT: 4 blocks" },
+  { emoji: "1️⃣", title: "Norm → Attn → +", body: "Skip সহ context মিক্স" },
+  { emoji: "2️⃣", title: "Norm → FFN → +", body: "Skip সহ per-token transform" },
+  { emoji: "3️⃣", title: "Nটা block stack", body: "Mini GPT: 4 blocks" },
   { emoji: "4️⃣", title: "Final head", body: "LayerNorm → logits → Softmax" }
 ]} />
 
-## Mini GPT Stack
+## Mini GPT-এর Stack
 
 ```
 Token IDs
@@ -57,7 +57,7 @@ Token IDs
 
 এই stack-ই Module 9-এ end-to-end train করবে — fruit corpus দিয়ে, ছোট scale-এ।
 
-## Parameter Overview
+## Parameter Overview দেখো
 
 | Component | Params (approx) |
 |-----------|-----------------|
@@ -65,14 +65,14 @@ Token IDs
 | Each block | 4 × D² (attn + FFN) |
 | 4 blocks | ~16 × D² |
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/block" title="Full Transformer Block" />
 
 ## তুমি কী শিখলে?
 
-- Full block = Pre-LN Attn + Residual + Pre-LN FFN + Residual
-- Stack N blocks = GPT body
-- Module 8 complete — next: **Mini GPT** end-to-end!
+- Full block = **Pre-LN Attention + Residual** তারপর **Pre-LN FFN + Residual**
+- Nটা block stack করলেই GPT-এর body তৈরি হয়
+- Module 8 শেষ — পরের ধাপ: end-to-end **Mini GPT**!
 
 **পরের Module:** [Module 9 — Mini GPT](/docs/part-09-mini-gpt)

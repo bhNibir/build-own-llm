@@ -9,7 +9,7 @@ description: Training data থেকে count table বানানো
 
 Bigram-এর idea পরিষ্কার — একটা word দেখে পরেরটা। এখন প্রশ্ন হলো: সেই “শেখা” আসলে কী? Bigram model-এর training খুব simple: **গুনে রাখো** কোন word-এর পরে কোন word কতবার এসেছে। কোনো gradient নেই, কোনো loss নেই — শুধু count।
 
-## Training Process
+## Training কীভাবে হয়
 
 প্রতিটা sentence থেকে pair তুলে count বাড়াও:
 
@@ -23,7 +23,7 @@ flowchart TD
     classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
 ```
 
-## Step by Step
+## ধাপে ধাপে
 
 **Sentence 1:** `i like apple`
 
@@ -48,7 +48,7 @@ like → mango: count = 1
 
 দেখো — একই pair বারবার এলে count বাড়ে। এটাই model-এর “memory”।
 
-## Final Count Table
+## Final Count Table দেখো
 
 কয়েকটা sentence পরে table এরকম দেখায়:
 
@@ -64,11 +64,11 @@ is      → { fruit: 3, healthy: 1 }
 
 `like`-এর পরে তিনটা option — তাই পরে probability ভাগ হবে। `i`-এর পরে শুধু `like` — তাই সেখানে নিশ্চিত।
 
-## Data Structure
+## Data Structure কেমন
 
 `Map<currentWord, Map<nextWord, count>>` — `code/part-02/bigram.ts` ও নিচের playground-এ same idea। Nested map মানে: আগে current word খুঁজো, তারপর তার ভেতরের next-word count।
 
-## Probability Formula
+## Probability-র Formula
 
 Count একা যথেষ্ট নয় — predict করতে **probability** লাগে। Count বেশি হলে chance বেশি, কিন্তু একই current word-এর সব next option যোগ করে 1 করতে হয় (normalize):
 
@@ -91,7 +91,7 @@ Count একা যথেষ্ট নয় — predict করতে **probabil
   <CodeLink>Playground-এ count table run করো ↓</CodeLink>
 </MathLesson>
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-02/count-model" title="Count Model Training" />
 

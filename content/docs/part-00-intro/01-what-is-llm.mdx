@@ -24,7 +24,7 @@ flowchart LR
     classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
-## Next-token prediction
+## Next-token Prediction কী
 
 ধরো তুমি লিখলে: `"i like"`
 
@@ -32,7 +32,7 @@ Model vocabulary-র সব সম্ভাব্য পরের word দেখ
 
 এই একটা ধারণা মাথায় রাখো — পুরো course জুড়ে আমরা এই prediction-কেই ধীরে ধীরে smarter করব।
 
-## Autoregressive generation
+## Autoregressive Generation কীভাবে চলে
 
 একটা token predict হলেই কাজ শেষ নয়। সেটা context-এ যোগ হয়, আবার predict — এভাবে loop চলে। এই পদ্ধতিকে বলে **autoregressive** generation।
 

@@ -26,7 +26,7 @@ flowchart LR
     classDef output fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
-## Formula
+## Formula দেখো
 
 $$\text{LayerNorm}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$
 
@@ -46,7 +46,7 @@ Normalize করার পরও model চাইলে `γ`, `β` দিয়�
   <div>৬. γ = 1, β = 0 হলে output একই — learned γ, β পরে rescale/shift করে</div>
 </MathPractical>
 
-## Why Per-Token?
+## Per-Token কেন?
 
 BatchNorm batch dimension-এ normalize করে — language model-এ sequence length variable, তাই **per-token LayerNorm** better fit। প্রতিটা token নিজের vector-এর ভিতরেই normalize হয়।
 
@@ -57,7 +57,7 @@ BatchNorm batch dimension-এ normalize করে — language model-এ sequenc
   { emoji: "⚖️", title: "γ, β", body: "Learned rescale + shift" }
 ]} />
 
-## In Transformer Block
+## Transformer Block-এ
 
 ```
 x → LayerNorm → Attention → + x (residual)
@@ -66,7 +66,7 @@ x → LayerNorm → Attention → + x (residual)
 
 Norm **before** each sub-layer (Pre-LN) — modern GPT standard। Residual পরে আসবে; এখন শুধু মনে রাখো: Attention/FFN-এর আগে LayerNorm।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/layer-norm" title="LayerNorm" />
 

@@ -27,22 +27,22 @@ flowchart TD
     classDef output fill:#6366F1,color:#fff,stroke:#4338CA
 ```
 
-## Formula
+## Formula দেখো
 
 $$\text{output} = x + \text{Sublayer}(x)$$
 
 Sublayer = Attention or FFN (with LayerNorm before it in Pre-LN)। আগের দুই lesson-এর piece এখানেই জোড়া লাগে।
 
-## Why It Works
+## কেন কাজ করে
 
 <StepReveal steps={[
-  { emoji: "🛤️", title: "Gradient highway", body: "Gradient flows directly through + path" },
-  { emoji: "📐", title: "Learn delta", body: "Sublayer learns change, not full transform" },
+  { emoji: "🛤️", title: "Gradient highway", body: "Gradient সরাসরি + path দিয়ে যায়" },
+  { emoji: "📐", title: "Delta শেখে", body: "Sublayer পুরো transform নয় — পরিবর্তন শেখে" },
   { emoji: "🏗️", title: "Stack deep", body: "12+ layers trainable (GPT-2)" },
   { emoji: "🔄", title: "Identity default", body: "Untrained sublayer ≈ pass-through" }
 ]} />
 
-## In Transformer Block
+## Transformer Block-এ
 
 ```
 x ──────────────────────────────┐
@@ -58,7 +58,7 @@ x ──────────────────────────
 
 দুটো Residual connection per block — একটা Attention-এ, একটা FFN-এ। Module index-এর diagram-এর `+ Residual` boxes এগুলোই।
 
-## Without vs With Residual
+## Residual ছাড়া vs সহ
 
 | Without | With Residual |
 |---------|---------------|
@@ -66,14 +66,14 @@ x ──────────────────────────
 | Gradient vanishes | Gradient flows |
 | Hard to train | Stable training |
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/residual" title="Residual Connections" />
 
 ## তুমি কী শিখলে?
 
-- Residual = `output = x + sublayer(x)`
-- Deep network (অনেক stacked block) সম্ভব করে
-- Transformer Block-এ দুটো Residual থাকে
+- **Residual** = `output = x + sublayer(x)` — shortcut connection
+- অনেক stacked block-এর deep network সম্ভব করে (gradient পথ খোলা রাখে)
+- Transformer Block-এ সাধারণত **দুটো** Residual থাকে
 
 **পরের lesson:** [Full Transformer Block](/docs/part-08-transformer/05-block)

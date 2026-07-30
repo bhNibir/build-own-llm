@@ -26,7 +26,7 @@ flowchart LR
     classDef score fill:#6366F1,color:#fff,stroke:#4338CA
 ```
 
-## Search Engine Analogy
+## Search Engine-এর Analogy
 
 | Search Engine | Attention |
 |--------------|-----------|
@@ -38,20 +38,20 @@ flowchart LR
 
 Module 3-এর Dot Product মনে আছে? দুটো vector কতটা aligned — সেটাই এখানে relevance score। Query আর Key মিললে score বেশি → সেই token-এর Value বেশি weight পায়।
 
-## From Embedding to Q/K/V
+## Embedding থেকে Q/K/V
 
 প্রতিটা token-এর Embedding থেকে তিনটা vector বের করি — তিনটা **learned weight matrix** দিয়ে:
 
 <StepReveal steps={[
   { emoji: "📊", title: "Input x", body: "Token Embedding" },
-  { emoji: "🔍", title: "Q = x @ Wq", body: "What am I looking for?" },
-  { emoji: "🔑", title: "K = x @ Wk", body: "What do I contain?" },
-  { emoji: "📦", title: "V = x @ Wv", body: "My actual info to share" }
+  { emoji: "🔍", title: "Q = x @ Wq", body: "আমি কী খুঁজছি?" },
+  { emoji: "🔑", title: "K = x @ Wk", body: "আমার কাছে কী আছে match করার?" },
+  { emoji: "📦", title: "V = x @ Wv", body: "শেয়ার করার actual info" }
 ]} />
 
 Module 6-এর Weight Matrix-এর মতোই — শুধু এখন একটার বদলে তিনটা projection: `Wq`, `Wk`, `Wv`।
 
-## Example: "i like apple"
+## উদাহরণ: "i like apple"
 
 ```
 Token "like":
@@ -64,15 +64,15 @@ Token "like":
 
 `"like"`-এর Query `"i"`-র Key-এর সাথে high score → `"i"`-র Value বেশি weight পায়। মানে `"like"` বুঝতে পারে তার subject `"i"`।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-07/qkv" title="Query, Key, Value Projection" />
 
 ## তুমি কী শিখলে?
 
-- **Q** = what I'm looking for
-- **K** = what I offer for matching
-- **V** = information I contribute
-- Three learned projections from Embedding
+- **Q (Query)** = আমি কী খুঁজছি
+- **K (Key)** = match করার জন্য আমি কী offer করি
+- **V (Value)** = আমি কী information দিই
+- Embedding থেকে তিনটা **learned projection** দিয়ে Q, K, V বানানো হয়
 
 **পরের lesson:** [Scaled Dot-Product](/docs/part-07-attention/03-scaled-dot-product)

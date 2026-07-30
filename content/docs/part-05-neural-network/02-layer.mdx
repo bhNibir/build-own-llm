@@ -13,7 +13,7 @@ description: Parallel Neuron — vector input থেকে vector output
 
 একটা Neuron একটা সংখ্যা দেয়। কিন্তু আমরা চাই একসাথে অনেক feature — তাই অনেক Neuron একসাথে চালাই। সেই গুচ্ছই **Layer**, আর ভিতরে চলে Module 3-এর matmul।
 
-## Single Neuron vs Layer
+## Single Neuron vs Layer — তফাত
 
 | | Neuron | Layer |
 |---|--------|-------|
@@ -36,7 +36,7 @@ flowchart LR
 
 দেখো — আলাদা আলাদা Neuron loop না চালিয়ে একটা matmul-এই সব শেষ।
 
-## Matrix Form
+## Matrix Form-এ লেখো
 
 Shape দিয়ে লিখলে পরিষ্কার:
 
@@ -51,13 +51,13 @@ a = activation(z)
 Module 3-এর **matmul** directly use হয়! তাই আগে shape rule শিখিয়েছিলাম।
 
 <StepReveal steps={[
-  { emoji: "📥", title: "Input vector x", body: "n features" },
-  { emoji: "✖️", title: "x @ W + b", body: "m neurons compute in parallel" },
+  { emoji: "📥", title: "Input vector x", body: "nটা feature" },
+  { emoji: "✖️", title: "x @ W + b", body: "mটা neuron parallel হিসাব করে" },
   { emoji: "⚡", title: "Activation", body: "Element-wise ReLU/sigmoid" },
-  { emoji: "📤", title: "Output vector", body: "m activations" }
+  { emoji: "📤", title: "Output vector", body: "mটা activation" }
 ]} />
 
-## Example: 3 → 2 Layer
+## উদাহরণ: 3 → 2 Layer
 
 ৩টা input, ২টা Neuron — হিসাব করে দেখি:
 
@@ -84,11 +84,11 @@ a = ReLU(z) = [2.3, 3.0]
 
 প্রতিটা column = একটা Neuron-এর weight। দুই column = দুই Neuron parallel।
 
-## Layer Class
+## Layer Class লেখো
 
 Parallel Neuron + matmul — নীচের Playground-এ layer forward চালিয়ে output shape দেখো। `parameters()` দিয়ে সব weight পাবে training-এর জন্য।
 
-## Parameter Count
+## Parameter Count কত
 
 Layer with `n` inputs, `m` outputs:
 
@@ -106,11 +106,11 @@ total:   n×m + m = m(n + 1)
 
 ## তুমি কী শিখলে?
 
-- **Layer** = parallel Neuron as matrix operation
+- **Layer** = অনেক Neuron parallel — matrix operation হিসেবে
 - Forward: `output = activation(x @ W + b)`
-- Weight matrix shape: `(n_in × n_out)`
-- Uses matmul from Module 3
-- `parameters()` returns all weights for training
+- Weight matrix-এর shape: `(n_in × n_out)`
+- Module 3-এর matmul এখানেই কাজে লাগে
+- `parameters()` সব weight ফেরত দেয় — training-এর জন্য
 
 **আগের lesson:** [Neuron](/docs/part-05-neural-network/01-neuron)
 

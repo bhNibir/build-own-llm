@@ -30,7 +30,7 @@ flowchart TD
 
 Training pairs Module 1-এর মতোই: `(like, apple)`, `(like, banana)`… Forward-এ current token দিয়ে Softmax probs, Loss-এ true next token মাপা, তারপর gradient দিয়ে `E` আর `W` আপডেট।
 
-## Loop Structure
+## Loop Structure কেমন
 
 <StepReveal steps={[
   { emoji: "1️⃣", title: "Forward", body: "Input token → logits → Loss" },
@@ -39,7 +39,7 @@ Training pairs Module 1-এর মতোই: `(like, apple)`, `(like, banana)`�
   { emoji: "4️⃣", title: "Repeat", body: "~200 epochs until Loss drops" }
 ]} />
 
-## Loss Curve
+## Loss Curve পড়ো
 
 Training চলাকালীন Loss কমতে থাকে — এটাই দেখে বোঝা যায় model শিখছে:
 
@@ -49,7 +49,7 @@ Training চলাকালীন Loss কমতে থাকে — এটা�
 Loss 0 হবে না — আর হওয়া উচিতও নয় (overfitting warning)। Real model-এ validation Loss monitor করো।
 </Callout>
 
-## Hyperparameters
+## Hyperparameterগুলো
 
 | Param | Demo value | Meaning |
 |-------|------------|---------|
@@ -65,8 +65,8 @@ Toy dataset-এ `lr = 3` ঠিক আছে; বড় model-এ learning rate 
 
 ## তুমি কী শিখলে?
 
-- Training = repeat forward → Loss → backward → update
-- Loss curve should **decrease** over epochs
-- Same fruit words as Bigram — এখন learned weights
+- Training = বারবার forward → Loss → backward → update
+- Loss curve epoch ধরে **কমতে** থাকবে — তাই শিখছে
+- Bigram-এরই fruit words — এখন count নয়, learned weights
 
 **পরের lesson:** [Generate](/docs/part-06-neural-lm/05-generate)

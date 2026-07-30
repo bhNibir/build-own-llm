@@ -9,7 +9,7 @@ description: একটার পর একটা word predict করে sentence
 
 একটা word predict করতে শিখেছি। এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা। ধারণাটা Module 0-এর autoregressive loop-ই: একটা seed দিয়ে শুরু, predict, context-এ যোগ, আবার predict।
 
-## Idea: Autoregressive Generation
+## Idea: Autoregressive Generation কী
 
 একটা word দিয়ে শুরু করো, তারপর বারবার predict করো:
 
@@ -28,7 +28,7 @@ flowchart LR
 
 Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ আটকে যায়। কেন, সেটা নিচে ধাপে ধাপে দেখো।
 
-## Step by Step
+## ধাপে ধাপে
 
 Sentence বাড়ে, কিন্তু **bigram শুধু শেষ word** দেখে predict করে:
 
@@ -54,7 +54,7 @@ Loop-এর চারটা ধাপ মনে রাখো:
 
 Playground-এ seed বদলে দেখো আউটপুট কীভাবে বদলায় — argmax হলে একই seed-এ সবসময় same string।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-02/generate" title="Sentence Generate" />
 

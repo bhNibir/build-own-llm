@@ -13,7 +13,7 @@ description: Multi-Layer Perceptron — Layer stack করে complex function �
 
 একটা Layer একটা transform দেয়। কিন্তু জটিল pattern শিখতে হলে transform-এর পর transform লাগে — সেটাই **MLP**। Layer-গুলোকে সারি দিয়ে সাজালেই তৈরি।
 
-## Architecture
+## Architecture দেখো
 
 ```
 Input → [Hidden Layer 1] → [Hidden Layer 2] → Output
@@ -32,20 +32,20 @@ flowchart LR
 
 প্রতিটা Layer আগেরটার output নেয়, নতুন representation বানায়, পরেরটাকে দেয়।
 
-## Why Multiple Layers?
+## Multiple Layers কেন?
 
 Single Layer = শুধু linear boundary (perceptron limitation)। একটা সরল রেখা দিয়ে সব কিছু আলাদা করা যায় না।
 
 Two+ layers with activation = **non-linear decision boundaries** — XOR, spiral, জটিল pattern — এগুলো solve করা যায়। Activation ছাড়া অবশ্য গভীর নেটওয়ার্কও আবার linear হয়ে যায়; তাই ReLU/Sigmoid দরকার।
 
 <StepReveal steps={[
-  { emoji: "📥", title: "Input layer", body: "Raw features (e.g. 2D point)" },
-  { emoji: "🧠", title: "Hidden layers", body: "Learn intermediate representations" },
+  { emoji: "📥", title: "Input layer", body: "Raw feature (যেমন 2D point)" },
+  { emoji: "🧠", title: "Hidden layers", body: "মধ্যবর্তী representation শেখে" },
   { emoji: "📤", title: "Output layer", body: "Final prediction (class logits)" },
-  { emoji: "🔄", title: "Forward chain", body: "Each layer feeds the next" }
+  { emoji: "🔄", title: "Forward chain", body: "প্রতিটা layer পরেরটাকে feed করে" }
 ]} />
 
-## Example: 2 → 3 → 1 MLP (demo)
+## উদাহরণ: 2 → 3 → 1 MLP (demo)
 
 Layer stack — নীচের Playground-এ `[nIn, h1, nOut]` architecture দিয়ে MLP forward দেখো।
 
@@ -73,11 +73,11 @@ flowchart TD
     classDef out fill:#10B981,color:#fff,stroke:#047857
 ```
 
-## Training an MLP
+## MLP Train করা
 
 Forward → loss → Backprop → weight update — পুরো loop নীচের Playground ও পরের XOR lesson-এ দেখবে। Module 4-এর Autograd এখানেই কাজে লাগে: প্রতিটা weight `Value`, তাই `.backward()` এক কলেই সব grad পাও।
 
-## MLP vs GPT
+## MLP vs GPT — তুলনা
 
 MLP আর GPT এক নয় — কিন্তু মূল idea মিলে যায়:
 
@@ -96,10 +96,10 @@ MLP আর GPT এক নয় — কিন্তু মূল idea মিল�
 
 ## তুমি কী শিখলে?
 
-- **MLP** = stack of Layer objects
-- Hidden layers learn non-linear features
+- **MLP** = কয়েকটা Layer একটার পর একটা stack করা
+- Hidden layer non-linear feature শেখে
 - Demo architecture: `2 → 3 → 1` forward pass
-- Next lesson: train `2 → 4 → 1` on XOR
+- পরের lesson: XOR-এ `2 → 4 → 1` train করব
 
 **আগের lesson:** [Layer](/docs/part-05-neural-network/02-layer)
 

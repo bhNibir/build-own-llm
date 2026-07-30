@@ -13,7 +13,7 @@ description: 2-layer network দিয়ে XOR solve — non-linearity-র প
 
 সবকিছু জোড়া লেগেছে: Neuron, Layer, MLP, Autograd। এখন একটা সত্যিকারের সমস্যায় apply করি — **XOR**। এটা ছোট, কিন্তু ইতিহাসে বড় জায়গা দখল করে আছে।
 
-## XOR Truth Table
+## XOR-এর Truth Table
 
 | x₁ | x₂ | XOR |
 |----|----|----|
@@ -35,7 +35,7 @@ flowchart TD
     classDef impossible fill:#F59E0B,color:#fff,stroke:#D97706
 ```
 
-## Why Single Layer Fails
+## Single Layer কেন Fail করে
 
 Single Neuron output:
 
@@ -47,7 +47,7 @@ y = activation(w₁x₁ + w₂x₂ + b)
 
 ১৯৬৯-এ Minsky & Papert এটা proof করেছিল — এটাই “AI winter”-এর একটা কারণ। Hidden layer দিয়ে সমাধান এল **১৯৮৬-এর Backprop revival**-এ। আমরা এখন সেই সমাধানটাই scratch থেকে চালাব।
 
-## Our Solution: MLP [2, 4, 1]
+## সমাধান: MLP [2, 4, 1]
 
 ```
 Input (2) → Hidden (4, ReLU) → Output (1, Sigmoid)
@@ -62,7 +62,7 @@ Input (2) → Hidden (4, ReLU) → Output (1, Sigmoid)
   { emoji: "🔄", title: "~100 epochs GD", body: "Loss → 0, predictions correct" }
 ]} />
 
-## Loss Function
+## Loss Function কী
 
 Prediction আর target-এর দূরত্ব মাপতে **MSE** ব্যবহার করব — ছোট dataset-এ সহজ আর পরিষ্কার।
 
@@ -86,7 +86,7 @@ Prediction আর target-এর দূরত্ব মাপতে **MSE** ব�
   <CodeLink>Playground-এ XOR training run করো ↓</CodeLink>
 </MathLesson>
 
-## Decision Boundary
+## Decision Boundary দেখো
 
 Training শেষে hidden layer non-linear boundary তৈরি করে। সহজ করে বললে: hidden layer জ্যামিতি বদলে দেয়, যাতে output layer একটা সরল কাট দিয়েই কাজ সারতে পারে।
 
@@ -101,18 +101,18 @@ flowchart LR
 
 Hidden layer input space-কে **transform** করে যেখানে output layer linearly separate করতে পারে। এটাই deep learning-এর মূল কৌশল — representation শেখা।
 
-## Training Code Sketch
+## Training Code-এর Sketch
 
 Epoch loop-এ loss কমে — নীচের Playground-এ XOR train করে curve দেখো। Forward → MSE → Backprop → Gradient Descent; Module 4-এর পুরো engine এখানেই কাজে লাগে।
 
-## Loss During Training
+## Training-এ Loss
 
 <LossChart
   data={[0.65, 0.45, 0.22, 0.08, 0.02, 0.001]}
   title="XOR Training Loss"
 />
 
-## Module 5 Complete!
+## Module 5 শেষ!
 
 ```mermaid
 flowchart TD

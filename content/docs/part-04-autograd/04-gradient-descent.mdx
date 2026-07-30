@@ -13,7 +13,7 @@ description: Gradient দিয়ে weight update — model train করার
 
 এখন আমাদের কাছে gradient আছে। কিন্তু gradient একা কিছু করে না — দিয়ে weight আপডেট করতে হয়। সেই আপডেটের নিয়মই Gradient Descent।
 
-## The Update Rule
+## Update Rule কেমন
 
 Idea একদম সরল: loss বাড়ার দিকের উল্টো দিকে হাঁটো।
 
@@ -39,7 +39,7 @@ Idea একদম সরল: loss বাড়ার দিকের উল্�
   <CodeLink>Playground-এ training loop run করো ↓</CodeLink>
 </MathLesson>
 
-## Training Loop
+## Training Loop কীভাবে চলে
 
 পুরো training একেকটা loop:
 
@@ -59,12 +59,12 @@ flowchart TD
   { emoji: "➡️", title: "Forward", body: "Input দিয়ে prediction + loss compute" },
   { emoji: "⬅️", title: "Backward", body: "loss.backward() — সব param-এ grad" },
   { emoji: "🔧", title: "Update", body: "w -= lr × grad" },
-  { emoji: "🔄", title: "Repeat", body: "Loss gradually decreases" }
+  { emoji: "🔄", title: "Repeat", body: "Loss ধীরে ধীরে কমে" }
 ]} />
 
 প্রতি epoch-এ একই চার ধাপ — GPT train করতেও ভিতরে এই loopই চলে, শুধু অনেক বড় স্কেলে।
 
-## Learning Rate
+## Learning Rate কী করে
 
 Learning rate (`α`) খুবই sensitive। একটু বেশি বা কম হলেই সমস্যা:
 
@@ -77,7 +77,7 @@ Typical values: `0.001` – `0.1` (problem-dependent)। শুরুতে ছ�
 
 আর একটা ভুল ভুলো না: update-এর পর `grad = 0` reset করতে হয় — নাহলে পরের step-এ পুরনো gradient জমে যায়।
 
-## Loss Curve
+## Loss Curve পড়ো
 
 Training-এ loss overtime track করি — কমতে থাকলে বোঝা যায় শেখা চলছে:
 
@@ -88,7 +88,7 @@ Training-এ loss overtime track করি — কমতে থাকলে ব�
 
 Module 6–9-এ live loss chart training-এর সাথে update হবে।
 
-## Full Picture
+## পুরো ছবি
 
 এখন পর্যন্ত কী জোড়া লেগেছে, এক নজরে:
 
@@ -101,17 +101,17 @@ Neural Net (Module 5) → architecture to train
 
 পরের Module-এ এই engine দিয়ে সত্যিকারের Neuron → Layer → MLP বানাবো।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-04/gradient-descent" title="Gradient Descent Training" />
 
 ## তুমি কী শিখলে?
 
 - **Gradient Descent**: `w ← w - α × ∂L/∂w`
-- Training loop = forward → backward → update → repeat
-- **Learning rate** controls step size — critical hyperparameter
-- Reset `grad = 0` after each update
-- This is how every neural network (including GPT) learns
+- Training loop = forward → backward → update → আবার repeat
+- **Learning rate (α)** step size control করে — critical hyperparameter
+- প্রতিটা update-এর পর `grad = 0` reset করতে হয়
+- GPT সহ প্রতিটা neural network এভাবেই শেখে
 
 **আগের lesson:** [Backpropagation](/docs/part-04-autograd/03-backprop)
 

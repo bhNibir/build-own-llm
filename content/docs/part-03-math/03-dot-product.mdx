@@ -13,7 +13,7 @@ description: দুটো vector-এর similarity — Attention-এর building
 
 Matrix দেখেছি, vector দেখেছি। এখন প্রশ্ন: দুটো vector কতটা “একই রকম”? LLM-এ এই প্রশ্নটা Attention-এর কেন্দ্রে। উত্তর দেয় **dot product**।
 
-## Formula
+## Formula দেখো
 
 দুটো same-length vector `a` ও `b` নাও। Corresponding element গুণ করে সব যোগ করলেই একটা scalar পাও — সেটাই similarity score।
 
@@ -38,7 +38,7 @@ Matrix দেখেছি, vector দেখেছি। এখন প্রশ�
   <CodeLink>Playground-এ different vectors try করো ↓</CodeLink>
 </MathLesson>
 
-## Geometric Intuition
+## Geometric Intuition — ছবি দিয়ে
 
 শুধু সংখ্যা নয় — জ্যামিতি দিয়েও বোঝা যায়। দুটো vector-এর কোণ ছোট হলে dot product বড় হয়।
 
@@ -64,7 +64,7 @@ a · b = ‖a‖ × ‖b‖ × cos(θ)
 
 মানে কোণ ০ হলে সবচেয়ে “মিল”, ৯০ হলে কোনো সম্পর্ক নেই, ১৮০ হলে উল্টো।
 
-## Similarity Example
+## Similarity উদাহরণ
 
 Embedding space-এ একই অর্থের word-গুলো কাছাকাছি থাকে — তাই তাদের dot productও বেশি হয়:
 
@@ -85,7 +85,7 @@ apple · car   = 0.34  ← low (different meaning)
   { emoji: "🔗", title: "Attention link", body: "Q · K^T = attention scores" }
 ]} />
 
-## Attention Connection
+## Attention-এর সাথে Connection
 
 Self-attention-এ এই একই হিসাব চলে:
 
@@ -103,8 +103,8 @@ Query token `i` Key token `j`-কে কত “relevant” মনে করে �
 
 - **Dot product** = element-wise multiply + sum → একটা scalar
 - High dot product মানে vectors similar / aligned
-- Attention score = Query · Key dot product
-- Same dimension লাগে — না হলে error
+- Attention score = Query · Key-এর dot product
+- একই dimension লাগে — না হলে error
 
 **আগের lesson:** [Matrices](/docs/part-03-math/02-matrix)
 

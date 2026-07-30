@@ -30,7 +30,7 @@ flowchart TD
     classDef data fill:#8B5CF6,color:#fff,stroke:#7C3AED
 ```
 
-## File Map
+## File Map — কোন ফাইল কী করে
 
 কোন file কোন Module-এর সাথে মিলে যায়:
 
@@ -43,7 +43,7 @@ flowchart TD
 | `train.py` | Training loop | 9.2 |
 | `sample.py` | Generation | 9.3 |
 
-## Reading Order
+## পড়ার Order
 
 এই ক্রমে পড়লে হারিয়ে যাবে না:
 
@@ -55,7 +55,7 @@ flowchart TD
   { emoji: "5️⃣", title: "train.py", body: "AdamW, cosine LR, gradient accumulation" }
 ]} />
 
-## Key Differences from Our Mini GPT
+## আমাদের Mini GPT থেকে পার্থক্য
 
 | Feature | Our Mini GPT | nanoGPT |
 |---------|-------------|---------|
@@ -65,7 +65,7 @@ flowchart TD
 | Data | Fruit (~30 words) | Shakespeare / OpenWebText |
 | Params | ~270K | 10M–124M+ |
 
-## CausalSelfAttention — Side by Side
+## CausalSelfAttention — পাশাপাশি
 
 **Our code (Module 7):**
 <CodeRun title="Self-attention (our TS)" height={320} editable={false}>{`// Causal self-attention — same formula as nanoGPT, fully runnable
@@ -110,7 +110,7 @@ y = att @ v
 
 Same formula — শুধু syntax আলাদা। TypeScript vs PyTorch; গণিত একই।
 
-## Exercise Checklist
+## Exercise Checklist দেখো
 
 - [ ] Clone nanoGPT: `git clone https://github.com/karpathy/nanoGPT`
 - [ ] Read `model.py` top to bottom — mark sections you recognize
@@ -122,7 +122,7 @@ Same formula — শুধু syntax আলাদা। TypeScript vs PyTorch; �
 ⚠️ nanoGPT training-এর জন্য GPU চাই — CPU-তে character-level Shakespeare চলে, কিন্তু slow। প্রথমে code পড়ে map করাই মূল কাজ।
 </Callout>
 
-## Further Reading
+## আরও পড়ো
 
 | Resource | Why |
 |----------|-----|

@@ -28,7 +28,7 @@ flowchart LR
     classDef output fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
-## Architecture
+## Architecture দেখো
 
 $$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
 
@@ -46,7 +46,7 @@ Module 5-এর MLP মনে আছে? এখানেও দুই layer — 
   <div>৫. প্রতিটা token-এ একই FFN; Attention mix করে, FFN individually transform করে</div>
 </MathPractical>
 
-## Why 4× Expansion?
+## 4× Expansion কেন?
 
 Wider hidden layer = more capacity to transform each token's representation after Attention mixing। ছোট space-এ সব pattern ধরা যায় না — তাই আগে চওড়া করে, তারপর আবার চাপায়।
 
@@ -54,28 +54,28 @@ Wider hidden layer = more capacity to transform each token's representation afte
   { emoji: "📈", title: "Expand", body: "D → 4D linear projection" },
   { emoji: "⚡", title: "GELU", body: "Non-linear activation" },
   { emoji: "📉", title: "Project", body: "4D → D back to model dim" },
-  { emoji: "🔄", title: "Per token", body: "Same FFN, all tokens parallel" }
+  { emoji: "🔄", title: "Per token", body: "একই FFN, সব token parallel" }
 ]} />
 
-## Attention vs FFN Roles
+## Attention vs FFN — ভূমিকা
 
 | Component | Role |
 |-----------|------|
 | Attention | **Mix** information between tokens |
 | FFN | **Transform** each token's representation |
 
-## Parameter Count
+## Parameter Count কত
 
 FFN often has **most parameters** in a Transformer Block — 2 matrices of size D×4D and 4D×D। Attention fancy, কিন্তু params-এর বড় অংশ এখানে।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/ffn" title="Feed-Forward Network" />
 
 ## তুমি কী শিখলে?
 
-- FFN = position-wise 2-layer MLP
-- 4× expand → GELU → আবার project back
-- Attention-কে complement করে (mix vs transform)
+- **FFN** = প্রতিটা position-এ আলাদা 2-layer MLP
+- সাধারণত **4× expand → GELU → আবার project back**
+- Attention token মিক্স করে; FFN প্রতিটা token-কে transform করে — দুটো complement
 
 **পরের lesson:** [Residual Connections](/docs/part-08-transformer/04-residual)

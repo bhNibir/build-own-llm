@@ -24,7 +24,7 @@ flowchart LR
     classDef sample fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
-## Formula
+## Formula দেখো
 
 $$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
 
@@ -42,7 +42,7 @@ $$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
   <div>৫. Softmax (T=2): ≈ <code>[0.51, 0.31, 0.19]</code> — flatter, বেশি random / creative</div>
 </MathPractical>
 
-## Example
+## উদাহরণ
 
 উপরের গণনার same logits: `[2, 1, 0]` for tokens `[apple, banana, mango]`
 
@@ -55,19 +55,19 @@ $$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
 <GenerateControls defaultTemperature={1} defaultTopK={5} />
 
 <StepReveal steps={[
-  { emoji: "📊", title: "Raw logits", body: "Model output scores" },
-  { emoji: "🌡️", title: "Divide by T", body: "Scale before softmax" },
-  { emoji: "📈", title: "Softmax", body: "T low → peaked, T high → flat" },
-  { emoji: "🎲", title: "Sample", body: "Pick from adjusted distribution" }
+  { emoji: "📊", title: "Raw logits", body: "Model-এর raw output score" },
+  { emoji: "🌡️", title: "÷ T", body: "Softmax-এর আগে scale" },
+  { emoji: "📈", title: "Softmax", body: "T কম → peaked; T বেশি → flat" },
+  { emoji: "🎲", title: "Sample", body: "Adjusted distribution থেকে pick" }
 ]} />
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-09/temperature" title="Temperature Sampling" />
 
 ## তুমি কী শিখলে?
 
-- Temperature Softmax-এর আগে logits scale করে
+- **Temperature** Softmax-এর আগে logits scale করে
 - Low T = greedy / deterministic; high T = random / creative
 - T = 1 মানে model-এর natural distribution — কোনো extra twist নেই
 

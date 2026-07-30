@@ -20,7 +20,7 @@ flowchart LR
     classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
-## Encoding
+## Encoding — text থেকে number
 
 Sentence → Number list। প্রতিটা word-কে তার vocabulary ID-তে map করা:
 
@@ -31,7 +31,7 @@ Sentence → Number list। প্রতিটা word-কে তার vocabula
 
 দেখো — `"i"` হয়ে গেল `7`, `"like"` হয়ে গেল `9`, `"apple"` হয়ে গেল `0`। Model এখন থেকে এই সংখ্যাগুলোই দেখবে।
 
-## Decoding
+## Decoding — number থেকে text
 
 Number list → Sentence (উল্টো পথ):
 
@@ -50,7 +50,7 @@ Generate করার পর মানুষকে দেখাতে আবা�
 
 এটাই Tokenizer + Vocabulary + Encoding-এর মূল উদ্দেশ্য: text-কে model-এর ভাষায় আনা। এখান থেকেই পরের ধাপ — এই number sequence থেকে training pair কাটা।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-01/encoding" title="Encoding / Decoding Demo" />
 
