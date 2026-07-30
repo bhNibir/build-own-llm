@@ -1,16 +1,16 @@
 ---
 title: GPT Architecture
-description: N transformer blocks stacked — full Mini GPT stack
+description: Nটা Transformer Block stack করে — পুরো Mini GPT stack
 ---
 
-# 🏛️ GPT Architecture
+# GPT Architecture
 
 <ConceptAnim slug="part-09-mini-gpt/01-gpt-architecture" />
 
-সব building block এক জায়গায় — **GPT architecture**। Token in → transformer blocks → next token out।
+Module 1 থেকে 8 পর্যন্ত যে building blockগুলো আলাদা আলাদা শিখেছ — Tokenizer, Embedding, Attention, Transformer Block — এখন সেগুলো এক জায়গায় বসবে। **GPT architecture** মানেই: token ঢোকে → কয়েকটা block পার হয় → পরের token বের হয়।
 
 <Callout type="idea">
-💡 GPT = **Generative Pre-trained Transformer** — decoder-only, causal self-attention, autoregressive generation।
+💡 GPT = **Generative Pre-trained Transformer** — decoder-only, causal self-attention, autoregressive generation। নাম লম্বা, কিন্তু ধারণা একটাই: আগের token দেখে পরেরটা predict।
 </Callout>
 
 ```mermaid
@@ -40,6 +40,8 @@ flowchart TD
 
 ## Transformer Block (recap)
 
+Module 8-এ যে block assemble করেছ, সেটাই এখানে N বার stack হবে। একটার ভিতর দেখলে এমন:
+
 ```mermaid
 flowchart TD
     input[Input] --> norm1[LayerNorm]
@@ -55,6 +57,8 @@ flowchart TD
 ```
 
 ## Mini GPT Config
+
+আমাদের ছোট্ট model — fruit corpus-এ চলবে, browser-এ fit হবে:
 
 | Hyperparameter | Value |
 |----------------|-------|
@@ -73,6 +77,8 @@ flowchart TD
 ]} />
 
 ## Components Map
+
+প্রতিটা piece আগে কোন Module-এ এসেছিল — মনে করিয়ে দিই:
 
 | Component | Module | Role |
 |-----------|--------|------|
@@ -93,13 +99,13 @@ flowchart TD
 | Runtime | Browser (esbuild-wasm) | GPU |
 
 <Callout type="tip">
-✅ Architecture **identical** — শুধু language এবং scale different। Module 10-এ nanoGPT line-by-line পড়ব।
+✅ Architecture **একই** — শুধু language আর scale আলাদা। Module 10-এ nanoGPT line-by-line পড়ব; তখন দেখবে formula-ও মিলে যায়।
 </Callout>
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- GPT = embed + N blocks + LM head
-- Decoder-only, causal attention
-- Our Mini GPT = same architecture, smaller scale
+- GPT = embed + Nটা block + LM head
+- Decoder-only, causal attention — শুধু past দেখে
+- আমাদের Mini GPT = same architecture, ছোট scale
 
 **পরের lesson:** [Train Mini GPT](/docs/part-09-mini-gpt/02-train)

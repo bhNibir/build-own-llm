@@ -1,13 +1,13 @@
 ---
 title: Train Mini GPT
-description: Fruit dataset-এ ~500-line TypeScript training loop
+description: Fruit dataset-এ ~৫০০-লাইন TypeScript training loop
 ---
 
 # Train Mini GPT
 
 <ConceptAnim slug="part-09-mini-gpt/02-train" />
 
-Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
+Architecture বুঝে গেছ — এখন সেই stack-কে **train** করব fruit dataset-এ। Module 6-এর training loop-এর same pattern: forward pass → cross-entropy loss → backprop → weight update। শুধু এবার model একটু বড় ভাবতে পারো।
 
 <Callout type="warn">
 ⚠️ Browser-এ full transformer training ভারী — এই Playground-এ **simplified word-level trainer** চলে (**esbuild-wasm** runtime)। Architecture lesson-এ যা শিখেছ, সেই loop-এর same pattern: forward → loss → backward → update।
@@ -35,11 +35,13 @@ flowchart TD
 
 ## Training Loop
 
+Loss কমতে থাকলে বুঝবে model শিখছে — নিচের curve-টা typical shape দেখায়:
+
 <LossChart data={[3.2, 2.1, 1.5, 1.0, 0.8, 0.6]} title="Mini GPT Training Loss" />
 
 ## Dataset
 
-Fruit sentences from Module 1:
+Fruit sentences — Module 1 থেকেই চেনা corpus:
 
 ```
 "i like apple"
@@ -50,7 +52,7 @@ Fruit sentences from Module 1:
 ```
 
 <Callout type="tip">
-💡 Full Mini GPT-তে 4টি transformer block + Adam optimizer থাকে। Playground-এ fruit dataset-এ **word-level neural LM** train করব — same training loop, ছোট architecture।
+💡 Full Mini GPT-তে ৪টা transformer block + Adam optimizer থাকে। Playground-এ fruit dataset-এ **word-level neural LM** train করব — same training loop, ছোট architecture। Idea শিখতে এটাই যথেষ্ট।
 </Callout>
 
 <StepReveal steps={[
@@ -72,10 +74,10 @@ Fruit sentences from Module 1:
 
 <Playground id="part-09/train" title="Train Mini GPT" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - Full GPT training loop-এর pattern: forward → loss → backward → update
-- Browser Playground-এ fruit dataset-এ simplified trainer run করা যায়
-- Loss gradually কমতে থাকলে model শিখছে
+- Browser Playground-এ fruit dataset-এ simplified trainer চালানো যায়
+- Loss ধীরে ধীরে কমলে model শিখছে — flat থাকলে কিছু ভুল আছে
 
 **পরের lesson:** [Generate Text](/docs/part-09-mini-gpt/03-generate)

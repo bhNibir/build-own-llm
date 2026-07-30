@@ -1,16 +1,16 @@
 ---
 title: Temperature
-description: Randomness control — temperature scaling logits
+description: Randomness control — Temperature দিয়ে logits scale করা
 ---
 
-# 🌡️ Temperature
+# Temperature
 
 <ConceptAnim slug="part-09-mini-gpt/04-temperature" />
 
-Generation-এ **কতটা random** হবে? **Temperature** parameter logits scale করে — low = deterministic, high = creative (sometimes nonsense)।
+Generate করতে পারছ — কিন্তু output কতটা “নিরাপদ” আর কতটা “creative” হবে? সেটা নিয়ন্ত্রণ করে **Temperature**। Softmax-এর আগে logits-কে T দিয়ে ভাগ করলে distribution বদলে যায়: low T = deterministic, high T = creative (মাঝে মাঝে nonsense-ও)।
 
 <Callout type="idea">
-💡 Temperature = creativity knob। T=0 → always pick highest prob. T=2 → very random।
+💡 Temperature = creativity knob। T → 0 মানে সবসময় highest probability token; T = 2 মানে distribution flat হয়ে random বেড়ে যায়।
 </Callout>
 
 ```mermaid
@@ -65,10 +65,10 @@ $$p_i = \text{softmax}\left(\frac{z_i}{T}\right)$$
 
 <Playground id="part-09/temperature" title="Temperature Sampling" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Temperature scales logits before softmax
-- Low T = greedy/deterministic, high T = random
-- T=1 = model's natural distribution
+- Temperature Softmax-এর আগে logits scale করে
+- Low T = greedy / deterministic; high T = random / creative
+- T = 1 মানে model-এর natural distribution — কোনো extra twist নেই
 
 **পরের lesson:** [Top-k Sampling](/docs/part-09-mini-gpt/05-top-k)

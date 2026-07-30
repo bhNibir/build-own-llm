@@ -3,14 +3,14 @@ title: Top-k Sampling
 description: শুধু top-k highest probability tokens থেকে sample
 ---
 
-# 🎯 Top-k Sampling
+# Top-k Sampling
 
 <ConceptAnim slug="part-09-mini-gpt/05-top-k" />
 
-High temperature-এ model nonsense token pick করতে পারে। **Top-k** restricts sampling to **k highest-probability** tokens only — quality + diversity balance।
+Temperature বাড়ালে creativity আসে — কিন্তু vocabulary-র কোনো low-probability nonsense token-ও pick হয়ে যেতে পারে। **Top-k** সেই সমস্যা ধরে: শুধু **kটা highest-probability** token রাখে, বাকি কেটে ফেলে। Quality আর diversity-র মধ্যে balance পাওয়া যায়।
 
 <Callout type="tip">
-✅ Production LLM-এ temperature + top-k (or top-p) **combined** use হয় — ChatGPT-ও same idea।
+✅ Production LLM-এ Temperature + Top-k (বা Top-p) **একসাথে** ব্যবহার হয় — ChatGPT-ও same idea। একটা randomness দেয়, অন্যটা safety net।
 </Callout>
 
 ```mermaid
@@ -54,7 +54,7 @@ Probs: `apple=0.4, banana=0.25, mango=0.15, grape=0.1, ...`
 | **Top-k** | Fixed count k |
 | Top-p | Cumulative probability p |
 
-Top-k simpler — আমাদের Mini GPT-এ top-k use করি।
+Top-k simpler — আমাদের Mini GPT-এ Top-k ব্যবহার করি। Top-p (nucleus sampling) পরে nanoGPT বা production code পড়তে গেলে দেখবে।
 
 <GenerateControls defaultTemperature={0.8} defaultTopK={3} />
 
@@ -62,10 +62,10 @@ Top-k simpler — আমাদের Mini GPT-এ top-k use করি।
 
 <Playground id="part-09/top-k" title="Top-k Sampling" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Top-k limits sampling to k best tokens
-- Prevents low-probability nonsense tokens
-- Combine with temperature for best results
+- Top-k শুধু kটা best token থেকে sample নেয়
+- Low-probability nonsense token আটকে দেয়
+- Temperature-এর সাথে combine করলে best result — Module 9 শেষ!
 
 **পরের Module:** [Module 10 — Production Bridge](/docs/part-10-bridge)
