@@ -76,7 +76,7 @@ export const LESSON_CONCEPTS: Record<string, ConceptConfig> = {
   },
   'part-02-bigram/03-predict': {
     name: 'bigram-predict',
-    caption: 'Count → normalize → argmax = apple',
+    caption: 'Count → normalize → argmax = apple (৫০%)',
   },
   'part-02-bigram/04-generate': {
     name: 'generate-chain',

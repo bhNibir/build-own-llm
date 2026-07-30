@@ -30,13 +30,15 @@ Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ 
 
 ## Step by Step
 
+Sentence বাড়ে, কিন্তু **bigram শুধু শেষ word** দেখে predict করে:
+
 ```
-Step 1:  "i"           → predict → "like"     → "i like"
-Step 2:  "i like"      → predict → "apple"    → "i like apple"
-Step 3:  "i like apple"→ predict → "is"       → "i like apple is"
-Step 4:  ...apple is"  → predict → "fruit"    → "i like apple is fruit"
-Step 5:  ...is fruit"  → predict → "is"       → "i like apple is fruit is"
-Step 6:  ...fruit is"  → predict → "fruit"    → "...is fruit is fruit"  (is ↔ fruit loop)
+Step 1:  context="i"      → P(?|i)      → "like"  → "i like"
+Step 2:  context="like"   → P(?|like)   → "apple" → "i like apple"
+Step 3:  context="apple"  → P(?|apple)  → "is"    → "i like apple is"
+Step 4:  context="is"     → P(?|is)     → "fruit" → "i like apple is fruit"
+Step 5:  context="fruit"  → P(?|fruit)  → "is"    → "… fruit is"
+Step 6:  context="is"     → P(?|is)     → "fruit" → "… is fruit is fruit"  (loop)
 ```
 
 `is`-এর সবচেয়ে বড় count `fruit` (৩ বার), আর `fruit → is` — তাই argmax `is ↔ fruit`-এ আটকে যায়। তাই max length (এখানে ১০ step) পর্যন্ত চলে থামে, `null` prediction পেলে আগে থামত।
@@ -44,7 +46,7 @@ Step 6:  ...fruit is"  → predict → "fruit"    → "...is fruit is fruit"  (i
 ## কোড
 
 Loop:
-1. শেষ word নাও
+1. **শেষ word** নাও (bigram context = last token)
 2. Predict করো
 3. নতুন word যোগ করো
 4. Repeat (অথবা আর predict না পেলে stop)

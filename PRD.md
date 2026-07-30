@@ -341,7 +341,7 @@ Every lesson uses **one primary `<ConceptAnim slug="…" />`** from [`lesson-con
 2. **Excalidraw color system** — fill = same hue as border at lower contrast; bright borders; dark-mode tokens required
 3. **Bangla typography** — Noto Sans Bengali (`--font-bn`) for prose; JetBrains Mono for code
 4. **Stable layout** — `min-h-[220px]` ConceptFrame; Bangla `DataLabel` + English term
-5. **Data-bound** — fruit corpus; `P(apple|i like) ≈ 72% / 18% / 10%`
+5. **Data-bound** — fruit corpus; bigram `P(apple|like) = 50% / 25% / 25%` (counts 2/1/1). Intro may say “after i like” in natural language, but Module 2 must condition on the last token only.
 6. **Motion** with `prefers-reduced-motion`
 7. **3D only when spatial** — `embedding-space-3d` on Module 6.1; attention stays 2D heatmap
 8. `SketchBox` default fill = solid; hachure/cross-hatch for emphasis only

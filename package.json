@@ -9,6 +9,7 @@
     "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
     "postinstall": "fumadocs-mdx",
     "lint": "oxlint",
+    "content:check": "node scripts/check-content-integrity.mjs",
     "part-01": "bun code/part-01/index.ts",
     "part-02": "bun code/part-02/index.ts",
     "part-03": "bun code/part-03/index.ts",

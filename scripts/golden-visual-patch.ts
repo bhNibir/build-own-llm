@@ -45,11 +45,12 @@ function dedupeVisuals(content: string): string {
 }
 
 function contentFixes(content: string, slug: string): string {
-  // Unify probabilities
-  content = content.replace(/apple 50%/g, 'apple 72%');
-  content = content.replace(/banana 25%/g, 'banana 18%');
-  content = content.replace(/mango 25%/g, 'mango 10%');
-  content = content.replace(/P\(apple \| like\)/g, 'P(apple | i like)');
+  // Unify probabilities to fruit-corpus bigram truth: 50/25/25
+  content = content.replace(/apple 72%/g, 'apple 50%');
+  content = content.replace(/banana 18%/g, 'banana 25%');
+  content = content.replace(/mango 10%/g, 'mango 25%');
+  content = content.replace(/72% \/ 18% \/ 10%/g, '50% / 25% / 25%');
+  content = content.replace(/P\(apple \| i like\)/g, 'P(apple | like)');
 
   if (slug === 'part-01-tokenizer/01-llm-kivabe-kaj-kore') {
     content = content.replace(

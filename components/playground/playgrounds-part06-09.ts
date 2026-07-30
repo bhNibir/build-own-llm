@@ -1116,6 +1116,7 @@ log.ok('autoregressive samples ready');
     activeFile: '/index.ts',
     files: {
       '/index.ts': `// Temperature scales logits before softmax: logits / T
+// Same numbers as the lesson animation: z = [2, 1, 0]
 function softmax(logits: number[]): number[] {
   const max = Math.max(...logits);
   const exps = logits.map((l) => Math.exp(l - max));
@@ -1137,11 +1138,11 @@ function sample(probs: number[]): number {
   return probs.length - 1;
 }
 
-const vocab = ['like', 'eat', 'eats', 'is'];
-const logits = [2.0, 0.5, 0.3, 0.1]; // "like" is strongest after "i"
+const vocab = ['apple', 'banana', 'mango'];
+const logits = [2, 1, 0]; // lesson + TempSoftmaxAnim
 
 log.step('Temperature Sampling');
-log.data('Context', 'i → next word logits');
+log.data('Context', 'like → next fruit logits');
 for (let i = 0; i < vocab.length; i++) {
   log.data(vocab[i], logits[i]);
 }
