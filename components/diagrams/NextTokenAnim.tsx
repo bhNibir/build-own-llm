@@ -92,25 +92,38 @@ export function NextTokenAnim({
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         {options.map((opt) => (
-          <SketchBox
+          <motion.button
             key={opt.word}
-            fillStyle="solid"
-            palette={picked === opt.word ? 'green' : 'neutral'}
-            strokeStyle="solid"
-            active={picked === opt.word}
-            className="min-w-[5.5rem]"
+            type="button"
+            whileHover={{ y: -2, scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => {
+              setPhase(2);
+              setPicked(opt.word);
+            }}
           >
-            <span className="font-mono text-sm">{opt.word}</span>
-            <div className="mt-1 h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
-              <motion.div
-                className="h-full rounded-full bg-indigo-500"
-                animate={{ width: phase >= 2 ? `${opt.pct}%` : '0%' }}
-              />
-            </div>
-            <span className="text-[10px] opacity-70">{opt.pct}%</span>
-          </SketchBox>
+            <SketchBox
+              fillStyle="solid"
+              palette={picked === opt.word ? 'green' : 'neutral'}
+              strokeStyle="solid"
+              active={picked === opt.word}
+              className="min-w-[5.5rem]"
+            >
+              <span className="font-mono text-sm">{opt.word}</span>
+              <div className="mt-1 h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10">
+                <motion.div
+                  className="h-full rounded-full bg-emerald-500"
+                  animate={{ width: phase >= 1 ? `${opt.pct}%` : '0%' }}
+                />
+              </div>
+              <span className="text-[10px] opacity-70">{opt.pct}%</span>
+            </SketchBox>
+          </motion.button>
         ))}
       </div>
+      <p className="text-center text-[11px] text-fd-muted-foreground">
+        টিপ: probability বক্সে ক্লিক করে token pick করো
+      </p>
     </div>
   );
 }

@@ -27,7 +27,11 @@ export const VOCAB: { word: string; id: number }[] = [
   { word: 'you', id: 11 },
 ];
 
-/** P(next | "i like") from fruit bigram counts: 2/4, 1/4, 1/4 */
+/**
+ * Next-token demo after context "i like".
+ * Bigram only conditions on the last word "like":
+ * count(like→apple)=2, banana=1, mango=1 → 50% / 25% / 25%.
+ */
 export const NEXT_AFTER_I_LIKE = {
   labels: ['apple', 'banana', 'mango'],
   probs: [0.5, 0.25, 0.25],

@@ -75,7 +75,8 @@ is      → { fruit: 3, healthy: 1 }
   </Formula>
   <WorkedExample>
     P(like | i) = 3/3 = 1.0{'\n'}
-    P(apple | i like) = 2/(2+1+1) = 0.5
+    P(apple | like) = 2/(2+1+1) = 0.5{'\n'}
+    (Bigram শুধু শেষ word দেখে — তাই context "i like"-এর পরেও condition = "like")
   </WorkedExample>
   <CodeLink>Playground-এ count table run করো ↓</CodeLink>
 </MathLesson>
