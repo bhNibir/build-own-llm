@@ -3,12 +3,14 @@ title: Module 7 — Attention
 description: Long-range dependencies solve — Query, Key, Value থেকে Self-Attention
 ---
 
-# 👁️ Module 7 — Attention
+# Module 7 — Attention
 
-Neural bigram শুধু **১টা আগের token** দেখে। Real sentence-এ দূরের word-ও গুরুত্বপূর্ণ। **Attention** সব token-এর মধ্যে relevance measure করে।
+Module 6-এর Neural LM শুধু **১টা আগের token** দেখে — neural bigram। Real sentence-এ দূরের word-ও গুরুত্বপূর্ণ: `"it"` কার দিকে point করে, subject কোথায় — সেসব ১-token window-এ ধরা যায় না।
+
+**Attention** এই সমস্যার সমাধান: সব token-এর মধ্যে relevance measure করে, তারপর relevant অংশগুলো mix করে।
 
 <Callout type="idea">
-💡 Attention = "এই word-এর জন্য sentence-এর কোন অংশ সবচেয়ে relevant?" — search engine-এর মতো।
+Attention = "এই word-এর জন্য sentence-এর কোন অংশ সবচেয়ে relevant?" — search engine-এর মতো।
 </Callout>
 
 ```mermaid
@@ -24,6 +26,8 @@ flowchart TD
     classDef attn fill:#F59E0B,color:#fff,stroke:#D97706
     classDef output fill:#6366F1,color:#fff,stroke:#4338CA
 ```
+
+এই Module-এ Query/Key/Value থেকে শুরু করে Scaled Dot-Product, Self-Attention, আর Multi-Head পর্যন্ত যাব — GPT-এর core mechanism piece by piece।
 
 ## Lessons
 

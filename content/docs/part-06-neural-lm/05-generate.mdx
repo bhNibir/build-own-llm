@@ -1,17 +1,19 @@
 ---
-title: Generate from Neural LM
+title: Generate — Trained Model দিয়ে লেখা
 description: Trained model দিয়ে autoregressive text generation
 ---
 
-# 🎲 Generate from Neural LM
+# Generate — Trained Model দিয়ে লেখা
 
 <ConceptAnim slug="part-06-neural-lm/05-generate" />
 
-Training শেষ — এখন trained neural LM দিয়ে **text generate** করব। Process Bigram generation-এর মতোই: autoregressive loop।
+Training শেষ — `E` আর `W` এখন pattern জানে। এবার সেই trained Neural LM দিয়ে **text generate** করব। Process Module 2-এর Bigram generation-এর মতোই: **autoregressive** loop — predict → append → আবার predict।
 
 <Callout type="idea">
-💡 Generation = trained model-এর probability distribution থেকে **sample** করে next token pick করা।
+Generation = trained model-এর probability distribution থেকে **sample** করে next token pick করা।
 </Callout>
+
+Module 0-এ যে next-token prediction দেখেছিলে — এখন সেটা learned weights দিয়ে চলছে। Count table নেই; Softmax probs থেকে sample।
 
 ```mermaid
 flowchart LR
@@ -44,6 +46,8 @@ flowchart LR
 | Quality | Limited patterns | Richer (same context window) |
 | Sampling | Same idea | Same idea |
 
+মনে রাখো: context window এখনো **১টা token**। তাই quality Bigram-এর কাছাকাছি থাকতে পারে — কিন্তু architecture এখন neural, তাই পরে Attention যোগ করে context বাড়ানো যাবে।
+
 ## Example Output
 
 ```
@@ -53,15 +57,15 @@ Seed: "i"
 → i like mango is fruit
 ```
 
-Output **random** — same seed + different sample = different text!
+Output **random** — same seed + different sample = different text! Module 2-এর sampling vs argmax lesson-এর same idea।
 
 ## কোড চেষ্টা করো
 
 <Playground id="part-06/generate" title="Neural LM Text Generation" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Trained neural LM generates via autoregressive sampling
+- Trained Neural LM generates via autoregressive sampling
 - Same loop as Bigram — but learned weights instead of counts
 - Module 6 complete — next: **Attention** for longer context!
 

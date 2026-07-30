@@ -1,17 +1,19 @@
 ---
-title: Why Attention?
+title: Attention কেন লাগে?
 description: Bigram-এর 1-token limit — long-range dependency problem
 ---
 
-# 🤔 Why Attention?
+# Attention কেন লাগে?
 
 <ConceptAnim slug="part-07-attention/01-why-attention" />
 
-Bigram এবং neural bigram দুটোই শুধু **একটা আগের token** দেখে। কিন্তু real language-এ context অনেক বড়।
+Bigram আর Module 6-এর Neural LM দুটোই শুধু **একটা আগের token** দেখে। ছোট fruit sentence-এ চলে যায় — কিন্তু real language-এ context অনেক বড়।
 
 <Callout type="warn">
-⚠️ `"The animal didn't cross the road because it was tired."` — `"it"` কার দিকে point করে? `animal` নাকি `road`?
+`"The animal didn't cross the road because it was tired."` — `"it"` কার দিকে point করে? `animal` নাকি `road`?
 </Callout>
+
+মানুষ সহজে বলে `animal`। Model-কেও সেটা বুঝতে হলে `"it"`-এর আগের পুরো sentence দেখতে হবে — শুধু `"because"` নয়। এটাই **long-range dependency** problem।
 
 ```mermaid
 flowchart TD
@@ -40,11 +42,11 @@ flowchart TD
 "i like apple because apple is fruit"
 ```
 
-`"because"`-এর পর `"apple"` আবার আসে — `"because"` `"apple"`-এর সাথে connect করতে চায়। Bigram `"because"`-কে শুধু আগের word দেখায়, `"apple"`-কে miss করে।
+`"because"`-এর পর `"apple"` আবার আসে — `"because"` `"apple"`-এর সাথে connect করতে চায়। Bigram `"because"`-কে শুধু আগের word দেখায়, আগের `"apple"`-কে miss করে।
 
 ## Attention Solution
 
-**Attention** প্রতিটা token-কে sentence-এর **সব token-এর সাথে compare** করে:
+**Attention** প্রতিটা token-কে sentence-এর **সব token-এর সাথে compare** করে — কে কাকে relevant, সেটা score দিয়ে মাপে:
 
 <StepReveal steps={[
   { emoji: "🔍", title: "Query", body: "'it' কী খুঁজছে?" },
@@ -53,19 +55,21 @@ flowchart TD
   { emoji: "📦", title: "Value", body: "Relevant info weighted sum" }
 ]} />
 
+পরের lesson-এ এই Query, Key, Value আলাদা করে দেখব — search engine analogy দিয়ে।
+
 ## Historical Context
 
 - **2017:** "Attention Is All You Need" paper — Transformer birth
 - **Before:** RNN/LSTM sequential processing (slow, forgetful)
-- **After:** Parallel attention — GPT, BERT, Llama সব এটা use করে
+- **After:** Parallel Attention — GPT, BERT, Llama সব এটা use করে
 
 <Callout type="tip">
-✅ Attention GPT-এর **core innovation** — Module 7-8-এ আমরা এটা from scratch build করব।
+Attention GPT-এর **core innovation** — Module 7–8-এ আমরা এটা from scratch build করব।
 </Callout>
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Bigram/neural bigram = 1-token context limit
+- Bigram/Neural bigram = 1-token context limit
 - Long sentences need **all-token** context
 - Attention solves long-range dependencies
 

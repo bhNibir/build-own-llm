@@ -1,17 +1,19 @@
 ---
-title: Full Transformer Block
+title: Full Block — সব Piece একসাথে
 description: Norm → Attn → Res → Norm → FFN → Res — complete assembly
 ---
 
-# 🏗️ Full Transformer Block
+# Full Block — সব Piece একসাথে
 
 <ConceptAnim slug="part-08-transformer/05-block" />
 
-সব piece ready — এখন **assemble**: LayerNorm → Multi-Head Attention → Residual → LayerNorm → FFN → Residual। এটাই GPT-এর core building block।
+Positional Encoding, LayerNorm, Multi-Head Attention, FFN, Residual — সব piece ready। এখন **assemble**: LayerNorm → Multi-Head Attention → Residual → LayerNorm → FFN → Residual। এটাই GPT-এর core building block।
 
 <Callout type="tip">
-✅ GPT = N transformer blocks stacked + final LayerNorm + output projection to vocabulary.
+GPT = N Transformer Blocks stacked + final LayerNorm + output projection to vocabulary।
 </Callout>
+
+Module 6-এর simple Embed → W → Softmax থেকে অনেক দূর এসেছ — এখন context-aware, position-aware, deep-stackable architecture।
 
 ```mermaid
 flowchart TD
@@ -40,7 +42,7 @@ flowchart TD
   { emoji: "1️⃣", title: "Norm → Attn → +", body: "Context mixing with skip" },
   { emoji: "2️⃣", title: "Norm → FFN → +", body: "Per-token transform with skip" },
   { emoji: "3️⃣", title: "Stack N blocks", body: "Mini GPT: 4 blocks" },
-  { emoji: "4️⃣", title: "Final head", body: "LayerNorm → logits → softmax" }
+  { emoji: "4️⃣", title: "Final head", body: "LayerNorm → logits → Softmax" }
 ]} />
 
 ## Mini GPT Stack
@@ -52,6 +54,8 @@ Token IDs
   → Final LayerNorm
   → Linear → Vocabulary logits
 ```
+
+এই stack-ই Module 9-এ end-to-end train করবে — fruit corpus দিয়ে, ছোট scale-এ।
 
 ## Parameter Overview
 
@@ -65,7 +69,7 @@ Token IDs
 
 <Playground id="part-08/block" title="Full Transformer Block" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - Full block = Pre-LN Attn + Residual + Pre-LN FFN + Residual
 - Stack N blocks = GPT body
