@@ -1,15 +1,17 @@
 ---
 title: Layer
-description: Parallel neurons — vector input থেকে vector output
+description: Parallel Neuron — vector input থেকে vector output
 ---
 
-# 📚 Layer
+# Layer
 
 <ConceptAnim slug="part-05-neural-network/02-layer" />
 
 <Callout type="idea">
-💡 **Layer** = একসাথে অনেক neuron parallel run। Vector in → matrix multiply → activation → vector out।
+**Layer** = একসাথে অনেক Neuron parallel run। Vector in → matrix multiply → activation → vector out।
 </Callout>
+
+একটা Neuron একটা সংখ্যা দেয়। কিন্তু আমরা চাই একসাথে অনেক feature — তাই অনেক Neuron একসাথে চালাই। সেই গুচ্ছই **Layer**, আর ভিতরে চলে Module 3-এর matmul।
 
 ## Single Neuron vs Layer
 
@@ -32,7 +34,11 @@ flowchart LR
     classDef output fill:#10B981,color:#fff,stroke:#047857
 ```
 
+দেখো — আলাদা আলাদা Neuron loop না চালিয়ে একটা matmul-এই সব শেষ।
+
 ## Matrix Form
+
+Shape দিয়ে লিখলে পরিষ্কার:
 
 ```
 x: (1 × n)     input vector
@@ -42,7 +48,7 @@ z = x @ W + b  → (1 × m)
 a = activation(z)
 ```
 
-Module 3-এর **matmul** directly use হয়!
+Module 3-এর **matmul** directly use হয়! তাই আগে shape rule শিখিয়েছিলাম।
 
 <StepReveal steps={[
   { emoji: "📥", title: "Input vector x", body: "n features" },
@@ -52,6 +58,8 @@ Module 3-এর **matmul** directly use হয়!
 ]} />
 
 ## Example: 3 → 2 Layer
+
+৩টা input, ২টা Neuron — হিসাব করে দেখি:
 
 ```
 x = [1, 2, 3]   (3 inputs)
@@ -74,9 +82,11 @@ a = ReLU(z) = [2.3, 3.0]
   title="Weight Matrix (3×2)"
 />
 
+প্রতিটা column = একটা Neuron-এর weight। দুই column = দুই Neuron parallel।
+
 ## Layer Class
 
-Parallel neurons + matmul — নীচের Playground-এ layer forward চালিয়ে output shape দেখো।
+Parallel Neuron + matmul — নীচের Playground-এ layer forward চালিয়ে output shape দেখো। `parameters()` দিয়ে সব weight পাবে training-এর জন্য।
 
 ## Parameter Count
 
@@ -88,15 +98,15 @@ biases:  m
 total:   n×m + m = m(n + 1)
 ```
 
-GPT-3 layer: millions of parameters per layer!
+ছোট example-এ কয়েক ডজন parameter। GPT-3 layer-এ millions — কিন্তু গণনার ধরন একই: `x @ W + b`।
 
 ## কোড চেষ্টা করো
 
 <Playground id="part-05/layer" title="Neural Layer" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- **Layer** = parallel neurons as matrix operation
+- **Layer** = parallel Neuron as matrix operation
 - Forward: `output = activation(x @ W + b)`
 - Weight matrix shape: `(n_in × n_out)`
 - Uses matmul from Module 3

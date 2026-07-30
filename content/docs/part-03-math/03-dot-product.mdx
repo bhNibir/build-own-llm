@@ -1,27 +1,29 @@
 ---
 title: Dot Product
-description: দুটো vector-এর similarity measure — attention-এর building block
+description: দুটো vector-এর similarity — Attention-এর building block
 ---
 
-# ⚡ Dot Product
+# Dot Product
 
 <ConceptAnim slug="part-03-math/03-dot-product" />
 
 <Callout type="idea">
-💡 **Dot product** দুটো vector-কে একটা **scalar**-এ compress করে। Value বেশি = vectors "aligned" — attention-এ exactly এটাই measure হয়।
+**Dot product** দুটো vector-কে একটা **scalar**-এ compress করে। Value বেশি মানে vectors “aligned” — Attention-এ exactly এটাই measure হয়।
 </Callout>
+
+Matrix দেখেছি, vector দেখেছি। এখন প্রশ্ন: দুটো vector কতটা “একই রকম”? LLM-এ এই প্রশ্নটা Attention-এর কেন্দ্রে। উত্তর দেয় **dot product**।
 
 ## Formula
 
-দুটো same-length vector `a` ও `b`:
+দুটো same-length vector `a` ও `b` নাও। Corresponding element গুণ করে সব যোগ করলেই একটা scalar পাও — সেটাই similarity score।
 
 <MathLesson title="Dot Product">
   <MathIntuition>
-    Corresponding elements multiply করে যোগ করলে similarity score পাও — aligned vectors-এ positive, opposite direction-এ negative।
+    একই জায়গায় বড় সংখ্যা থাকলে গুণফলও বড় হয় — তাই aligned vectors-এ positive score, উল্টো দিকে negative। সহজ কথায়: একই প্যাটার্ন = বেশি similarity।
   </MathIntuition>
   <SymbolTable symbols={[
-    { sym: "a · b", meaning: "dot product of vectors a and b" },
-    { sym: "a_i, b_i", meaning: "i-th element of each vector" },
+    { sym: "a · b", meaning: "dot product — a ও b-এর similarity score" },
+    { sym: "a_i, b_i", meaning: "প্রতিটা vector-এর i-তম element" },
     { sym: "n", meaning: "vector dimension (length)" }
   ]} />
   <Formula>
@@ -37,6 +39,8 @@ description: দুটো vector-এর similarity measure — attention-এর 
 </MathLesson>
 
 ## Geometric Intuition
+
+শুধু সংখ্যা নয় — জ্যামিতি দিয়েও বোঝা যায়। দুটো vector-এর কোণ ছোট হলে dot product বড় হয়।
 
 ```mermaid
 flowchart LR
@@ -58,7 +62,11 @@ a · b = ‖a‖ × ‖b‖ × cos(θ)
 - **θ = 90°** (perpendicular) → zero
 - **θ = 180°** (opposite) → negative
 
+মানে কোণ ০ হলে সবচেয়ে “মিল”, ৯০ হলে কোনো সম্পর্ক নেই, ১৮০ হলে উল্টো।
+
 ## Similarity Example
+
+Embedding space-এ একই অর্থের word-গুলো কাছাকাছি থাকে — তাই তাদের dot productও বেশি হয়:
 
 ```
 apple  = [0.8, 0.2, 0.1]
@@ -69,7 +77,7 @@ apple · fruit = 0.62  ← high (similar meaning)
 apple · car   = 0.34  ← low (different meaning)
 ```
 
-Embedding space-এ semantically similar words-এর dot product বেশি হয়।
+এখানেই দেখা যায় কেন embedding দরকার — শব্দের অর্থ সংখ্যায় ধরা পড়ে, আর similarity গণনাযোগ্য হয়ে যায়।
 
 <StepReveal steps={[
   { emoji: "✖️", title: "Element-wise multiply", body: "a[i] × b[i] for each i" },
@@ -79,19 +87,19 @@ Embedding space-এ semantically similar words-এর dot product বেশি �
 
 ## Attention Connection
 
-Self-attention-এ:
+Self-attention-এ এই একই হিসাব চলে:
 
 ```
 score(i, j) = Query[i] · Key[j]
 ```
 
-Query token `i` Key token `j`-কে কত "relevant" মনে করে — dot product দিয়ে measure।
+Query token `i` Key token `j`-কে কত “relevant” মনে করে — সেটা dot product দিয়ে measure। Module 7-এ Attention build করলে এই লাইনটা আবার দেখবে।
 
 ## কোড চেষ্টা করো
 
 <Playground id="part-03/dot-product" title="Dot Product Calculator" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Dot product** = element-wise multiply + sum → একটা scalar
 - High dot product মানে vectors similar / aligned

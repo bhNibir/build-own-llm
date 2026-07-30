@@ -3,25 +3,29 @@ title: Gradient Descent
 description: Gradient দিয়ে weight update — model train করার core loop
 ---
 
-# 📉 Gradient Descent
+# Gradient Descent
 
 <ConceptAnim slug="part-04-autograd/04-gradient-descent" />
 
 <Callout type="idea">
-💡 **Gradient** বলে loss কোন direction-এ বাড়ছে। **Gradient descent** = opposite direction-এ small step — loss কমাতে weight update।
+**Gradient** বলে loss কোন দিকে বাড়ছে। **Gradient Descent** = উল্টো দিকে ছোট একটা step — loss কমাতে weight update।
 </Callout>
+
+এখন আমাদের কাছে gradient আছে। কিন্তু gradient একা কিছু করে না — দিয়ে weight আপডেট করতে হয়। সেই আপডেটের নিয়মই Gradient Descent।
 
 ## The Update Rule
 
+Idea একদম সরল: loss বাড়ার দিকের উল্টো দিকে হাঁটো।
+
 <MathLesson title="Gradient Descent">
   <MathIntuition>
-    Loss landscape-এ downhill যাও — gradient positive হলে weight কমাও, negative হলে weight বাড়াও। Learning rate step size control করে।
+    Loss landscape-এ downhill যাও — gradient positive হলে weight কমাও, negative হলে weight বাড়াও। Learning rate বলে প্রতি step কতদূর যাবে।
   </MathIntuition>
   <SymbolTable symbols={[
-    { sym: "w", meaning: "weight (parameter to optimize)" },
+    { sym: "w", meaning: "weight — যে parameter optimize করছি" },
     { sym: "L", meaning: "loss function" },
-    { sym: "∂L/∂w", meaning: "gradient — how loss changes w.r.t. w" },
-    { sym: "α", meaning: "learning rate (step size, e.g. 0.01)" }
+    { sym: "∂L/∂w", meaning: "gradient — w বদলালে L কতটা বদলায়" },
+    { sym: "α", meaning: "learning rate (step size, যেমন 0.01)" }
   ]} />
   <Formula>
     {`$$w \\leftarrow w - \\alpha \\cdot \\frac{\\partial L}{\\partial w}$$`}
@@ -36,6 +40,8 @@ description: Gradient দিয়ে weight update — model train করার
 </MathLesson>
 
 ## Training Loop
+
+পুরো training একেকটা loop:
 
 ```mermaid
 flowchart TD
@@ -56,27 +62,35 @@ flowchart TD
   { emoji: "🔄", title: "Repeat", body: "Loss gradually decreases" }
 ]} />
 
+প্রতি epoch-এ একই চার ধাপ — GPT train করতেও ভিতরে এই loopই চলে, শুধু অনেক বড় স্কেলে।
+
 ## Learning Rate
+
+Learning rate (`α`) খুবই sensitive। একটু বেশি বা কম হলেই সমস্যা:
 
 | α too small | α too large | α just right |
 |-------------|-------------|--------------|
 | Slow convergence | Overshoot, diverge | Steady loss decrease |
 | Many epochs needed | Loss oscillates or NaN | Efficient training |
 
-Typical values: `0.001` – `0.1` (problem-dependent)
+Typical values: `0.001` – `0.1` (problem-dependent)। শুরুতে ছোট দিয়ে দেখো, দরকার হলে বাড়াও।
+
+আর একটা ভুল ভুলো না: update-এর পর `grad = 0` reset করতে হয় — নাহলে পরের step-এ পুরনো gradient জমে যায়।
 
 ## Loss Curve
 
-Training-এ loss overtime track করি:
+Training-এ loss overtime track করি — কমতে থাকলে বোঝা যায় শেখা চলছে:
 
 <LossChart
   data={[2.5, 1.8, 1.1, 0.6, 0.3, 0.15]}
   title="Example Loss Curve"
 />
 
-Module 6-9-এ live loss chart training-এর সাথে update হবে।
+Module 6–9-এ live loss chart training-এর সাথে update হবে।
 
 ## Full Picture
+
+এখন পর্যন্ত কী জোড়া লেগেছে, এক নজরে:
 
 ```
 Math (Module 3)     → operations
@@ -85,13 +99,15 @@ Gradient Descent    → weight updates
 Neural Net (Module 5) → architecture to train
 ```
 
+পরের Module-এ এই engine দিয়ে সত্যিকারের Neuron → Layer → MLP বানাবো।
+
 ## Interactive Demo
 
 <Playground id="part-04/gradient-descent" title="Gradient Descent Training" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- **Gradient descent**: `w ← w - α × ∂L/∂w`
+- **Gradient Descent**: `w ← w - α × ∂L/∂w`
 - Training loop = forward → backward → update → repeat
 - **Learning rate** controls step size — critical hyperparameter
 - Reset `grad = 0` after each update

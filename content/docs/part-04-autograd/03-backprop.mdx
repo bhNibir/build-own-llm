@@ -1,17 +1,21 @@
 ---
 title: Backpropagation
-description: Chain rule দিয়ে loss থেকে সব parameter-এ gradient propagate
+description: Chain rule দিয়ে loss থেকে সব parameter-এ gradient পাঠানো
 ---
 
-# ⬅️ Backpropagation
+# Backpropagation
 
 <ConceptAnim slug="part-04-autograd/03-backprop" />
 
 <Callout type="idea">
-💡 **Backpropagation** = computational graph reverse traverse করে chain rule apply। Loss থেকে শুরু, root পর্যন্ত gradient flow।
+**Backpropagation** = computational graph reverse traverse করে chain rule apply করা। Loss থেকে শুরু, root পর্যন্ত gradient flow।
 </Callout>
 
+`Value` class graph বানাতে পারে — এখন সেই graph পেছন দিকে হাঁটাবো। এটাই training-এর হৃদয়: loss দেখে প্রতিটা weight-কে বলা “তুমি কতটা দায়ী?”
+
 ## The Algorithm
+
+চল ধাপে ধাপে:
 
 <StepReveal steps={[
   { emoji: "📋", title: "Topological sort", body: "Nodes order — children before parents" },
@@ -19,6 +23,8 @@ description: Chain rule দিয়ে loss থেকে সব parameter-এ g
   { emoji: "⬅️", title: "Reverse loop", body: "Each node calls _backward()" },
   { emoji: "➕", title: "Accumulate grads", body: "Parents receive gradient contributions" }
 ]} />
+
+Seed দিয়ে শুরু — `∂L/∂L = 1`। তারপর প্রতিটা node তার local rule দিয়ে parent-দের কাছে gradient পাঠায়।
 
 ## Chain Rule in Action
 
@@ -37,7 +43,7 @@ flowchart BT
     classDef leaf fill:#4F46E5,color:#fff,stroke:#3730A3
 ```
 
-Backward (bottom-up in diagram = reverse topo order):
+Backward (diagram-এ bottom-up = reverse topo order):
 
 ```
 ∂L/∂L = 1
@@ -47,18 +53,20 @@ Backward (bottom-up in diagram = reverse topo order):
 ∂L/∂c = ∂L/∂(sum) × 1
 ```
 
+প্রতিটা ধাপে local derivative × incoming gradient — এটাই chain rule।
+
 ## Worked Example
 
-`a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
+সংখ্যা দিয়ে দেখি। `a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
 
 <MathLesson title="Backprop Chain Rule">
   <MathIntuition>
-    Gradient flows backward like water upstream — each node passes its share to parents using local derivative × incoming gradient।
+    Gradient পেছন দিকে পানি চলার মতো যায় — প্রতিটা node নিজের local derivative দিয়ে parent-দের কাছে ভাগ করে দেয়। Upstream gradient × local rule = নতুন flow।
   </MathIntuition>
   <SymbolTable symbols={[
-    { sym: "∂L/∂y", meaning: "gradient flowing into node y from above" },
-    { sym: "_backward()", meaning: "local rule: distribute grad to parents" },
-    { sym: "topo sort", meaning: "visit children before parents" }
+    { sym: "∂L/∂y", meaning: "উপর থেকে node y-তে আসা gradient" },
+    { sym: "_backward()", meaning: "local rule — parent-দের কাছে grad ভাগ করে দেয়" },
+    { sym: "topo sort", meaning: "child আগে, parent পরে — সঠিক ক্রম" }
   ]} />
   <Formula>
     {`$$\\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial x}$$`}
@@ -76,25 +84,29 @@ Backward (bottom-up in diagram = reverse topo order):
 
 ## Why Topological Sort?
 
-Operation order matter — parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
+Operation order matter করে। Parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
 
 ```
 Wrong order: parent._backward() before child.grad set → wrong gradients
 Right order: reverse topo ensures child processed first
 ```
 
+Topo sort ভুল হলে gradientও ভুল — bug খুঁজতে গিয়ে অনেক সময় এখানেই আটকায়।
+
 ## Debugging Tips
 
-Gradient zero? Check:
+Gradient zero? চেক করো:
 - `_backward` rule correct?
 - Topo sort order correct?
 - Forgot to call `.backward()`?
+
+তিনটার মধ্যে একটা miss হলেই training “শেখে” না।
 
 ## Interactive Demo
 
 <Playground id="part-04/backprop" title="Backpropagation Demo" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Backprop** = reverse topological traversal + chain rule
 - Output node seeded with `grad = 1`

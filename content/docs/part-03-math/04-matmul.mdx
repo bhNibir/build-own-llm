@@ -1,17 +1,21 @@
 ---
 title: Matrix Multiplication
-description: Matmul — neural network layer computation এবং attention-এর core operation
+description: Matmul — neural network layer ও Attention-এর core operation
 ---
 
-# ✖️ Matrix Multiplication
+# Matrix Multiplication
 
 <ConceptAnim slug="part-03-math/04-matmul" />
 
 <Callout type="idea">
-💡 **Matrix multiplication (matmul)** = batch dot products। Neural network-এর প্রতিটা layer মূলত `output = input @ W + b`।
+**Matrix multiplication (matmul)** = একসাথে অনেকগুলো dot product। Neural network-এর প্রতিটা layer মূলত `output = input @ W + b`।
 </Callout>
 
+Dot product দুটো vector নিয়ে একটা scalar দেয়। এখন যদি একসাথে অনেকগুলো vector-এর উপর একই কাজ চালাতে চাও? সেটাই **matmul** — আর এখান থেকেই neural layer জন্ম নেয়।
+
 ## Shape Rule
+
+প্রথমে shape মনে রাখো। Inner dimension match না করলে matmul হয় না:
 
 ```
 (m × n) @ (n × p) = (m × p)
@@ -30,9 +34,11 @@ flowchart LR
     classDef c fill:#10B981,color:#fff,stroke:#047857
 ```
 
+বাম পাশের column সংখ্যা = ডান পাশের row সংখ্যা — এই একটা নিয়মই বারবার কাজে লাগবে।
+
 ## How It Works
 
-Output cell `C[i][j]` = row `i` of A · column `j` of B:
+Output cell `C[i][j]` = A-এর row `i` আর B-এর column `j`-এর **dot product**। মানে matmul আসলে আগের lesson-এরই batch version।
 
 ```
 A = | 1  2 |     B = | 5  6 |
@@ -56,6 +62,8 @@ C = | 19  22 |
 
 ## Visual Example
 
+নীচের matrix-টাই উপরের হিসাবের ফল — cell-by-cell মিলিয়ে দেখো।
+
 <MatrixViz
   matrix={[[19, 22], [43, 50]]}
   rowLabels={["r0", "r1"]}
@@ -65,24 +73,26 @@ C = | 19  22 |
 
 ## Neural Network Layer
 
+কেন এটা layer-এর সাথে জড়িত? কারণ একটা layer মানেই: input vector × weight matrix।
+
 ```
 input:  x shape (1, 4)    ← 4 features
 weight: W shape (4, 3)    ← 4 inputs → 3 outputs
 output: y = x @ W         ← shape (1, 3)
 ```
 
-একটা matmul = **3টা neuron parallel compute** (weighted sum)।
+একটা matmul = **৩টা neuron parallel compute** (প্রতিটার weighted sum)। Module 5-এ neuron/layer বানালে এই লাইনটাই code হয়ে উঠবে।
 
 ## Attention Matmul
 
-Transformer-এ:
+Transformer-এও একই operation বারবার চলে:
 
 ```
 Attention = softmax(Q @ K^T / √d) @ V
                   ↑ matmul      ↑ matmul
 ```
 
-Module 7-এ attention build করলে এই matmul directly use হবে।
+Module 7-এ Attention build করলে এই matmul directly use হবে — এখন শুধু মনে রাখো যে Attention “জাদু” নয়, matmul + softmax।
 
 ## কোড চেষ্টা করো
 
@@ -90,7 +100,7 @@ Module 7-এ attention build করলে এই matmul directly use হবে�
 
 <Playground id="part-03/matmul" title="Matrix Multiplication" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Matmul** shape: `(m×n) @ (n×p) = (m×p)`
 - প্রতিটা output cell = row × column-এর dot product

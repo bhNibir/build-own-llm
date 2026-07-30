@@ -3,15 +3,19 @@ title: Value Class
 description: micrograd-style Value — number + gradient + backward hook
 ---
 
-# 📦 Value Class
+# Value Class
 
 <ConceptAnim slug="part-04-autograd/02-value" />
 
 <Callout type="idea">
-💡 **Value** = number যেটা জানে কোথা থেকে এসেছে (parents) এবং `.backward()` call করলে gradient propagate করে।
+**Value** = এমন একটা number যেটা জানে কোথা থেকে এসেছে (parents), আর `.backward()` call করলে gradient propagate করে।
 </Callout>
 
+আগের lesson-এ graph-এর ধারণা দেখেছি। এখন সেই graph code-এ নামিয়ে আনব — প্রতিটা সংখ্যাকে `Value` দিয়ে wrap করে।
+
 ## Anatomy of Value
+
+একটা `Value`-এ চারটা জিনিস থাকে: data, grad, parents, আর local backward rule।
 
 ```mermaid
 flowchart TD
@@ -23,9 +27,11 @@ flowchart TD
     classDef field fill:#8B5CF6,color:#fff,stroke:#6D28D9
 ```
 
+`data` = forward-এর ফল। `grad` = পরে জমা হওয়া gradient। `_prev` = এই মান কার থেকে এসেছে। `_backward` = local chain rule।
+
 ## Operations Build the Graph
 
-Operation করলে:
+যখন `add` বা `mul` করো, তিনটা কাজ একসাথে হয়:
 1. New `Value` create — result store
 2. `_prev` = parent nodes link
 3. `_backward` = local chain rule define
@@ -37,9 +43,11 @@ Operation করলে:
   { emoji: "🔗", title: "Graph grows", body: "Each op adds nodes automatically" }
 ]} />
 
+তুমি শুধু `a.mul(b).add(c)` লিখলেই graph নিজে নিজে বড় হয় — আলাদা করে graph draw করতে হয় না।
+
 ## Example: y = a × b + c
 
-Graph structure:
+Graph structure দেখো — leaf থেকে output পর্যন্ত:
 
 ```mermaid
 flowchart LR
@@ -55,9 +63,11 @@ flowchart LR
     classDef out fill:#10B981,color:#fff,stroke:#047857
 ```
 
+Forward-এ `y = 7` পাও। Backward-এ এই edges ধরেই gradient ফিরে আসবে।
+
 ## Gradient Accumulation
 
-`grad +=` (not `=`) — একটা node multiple path-এ use হতে পারে:
+গুরুত্বপূর্ণ detail: `grad +=` (not `=`)। কেন? একটা node multiple path দিয়ে use হতে পারে:
 
 ```
      b
@@ -67,29 +77,31 @@ flowchart LR
      sum
 ```
 
-`b.grad` = gradient from both paths যোগ হবে।
+এখানে `b.grad` দুই পথ থেকে আসা gradient যোগ করে নেবে। `=` দিলে এক পথ হারিয়ে যেত।
 
 ## Why Not Plain Numbers?
+
+সাধারণ `number` দিয়ে forward চলে, কিন্তু history থাকে না — তাই automatic backwardও হয় না।
 
 | Plain `number` | `Value` |
 |----------------|---------|
 | No graph history | Parents tracked |
 | Manual chain rule | Auto via `_backward` |
-| Can't call `.backward()` | Full autograd |
+| Can't call `.backward()` | Full Autograd |
 
-PyTorch-এ `Tensor` same idea — requires_grad=True।
+PyTorch-এ `Tensor` same idea — `requires_grad=True` মানেই এই tracking চালু। আমরা ছোট স্কেলে একই জিনিস বানাচ্ছি।
 
 ## Interactive Demo
 
 <Playground id="part-04/value" title="Value Class" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Value** wraps a number with graph metadata
 - `data` = forward value, `grad` = accumulated gradient
 - Operations auto-build graph via `_prev` and `_backward`
 - Gradient accumulation uses `+=` for shared nodes
-- Foundation for automatic backpropagation
+- Foundation for automatic Backpropagation
 
 **আগের lesson:** [Computational Graph](/docs/part-04-autograd/01-computational-graph)
 

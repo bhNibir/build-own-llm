@@ -1,15 +1,17 @@
 ---
 title: Module 4 — Autograd
-description: Computational graph, Value class, backprop, gradient descent
+description: Computational Graph, Value class, Backprop, Gradient Descent
 ---
 
-# 🔄 Module 4: Autograd
+# Module 4: Autograd
 
-Neural network **train** করতে হলে model-কে বলতে হবে: "তোমার weight একটু বাড়ালে loss কমে না কমে?" — এটাই **gradient**।
+Module 3-এ আমরা math tools বানিয়েছি — Vector, Matrix, Softmax। কিন্তু neural network **train** করতে হলে আরও একটা প্রশ্ন লাগে: “এই weight একটু বাড়ালে loss কমে, নাকি বাড়ে?” সেই উত্তরই **gradient**।
 
 <Callout type="idea">
-💡 **Autograd** = forward pass-এ graph বানাও, backward pass-এ chain rule দিয়ে gradient বের করো। Andrej Karpathy-র **micrograd** idea-টাই follow করব।
+**Autograd** = forward pass-এ graph বানাও, backward pass-এ chain rule দিয়ে gradient বের করো। Andrej Karpathy-র **micrograd** idea-টাই follow করব — ছোট, পরিষ্কার, বোঝার মতো।
 </Callout>
+
+এই Module-এ আমরা নিজের হাতে একটা ছোট Autograd engine বানাবো। পরে Module 5-এ সেটা দিয়েই neuron train করব।
 
 <StepReveal steps={[
   { emoji: "📊", title: "Computational Graph", body: "Operation-গুলো node, data flow edge" },

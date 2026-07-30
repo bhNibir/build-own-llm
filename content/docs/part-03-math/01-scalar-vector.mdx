@@ -1,19 +1,21 @@
 ---
-title: Scalars and Vectors
-description: Scalar vs vector — LLM-এ data represent করার প্রথম step
+title: Scalar ও Vector
+description: Scalar vs Vector — LLM-এ data represent করার প্রথম ধাপ
 ---
 
-# 🔢 Scalars and Vectors
+# Scalar ও Vector
 
 <ConceptAnim slug="part-03-math/01-scalar-vector" />
 
 <Callout type="idea">
-💡 **Scalar** = একটা number। **Vector** = number-এর ordered list। Embedding, weight — সব vector/matrix format-এ store হয়।
+**Scalar** = একটা number। **Vector** = number-এর ordered list। Embedding, weight — LLM-এর প্রায় সবকিছুই vector বা matrix format-এ store হয়।
 </Callout>
+
+আগের Module-এ আমরা word গুনেছিলাম — সেটা সহজ। এখন neural network-এর দিকে যাব, আর সেখানে data আর একটা সংখ্যা নয়। শুরুটা হোক সবচেয়ে ছোট unit দিয়ে: scalar আর vector।
 
 ## Scalar কী?
 
-**Scalar** মানে শুধু একটা number — magnitude আছে, direction নেই।
+**Scalar** মানে শুধু একটা number — magnitude আছে, direction নেই। Temperature, learning rate, loss — এগুলো সব scalar।
 
 ```
 temperature = 36.5
@@ -21,13 +23,15 @@ learning_rate = 0.01
 loss = 2.34
 ```
 
-Neural network-এ scalar examples:
+Neural network-এ দুটো scalar প্রায়ই দেখবে:
 - **loss** — model কত ভুল করছে (একটা number)
 - **learning rate** — weight update-এর step size
 
+একটা সংখ্যা দিয়েই কাজ চলে যখন “কত?” জানতে চাও — কিন্তু “কোন দিকে, কোন বৈশিষ্ট্য?” জানতে চাইলে আরও লাগে।
+
 ## Vector কী?
 
-**Vector** = number-এর ordered list। Position matter করে।
+**Vector** = number-এর ordered list। Position matter করে — প্রথম slot আর দ্বিতীয় slot আলাদা অর্থ বহন করে।
 
 ```
 v = [1.0, 2.0, 3.0]
@@ -35,7 +39,7 @@ v = [1.0, 2.0, 3.0]
    dim0  dim1  dim2
 ```
 
-Word embedding-এ প্রতিটা word একটা vector:
+Word embedding-এ প্রতিটা word একটা vector হয়ে যায়। GPT-তে এটা প্রায় ৭৬৮ dimension — মানে প্রতিটা word ৭৬৮টা সংখ্যার list:
 
 ```
 "apple"  → [0.2, -0.5, 0.8, ...]   (768 dimensions in GPT)
@@ -50,9 +54,11 @@ flowchart LR
     classDef vector fill:#A78BFA,color:#fff,stroke:#7C3AED
 ```
 
+সহজ করে বললে: scalar = একটা বাক্স; vector = সাজানো বাক্সের সারি।
+
 ## Vector Operations
 
-আমাদের `Vector` class basic operations support করবে:
+আমাদের `Vector` class কয়েকটা basic operation support করবে — যোগ, scale, length। এগুলোই পরে layer computation-এর ভিত্তি।
 
 | Operation | Example | Meaning |
 |-----------|---------|---------|
@@ -68,9 +74,11 @@ flowchart LR
 
 ## Vector Class (Skeleton)
 
-`add`, `scale`, `length` — এই operations নীচের Playground-এ live try করো; পুরো `Vector` class সেখানেই implement করা আছে।
+`add`, `scale`, `length` — এই operations নীচের Playground-এ live try করো; পুরো `Vector` class সেখানেই implement করা আছে। Number বদলে দেখো কী হয় — তাতেই intuition তৈরি হবে।
 
 ## LLM-এ কেন দরকার?
+
+কেন এত ঝামেলা? কারণ LLM প্রতিটা token-কে সংখ্যার list-এ রূপান্তর করে, তারপর সেই list দিয়েই হিসাব চালায়।
 
 ```mermaid
 flowchart TD
@@ -81,15 +89,13 @@ flowchart TD
     classDef layer fill:#10B981,color:#fff,stroke:#047857
 ```
 
-- Token → **embedding vector** (lookup table থেকে)
-- Layer input/output সব **vector**
-- Attention-এ similarity = **dot product** (পরের lesson)
+Token → **embedding vector** (lookup table থেকে)। Layer-এর input/output সব **vector**। আর Attention-এ similarity মাপা হয় **dot product** দিয়ে — সেটা পরের কয়েকটা lesson-এ আসবে।
 
 ## কোড চেষ্টা করো
 
 <Playground id="part-03/scalar-vector" title="Vector Operations" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Scalar** = একটা number (loss, learning rate)
 - **Vector** = number-এর ordered list (embedding, activation)

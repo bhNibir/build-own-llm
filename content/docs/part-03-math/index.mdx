@@ -1,14 +1,16 @@
 ---
-title: Module 3 — Math Foundations
-description: Vector, matrix, dot product, matmul, softmax — LLM-এর math building blocks
+title: Module 3 — Math Foundation
+description: Vector, Matrix, Dot Product, Matmul, Softmax — LLM-এর math building blocks
 ---
 
-# 🔢 Module 3: Math Foundations
+# Module 3: Math Foundation
 
-Part 1–2-এ আমরা **counting** দিয়ে language model বানিয়েছিলাম। Part 3 থেকে **neural network**-এর ভিত্তি — **linear algebra**।
+Part 1–2-এ আমরা **counting** দিয়ে language model বানিয়েছিলাম — word দেখে পরেরটা guess। কাজ করেছে, কিন্তু GPT-এর ভিতরে counting নেই। ওখানে আছে **neural network**, আর neural network চলে **linear algebra** দিয়ে।
+
+তাই এই Module-এ আমরা scratch থেকে সেই math build করব — Scalar/Vector থেকে শুরু করে Softmax পর্যন্ত।
 
 <Callout type="idea">
-💡 GPT-এর প্রতিটা layer মূলত **matrix multiplication** + **softmax**। এই Module-এ সেই operations হাতে-কলমে build করব।
+GPT-এর প্রতিটা layer মূলত **matrix multiplication** + **softmax**। এই Module-এ সেই operations হাতে-কলমে বানাবো — যাতে পরের Module-গুলোতে “ম্যাজিক” মনে না হয়।
 </Callout>
 
 <StepReveal steps={[
@@ -37,7 +39,7 @@ flowchart LR
     classDef math fill:#7C3AED,color:#fff,stroke:#5B21B6
 ```
 
-প্রতিটি lesson-এ **Playground** আছে — browser-এ code edit করে run করো।
+প্রতিটি lesson-এ **Playground** আছে — browser-এ code edit করে run করো। Math শুধু পড়লে বোঝা যায় না; নিজের হাতে number বদলে দেখলেই ধরা পড়ে।
 
 **আগের Module:** [Part 2 — Bigram LM](/docs/part-02-bigram)
 
