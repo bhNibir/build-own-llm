@@ -1,13 +1,13 @@
 ---
 title: Generate Text
-description: Autoregressive generation — trained weights দিয়ে text
+description: Autoregressive generation loop — trained Mini GPT দিয়ে text
 ---
 
 # ✨ Generate Text
 
-<ConceptAnim name="next-token" caption="Autoregressive generation" />
+<ConceptAnim slug="part-09-mini-gpt/03-generate" />
 
-Trained weights ready — এখন **autoregressive generation**: একটা token predict → append → repeat।
+Trained Mini GPT ready — এখন **autoregressive generation**: একটা token predict → append → repeat।
 
 <Callout type="idea">
 💡 Generation = inference mode — no backward pass, just forward + sample loop।
@@ -15,11 +15,11 @@ Trained weights ready — এখন **autoregressive generation**: একটা 
 
 ```mermaid
 flowchart LR
-    A["🌱 'i'"]:::seed --> B["Forward"]:::fwd
+    A["🌱 'i'"]:::seed --> B["GPT forward"]:::fwd
     B --> C["Logits"]:::logits
     C --> D["Softmax"]:::softmax
     D --> E["Sample token"]:::sample
-    E --> F["Append"]:::append
+    E --> F["Append to context"]:::append
     F --> B
     classDef seed fill:#4F46E5,color:#fff,stroke:#3730A3
     classDef fwd fill:#10B981,color:#fff,stroke:#047857
@@ -29,12 +29,12 @@ flowchart LR
     classDef append fill:#8B5CF6,color:#fff,stroke:#7C3AED
 ```
 
-## Generation Loop
+## Generation Code
 
 <StepReveal steps={[
-  { emoji: "🌱", title: "Prompt", body: "'i' or 'fruit'" },
-  { emoji: "🧠", title: "Forward", body: "Model → next-token probs" },
-  { emoji: "🎲", title: "Sample", body: "Pick from distribution" },
+  { emoji: "🌱", title: "Prompt", body: "'i' or 'apple is'" },
+  { emoji: "🧠", title: "Forward", body: "Full GPT pass → last token logits" },
+  { emoji: "🎲", title: "Sample", body: "Pick from probability distribution" },
   { emoji: "🔄", title: "Loop", body: "'i like apple is fruit...'" }
 ]} />
 
@@ -42,18 +42,14 @@ flowchart LR
 
 ```
 Prompt: "i"
-→ i like apple is fruit …
-→ i like banana is fruit …
-→ i like mango is fruit …
+→ i like apple is fruit
+→ i like mango is fruit
+→ i like banana is fruit
 ```
 
-Dataset sentences: `"banana is fruit"`, `"fruit is healthy"` — `"banana is healthy"` নেই।
+## Causal Mask During Generation
 
-<Illustration name="llm-predict" />
-
-## Causal Mask (full GPT)
-
-Full GPT forward-এ **causal mask** active — token i শুধু tokens 0..i-1 দেখে। আমাদের simplified demo context window = 1 (last word), কিন্তু generation loop একই।
+GPT forward-এ **causal mask** active — token i শুধু tokens 0..i-1 দেখে। Generation-এ naturally satisfied (শুধু past tokens context-এ)।
 
 ## Interactive Demo
 
@@ -62,7 +58,7 @@ Full GPT forward-এ **causal mask** active — token i শুধু tokens 0..i
 ## ✅ তুমি কী শিখলে?
 
 - Generation = autoregressive forward + sample loop
-- Same idea as Module 2 & 6 — richer model = better text
-- Next: temperature & top-k দিয়ে sampling control
+- Only last token's logits used for next prediction
+- Context window = last `seq_len` tokens
 
 **পরের lesson:** [Temperature](/docs/part-09-mini-gpt/04-temperature)

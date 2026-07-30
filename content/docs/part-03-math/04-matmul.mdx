@@ -5,13 +5,11 @@ description: Matmul — neural network layer computation এবং attention-এ
 
 # ✖️ Matrix Multiplication
 
-<ConceptAnim name="llm-pipeline" caption="Matmul in attention and FFN" />
+<ConceptAnim slug="part-03-math/04-matmul" />
 
 <Callout type="idea">
 💡 **Matrix multiplication (matmul)** = batch dot products। Neural network-এর প্রতিটা layer মূলত `output = input @ W + b`।
 </Callout>
-
-<Illustration name="matrix-grid" />
 
 ## Shape Rule
 
@@ -86,16 +84,18 @@ Attention = softmax(Q @ K^T / √d) @ V
 
 Module 7-এ attention build করলে এই matmul directly use হবে।
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+দুটো matrix multiply করে shape ও cell-by-cell result নীচের Playground-এ দেখো।
 
 <Playground id="part-03/matmul" title="Matrix Multiplication" />
 
 ## ✅ তুমি কী শিখলে?
 
 - **Matmul** shape: `(m×n) @ (n×p) = (m×p)`
-- Each output cell = dot product of row × column
-- Neural layer = input @ weight matrix
-- Attention = matmul of Q, K, V matrices
+- প্রতিটা output cell = row × column-এর dot product
+- Neural layer মূলত = input @ weight matrix
+- Attention = Q, K, V matrix-এর matmul
 
 **আগের lesson:** [Dot Product](/docs/part-03-math/03-dot-product)
 

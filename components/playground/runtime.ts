@@ -39,9 +39,20 @@ export async function ensureEsbuild(): Promise<typeof import('esbuild-wasm')> {
   return esbuild;
 }
 
+/** Strip ES module syntax so sandbox Function() can execute the code */
+export function prepareSandboxSource(code: string): string {
+  return code
+    .replace(/^\s*export\s+default\s+/gm, '')
+    .replace(/^\s*export\s+(const|let|var|function|class|async function)\s+/gm, '$1 ')
+    .replace(/^\s*export\s*\{[^}]*\}\s*;?\s*$/gm, '')
+    .replace(/^\s*export\s+type\s+.+$/gm, '')
+    .replace(/^\s*export\s+interface\s+.+$/gm, '');
+}
+
 export async function transpileTypeScript(code: string): Promise<string> {
   const esbuild = await ensureEsbuild();
-  const result = await esbuild.transform(code, {
+  const prepared = prepareSandboxSource(code);
+  const result = await esbuild.transform(prepared, {
     loader: 'ts',
     target: 'es2020',
   });

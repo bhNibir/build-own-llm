@@ -1,56 +1,52 @@
 ---
-title: Course Roadmap
+title: কোর্স Roadmap
 description: 10-module learning path — Tokenizer থেকে Mini GPT
 ---
 
-# 🗺️ Course Roadmap
+# কোর্স Roadmap
 
-<ConceptAnim name="llm-pipeline" caption="10-module path to Mini GPT" />
+<ConceptAnim slug="part-00-intro/03-roadmap" />
 
 ```mermaid
-flowchart TD
-    M0["0️⃣ Intro"]:::done --> M1["1️⃣ Tokenizer"]:::done
-    M1 --> M2["2️⃣ Bigram"]:::done
-    M2 --> M3["3️⃣ Math"]:::next
-    M3 --> M4["4️⃣ Autograd"]:::next
-    M4 --> M5["5️⃣ Neural Net"]:::next
-    M5 --> M6["6️⃣ Neural LM"]:::next
-    M6 --> M7["7️⃣ Attention"]:::next
-    M7 --> M8["8️⃣ Transformer"]:::next
-    M8 --> M9["9️⃣ Mini GPT"]:::next
-    M9 --> M10["🔟 Production"]:::next
-    classDef done fill:#10B981,color:#fff,stroke:#047857
-    classDef next fill:#6366F1,color:#fff,stroke:#4338CA
+flowchart LR
+    A["Intro"]:::input --> B["Data"]:::process
+    B --> C["Foundations"]:::output
+    C --> D["Architecture"]:::highlight
+    D --> E["Bridge"]:::dim
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#F5F3FF,color:#4C1D95,stroke:#7C3AED,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
-## All 10 Modules
+## সব Module
 
-| Module | Topic | Lessons | Status |
-|--------|-------|---------|--------|
-| 0 | Introduction | 3 | ✅ Ready |
-| 1 | Data Pipeline | 6 | ✅ Ready |
-| 2 | Bigram LM | 5 | ✅ Ready |
-| 3 | Math Foundations | 5 | ✅ Ready |
-| 4 | Autograd | 4 | ✅ Ready |
-| 5 | Neural Network | 4 | ✅ Ready |
-| 6 | Neural LM | 5 | ✅ Ready |
-| 7 | Attention | 5 | ✅ Ready |
-| 8 | Transformer Block | 5 | ✅ Ready |
-| 9 | Mini GPT | 5 | ✅ Ready |
-| 10 | Production Bridge | 2 | ✅ Ready |
+| Module | বিষয় | Lessons |
+|--------|-------|---------|
+| [0](/docs/part-00-intro) | Introduction | 3 |
+| [1](/docs/part-01-tokenizer) | Tokenizer | 6 |
+| [2](/docs/part-02-bigram) | Bigram LM | 5 |
+| [3](/docs/part-03-math) | Math Foundations | 5 |
+| [4](/docs/part-04-autograd) | Autograd | 4 |
+| [5](/docs/part-05-neural-network) | Neural Network | 4 |
+| [6](/docs/part-06-neural-lm) | Neural LM | 5 |
+| [7](/docs/part-07-attention) | Attention | 5 |
+| [8](/docs/part-08-transformer) | Transformer Block | 5 |
+| [9](/docs/part-09-mini-gpt) | Mini GPT | 5 |
+| [10](/docs/part-10-bridge) | Production Bridge | 2 |
 
-## Learning order (why this sequence)
+## শেখার ক্রম
 
 ```
 Tokenizer → Vocabulary → Bigram → Math → Autograd → NN → Neural LM → Attention → Transformer → Mini GPT
 ```
 
-**Run early, math later** — Module 2-এ working model, Module 3-এ math deepen।
+**আগে run, পরে math** — Module 2-এ working model, Module 3-এ math deepen।
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Full 10-module path mapped
-- Modules 1–2 interactive playgrounds ready
-- End goal: **Mini GPT in browser**
+- পুরো 10-module path map হয়ে গেছে
+- End goal: **browser-এ Mini GPT**
 
-**শুরু করো:** [Module 1 — Tokenizer](/docs/part-01-tokenizer)
+**শুরু করো:** [LLM কী?](/docs/part-00-intro/01-what-is-llm)

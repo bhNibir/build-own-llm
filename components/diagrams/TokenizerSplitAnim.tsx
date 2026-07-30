@@ -3,12 +3,9 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import type { ConceptExample } from './lesson-concepts';
-import { ActivePulse, FlowArrow } from './ConceptAnim';
+import { ActiveRing, DataLabel, FlowConnector, SketchBox, StepDots } from './diagram-ui';
 
-const DEFAULT = {
-  input: 'I Like Apple',
-  tokens: ['i', 'like', 'apple'],
-};
+const DEFAULT = { input: 'I Like Apple', tokens: ['i', 'like', 'apple'] };
 
 export function TokenizerSplitAnim({
   paused,
@@ -28,43 +25,49 @@ export function TokenizerSplitAnim({
   }, [paused]);
 
   const text = step === 0 ? `"${input}"` : `"${input.toLowerCase()}"`;
+  const stepBn = ['ইনপুট', 'lowercase', 'ভাগ'][step];
+  const stepEn = ['Input', 'lowercase', 'split'][step];
 
   return (
     <div className="space-y-4">
-      <p className="text-center text-sm font-medium">
-        ধাপ {step + 1}/3:{' '}
-        <span className="text-indigo-600 dark:text-indigo-400">
-          {step === 0 ? 'Input' : step === 1 ? 'lowercase' : 'split → tokens'}
-        </span>
-      </p>
-      <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-        <motion.div
-          key={text}
-          initial={{ opacity: 0, x: -8 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="relative rounded-xl border-2 border-indigo-400 bg-white px-5 py-4 font-mono text-lg dark:bg-slate-800"
+      <StepDots total={3} current={step} onSelect={setStep} />
+      <DataLabel bn={`ধাপ ${step + 1}/3: ${stepBn}`} en={stepEn} />
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div className="relative">
+          <ActiveRing active={step <= 1} />
+          <SketchBox
+            fillStyle="solid"
+            strokeStyle="solid"
+            palette="blue"
+            active={step <= 1}
+            className="font-mono text-sm"
+          >
+            {text}
+          </SketchBox>
+        </div>
+        <FlowConnector />
+        <SketchBox
+          fillStyle={step >= 2 ? 'hachure' : 'solid'}
+          strokeStyle="solid"
+          palette="green"
+          className="flex min-h-[48px] min-w-[140px] flex-wrap justify-center gap-2"
         >
-          <ActivePulse active={step <= 1} />
-          {text}
-        </motion.div>
-        <FlowArrow />
-        <div className="relative flex min-h-[72px] flex-wrap justify-center gap-2 rounded-xl border-2 border-emerald-400 bg-emerald-50 px-4 py-3 dark:bg-emerald-950/30">
           {step < 2 ? (
-            <span className="animate-pulse text-sm text-fd-muted-foreground">অপেক্ষা…</span>
+            <span className="text-xs text-fd-muted-foreground">…</span>
           ) : (
             tokens.map((tok, i) => (
               <motion.span
                 key={tok}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: i * 0.15, type: 'spring' }}
-                className="rounded-lg bg-emerald-500 px-3 py-1.5 font-mono text-sm font-bold text-white"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1 }}
+                className="font-mono text-xs"
               >
                 {tok}
               </motion.span>
             ))
           )}
-        </div>
+        </SketchBox>
       </div>
     </div>
   );

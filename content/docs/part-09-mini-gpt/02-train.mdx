@@ -1,25 +1,25 @@
 ---
 title: Train Mini GPT
-description: Fruit dataset-এ next-token training loop — browser demo
+description: Fruit dataset-এ ~500-line TypeScript training loop
 ---
 
-# 🏋️ Train Mini GPT
+# Train Mini GPT
 
-<ConceptAnim name="train-loop" caption="Train on fruit corpus — loss drops over epochs" />
+<ConceptAnim slug="part-09-mini-gpt/02-train" />
 
-Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, weight update — full loop।
+Architecture বুঝলাম — এখন **train** করব fruit dataset-এ। Forward pass, cross-entropy loss, backprop, weight update — full loop।
 
 <Callout type="warn">
-⚠️ Browser sandbox-এ full 4-block GPT train করা heavy। Interactive demo-তে **word-level neural next-token model** চালাই (Module 6-এর মতো) — same fruit corpus, same loss curve idea। Architecture diagram-এ যে stack দেখেছো, সেটাই production path।
+⚠️ Browser-এ full transformer training ভারী — এই Playground-এ **simplified word-level trainer** চলে (**esbuild-wasm** runtime)। Architecture lesson-এ যা শিখেছ, সেই loop-এর same pattern: forward → loss → backward → update।
 </Callout>
 
 ```mermaid
 flowchart TD
-    A["📂 Fruit dataset"]:::data --> B["🔗 Word pairs"]:::batch
-    B --> C["➡️ Forward → logits"]:::fwd
+    A["📂 Fruit dataset"]:::data --> B["🔀 Training pairs"]:::batch
+    B --> C["➡️ Forward (embed + W)"]:::fwd
     C --> D["📉 Cross-entropy loss"]:::loss
-    D --> E["⬅️ Gradient"]:::bwd
-    E --> F["🔄 Update W"]:::upd
+    D --> E["⬅️ Backprop"]:::bwd
+    E --> F["🔄 Weight update"]:::upd
     F --> G{"Epoch done?"}:::check
     G -->|No| B
     G -->|Yes| H["💾 Trained weights"]:::done
@@ -39,41 +39,43 @@ flowchart TD
 
 ## Dataset
 
-Module 1-এর same fruit sentences:
+Fruit sentences from Module 1:
 
 ```
 "i like apple"
 "apple is fruit"
-"banana is fruit"
 "fruit is healthy"
+"i like banana"
 ...
 ```
 
+<Callout type="tip">
+💡 Full Mini GPT-তে 4টি transformer block + Adam optimizer থাকে। Playground-এ fruit dataset-এ **word-level neural LM** train করব — same training loop, ছোট architecture।
+</Callout>
+
 <StepReveal steps={[
   { emoji: "📂", title: "Load data", body: "Tokenized fruit sentences" },
-  { emoji: "🔗", title: "Pairs", body: "(word_i → word_{i+1})" },
-  { emoji: "🧠", title: "Forward", body: "Logits over vocabulary" },
-  { emoji: "📉", title: "Loss + update", body: "Cross-entropy + gradient step" }
+  { emoji: "🔀", title: "Pairs", body: "Bigram-style (word → next word)" },
+  { emoji: "🧠", title: "Forward", body: "Embedding + weight matrix → logits" },
+  { emoji: "📉", title: "Loss + update", body: "Cross-entropy + gradient descent" }
 ]} />
 
-## What the Demo Trains
+## What Gets Trained (Playground)
 
-| Piece | Shape | Role |
-|-------|-------|------|
-| Weight `W` | V × V | Current word → next-word logits |
-| Softmax | V | Probabilities |
-| Update | GD | Lower cross-entropy |
-
-Full GPT-তে এখানে embedding + N transformer blocks + LM head থাকবে — Module 8-এর block stack।
+| Parameter | Shape | Role |
+|-----------|-------|------|
+| Embedding E | V × D | Word ID → vector |
+| Weight W | V × D | Vector → logits |
+| LM head (full GPT) | D × V | Module 9 architecture lesson-এ |
 
 ## Interactive Demo
 
-<Playground id="part-09/train" title="Train Mini GPT (simplified)" viz="loss" />
+<Playground id="part-09/train" title="Train Mini GPT" />
 
 ## ✅ তুমি কী শিখলে?
 
-- Training loop: forward → loss → update → repeat
-- Loss should decrease over epochs
-- Browser demo simplified; architecture target = full GPT stack
+- Full GPT training loop-এর pattern: forward → loss → backward → update
+- Browser Playground-এ fruit dataset-এ simplified trainer run করা যায়
+- Loss gradually কমতে থাকলে model শিখছে
 
 **পরের lesson:** [Generate Text](/docs/part-09-mini-gpt/03-generate)

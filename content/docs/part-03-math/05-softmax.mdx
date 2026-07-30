@@ -5,7 +5,7 @@ description: Logits কে probability distribution-এ convert করা
 
 # 🎲 Softmax
 
-<ConceptAnim name="softmax-bars" caption="Logits (violet) → Softmax normalize (green) → probability distribution" />
+<ConceptAnim slug="part-03-math/05-softmax" />
 
 <Callout type="idea">
 💡 Model raw **logits** output করে — softmax সেগুলো **probability**-তে convert করে যেখানে সব যোগ করলে exactly **1** হয়।
@@ -49,12 +49,13 @@ flowchart LR
   <Formula>
     {`$$\\text{softmax}(z_i) = \\frac{e^{z_i}}{\\sum_{j=1}^{n} e^{z_j}}$$`}
   </Formula>
-  <WorkedExample>
-    z = [2.0, 1.0, 0.0]{'\n'}
-    e^z = [7.389, 2.718, 1.000]{'\n'}
-    sum = 11.107{'\n'}
-    softmax ≈ [0.665, 0.245, 0.090]
-  </WorkedExample>
+  <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+    <div>১. দেওয়া logits: <code>z = [2.0, 1.0, 0.0]</code></div>
+    <div>২. প্রতিটাতে exponential: <code>e^z ≈ [7.389, 2.718, 1.000]</code></div>
+    <div>৩. সব exp যোগ: <code>sum = 7.389 + 2.718 + 1.000 = 11.107</code></div>
+    <div>৪. প্রতিটা ÷ sum: <code>softmax ≈ [0.665, 0.245, 0.090]</code></div>
+    <div>৫. চেক: <code>0.665 + 0.245 + 0.090 = 1.000</code> ✓</div>
+  </MathPractical>
   <CodeLink>Playground-এ same numbers run করো ↓</CodeLink>
 </MathLesson>
 
@@ -97,17 +98,35 @@ flowchart TD
 - Softmax → probability over all tokens
 - Sample বা argmax → next token
 
-## Interactive Demo
+## কোড চেষ্টা করো
+
+নীচের snippet-এ stable softmax চালাও — তারপর Playground-এ নিজের logits try করো।
+
+<CodeRun title="Softmax" height={240}>{`// Logits → probability (max-subtraction = numerical stability)
+function softmax(z: number[]): number[] {
+  const max = Math.max(...z);
+  const exps = z.map((v) => Math.exp(v - max));
+  const sum = exps.reduce((a, b) => a + b, 0);
+  return exps.map((v) => v / sum);
+}
+
+const logits = [2.0, 1.0, 0.1];
+log.step('Softmax');
+log.data('Logits', logits);
+const probs = softmax(logits);
+log.data('Probs', probs.map((p) => Number(p.toFixed(3))));
+log.data('Sum', Number(probs.reduce((a, b) => a + b, 0).toFixed(4)));
+log.ok('sum ≈ 1 ✓');`}</CodeRun>
 
 <Playground id="part-03/softmax" title="Softmax Calculator" viz="softmax" />
 
 ## ✅ তুমি কী শিখলে?
 
-- **Softmax** converts logits → valid probability distribution
+- **Softmax** logits-কে valid probability distribution-এ convert করে
 - Formula: `exp(z_i) / Σ exp(z_j)`
-- Bigger logit → higher probability
-- LLM output layer always ends with softmax (or equivalent)
-- Use max-subtraction trick for numerical stability
+- বড় logit → বেশি probability
+- LLM output layer প্রায়ই softmax দিয়ে শেষ হয়
+- Numerical stability-এর জন্য max-subtraction trick ব্যবহার করো
 
 **আগের lesson:** [Matrix Multiplication](/docs/part-03-math/04-matmul)
 

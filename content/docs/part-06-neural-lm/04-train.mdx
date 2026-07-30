@@ -3,32 +3,29 @@ title: Training Loop
 description: Fruit dataset-এ forward + backward + update — model শেখা শুরু
 ---
 
-# 🔄 Training Loop
+# Training Loop
 
-<ConceptAnim name="train-loop" caption="Forward → Loss → Backward → Update — loop until loss drops" />
+<ConceptAnim slug="part-06-neural-lm/04-train" />
 
 Embedding, weight matrix, loss — সব ready।
 
 <Callout type="tip">
-✅ Browser demo-তে **~80 epochs** fruit word pairs-এ train করি। Loss gradually কমতে থাকবে — Run চাপলে live chart-এ দেখবে।
+✅ Browser demo-তে **~200 epochs** fruit word pairs-এ train করি। Loss gradually কমতে থাকবে — Run চাপলে live chart-এ দেখবে।
 </Callout>
 
 ```mermaid
 flowchart TD
-    A["📂 Training pairs"]:::data --> B["➡️ Forward"]:::fwd
-    B --> C["📉 Loss"]:::loss
-    C --> D["⬅️ Backward"]:::bwd
-    D --> E["🔄 Update weights"]:::upd
-    E --> F{"Epoch done?"}:::check
+    A["Training pairs"]:::input --> B["Forward"]:::process
+    B --> C["Loss"]:::output
+    C --> D["Backward"]:::process
+    D --> E["Update weights"]:::process
+    E --> F{"Epoch done?"}:::highlight
     F -->|No| B
-    F -->|Yes| G["✅ Trained model"]:::done
-    classDef data fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef fwd fill:#10B981,color:#fff,stroke:#047857
-    classDef loss fill:#EF4444,color:#fff,stroke:#DC2626
-    classDef bwd fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef upd fill:#6366F1,color:#fff,stroke:#4338CA
-    classDef check fill:#8B5CF6,color:#fff,stroke:#7C3AED
-    classDef done fill:#10B981,color:#fff,stroke:#047857
+    F -->|Yes| G["Trained model"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
 ## Loop Structure
@@ -37,7 +34,7 @@ flowchart TD
   { emoji: "1️⃣", title: "Forward", body: "Input token → logits → loss" },
   { emoji: "2️⃣", title: "Backward", body: "Gradient compute (dW from softmax error)" },
   { emoji: "3️⃣", title: "Update", body: "W -= lr × gradient" },
-  { emoji: "4️⃣", title: "Repeat", body: "~80 epochs until loss drops" }
+  { emoji: "4️⃣", title: "Repeat", body: "~200 epochs until loss drops" }
 ]} />
 
 ## Loss Curve
@@ -55,10 +52,10 @@ Training চলাকালীন loss কমতে থাকে:
 | Param | Demo value | Meaning |
 |-------|------------|---------|
 | `lr` | 3 | Learning rate (toy scale) |
-| `epochs` | 80 | Full dataset passes |
+| `epochs` | 200 | Full dataset passes |
 | Dataset | 10 fruit sentences | Module 1 corpus |
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-06/train" title="Fruit Neural LM Training" viz="loss" />
 

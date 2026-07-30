@@ -27,17 +27,17 @@ class Vector {
   }
 }
 
-console.log('=== Scalar vs Vector ===\\n');
+log.step('Scalar vs Vector');
 
 const a = new Vector([1, 2, 3]);
 const b = new Vector([4, 5, 6]);
 
-console.log('a = ' + a);
-console.log('b = ' + b);
-console.log('a + b = ' + a.add(b));
-console.log('a · b (dot) = ' + a.dot(b));
-console.log('\\nDot product = sum of element-wise products');
-console.log('  1×4 + 2×5 + 3×6 = ' + a.dot(b));
+log.data('a', a.toString());
+log.data('b', b.toString());
+log.data('a + b', a.add(b).toString());
+log.data('a · b (dot)', a.dot(b));
+log.data('1×4 + 2×5 + 3×6', a.dot(b));
+log.ok('vector ops done');
 `,
     },
   },
@@ -62,20 +62,20 @@ class Matrix {
     const lines: string[] = [];
     for (let r = 0; r < this.rows; r++) {
       const row = Array.from({ length: this.cols }, (_, c) => this.get(r, c));
-      lines.push('  [' + row.join(', ') + ']');
+      lines.push('[' + row.join(', ') + ']');
     }
-    return lines.join('\\n');
+    return lines.join(' ');
   }
 }
 
-console.log('=== 2×2 Matrix ===\\n');
+log.step('2×2 Matrix');
 
 const m = new Matrix(2, 2, [1, 2, 3, 4]);
-console.log('Initial matrix:\\n' + m);
-
-console.log('\\nget(0, 1) = ' + m.get(0, 1));
+log.data('Initial', m.toString());
+log.data('get(0, 1)', m.get(0, 1));
 m.set(1, 0, 99);
-console.log('After set(1, 0, 99):\\n' + m);
+log.data('After set(1, 0, 99)', m.toString());
+log.ok('matrix get/set done');
 `,
     },
   },
@@ -91,14 +91,16 @@ console.log('After set(1, 0, 99):\\n' + m);
 const a = [1, 2, 3];
 const b = [4, 5, 6];
 
-console.log('=== Dot Product ===\\n');
-console.log('a = [' + a.join(', ') + ']');
-console.log('b = [' + b.join(', ') + ']');
-console.log('\\nStep by step:');
+log.step('Dot Product');
+log.data('a', a);
+log.data('b', b);
+
+log.step('Step by step');
 for (let i = 0; i < a.length; i++) {
-  console.log('  a[' + i + '] × b[' + i + '] = ' + a[i] + ' × ' + b[i] + ' = ' + (a[i] * b[i]));
+  log.data('a[' + i + '] × b[' + i + ']', a[i] + ' × ' + b[i] + ' = ' + (a[i] * b[i]));
 }
-console.log('\\na · b = ' + dot(a, b));
+log.data('a · b', dot(a, b));
+log.ok('dot product = ' + dot(a, b));
 `,
     },
   },
@@ -122,29 +124,22 @@ console.log('\\na · b = ' + dot(a, b));
   return C;
 }
 
-function printMatrix(name: string, M: number[][]): void {
-  console.log(name + ':');
-  for (const row of M) {
-    console.log('  [' + row.join(', ') + ']');
-  }
-}
-
 const A = [[1, 2], [3, 4]];
 const B = [[5, 6], [7, 8]];
 
-console.log('=== Matrix Multiply (2×2) ===\\n');
-printMatrix('A', A);
-console.log('');
-printMatrix('B', B);
+log.step('Matrix Multiply (2×2)');
+log.data('A', A);
+log.data('B', B);
 
 const C = matmul(A, B);
-console.log('\\nA × B =');
-printMatrix('C', C);
+log.data('A × B', C);
 
-console.log('\\nC[0][0] = 1×5 + 2×7 = ' + C[0][0]);
-console.log('C[0][1] = 1×6 + 2×8 = ' + C[0][1]);
-console.log('C[1][0] = 3×5 + 4×7 = ' + C[1][0]);
-console.log('C[1][1] = 3×6 + 4×8 = ' + C[1][1]);
+log.step('Element breakdown');
+log.data('C[0][0]', '1×5 + 2×7 = ' + C[0][0]);
+log.data('C[0][1]', '1×6 + 2×8 = ' + C[0][1]);
+log.data('C[1][0]', '3×5 + 4×7 = ' + C[1][0]);
+log.data('C[1][1]', '3×6 + 4×8 = ' + C[1][1]);
+log.ok('matmul done');
 `,
     },
   },
@@ -162,18 +157,21 @@ console.log('C[1][1] = 3×6 + 4×8 = ' + C[1][1]);
 
 const logits = [2, 1, 0];
 
-console.log('=== Softmax ===\\n');
-console.log('Input logits: [' + logits.join(', ') + ']');
-console.log('\\nSoftmax converts raw scores into probabilities (sum = 1):\\n');
+log.step('Softmax');
+log.data('Input logits', logits);
+log.data('Idea', 'raw scores → probabilities (sum = 1)');
 
 const probs = softmax(logits);
+
+log.step('Per class');
 for (let i = 0; i < logits.length; i++) {
-  console.log('  class ' + i + ': exp(' + logits[i] + ') / sum → ' + probs[i].toFixed(4));
+  log.data('class ' + i, 'exp(' + logits[i] + ') / sum → ' + probs[i].toFixed(4));
 }
 
 const total = probs.reduce((a, b) => a + b, 0);
-console.log('\\nProbabilities: [' + probs.map((p) => p.toFixed(4)).join(', ') + ']');
-console.log('Sum = ' + total.toFixed(4));
+log.data('Probabilities', probs.map((p) => p.toFixed(4)));
+log.data('Sum', total.toFixed(4));
+log.ok('softmax sums to 1');
 `,
     },
   },
@@ -204,21 +202,23 @@ class Value {
   }
 }
 
-console.log('=== Value (Forward Pass) ===\\n');
+log.step('Value (Forward Pass)');
 
 const a = new Value(2);
 const b = new Value(3);
 const c = a.mul(b).add(new Value(1));
 
-console.log('a = ' + a.data);
-console.log('b = ' + b.data);
-console.log('c = a * b + 1 = ' + c.data);
-console.log('\\nComputation graph:');
-console.log('  c (' + c.data + ') ← ' + c._op);
-console.log('    ├─ left  (' + c._children[0].data + ') ← ' + c._children[0]._op);
-console.log('    │    ├─ a (' + a.data + ')');
-console.log('    │    └─ b (' + b.data + ')');
-console.log('    └─ right (1) ← +');
+log.data('a', a.data);
+log.data('b', b.data);
+log.data('c = a * b + 1', c.data);
+
+log.step('Computation graph');
+log.data('c', c.data + ' ← ' + c._op);
+log.data('  left', c._children[0].data + ' ← ' + c._children[0]._op);
+log.data('    a', a.data);
+log.data('    b', b.data);
+log.data('  right', '1 ← +');
+log.ok('forward pass built');
 `,
     },
   },
@@ -273,22 +273,23 @@ console.log('    └─ right (1) ← +');
   }
 }
 
-console.log('=== Backpropagation ===\\n');
+log.step('Backpropagation');
 
 const a = new Value(2);
 const b = new Value(3);
 const c = a.mul(b);
 const d = c.add(new Value(1));
 
-console.log('Forward: d = a*b + 1 = ' + d.data);
+log.data('Forward d = a*b + 1', d.data);
 
 d.backward();
 
-console.log('\\nGradients (∂L/∂x where L = d):');
-console.log('  ∂d/∂a = ' + a.grad + '  (chain rule: b × 1 = ' + b.data + ')');
-console.log('  ∂d/∂b = ' + b.grad + '  (chain rule: a × 1 = ' + a.data + ')');
-console.log('  ∂d/∂c = ' + c.grad + '  (add passes grad through)');
-console.log('  ∂d/∂d = ' + d.grad);
+log.step('Gradients (∂L/∂x where L = d)');
+log.data('∂d/∂a', a.grad + '  (chain: b × 1 = ' + b.data + ')');
+log.data('∂d/∂b', b.grad + '  (chain: a × 1 = ' + a.data + ')');
+log.data('∂d/∂c', c.grad + '  (add passes grad through)');
+log.data('∂d/∂d', d.grad);
+log.ok('backprop gradients computed');
 `,
     },
   },
@@ -308,27 +309,28 @@ function df(x: number): number {
   return 2 * x;
 }
 
-console.log('=== Gradient Descent on x² ===\\n');
-console.log('Goal: find x that minimizes f(x) = x²\\n');
+log.step('Gradient Descent on x²');
+log.data('Goal', 'find x that minimizes f(x) = x²');
 
 let x = 4.0;
 const lr = 0.1;
 const steps = 10;
 
-console.log('Start: x = ' + x + ', f(x) = ' + f(x));
-console.log('Learning rate: ' + lr + '\\n');
+log.data('Start x', x);
+log.data('f(x)', f(x));
+log.data('Learning rate', lr);
 
+log.step('Steps');
 for (let i = 1; i <= steps; i++) {
   const grad = df(x);
   x = x - lr * grad;
-  console.log(
-    'Step ' + i + ': grad = ' + grad.toFixed(4) +
-    ' → x = ' + x.toFixed(4) +
-    ', f(x) = ' + f(x).toFixed(6)
+  log.data(
+    'Step ' + i,
+    'grad=' + grad.toFixed(4) + ' → x=' + x.toFixed(4) + ', f(x)=' + f(x).toFixed(6)
   );
 }
 
-console.log('\\nConverged near x = 0 (minimum of x²)');
+log.ok('converged near x = 0');
 `,
     },
   },
@@ -349,28 +351,28 @@ function neuron(inputs: number[], weights: number[], bias: number): number {
   return sigmoid(z);
 }
 
-console.log('=== Single Neuron ===\\n');
+log.step('Single Neuron');
 
 const inputs = [0.5, 0.8, 0.2];
 const weights = [0.4, -0.6, 0.9];
 const bias = -0.1;
 
-console.log('Inputs:  [' + inputs.join(', ') + ']');
-console.log('Weights: [' + weights.join(', ') + ']');
-console.log('Bias:    ' + bias);
+log.data('Inputs', inputs);
+log.data('Weights', weights);
+log.data('Bias', bias);
 
 let z = bias;
-console.log('\\nWeighted sum z = bias + Σ(wᵢ × xᵢ):');
+log.step('Weighted sum z = bias + Σ(wᵢ × xᵢ)');
 for (let i = 0; i < inputs.length; i++) {
   const term = weights[i] * inputs[i];
-  console.log('  w' + i + '×x' + i + ' = ' + weights[i] + ' × ' + inputs[i] + ' = ' + term.toFixed(4));
+  log.data('w' + i + '×x' + i, weights[i] + ' × ' + inputs[i] + ' = ' + term.toFixed(4));
   z += term;
 }
-console.log('  z = ' + z.toFixed(4));
+log.data('z', z.toFixed(4));
 
 const output = sigmoid(z);
-console.log('\\nOutput = sigmoid(z) = ' + output.toFixed(4));
-console.log('(squashes z into range (0, 1))');
+log.data('Output = sigmoid(z)', output.toFixed(4));
+log.ok('neuron forward pass done');
 `,
     },
   },
@@ -391,7 +393,7 @@ function layer(inputs: number[], weightMatrix: number[][], biases: number[]): nu
   return weightMatrix.map((weights, i) => sigmoid(dot(inputs, weights) + biases[i]));
 }
 
-console.log('=== Layer of 3 Neurons ===\\n');
+log.step('Layer of 3 Neurons');
 
 const inputs = [0.5, 0.8, 0.2];
 const W = [
@@ -401,17 +403,20 @@ const W = [
 ];
 const biases = [-0.1, 0.3, -0.2];
 
-console.log('Input vector: [' + inputs.join(', ') + ']');
-console.log('3 neurons, each with ' + inputs.length + ' weights\\n');
+log.data('Input vector', inputs);
+log.data('Neurons', 3);
+log.data('Weights each', inputs.length);
 
 const outputs = layer(inputs, W, biases);
 
+log.step('Per neuron');
 for (let i = 0; i < outputs.length; i++) {
   const z = dot(inputs, W[i]) + biases[i];
-  console.log('Neuron ' + i + ': z = ' + z.toFixed(4) + ' → sigmoid = ' + outputs[i].toFixed(4));
+  log.data('Neuron ' + i, 'z=' + z.toFixed(4) + ' → sigmoid=' + outputs[i].toFixed(4));
 }
 
-console.log('\\nLayer output: [' + outputs.map((o) => o.toFixed(4)).join(', ') + ']');
+log.data('Layer output', outputs.map((o) => o.toFixed(4)));
+log.ok('layer forward done');
 `,
     },
   },
@@ -432,25 +437,26 @@ function layer(inputs: number[], W: number[][], b: number[]): number[] {
   return W.map((w, i) => sigmoid(dot(inputs, w) + b[i]));
 }
 
-console.log('=== 2-Layer MLP Forward Pass ===\\n');
+log.step('2-Layer MLP Forward Pass');
 
 const x = [0.5, 0.8];
 
-// Layer 1: 2 inputs → 3 hidden neurons (each row = one neuron's weights)
+// Layer 1: 2 inputs → 3 hidden neurons
 const W1 = [[0.4, -0.6], [0.3, 0.7], [-0.2, 0.5]];
 const b1 = [-0.1, 0.2, -0.3];
 const h = layer(x, W1, b1);
 
-console.log('Input:  [' + x.join(', ') + ']');
-console.log('Hidden: [' + h.map((v) => v.toFixed(4)).join(', ') + ']  (3 neurons)');
+log.data('Input', x);
+log.data('Hidden (3 neurons)', h.map((v) => v.toFixed(4)));
 
 // Layer 2: 3 hidden → 1 output neuron (one row with 3 weights)
 const W2 = [[0.5, -0.4, 0.6]];
 const b2 = [0.1];
 const y = layer(h, W2, b2);
 
-console.log('Output: ' + y[0].toFixed(4) + '  (1 neuron)');
-console.log('\\nData flow: input(2) → hidden(3) → output(1)');
+log.data('Output (1 neuron)', y[0].toFixed(4));
+log.data('Flow', 'input(2) → hidden(3) → output(1)');
+log.ok('MLP forward pass done');
 `,
     },
   },
@@ -484,7 +490,7 @@ let b2 = [randn()];
 const lr = 0.5;
 const epochs = 100;
 
-console.log('=== Train XOR (~100 epochs) ===\\n');
+log.step('Train XOR (~100 epochs)');
 
 for (let epoch = 0; epoch < epochs; epoch++) {
   let totalLoss = 0;
@@ -517,17 +523,18 @@ for (let epoch = 0; epoch < epochs; epoch++) {
   }
 
   if (epoch % 20 === 0 || epoch === epochs - 1) {
-    console.log('Epoch ' + epoch + ': avg loss = ' + (totalLoss / X.length).toFixed(4));
+    log.data('Epoch ' + epoch, 'avg loss = ' + (totalLoss / X.length).toFixed(4));
   }
 }
 
-console.log('\\n--- Predictions ---');
+log.step('Predictions');
 for (let i = 0; i < X.length; i++) {
   const x = X[i];
   const h = W1.map((w, j) => sigmoid(w[0] * x[0] + w[1] * x[1] + b1[j]));
   const y = sigmoid(W2[0].reduce((s, w, j) => s + w * h[j], 0) + b2[0]);
-  console.log('  [' + x.join(', ') + '] → ' + y.toFixed(4) + '  (target: ' + Y[i] + ')');
+  log.data('[' + x.join(', ') + ']', y.toFixed(4) + '  (target: ' + Y[i] + ')');
 }
+log.ok('XOR trained');
 `,
     },
   },

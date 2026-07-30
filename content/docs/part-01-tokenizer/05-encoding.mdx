@@ -5,20 +5,19 @@ description: Sentence কে number list-এ convert করা
 
 # Encoding / Decoding
 
-<ConceptAnim name="llm-pipeline" caption="Encode sentence to number array" />
+<ConceptAnim slug="part-01-tokenizer/05-encoding" />
 
 Vocabulary আছে। এখন sentence কে number list-এ convert করব — এটাই **Encoding**। উল্টোটা **Decoding**।
 
 ```mermaid
 flowchart LR
-    A["📝 Text"]:::text --> B["Encode"]:::enc
-    B --> C["🔢 IDs"]:::ids
-    C --> D["Decode"]:::dec
-    D --> E["📝 Text"]:::text
-    classDef text fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef enc fill:#10B981,color:#fff,stroke:#047857
-    classDef ids fill:#F59E0B,color:#fff,stroke:#D97706
-    classDef dec fill:#6366F1,color:#fff,stroke:#4338CA
+    A["i like apple"]:::input --> B["Encode"]:::process
+    B --> C["7, 9, 0"]:::output
+    C --> D["Decode"]:::process
+    D --> E["i like apple"]:::input
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
 ```
 
 ## Encoding
@@ -27,7 +26,7 @@ Sentence → Number list
 
 ```
 "i like apple"  →  [7, 9, 0]
-"fruit is healthy"  →  [4, 8, 5]
+"fruit is healthy"  →  [4, 8, 6]
 ```
 
 প্রতিটা word-কে তার vocabulary ID-তে map করা।
@@ -37,7 +36,7 @@ Sentence → Number list
 Number list → Sentence (উল্টো)
 
 ```
-[4, 8, 5]  →  "fruit is healthy"
+[4, 8, 6]  →  "fruit is healthy"
 ```
 
 ## গুরুত্বপূর্ণ বোঝাপড়া

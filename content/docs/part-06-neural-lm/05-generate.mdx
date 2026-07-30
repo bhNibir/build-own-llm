@@ -5,7 +5,7 @@ description: Trained model দিয়ে autoregressive text generation
 
 # 🎲 Generate from Neural LM
 
-<ConceptAnim name="next-token" caption="Generate from neural LM" />
+<ConceptAnim slug="part-06-neural-lm/05-generate" />
 
 Training শেষ — এখন trained neural LM দিয়ে **text generate** করব। Process Bigram generation-এর মতোই: autoregressive loop।
 
@@ -40,24 +40,22 @@ flowchart LR
 
 | | Bigram | Neural LM |
 |---|--------|-----------|
-| Memory | Count table | Learned weights |
-| Quality | Fixed counts | Soft probabilities |
+| Memory | Count table | Learned E + W |
+| Quality | Limited patterns | Richer (same context window) |
 | Sampling | Same idea | Same idea |
-
-<Illustration name="llm-predict" />
 
 ## Example Output
 
 ```
 Seed: "i"
-→ i like apple is fruit …
-→ i like banana is fruit …
-→ i like mango is fruit …
+→ i like apple
+→ i like apple is fruit
+→ i like mango is fruit
 ```
 
-Output **random** — same seed + different sample = different text! Dataset-এ `"banana is fruit"` আছে, `"banana is healthy"` নেই।
+Output **random** — same seed + different sample = different text!
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-06/generate" title="Neural LM Text Generation" />
 

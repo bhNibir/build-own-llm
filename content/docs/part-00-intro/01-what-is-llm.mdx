@@ -3,47 +3,43 @@ title: What is an LLM?
 description: LLM হলো next-token prediction machine
 ---
 
-# 🤖 What is an LLM?
+# What is an LLM?
+
+<ConceptAnim slug="part-00-intro/01-what-is-llm" />
 
 <Callout type="idea">
-💡 **LLM (Large Language Model)** মূলত একটা machine যেটা context দেখে **পরের token predict** করে — magic নয়, probability math।
+**LLM (Large Language Model)** মূলত একটা machine যেটা context দেখে **পরের token predict** করে — magic নয়, probability math।
 </Callout>
 
-<Illustration name="llm-predict" />
-
-<ConceptAnim name="next-token" caption="LLM = next token prediction — একটার পর একটা word generate" />
-
-<TokenFlow />
+```mermaid
+flowchart LR
+    A["i like"]:::input --> B["Model"]:::process
+    B --> C["apple 72%"]:::output
+    B --> D["banana 18%"]:::output
+    B --> E["mango 10%"]:::output
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+```
 
 ## Next-token prediction
 
 তুমি type করো: `"i like"`
 
-Model ভাবে: `"apple"`, `"banana"`, `"mango"` — কোনটা বেশি likely?
-
-```mermaid
-flowchart LR
-    A["📝 i like"]:::input --> B["🧠 Model"]:::process
-    B --> C["🍎 apple 50%"]:::output
-    B --> D["🍌 banana 25%"]:::output
-    B --> E["🥭 mango 25%"]:::output
-    classDef input fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef process fill:#10B981,color:#fff,stroke:#047857
-    classDef output fill:#F59E0B,color:#fff,stroke:#D97706
-```
+Model ভাবে: `"apple"`, `"banana"`, `"mango"` — কোনটা বেশি likely? Fruit corpus থেকে roughly **72% / 18% / 10%**।
 
 ## Autoregressive generation
 
 একটা token predict → context-এ add → আবার predict:
 
 <StepReveal steps={[
-  { emoji: "1️⃣", title: "Start: i", body: "Seed word দিয়ে শুরু" },
-  { emoji: "2️⃣", title: "Predict: like", body: "P(like | i)" },
-  { emoji: "3️⃣", title: "Predict: apple", body: "P(apple | like)" },
-  { emoji: "4️⃣", title: "Output: i like apple", body: "Loop until stop" }
+  { title: "Start: i", body: "Seed word দিয়ে শুরু" },
+  { title: "Predict: like", body: "P(like | i)" },
+  { title: "Predict: apple", body: "P(apple | i like)" },
+  { title: "Output: i like apple", body: "Loop until stop" }
 ]} />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - LLM = **next-token prediction** machine
 - Generation = **autoregressive** loop

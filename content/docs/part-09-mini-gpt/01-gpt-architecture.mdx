@@ -5,7 +5,7 @@ description: N transformer blocks stacked — full Mini GPT stack
 
 # 🏛️ GPT Architecture
 
-<ConceptAnim name="llm-pipeline" caption="GPT = stack of blocks" />
+<ConceptAnim slug="part-09-mini-gpt/01-gpt-architecture" />
 
 সব building block এক জায়গায় — **GPT architecture**। Token in → transformer blocks → next token out।
 
@@ -54,23 +54,20 @@ flowchart TD
     style attn fill:#FFD700
 ```
 
-## Mini GPT Config (target architecture)
+## Mini GPT Config
 
 | Hyperparameter | Value |
 |----------------|-------|
-| Vocabulary | ~12–30 fruit words |
+| Vocabulary | ~30 fruit words |
 | d_model | 64 |
 | n_heads | 4 |
 | n_layers | 4 |
 | seq_len | 32 |
-
-<Callout type="tip">
-✅ নিচের diagram **full GPT stack**। Browser playground-এ আমরা same **training + generate loop** দেখাই simplified word-level model দিয়ে — যাতে Run এক ক্লিকে কাজ করে। Architecture idea Modules 6–8 থেকেই আছে।
-</Callout>
+| ~Lines of code | 500 |
 
 <StepReveal steps={[
   { emoji: "🔤", title: "Embed", body: "Token + positional lookup" },
-  { emoji: "🧱", title: "N Blocks", body: "Attention + FFN each" },
+  { emoji: "🧱", title: "4 Blocks", body: "Attention + FFN each" },
   { emoji: "📏", title: "Final Norm", body: "Stabilize before output" },
   { emoji: "🎯", title: "LM Head", body: "D → V logits" }
 ]} />
@@ -88,17 +85,21 @@ flowchart TD
 
 ## vs nanoGPT
 
-| | Our Mini GPT path | Karpathy nanoGPT |
+| | Our Mini GPT | Karpathy nanoGPT |
 |---|-------------|------------------|
 | Language | TypeScript | Python/PyTorch |
-| Architecture | Same stack (Modules 7–8) | Same |
+| Size | ~500 lines | ~300 lines |
 | Dataset | Fruit sentences | Shakespeare |
 | Runtime | Browser (esbuild-wasm) | GPU |
+
+<Callout type="tip">
+✅ Architecture **identical** — শুধু language এবং scale different। Module 10-এ nanoGPT line-by-line পড়ব।
+</Callout>
 
 ## ✅ তুমি কী শিখলে?
 
 - GPT = embed + N blocks + LM head
 - Decoder-only, causal attention
-- Browser demo = simplified loop; architecture = full stack
+- Our Mini GPT = same architecture, smaller scale
 
 **পরের lesson:** [Train Mini GPT](/docs/part-09-mini-gpt/02-train)

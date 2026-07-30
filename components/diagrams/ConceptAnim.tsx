@@ -1,102 +1,166 @@
 'use client';
 
-import { cn } from '@/lib/cn';
 import { useReducedMotion } from 'motion/react';
 import type { ComponentType } from 'react';
+import { ConceptFrame } from './diagram-ui';
+import { getLessonConcept, type ConceptExample } from './lesson-concepts';
 import { TokenizerSplitAnim } from './TokenizerSplitAnim';
 import { NextTokenAnim } from './NextTokenAnim';
 import { BigramScanAnim } from './BigramScanAnim';
 import { SoftmaxBarsAnim } from './SoftmaxBarsAnim';
+import { SamplingBarsAnim } from './SamplingBarsAnim';
+import { LossBarsAnim } from './LossBarsAnim';
+import { TempSoftmaxAnim } from './TempSoftmaxAnim';
+import { BigramPredictAnim } from './BigramPredictAnim';
 import { AttentionFlowAnim } from './AttentionFlowAnim';
 import { TrainLoopAnim } from './TrainLoopAnim';
 import { PipelineAnim } from './PipelineAnim';
-import type { ConceptExample } from './lesson-concepts';
+import { RoadmapSpineAnim } from './RoadmapSpineAnim';
+import { BlackBoxGlassAnim } from './BlackBoxGlassAnim';
+import { CorpusCardsAnim } from './CorpusCardsAnim';
+import { VocabMapAnim } from './VocabMapAnim';
+import { EncodeDecodeAnim } from './EncodeDecodeAnim';
+import { PipelineZoomAnim } from './PipelineZoomAnim';
+import { ContextWindowAnim } from './ContextWindowAnim';
+import { CountTableAnim } from './CountTableAnim';
+import { GenerateChainAnim } from './GenerateChainAnim';
+import { VectorAxisAnim } from './VectorAxisAnim';
+import { MatrixGridAnim } from './MatrixGridAnim';
+import { DotGeometryAnim } from './DotGeometryAnim';
+import { MatmulVisualAnim } from './MatmulVisualAnim';
+import { CompGraphAnim } from './CompGraphAnim';
+import { ValueTapeAnim } from './ValueTapeAnim';
+import { BackpropFlowAnim } from './BackpropFlowAnim';
+import { GdStepAnim } from './GdStepAnim';
+import { NeuronSumAnim } from './NeuronSumAnim';
+import { LayerStackAnim } from './LayerStackAnim';
+import { MlpForwardAnim } from './MlpForwardAnim';
+import { XorPlotAnim } from './XorPlotAnim';
+import { EmbeddingLookupAnim } from './EmbeddingLookupAnim';
+import { EmbeddingSpace3D } from './EmbeddingSpace3D';
+import { LogitsMatmulAnim } from './LogitsMatmulAnim';
+import { DependencyLinesAnim } from './DependencyLinesAnim';
+import { QkvSplitAnim } from './QkvSplitAnim';
+import { AttentionScoresAnim } from './AttentionScoresAnim';
+import { MultiHeadParallelAnim } from './MultiHeadParallelAnim';
+import { PositionalSineAnim } from './PositionalSineAnim';
+import { LayernormScaleAnim } from './LayernormScaleAnim';
+import { FfnExpandAnim } from './FfnExpandAnim';
+import { ResidualSkipAnim } from './ResidualSkipAnim';
+import { TransformerBlockAnim } from './TransformerBlockAnim';
+import { GptStackAnim } from './GptStackAnim';
+import { TopkFilterAnim } from './TopkFilterAnim';
+import { CodeMapAnim } from './CodeMapAnim';
+import { ScaleLadderAnim } from './ScaleLadderAnim';
 
-type AnimProps = { paused?: boolean; example?: ConceptExample; probs?: number[]; labels?: string[] };
+type AnimProps = {
+  paused?: boolean;
+  example?: ConceptExample;
+  probs?: number[];
+  labels?: string[];
+  mode?: 'bigram' | 'neural' | 'gpt';
+};
 
 const concepts: Record<string, ComponentType<AnimProps>> = {
   'tokenizer-split': TokenizerSplitAnim,
   'next-token': NextTokenAnim,
   'bigram-scan': BigramScanAnim,
+  'bigram-predict': BigramPredictAnim,
   'softmax-bars': SoftmaxBarsAnim,
+  'sampling-bars': SamplingBarsAnim,
+  'loss-bars': LossBarsAnim,
+  'temp-softmax': TempSoftmaxAnim,
   'attention-flow': AttentionFlowAnim,
   'train-loop': TrainLoopAnim,
   'llm-pipeline': PipelineAnim,
+  'roadmap-spine': RoadmapSpineAnim,
+  'blackbox-vs-glass': BlackBoxGlassAnim,
+  'corpus-cards': CorpusCardsAnim,
+  'vocab-map': VocabMapAnim,
+  'encode-decode': EncodeDecodeAnim,
+  'pipeline-zoom': PipelineZoomAnim,
+  'context-window': ContextWindowAnim,
+  'count-table': CountTableAnim,
+  'generate-chain': GenerateChainAnim,
+  'vector-axis': VectorAxisAnim,
+  'matrix-grid': MatrixGridAnim,
+  'dot-geometry': DotGeometryAnim,
+  'matmul-visual': MatmulVisualAnim,
+  'comp-graph': CompGraphAnim,
+  'value-tape': ValueTapeAnim,
+  'backprop-flow': BackpropFlowAnim,
+  'gd-step': GdStepAnim,
+  'neuron-sum': NeuronSumAnim,
+  'layer-stack': LayerStackAnim,
+  'mlp-forward': MlpForwardAnim,
+  'xor-plot': XorPlotAnim,
+  'embedding-lookup': EmbeddingLookupAnim,
+  'embedding-space-3d': EmbeddingSpace3D,
+  'logits-matmul': LogitsMatmulAnim,
+  'dependency-lines': DependencyLinesAnim,
+  'qkv-split': QkvSplitAnim,
+  'attention-scores': AttentionScoresAnim,
+  'multi-head-parallel': MultiHeadParallelAnim,
+  'positional-sine': PositionalSineAnim,
+  'layernorm-scale': LayernormScaleAnim,
+  'ffn-expand': FfnExpandAnim,
+  'residual-skip': ResidualSkipAnim,
+  'transformer-block': TransformerBlockAnim,
+  'gpt-stack': GptStackAnim,
+  'topk-filter': TopkFilterAnim,
+  'code-map': CodeMapAnim,
+  'scale-ladder': ScaleLadderAnim,
 };
 
 export type ConceptAnimName = keyof typeof concepts;
 
 export function ConceptAnim({
-  name,
-  caption,
-  example,
-  probs,
-  labels,
+  slug,
+  name: nameProp,
+  caption: captionProp,
+  example: exampleProp,
+  probs: probsProp,
+  labels: labelsProp,
 }: {
-  name: ConceptAnimName;
+  slug?: string;
+  name?: ConceptAnimName;
   caption?: string;
   example?: ConceptExample;
   probs?: number[];
   labels?: string[];
 }) {
-  const Component = concepts[name];
+  const lesson = slug ? getLessonConcept(slug) : undefined;
+  const name = (nameProp ?? lesson?.name) as ConceptAnimName | undefined;
+  const caption = captionProp ?? lesson?.caption;
+  const example = exampleProp ?? lesson?.example;
+  const probs = probsProp ?? example?.probs;
+  const labels = labelsProp ?? example?.labels;
+  const mode = lesson?.mode;
+
+  const Component = name ? concepts[name] : undefined;
   const reducedMotion = useReducedMotion();
 
-  if (!Component) {
+  if (!Component || !name) {
     return (
       <div className="my-4 rounded-lg border border-red-300 p-4 text-sm text-red-600">
-        Unknown animation: {name}
+        Unknown animation{slug ? ` for ${slug}` : ''}: {name ?? 'missing name'}
       </div>
     );
   }
 
   return (
-    <figure
-      className={cn(
-        'my-8 not-prose overflow-hidden rounded-2xl border-2 border-indigo-200/70',
-        'bg-gradient-to-br from-slate-50 to-indigo-50/80 shadow-md',
-        'dark:border-indigo-700/50 dark:from-slate-900 dark:to-indigo-950/40',
-      )}
-    >
-      <div className="border-b border-indigo-200/60 bg-indigo-600/10 px-4 py-2 dark:border-indigo-800/60">
-        <span className="text-xs font-semibold uppercase tracking-wide text-indigo-700 dark:text-indigo-300">
-          Live concept — বাস্তব উদাহরণ
-        </span>
-      </div>
-      <div className="p-4 sm:p-6">
-        <Component
-          paused={reducedMotion ?? false}
-          example={example}
-          probs={probs ?? example?.probs}
-          labels={labels ?? example?.labels}
-        />
-      </div>
-      {caption && (
-        <figcaption className="border-t border-indigo-200/60 px-4 py-3 text-center text-sm text-fd-muted-foreground dark:border-indigo-800/60">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
+    <ConceptFrame caption={caption} hint="লাইভ কনসেপ্ট — বাস্তব উদাহরণ">
+      <Component
+        paused={reducedMotion ?? false}
+        example={example}
+        probs={probs ?? example?.probs}
+        labels={labels ?? example?.labels}
+        mode={mode}
+      />
+    </ConceptFrame>
   );
 }
 
-export function FlowArrow({ className }: { className?: string }) {
-  return (
-    <div className={cn('relative flex items-center justify-center px-1', className)}>
-      <div className="h-0.5 w-8 bg-indigo-400 dark:bg-indigo-500" />
-      <span className="absolute animate-flow-dot text-indigo-600 dark:text-indigo-400" aria-hidden>
-        ▶
-      </span>
-    </div>
-  );
-}
-
-export function ActivePulse({ active }: { active: boolean }) {
-  if (!active) return null;
-  return (
-    <span
-      className="pointer-events-none absolute inset-0 animate-pulse-ring rounded-lg ring-2 ring-emerald-500 ring-offset-2 ring-offset-transparent"
-      aria-hidden
-    />
-  );
-}
+/** @deprecated use FlowConnector from diagram-ui */
+export { FlowConnector as FlowArrow } from './diagram-ui';
+export { ActiveRing as ActivePulse } from './diagram-ui';

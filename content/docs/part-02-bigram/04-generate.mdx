@@ -5,7 +5,7 @@ description: একটার পর একটা word predict করে sentence
 
 # Sentence Generate
 
-<ConceptAnim name="next-token" caption="Generate: i → like → apple → is → fruit …" />
+<ConceptAnim slug="part-02-bigram/04-generate" />
 
 এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা।
 
@@ -15,45 +15,39 @@ description: একটার পর একটা word predict করে sentence
 
 ```mermaid
 flowchart LR
-    start["Start: i"] --> p1["predict → like"]
-    p1 --> p2["predict → apple"]
-    p2 --> p3["predict → is"]
-    p3 --> p4["predict → fruit"]
-    p4 --> p5["predict → is"]
-    p5 --> loop["fruit ↔ is loop / maxLen"]
-    classDef start fill:#4F46E5,color:#fff,stroke:#3730A3
-    classDef step fill:#10B981,color:#fff,stroke:#047857
-    classDef warn fill:#F59E0B,color:#fff,stroke:#D97706
-    class start start
-    class p1,p2,p3,p4,p5 step
-    class loop warn
+    start["Start: i"]:::input --> p1["predict → like"]:::process
+    p1 --> p2["predict → apple"]:::process
+    p2 --> p3["predict → is"]:::process
+    p3 --> p4["predict → fruit"]:::output
+    p4 --> stop["is ↔ fruit loop → max length"]:::dim
+    classDef input fill:#EEF2FF,color:#1E1B4B,stroke:#4F46E5,stroke-width:2px
+    classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
+    classDef output fill:#FFFBEB,color:#78350F,stroke:#D97706,stroke-width:2px
+    classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
-Argmax দিয়ে typical result: `"i like apple is fruit is fruit …"` (max length পর্যন্ত)।
+Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ আটকে যায়।
 
-## Step by Step (argmax)
-
-Count table অনুযায়ী:
+## Step by Step
 
 ```
-Step 1:  "i"                → "like"   → i like
-Step 2:  …like              → "apple"  → i like apple
-Step 3:  …apple             → "is"     → i like apple is
-Step 4:  …is                → "fruit"  → i like apple is fruit   (fruit:3 > healthy:1)
-Step 5:  …fruit             → "is"     → … fruit is
-Step 6:  …is                → "fruit"  → … is fruit  (loop until maxLen)
+Step 1:  "i"           → predict → "like"     → "i like"
+Step 2:  "i like"      → predict → "apple"    → "i like apple"
+Step 3:  "i like apple"→ predict → "is"       → "i like apple is"
+Step 4:  ...apple is"  → predict → "fruit"    → "i like apple is fruit"
+Step 5:  ...is fruit"  → predict → "is"       → "i like apple is fruit is"
+Step 6:  ...fruit is"  → predict → "fruit"    → "...is fruit is fruit"  (is ↔ fruit loop)
 ```
 
-<Callout type="warn">
-⚠️ Bigram-এর limitation: `is → fruit` এবং `fruit → is` — argmax **loop** করে। Real LLM-এ EOS token / max length দিয়ে stop করা হয়।
-</Callout>
+`is`-এর সবচেয়ে বড় count `fruit` (৩ বার), আর `fruit → is` — তাই argmax `is ↔ fruit`-এ আটকে যায়। তাই max length (এখানে ১০ step) পর্যন্ত চলে থামে, `null` prediction পেলে আগে থামত।
 
-## Generation Loop
+## কোড
 
-1. শেষ word নাও  
-2. Predict করো (argmax)  
-3. নতুন word যোগ করো  
-4. Repeat — next না পেলে **বা** `maxLen` পৌঁছালে stop  
+Loop:
+1. শেষ word নাও
+2. Predict করো
+3. নতুন word যোগ করো
+4. Repeat (অথবা আর predict না পেলে stop)
 
 ## Interactive Demo
 
@@ -77,6 +71,5 @@ Input: "The capital of France is"
 - **Generate** = repeatedly predict next word
 - **Autoregressive** = আগের output পরের input
 - Argmax generate = deterministic (সবসময় same)
-- Bigram loop সম্ভব — তাই sampling / EOS দরকার
 
 **পরের lesson:** [Sampling vs Argmax](/docs/part-02-bigram/05-sampling-vs-argmax)

@@ -5,13 +5,11 @@ description: Parallel neurons — vector input থেকে vector output
 
 # 📚 Layer
 
-<ConceptAnim name="llm-pipeline" caption="Layer of neurons" />
+<ConceptAnim slug="part-05-neural-network/02-layer" />
 
 <Callout type="idea">
 💡 **Layer** = একসাথে অনেক neuron parallel run। Vector in → matrix multiply → activation → vector out।
 </Callout>
-
-<Illustration name="neuron-diagram" />
 
 ## Single Neuron vs Layer
 
@@ -64,8 +62,9 @@ W = | 0.1  0.2 |
 
 b = [0.1, 0.2]
 
-z = x @ W + b = [2.2, 2.8]
-a = ReLU(z) = [2.2, 2.8]
+x @ W    = [2.2, 2.8]
+z = x @ W + b = [2.3, 3.0]
+a = ReLU(z) = [2.3, 3.0]
 ```
 
 <MatrixViz
@@ -76,6 +75,8 @@ a = ReLU(z) = [2.2, 2.8]
 />
 
 ## Layer Class
+
+Parallel neurons + matmul — নীচের Playground-এ layer forward চালিয়ে output shape দেখো।
 
 ## Parameter Count
 
@@ -89,7 +90,7 @@ total:   n×m + m = m(n + 1)
 
 GPT-3 layer: millions of parameters per layer!
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-05/layer" title="Neural Layer" />
 

@@ -5,13 +5,11 @@ description: Single neuron — weighted sum + activation function
 
 # 🧬 Neuron
 
-<ConceptAnim name="llm-pipeline" caption="Single neuron forward pass" />
+<ConceptAnim slug="part-05-neural-network/01-neuron" />
 
 <Callout type="idea">
 💡 একটা **neuron** = inputs-কে weight দিয়ে যোগ + bias + **activation function**। Biological neuron-এর digital version।
 </Callout>
-
-<Illustration name="neuron-diagram" />
 
 ## Anatomy
 
@@ -54,6 +52,10 @@ Activation **non-linearity** যোগ করে — ছাড়া multi-layer
   { emoji: "🔗", title: "Value graph", body: "Autograd-এ each step tracked" }
 ]} />
 
+## কোড
+
+`z = Σ(wᵢxᵢ) + b` তারপর activation — নীচের Playground-এ weight বদলে neuron output দেখো।
+
 ## Example
 
 ```
@@ -61,8 +63,8 @@ inputs  = [1.0, 2.0, -1.0]
 weights = [0.5, -1.0, 2.0]
 bias    = 0.1
 
-z = (0.5×1) + (-1×2) + (2×-1) + 0.1 = -2.4
-a = ReLU(-2.4) = 0.0   ← negative, so zero output
+z = (0.5×1) + (-1×2) + (2×-1) + 0.1 = -3.4
+a = ReLU(-3.4) = 0.0   ← negative, so zero output
 ```
 
 ## Why Neurons Matter
@@ -71,7 +73,7 @@ a = ReLU(-2.4) = 0.0   ← negative, so zero output
 - GPT-এ billions of neurons (grouped in layers)
 - Single neuron = simplest building block
 
-## Interactive Demo
+## কোড চেষ্টা করো
 
 <Playground id="part-05/neuron" title="Single Neuron" />
 

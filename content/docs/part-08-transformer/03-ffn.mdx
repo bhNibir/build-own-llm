@@ -5,7 +5,7 @@ description: Position-wise MLP — attention-এর পর non-linear transform
 
 # 🔧 Feed-Forward Network (FFN)
 
-<ConceptAnim name="llm-pipeline" caption="Feed-forward network" />
+<ConceptAnim slug="part-08-transformer/03-ffn" />
 
 Attention tokens-এর মধ্যে information mix করে। **FFN** প্রতিটা token-এ independently **non-linear transformation** apply করে — "think deeper" step।
 
@@ -34,7 +34,13 @@ $$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
 - Activation: **GELU** (GPT) or ReLU
 - Project back: `4D → D`
 
-<Illustration name="neuron-diagram" />
+<MathPractical title="গণনা দেখো (ধাপে ধাপে)">
+  <div>১. ছোট ইনপুট: <code>x = [1, 0]</code> (D = 2)</div>
+  <div>২. Expand (D → 4): ধরো linear পরে <code>h = [2, 1, −1, 0]</code></div>
+  <div>৩. Activation (সরলতায় ReLU ≈ GELU-এর ধারণা): negative কাটা → <code>h′ = [2, 1, 0, 0]</code></div>
+  <div>৪. Project back (4 → D): ধরো <code>y = [1.5, 0.5]</code> — আবার D = 2</div>
+  <div>৫. প্রতিটা token-এ একই FFN; attention mix করে, FFN individually transform করে</div>
+</MathPractical>
 
 ## Why 4× Expansion?
 
@@ -65,7 +71,7 @@ FFN often has **most parameters** in a transformer block — 2 matrices of size 
 ## ✅ তুমি কী শিখলে?
 
 - FFN = position-wise 2-layer MLP
-- Expand 4× → GELU → project back
-- Complements attention (mix vs transform)
+- 4× expand → GELU → আবার project back
+- Attention-কে complement করে (mix vs transform)
 
 **পরের lesson:** [Residual Connections](/docs/part-08-transformer/04-residual)

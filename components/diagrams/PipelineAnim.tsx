@@ -1,16 +1,26 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
+import { Type, List, Hash, Brain, Target } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import type { LucideIcon } from 'lucide-react';
+import { DataLabel, SketchBox, StepDots } from './diagram-ui';
+import type { SketchFillStyle, SketchStrokeStyle } from './sketch-styles';
 import type { ConceptExample } from './lesson-concepts';
 
-const NODES = [
-  { emoji: '📝', label: 'Text', color: 'bg-indigo-500' },
-  { emoji: '🔤', label: 'Tokenizer', color: 'bg-violet-500' },
-  { emoji: '📖', label: 'Vocab', color: 'bg-purple-500' },
-  { emoji: '🔢', label: 'Encode', color: 'bg-fuchsia-500' },
-  { emoji: '🧠', label: 'Model', color: 'bg-pink-500' },
-  { emoji: '🎯', label: 'Predict', color: 'bg-rose-500' },
+const NODES: {
+  label: string;
+  icon: LucideIcon;
+  fill: SketchFillStyle;
+  stroke: SketchStrokeStyle;
+  palette: 'blue' | 'green' | 'amber' | 'violet' | 'rose';
+}[] = [
+  { label: 'Text', icon: Type, fill: 'solid', stroke: 'solid', palette: 'blue' },
+  { label: 'Tokenizer', icon: Type, fill: 'solid', stroke: 'solid', palette: 'green' },
+  { label: 'Vocab', icon: List, fill: 'solid', stroke: 'solid', palette: 'violet' },
+  { label: 'Encode', icon: Hash, fill: 'solid', stroke: 'solid', palette: 'amber' },
+  { label: 'Model', icon: Brain, fill: 'solid', stroke: 'solid', palette: 'rose' },
+  { label: 'Predict', icon: Target, fill: 'solid', stroke: 'solid', palette: 'green' },
 ];
 
 export function PipelineAnim({
@@ -28,66 +38,42 @@ export function PipelineAnim({
     return () => clearInterval(t);
   }, [paused]);
 
-  const inputHint = example?.input ? `"${example.input}"` : null;
-
   return (
-    <div className="overflow-x-auto pb-2">
-      {inputHint && (
-        <p className="mb-3 text-center font-mono text-sm text-indigo-600 dark:text-indigo-400">
-          Input: {inputHint}
+    <div className="space-y-3 overflow-x-auto pb-1">
+      <StepDots total={NODES.length} current={active} onSelect={setActive} />
+      <DataLabel bn="LLM pipeline — ধাপে ধাপে" en="text → predict" />
+      {example?.input && (
+        <p className="text-center font-mono text-sm text-fd-muted-foreground">
+          Input: &quot;{example.input}&quot;
         </p>
       )}
-      <div className="flex min-w-max items-center justify-center gap-0 px-2">
-        {NODES.map((node, i) => (
-          <div key={node.label} className="flex items-center">
-            <motion.div
-              layout
-              className={`relative flex flex-col items-center rounded-xl px-3 py-3 sm:px-4 ${
-                active === i
-                  ? `${node.color} text-white shadow-xl ring-4 ring-white/30`
-                  : active > i
-                    ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200'
-                    : 'bg-fd-muted text-fd-muted-foreground'
-              }`}
-              animate={active === i ? { scale: 1.1 } : { scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            >
-              <span className="text-2xl">{node.emoji}</span>
-              <span className="mt-1 text-xs font-semibold">{node.label}</span>
-              <AnimatePresence>
-                {active === i && (
-                  <motion.span
-                    className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-medium text-indigo-600 dark:text-indigo-400"
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    processing…
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.div>
-            {i < NODES.length - 1 && (
-              <div className="relative mx-0.5 flex w-6 items-center sm:w-10">
-                <motion.div
-                  className="h-1 w-full rounded"
-                  animate={{
-                    backgroundColor: active > i ? 'rgb(52 211 153)' : 'var(--color-fd-border)',
-                  }}
+      <div className="flex min-w-max items-center justify-center gap-2 px-2">
+        {NODES.map((node, i) => {
+          const Icon = node.icon;
+          const isActive = active === i;
+          const isDone = active > i;
+          return (
+            <div key={node.label} className="flex items-center">
+              <motion.div animate={isActive ? { scale: 1.05 } : { scale: 1 }}>
+                <SketchBox
+                  fillStyle={isActive ? 'hachure' : 'solid'}
+                  strokeStyle="solid"
+                  palette={isDone ? 'green' : node.palette}
+                  active={isActive}
+                  className="flex flex-col items-center px-2.5 py-2 sm:px-3"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="mt-1 text-[10px] font-medium">{node.label}</span>
+                </SketchBox>
+              </motion.div>
+              {i < NODES.length - 1 && (
+                <div
+                  className={`mx-0.5 h-px w-4 sm:w-6 ${isDone ? 'border-t-2 border-solid border-emerald-500' : 'border-t-2 border-dashed border-fd-border'}`}
                 />
-                {active === i && (
-                  <motion.span
-                    className="absolute text-indigo-500"
-                    animate={{ x: [0, 12, 0] }}
-                    transition={{ repeat: Infinity, duration: 1 }}
-                  >
-                    ▶
-                  </motion.span>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
