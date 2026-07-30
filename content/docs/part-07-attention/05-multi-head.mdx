@@ -1,16 +1,16 @@
 ---
-title: Multi-Head Attention
-description: Parallel attention heads — different patterns একসাথে capture
+title: Multi-Head — একসাথে অনেক দৃষ্টি
+description: Parallel Attention heads — different patterns একসাথে capture
 ---
 
-# 🎭 Multi-Head Attention
+# Multi-Head — একসাথে অনেক দৃষ্টি
 
 <ConceptAnim slug="part-07-attention/05-multi-head" />
 
-Single attention head একটা pattern দেখে। **Multi-head** = একাধিক head **parallel**-এ run করে — syntax, semantics, position সব আলাদা capture।
+একটা Attention head একটা pattern দেখে — subject-verb, বা pronoun reference। কিন্তু sentence-এ একসাথে অনেক সম্পর্ক থাকে। **Multi-Head** মানে: একাধিক head **parallel**-এ run করে — syntax, semantics, position আলাদা আলাদা capture।
 
 <Callout type="idea">
-💡 Multiple experts একসাথে sentence analyze করছে — একজন grammar, একজন meaning, একজন reference track করে।
+Multiple experts একসাথে sentence analyze করছে — একজন grammar, একজন meaning, একজন reference track করে।
 </Callout>
 
 ```mermaid
@@ -39,6 +39,8 @@ $$\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, ..., \text{head}_h) W_O
 
 $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 
+প্রতিটা head-এর নিজস্ব `W_Q`, `W_K`, `W_V` — তাই আলাদা pattern শেখে। শেষে concat করে `W_O` দিয়ে আবার model dimension-এ ফিরিয়ে আনি।
+
 <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
   <div>১. Shapes: <code>n = 2</code> tokens, <code>d_model = 4</code>, <code>h = 2</code> heads → প্রতি head <code>d_k = 2</code></div>
   <div>২. Input X shape: <code>(2 × 4)</code> — split হয়ে প্রতি head-এ Q/K/V: <code>(2 × 2)</code></div>
@@ -47,7 +49,7 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
   <div>৫. Head 2 আলাদা weights → আলাদা pattern; concat → <code>(2 × 4)</code>, তারপর <code>W_O</code> দিয়ে mix</div>
 </MathPractical>
 
-## Why Multiple Heads?
+## Multiple Heads কেন?
 
 | Head | Might learn |
 |------|-------------|
@@ -56,18 +58,20 @@ $$\text{head}_i = \text{Attention}(Q W_Q^i, K W_K^i, V W_V^i)$$
 | Head 3 | Pronoun reference (`it` → `animal`) |
 | Head 4 | Position/nearby tokens |
 
+Lesson 7.1-এর `"it"` problem মনে আছে? একটা head ঠিক সেই pronoun→noun link শিখতে পারে — অন্য head অন্য কিছু।
+
 <StepReveal steps={[
-  { emoji: "✂️", title: "Split", body: "D dimensions → h heads × (D/h) each" },
-  { emoji: "⚡", title: "Parallel attention", body: "Each head independent Q/K/V" },
-  { emoji: "🔗", title: "Concat", body: "Stack all head outputs" },
-  { emoji: "📤", title: "W_o", body: "Final projection back to D" }
+  { emoji: "✂️", title: "Split", body: "D dimension → hটা head × (D/h) করে" },
+  { emoji: "⚡", title: "Parallel Attention", body: "প্রতিটা head আলাদা Q/K/V চালায়" },
+  { emoji: "🔗", title: "Concat", body: "সব head-এর output একসাথে stack" },
+  { emoji: "📤", title: "W_o", body: "শেষে আবার D-তে project" }
 ]} />
 
 ## Typical Config
 
-Head সংখ্যা ও `d_model` scale অনুযায়ী বাড়ে — নীচের table ও Playground-এ multi-head split দেখো।
+Head সংখ্যা ও `d_model` scale অনুযায়ী বাড়ে — নীচের table ও Playground-এ Multi-Head split দেখো।
 
-## GPT-2 Style
+## GPT-2 Style Config
 
 | Model | Heads | d_model |
 |-------|-------|---------|
@@ -75,14 +79,14 @@ Head সংখ্যা ও `d_model` scale অনুযায়ী বাড�
 | GPT-2 small | 12 | 768 |
 | GPT-3 | 96 | 12288 |
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-07/multi-head" title="Multi-Head Attention" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Multi-head = parallel attention with different learned projections
-- Each head captures different relationship patterns
-- Concat + output projection combines all heads
+- **Multi-Head** = একসাথে parallel Attention, প্রতিটা head-এর আলাদা learned projection
+- প্রতিটা head আলাদা relationship pattern ধরে (syntax, coreference, ইত্যাদি)
+- শেষে **concat + output projection** দিয়ে সব head একসাথে মেশানো হয়
 
 **পরের Module:** [Module 8 — Transformer Block](/docs/part-08-transformer)

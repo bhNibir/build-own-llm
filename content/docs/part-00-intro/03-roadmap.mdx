@@ -7,6 +7,8 @@ description: 10-module learning path — Tokenizer থেকে Mini GPT
 
 <ConceptAnim slug="part-00-intro/03-roadmap" />
 
+নিচের মানচিত্রটা পুরো journey। Intro দিয়ে মানসিক ছবি তৈরি → data pipeline → foundations → architecture → শেষে production-এর সেতু। এক Module শেষ না করে পরেরটাতে ঝাঁপ দিও না — প্রতিটার উপর পরেরটা দাঁড়ায়।
+
 ```mermaid
 flowchart LR
     A["Intro"]:::input --> B["Data"]:::process
@@ -24,9 +26,9 @@ flowchart LR
 
 | Module | বিষয় | Lessons |
 |--------|-------|---------|
-| [0](/docs/part-00-intro) | Introduction | 3 |
-| [1](/docs/part-01-tokenizer) | Tokenizer | 6 |
-| [2](/docs/part-02-bigram) | Bigram LM | 5 |
+| [0](/docs/part-00-intro) | পরিচিতি — LLM কী ও কেন scratch | 3 |
+| [1](/docs/part-01-tokenizer) | Tokenizer — text → numbers | 6 |
+| [2](/docs/part-02-bigram) | Bigram LM — প্রথম working model | 5 |
 | [3](/docs/part-03-math) | Math Foundations | 5 |
 | [4](/docs/part-04-autograd) | Autograd | 4 |
 | [5](/docs/part-05-neural-network) | Neural Network | 4 |
@@ -42,11 +44,11 @@ flowchart LR
 Tokenizer → Vocabulary → Bigram → Math → Autograd → NN → Neural LM → Attention → Transformer → Mini GPT
 ```
 
-**আগে run, পরে math** — Module 2-এ working model, Module 3-এ math deepen।
+মনে রাখার একটা নীতি: **আগে run, পরে math**। Module 2-এই working model পাবে; Module 3 থেকে সেই intuition-কে গণিত দিয়ে শক্ত করবে। শেষে browser-এ Mini GPT train ও generate করতে পারবে।
 
 ## তুমি কী শিখলে?
 
-- পুরো 10-module path map হয়ে গেছে
-- End goal: **browser-এ Mini GPT**
+- পুরো 10-module path এখন মাথায় আছে
+- End goal: browser-এ নিজের **Mini GPT**
 
 **শুরু করো:** [LLM কী?](/docs/part-00-intro/01-what-is-llm)

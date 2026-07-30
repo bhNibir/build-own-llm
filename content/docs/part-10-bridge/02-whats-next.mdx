@@ -1,16 +1,16 @@
 ---
-title: What's Next
-description: Scaling, pretraining, fine-tuning — Mini GPT থেকে GPT-4
+title: এর পর কী?
+description: Scaling, Pretraining, Fine-tuning — Mini GPT থেকে GPT-4 পর্যন্ত
 ---
 
-# What's Next?
+# এর পর কী?
 
 <ConceptAnim slug="part-10-bridge/02-whats-next" />
 
-Mini GPT + nanoGPT = **architecture understood**। Production LLM (GPT-4, Llama, Claude) = same idea, **massive scale** + **massive data** + engineering tricks।
+Mini GPT + nanoGPT পড়ে architecture বুঝে গেছ। Production LLM (GPT-4, Llama, Claude) = **same idea**, শুধু **massive scale** + **massive data** + কিছু engineering trick। নতুন “জাদু” নেই — পরিমাণ আর pipeline বড়।
 
 <Callout type="idea">
-💡 GPT-4 architecture secret — কিন্তু ingredients known: transformer, scale, data, RLHF। তুমি ingredients বুঝো — recipe follow করতে পারবে।
+💡 GPT-4-এর exact architecture secret — কিন্তু ingredients known: Transformer, scale, data, RLHF। তুমি ingredients বুঝো; recipe follow করতে পারবে।
 </Callout>
 
 ```mermaid
@@ -24,7 +24,7 @@ flowchart TD
     classDef highlight fill:#FECDD3,color:#881337,stroke:#BE123C,stroke-width:2.5px
 ```
 
-## The Scaling Laws
+## Scaling Laws কী বলে
 
 | Factor | Mini GPT | Production |
 |--------|----------|------------|
@@ -34,14 +34,16 @@ flowchart TD
 | Training time | Minutes | Weeks/months |
 | Cost | Free | Millions of $ |
 
+Scale বাড়লেই quality বাড়ে — এই সম্পর্ককেই বলে **scaling laws**। তোমার fruit model আর GPT-4-এর মধ্যে মূল পার্থক্য এখানেই।
+
 <StepReveal steps={[
-  { emoji: "📊", title: "Pretraining", body: "Next-token prediction on internet-scale data" },
+  { emoji: "📊", title: "Pretraining", body: "Internet-scale data-তে next-token prediction" },
   { emoji: "🎯", title: "Fine-tuning", body: "Task-specific adaptation (SFT)" },
-  { emoji: "👍", title: "RLHF", body: "Human feedback → better responses" },
+  { emoji: "👍", title: "RLHF", body: "Human feedback → ভালো response" },
   { emoji: "⚡", title: "Inference opt", body: "Quantization, KV-cache, speculative decoding" }
 ]} />
 
-## Pretraining Pipeline
+## Pretraining Pipeline কেমন
 
 ```mermaid
 flowchart LR
@@ -54,9 +56,11 @@ flowchart LR
     classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
-Same objective as our course: **minimize cross-entropy on next token** — just 10¹²× more data.
+Objective course-এর মতোই: **next token-এর cross-entropy minimize** — শুধু data প্রায় 10¹² গুণ বেশি।
 
-## Fine-Tuning Paths
+## Fine-Tuning-এর রাস্তা
+
+Base model পরে মানুষের কাজে লাগানোর জন্য:
 
 | Method | Data needed | Example |
 |--------|-------------|---------|
@@ -65,7 +69,9 @@ Same objective as our course: **minimize cross-entropy on next token** — just 
 | **RLHF** | Human preference rankings | ChatGPT alignment |
 | **DPO** | Preference pairs (no RL) | Simpler alignment |
 
-## Engineering Beyond Architecture
+## Architecture-এর বাইরে Engineering
+
+Architecture ছাড়াও production-এ এই trickগুলো দেখবে:
 
 | Technique | Why |
 |-----------|-----|
@@ -75,7 +81,7 @@ Same objective as our course: **minimize cross-entropy on next token** — just 
 | **KV-cache** | Fast autoregressive inference |
 | **Quantization (GPTQ, AWQ)** | Run 70B on consumer GPU |
 
-## Your Learning Path Forward
+## এগিয়ে যাওয়ার Path
 
 ```mermaid
 flowchart TD
@@ -88,7 +94,7 @@ flowchart TD
     classDef output fill:#FDE68A,color:#78350F,stroke:#B45309,stroke-width:2.5px
 ```
 
-## Recommended Resources
+## আরও Resource
 
 | Resource | Focus |
 |----------|-------|
@@ -99,10 +105,10 @@ flowchart TD
 | [Axolotl](https://github.com/OpenAccess-AI-Collective/axolotl) | Fine-tuning toolkit |
 
 <Callout type="tip">
-✅ **তুমি course শেষ করেছো** — tokenizer থেকে transformer block পর্যন্ত সব build করেছো। এটা 99% developers-এর চেয়ে বেশি LLM internals knowledge।
+✅ **তুমি course শেষ করেছো** — Tokenizer থেকে Transformer Block, Mini GPT পর্যন্ত সব build করেছো। এটা বেশিরভাগ developer-এর চেয়ে বেশি LLM internals knowledge।
 </Callout>
 
-## Course Complete!
+## Course Complete — শেষ!
 
 ```
 Module 0:  Intro ✅
@@ -118,10 +124,10 @@ Module 9:  Mini GPT ✅
 Module 10: Bridge ✅
 ```
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Production LLM = same transformer, massive scale
-- Pipeline: pretrain → fine-tune → align (RLHF)
-- You have the foundation to read any LLM codebase
+- Production LLM = একই **Transformer**, শুধু **massive scale** + data + engineering
+- Pipeline: **Pretraining → Fine-tuning → align (RLHF)**
+- যেকোনো LLM codebase পড়ার foundation এখন তোমার কাছে আছে
 
 **শুরু থেকে:** [Course Home](/docs)

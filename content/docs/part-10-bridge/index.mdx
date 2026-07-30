@@ -1,14 +1,14 @@
 ---
 title: Module 10 — Production Bridge
-description: nanoGPT পড়া + scaling/pretraining overview — course থেকে industry-তে
+description: nanoGPT পড়া + Scaling/Pretraining overview — course থেকে industry-তে
 ---
 
 # Module 10 — Production Bridge
 
-Course-এ তুমি **Mini GPT from scratch** বানালে। Module 10-এ industry-তে jump: Karpathy-এর **nanoGPT** পড়া এবং **scaling** overview।
+Course-এ তুমি **Mini GPT from scratch** বানিয়ে ফেলেছ — Tokenizer থেকে Temperature/Top-k পর্যন্ত। Module 10-এ সেই জ্ঞান নিয়ে industry-র দিকে এক পা এগোব: Andrej Karpathy-এর **nanoGPT** পড়া, আর **Scaling / Pretraining** কীভাবে GPT-4-এর মতো model তৈরি করে — সেটার overview।
 
 <Callout type="idea">
-💡 তোমার Mini GPT এবং nanoGPT **same architecture** — শুধু scale, language, এবং dataset different।
+💡 তোমার Mini GPT আর nanoGPT **same architecture** — শুধু scale, language, আর dataset আলাদা। তাই code পড়তে গেলে “অপরিচিত” লাগবে না।
 </Callout>
 
 ```mermaid
@@ -22,12 +22,14 @@ flowchart LR
     classDef big fill:#6366F1,color:#fff,stroke:#4338CA
 ```
 
-## Lessons
+## এই Module-এ কী শিখবে?
 
 | # | Lesson | Topic |
 |---|--------|-------|
 | 10.1 | [Reading nanoGPT](/docs/part-10-bridge/01-reading-nanogpt) | Line-by-line code guide |
-| 10.2 | [What's Next](/docs/part-10-bridge/02-whats-next) | Scaling + pretraining overview |
+| 10.2 | [What's Next](/docs/part-10-bridge/02-whats-next) | Scaling + Pretraining overview |
+
+প্রথমে nanoGPT-এর map বুঝব — তারপর Pretraining, Fine-tuning, RLHF দিয়ে “এর পর কী?” দেখব।
 
 **আগের Module:** [Module 9 — Mini GPT](/docs/part-09-mini-gpt)
 

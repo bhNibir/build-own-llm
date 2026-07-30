@@ -1,26 +1,30 @@
 ---
 title: নিজের LLM বানাও
-description: Zero থেকে TypeScript দিয়ে LLM কীভাবে কাজ করে — interactive hands-on শেখা
+description: শূন্য থেকে TypeScript দিয়ে LLM কীভাবে কাজ করে — browser-এ হাতেকলমে শেখা
 ---
 
 <Callout type="idea">
-**LangChain বা OpenAI API নয়** — এখানে তুমি LLM-এর ভেতরের engine নিজে build করবে।
+এখানে LangChain বা OpenAI API শেখানো হয় না। তুমি LLM-এর ভেতরের engine নিজে build করবে — ধাপে ধাপে, browser-এর ভেতরেই।
 </Callout>
 
-যদি তুমি **LLM-এর ভেতরের কাজ সত্যিই বুঝতে চাও**, তাহলে **LangChain, Ollama, OpenAI API** দিয়ে শুরু করো না। ওগুলো LLM *ব্যবহার* শেখায় — *কীভাবে কাজ করে* শেখায় না।
+যদি সত্যিই বুঝতে চাও **LLM ভেতরে কী করে**, তাহলে শুরুতেই API বা framework ধরো না। ওগুলো শেখায় কীভাবে *ব্যবহার* করতে হয় — কীভাবে *কাজ করে*, সেটা নয়।
 
-এই course-এ আমরা **শূন্য থেকে** TypeScript দিয়ে একটি ছোট Language Model বানাবো। প্রতিটি lesson-এ browser-এ code edit করে run করতে পারবে।
+এই course-এ আমরা শূন্য থেকে TypeScript দিয়ে একটা ছোট Language Model বানাবো। প্রতিটা lesson-এ code edit করে সাথে সাথে run করতে পারবে। Terminal লাগবে না।
 
-## Interactive শেখা কীভাবে
+## কীভাবে শেখবে
 
-- Code editor — browser-এ edit
-- **Run** — সাথে সাথে colorful console output
-- **Copy / Reset** — freely experiment করো
-- Concept animation + Mermaid diagram
+পড়বে বাংলায়, technical term থাকবে English-এ। তারপর playground-এ code ছুঁয়ে দেখবে কী হচ্ছে।
+
+- Browser-এ TypeScript editor
+- **Run** চাপলেই colorful console output
+- **Copy / Reset** দিয়ে নিজের মতো experiment
+- Concept animation + Mermaid diagram — ধারণা চোখে দেখা
 
 <Illustration name="token-pipeline" />
 
 ## পুরো 10-Module Path
+
+একটার পর একটা — Tokenizer থেকে শুরু করে Mini GPT পর্যন্ত। মাঝপথেই working model পাবে; math পরে গভীর হবে।
 
 ```mermaid
 flowchart TD
@@ -44,10 +48,10 @@ flowchart TD
 
 | Module | বিষয় | Lessons |
 |--------|-------|---------|
-| [0 — Intro](/docs/part-00-intro) | LLM কী, roadmap | 3 |
+| [0 — Intro](/docs/part-00-intro) | LLM কী, কেন scratch থেকে, roadmap | 3 |
 | [1 — Tokenizer](/docs/part-01-tokenizer) | Text → numbers | 6 |
 | [2 — Bigram](/docs/part-02-bigram) | প্রথম language model | 5 |
-| [3 — Math](/docs/part-03-math) | Vector, matrix, softmax | 5 |
+| [3 — Math](/docs/part-03-math) | Vector, matrix, Softmax | 5 |
 | [4 — Autograd](/docs/part-04-autograd) | Computational graph | 4 |
 | [5 — Neural Net](/docs/part-05-neural-network) | Neuron, MLP, XOR | 4 |
 | [6 — Neural LM](/docs/part-06-neural-lm) | Embedding, training | 5 |
@@ -58,8 +62,10 @@ flowchart TD
 
 ## শুরু করো
 
+প্রথম lesson থেকে এগোও — মানসিক ছবিটা পরিষ্কার হলেই Module 1-এ data pipeline শুরু।
+
 <Cards>
-  <Card title="শুরু করো — Lesson 0.1" href="/docs/part-00-intro/01-what-is-llm" description="LLM = next-token prediction — mental model" />
+  <Card title="শুরু করো — Lesson 0.1" href="/docs/part-00-intro/01-what-is-llm" description="LLM = next-token prediction — মানসিক মডেল" />
   <Card title="Module 0: পরিচিতি" href="/docs/part-00-intro" description="কেন scratch থেকে + roadmap" />
   <Card title="Module 1: Tokenizer" href="/docs/part-01-tokenizer" description="Text → numbers — interactive playground" />
 </Cards>

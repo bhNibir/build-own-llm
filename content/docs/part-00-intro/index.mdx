@@ -1,24 +1,24 @@
 ---
-title: Module 0 — Introduction
-description: LLM কী, কেন from scratch, এবং 10-module roadmap
+title: Module 0 — পরিচিতি
+description: LLM কী, কেন scratch থেকে শেখা, আর 10-module roadmap
 ---
 
-# Module 0 — Introduction
+# Module 0 — পরিচিতি
 
-এই Module-এ theory-heavy code নেই — শুধু **mental model** তৈরি করব। পরের Module থেকে browser-এ code run করবে।
+এই Module-এ ভারী code নেই। আগে একটা পরিষ্কার **mental model** তৈরি করব — LLM আসলে কী করে, কেন API দিয়ে শুরু করব না, আর পুরো course কোন পথে যাবে। মানচিত্র মাথায় থাকলে পরের Module-গুলোতে code run করতে গিয়ে হারিয়ে যাবে না।
 
 <StepReveal steps={[
-  { emoji: "🎯", title: "LLM = next-token prediction machine", body: "একটা word দেখে পরের word guess" },
-  { emoji: "🔧", title: "API নয় — ভেতরের engine", body: "LangChain/OpenAI ছাড়া নিজে build" },
-  { emoji: "🗺️", title: "10-module roadmap", body: "Tokenizer → Bigram → Math → GPT" }
+  { emoji: "🎯", title: "LLM = next-token prediction", body: "আগের text দেখে পরের token guess করে — magic নয়, probability" },
+  { emoji: "🔧", title: "API নয় — ভেতরের engine", body: "LangChain/OpenAI ছাড়া নিজে build করলে প্রতিটা layer দেখা যায়" },
+  { emoji: "🗺️", title: "10-module roadmap", body: "Tokenizer → Bigram → Math → Attention → Mini GPT" }
 ]} />
 
-## Lessons
+## এই Module-এর Lessons
 
 | # | Lesson | Topic |
 |---|--------|-------|
-| 0.1 | [What is an LLM?](/docs/part-00-intro/01-what-is-llm) | Next-token prediction |
-| 0.2 | [Why from scratch?](/docs/part-00-intro/02-why-from-scratch) | API vs internals |
-| 0.3 | [Roadmap](/docs/part-00-intro/03-roadmap) | Full 10-module path |
+| 0.1 | [LLM কী?](/docs/part-00-intro/01-what-is-llm) | Next-token prediction |
+| 0.2 | [কেন scratch থেকে?](/docs/part-00-intro/02-why-from-scratch) | API vs internals |
+| 0.3 | [কোর্স Roadmap](/docs/part-00-intro/03-roadmap) | পুরো 10-module path |
 
-**পরের step:** [What is an LLM?](/docs/part-00-intro/01-what-is-llm)
+**পরের step:** [LLM কী?](/docs/part-00-intro/01-what-is-llm)

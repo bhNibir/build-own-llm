@@ -7,13 +7,11 @@ description: Next token prediction — LLM-এর মূল ধারণা
 
 <ConceptAnim slug="part-01-tokenizer/01-llm-kivabe-kaj-kore" />
 
-একটা LLM আসলে **"next token prediction machine"**।
-
-মানে, তুমি কিছু text দিলে সে বলে: "পরেরটা কী হওয়া উচিত?"
+Module 0-এ আমরা বলেছিলাম — LLM কোনো জাদু নয়। একটু অন্যভাবে বললে: একটা LLM আসলে **"next token prediction machine"**। তুমি কিছু text দিলে সে বলে, “পরেরটা কী হওয়া সবচেয়ে সম্ভব?” — তারপর সেই guess বারবার চালিয়ে পুরো sentence বানায়।
 
 ## উদাহরণ
 
-তুমি লিখলে `i like` — model ভাবে:
+ধরো তুমি লিখলে `i like`। আমাদের ছোট fruit corpus দেখে model ভাবে:
 
 ```
 apple   → 50% chance
@@ -21,11 +19,13 @@ banana  → 25% chance
 mango   → 25% chance
 ```
 
-তারপর একটা pick করে → `apple`। আবার context বাড়ে: `i like apple` — এভাবে sentence তৈরি হয়।
+তারপর একটা pick করে — ধরো `apple`। এখন context হয়ে গেল `i like apple`, আবার predict। এভাবেই sentence তৈরি হয়। কোনো “বুদ্ধি” নেই এখানে; শুধু pattern থেকে probability।
 
-এই Module-এ আমরা pipeline-এর **প্রথম অংশ** করব: Tokenizer → Vocabulary → Encoding → Training Pairs।
+তাহলে এই Module-এ আমরা কী করব? পুরো GPT নয় — pipeline-এর **প্রথম অংশ**: Tokenizer → Vocabulary → Encoding → Training Pairs। পরের Module-এ এই data দিয়েই প্রথম working model উঠবে।
 
 ## GPT-4 vs আমাদের Model
+
+স্কেল দেখলে চোখ কপালে উঠতে পারে — কিন্তু idea একই:
 
 | | GPT-4 | আমাদের Tiny Model |
 |---|---|---|
@@ -34,12 +34,12 @@ mango   → 25% chance
 | Parameters | Billions | ~144 (Module 2) |
 | Architecture | Transformer | Bigram (Module 2) |
 
-স্কেল আলাদা, কিন্তু **idea একই**।
+GPT-4 বিশাল, আমরা ছোট। কিন্তু দুটোই next-token prediction করে — শুধু আমাদেরটা হাতে ধরে বোঝার মতো ছোট।
 
 ## তুমি কী শিখলে?
 
-- LLM = next token prediction machine
-- Input → Model → Probability → Pick one token
-- আমরা ছোট scale-এ same idea implement করব
+- LLM মূলত **next token prediction** করে — input দেখে probability, তারপর একটা token pick
+- Generation মানেই সেই loop বারবার চালানো
+- আমরা ছোট scale-এ same idea implement করব — আগে data, পরে model
 
 **পরের lesson:** [Dataset তৈরি করো](/docs/part-01-tokenizer/02-dataset)

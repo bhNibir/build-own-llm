@@ -1,26 +1,32 @@
 ---
 title: Backpropagation
-description: Chain rule দিয়ে loss থেকে সব parameter-এ gradient propagate
+description: Chain rule দিয়ে loss থেকে সব parameter-এ gradient পাঠানো
 ---
 
-# ⬅️ Backpropagation
+# Backpropagation
 
 <ConceptAnim slug="part-04-autograd/03-backprop" />
 
 <Callout type="idea">
-💡 **Backpropagation** = computational graph reverse traverse করে chain rule apply। Loss থেকে শুরু, root পর্যন্ত gradient flow।
+**Backpropagation** = computational graph reverse traverse করে chain rule apply করা। Loss থেকে শুরু, root পর্যন্ত gradient flow।
 </Callout>
 
-## The Algorithm
+`Value` class graph বানাতে পারে — এখন সেই graph পেছন দিকে হাঁটাবো। এটাই training-এর হৃদয়: loss দেখে প্রতিটা weight-কে বলা “তুমি কতটা দায়ী?”
+
+## Algorithm কীভাবে চলে
+
+চল ধাপে ধাপে:
 
 <StepReveal steps={[
-  { emoji: "📋", title: "Topological sort", body: "Nodes order — children before parents" },
-  { emoji: "1️⃣", title: "Seed grad = 1", body: "Output node (loss) starts with ∂L/∂L = 1" },
-  { emoji: "⬅️", title: "Reverse loop", body: "Each node calls _backward()" },
-  { emoji: "➕", title: "Accumulate grads", body: "Parents receive gradient contributions" }
+  { emoji: "📋", title: "Topological sort", body: "Node order — child আগে, parent পরে" },
+  { emoji: "1️⃣", title: "Seed grad = 1", body: "Output (loss) node-এ ∂L/∂L = 1 বসাও" },
+  { emoji: "⬅️", title: "Reverse loop", body: "প্রতিটা node `_backward()` ডাকে" },
+  { emoji: "➕", title: "Grad accumulate", body: "Parent-রা gradient contribution পায়" }
 ]} />
 
-## Chain Rule in Action
+Seed দিয়ে শুরু — `∂L/∂L = 1`। তারপর প্রতিটা node তার local rule দিয়ে parent-দের কাছে gradient পাঠায়।
+
+## Chain Rule কাজে
 
 Expression: `L = (a × b + c)²`
 
@@ -37,7 +43,7 @@ flowchart BT
     classDef leaf fill:#4F46E5,color:#fff,stroke:#3730A3
 ```
 
-Backward (bottom-up in diagram = reverse topo order):
+Backward (diagram-এ bottom-up = reverse topo order):
 
 ```
 ∂L/∂L = 1
@@ -47,18 +53,20 @@ Backward (bottom-up in diagram = reverse topo order):
 ∂L/∂c = ∂L/∂(sum) × 1
 ```
 
-## Worked Example
+প্রতিটা ধাপে local derivative × incoming gradient — এটাই chain rule।
 
-`a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
+## কাজ করা উদাহরণ
+
+সংখ্যা দিয়ে দেখি। `a=2, b=-3, c=10` → inner = 2×(-3)+10 = 4 → L = 16
 
 <MathLesson title="Backprop Chain Rule">
   <MathIntuition>
-    Gradient flows backward like water upstream — each node passes its share to parents using local derivative × incoming gradient।
+    Gradient পেছন দিকে পানি চলার মতো যায় — প্রতিটা node নিজের local derivative দিয়ে parent-দের কাছে ভাগ করে দেয়। Upstream gradient × local rule = নতুন flow।
   </MathIntuition>
   <SymbolTable symbols={[
-    { sym: "∂L/∂y", meaning: "gradient flowing into node y from above" },
-    { sym: "_backward()", meaning: "local rule: distribute grad to parents" },
-    { sym: "topo sort", meaning: "visit children before parents" }
+    { sym: "∂L/∂y", meaning: "উপর থেকে node y-তে আসা gradient" },
+    { sym: "_backward()", meaning: "local rule — parent-দের কাছে grad ভাগ করে দেয়" },
+    { sym: "topo sort", meaning: "child আগে, parent পরে — সঠিক ক্রম" }
   ]} />
   <Formula>
     {`$$\\frac{\\partial L}{\\partial x} = \\frac{\\partial L}{\\partial y} \\cdot \\frac{\\partial y}{\\partial x}$$`}
@@ -74,33 +82,37 @@ Backward (bottom-up in diagram = reverse topo order):
   <CodeLink>Playground-এ backward() run করে grad values verify করো ↓</CodeLink>
 </MathLesson>
 
-## Why Topological Sort?
+## Topological Sort কেন?
 
-Operation order matter — parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
+Operation order matter করে। Parent-এর `_backward()` call হওয়ার **আগে** child-এর grad ready থাকতে হবে:
 
 ```
 Wrong order: parent._backward() before child.grad set → wrong gradients
 Right order: reverse topo ensures child processed first
 ```
 
-## Debugging Tips
+Topo sort ভুল হলে gradientও ভুল — bug খুঁজতে গিয়ে অনেক সময় এখানেই আটকায়।
 
-Gradient zero? Check:
+## Debugging Tips — মনে রাখো
+
+Gradient zero? চেক করো:
 - `_backward` rule correct?
 - Topo sort order correct?
 - Forgot to call `.backward()`?
 
-## Interactive Demo
+তিনটার মধ্যে একটা miss হলেই training “শেখে” না।
+
+## নিজে চেষ্টা করো
 
 <Playground id="part-04/backprop" title="Backpropagation Demo" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- **Backprop** = reverse topological traversal + chain rule
-- Output node seeded with `grad = 1`
-- Each `_backward()` distributes gradient to parents
-- Topological sort ensures correct order
-- Enables training networks with millions of parameters
+- **Backprop** = reverse topological order-এ chain rule চালানো
+- Output node-এ শুরুতে `grad = 1` বসিয়ে দাও
+- প্রতিটা `_backward()` parent-দের কাছে gradient ভাগ করে দেয়
+- **Topological sort** সঠিক order নিশ্চিত করে
+- তাই লক্ষ লক্ষ parameter-ও train করা যায়
 
 **আগের lesson:** [Value Class](/docs/part-04-autograd/02-value)
 

@@ -5,8 +5,8 @@ export default function HomePage() {
     <div className="mx-auto flex max-w-2xl flex-1 flex-col items-center justify-center px-4 text-center">
       <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">নিজের LLM বানাও</h1>
       <p className="mb-6 leading-relaxed text-fd-muted-foreground">
-        Zero থেকে TypeScript দিয়ে LLM কীভাবে কাজ করে — interactive hands-on শেখা।
-        প্রতিটি lesson-এ browser-এ code edit করে run করো। Terminal লাগবে না।
+        শূন্য থেকে TypeScript দিয়ে LLM কীভাবে কাজ করে — বাংলায় ব্যাখ্যা, English technical term,
+        আর প্রতিটা lesson-এ browser-এ code run। Terminal লাগবে না।
       </p>
 
       <div className="mb-8 flex flex-col gap-3 sm:flex-row">
@@ -35,7 +35,7 @@ export default function HomePage() {
         </div>
         <div className="rounded-xl border-2 border-amber-200/60 bg-amber-50/40 p-3 dark:border-amber-800/40 dark:bg-amber-950/20">
           <p className="mb-1 font-medium text-fd-foreground">বাংলা গাইড</p>
-          <p>English terms, বাংলায় ব্যাখ্যা</p>
+          <p>পড়তে সহজ গদ্য, term থাকবে English-এ</p>
         </div>
       </div>
     </div>

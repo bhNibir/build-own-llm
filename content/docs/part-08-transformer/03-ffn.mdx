@@ -1,17 +1,19 @@
 ---
-title: Feed-Forward Network (FFN)
-description: Position-wise MLP — attention-এর পর non-linear transform
+title: FFN — Token-এ গভীর চিন্তা
+description: Position-wise MLP — Attention-এর পর non-linear transform
 ---
 
-# 🔧 Feed-Forward Network (FFN)
+# FFN — Token-এ গভীর চিন্তা
 
 <ConceptAnim slug="part-08-transformer/03-ffn" />
 
-Attention tokens-এর মধ্যে information mix করে। **FFN** প্রতিটা token-এ independently **non-linear transformation** apply করে — "think deeper" step।
+Attention tokens-এর **মধ্যে** information mix করে — কে কাকে দেখবে। কিন্তু mix করার পর প্রতিটা token-এর representation আরও transform করতে হয়। সেই কাজ করে **FFN (Feed-Forward Network)** — Module 5-এর MLP-এর position-wise version।
 
 <Callout type="idea">
-💡 FFN = position-wise MLP: same network every token-এ, কিন্তু tokens parallel process হয়।
+FFN = position-wise MLP: same network every token-এ, কিন্তু tokens parallel process হয়।
 </Callout>
+
+সহজ করে: Attention = “আশেপাশের সাথে কথা বলো”; FFN = “একা বসে আরও গভীরভাবে ভাবো”। দুটোই দরকার।
 
 ```mermaid
 flowchart LR
@@ -30,48 +32,50 @@ flowchart LR
 
 $$\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 \cdot x + b_1) + b_2$$
 
-- Expand: `D → 4D` (typically 4× embedding size)
+- Expand: `D → 4D` (typically 4× Embedding size)
 - Activation: **GELU** (GPT) or ReLU
 - Project back: `4D → D`
+
+Module 5-এর MLP মনে আছে? এখানেও দুই layer — শুধু মাঝখানে GELU, আর প্রতিটা token independently।
 
 <MathPractical title="গণনা দেখো (ধাপে ধাপে)">
   <div>১. ছোট ইনপুট: <code>x = [1, 0]</code> (D = 2)</div>
   <div>২. Expand (D → 4): ধরো linear পরে <code>h = [2, 1, −1, 0]</code></div>
   <div>৩. Activation (সরলতায় ReLU ≈ GELU-এর ধারণা): negative কাটা → <code>h′ = [2, 1, 0, 0]</code></div>
   <div>৪. Project back (4 → D): ধরো <code>y = [1.5, 0.5]</code> — আবার D = 2</div>
-  <div>৫. প্রতিটা token-এ একই FFN; attention mix করে, FFN individually transform করে</div>
+  <div>৫. প্রতিটা token-এ একই FFN; Attention mix করে, FFN individually transform করে</div>
 </MathPractical>
 
-## Why 4× Expansion?
+## 4× Expansion কেন?
 
-Wider hidden layer = more capacity to transform each token's representation after attention mixing.
+Wider hidden layer = more capacity to transform each token's representation after Attention mixing। ছোট space-এ সব pattern ধরা যায় না — তাই আগে চওড়া করে, তারপর আবার চাপায়।
 
 <StepReveal steps={[
   { emoji: "📈", title: "Expand", body: "D → 4D linear projection" },
   { emoji: "⚡", title: "GELU", body: "Non-linear activation" },
   { emoji: "📉", title: "Project", body: "4D → D back to model dim" },
-  { emoji: "🔄", title: "Per token", body: "Same FFN, all tokens parallel" }
+  { emoji: "🔄", title: "Per token", body: "একই FFN, সব token parallel" }
 ]} />
 
-## Attention vs FFN Roles
+## Attention vs FFN — ভূমিকা
 
 | Component | Role |
 |-----------|------|
 | Attention | **Mix** information between tokens |
 | FFN | **Transform** each token's representation |
 
-## Parameter Count
+## Parameter Count কত
 
-FFN often has **most parameters** in a transformer block — 2 matrices of size D×4D and 4D×D.
+FFN often has **most parameters** in a Transformer Block — 2 matrices of size D×4D and 4D×D। Attention fancy, কিন্তু params-এর বড় অংশ এখানে।
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/ffn" title="Feed-Forward Network" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- FFN = position-wise 2-layer MLP
-- 4× expand → GELU → আবার project back
-- Attention-কে complement করে (mix vs transform)
+- **FFN** = প্রতিটা position-এ আলাদা 2-layer MLP
+- সাধারণত **4× expand → GELU → আবার project back**
+- Attention token মিক্স করে; FFN প্রতিটা token-কে transform করে — দুটো complement
 
 **পরের lesson:** [Residual Connections](/docs/part-08-transformer/04-residual)

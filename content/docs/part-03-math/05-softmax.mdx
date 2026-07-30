@@ -1,25 +1,27 @@
 ---
 title: Softmax
-description: Logits কে probability distribution-এ convert করা
+description: Logits-কে probability distribution-এ convert করা
 ---
 
-# 🎲 Softmax
+# Softmax
 
 <ConceptAnim slug="part-03-math/05-softmax" />
 
 <Callout type="idea">
-💡 Model raw **logits** output করে — softmax সেগুলো **probability**-তে convert করে যেখানে সব যোগ করলে exactly **1** হয়।
+Model raw **logits** output করে — Softmax সেগুলো **probability**-তে convert করে যেখানে সব যোগ করলে exactly **1** হয়।
 </Callout>
+
+Part 2-এ Bigram model-এ count normalize করেছিলাম — যোগ ১ করার জন্য। Neural network-এও একই দরকার, কিন্তু এবার raw output আসে **logits** হিসেবে। Softmax সেই কাজটা করে।
 
 ## কেন Softmax?
 
-Bigram model-এ count normalize করেছিলাম। Neural network logits দেয়:
+ধরো model দিলে:
 
 ```
 logits = [2.0, 1.0, 0.1]
 ```
 
-এগুলো probability নয় — negative বা যোগ ≠ 1 হতে পারে। **Softmax** fix করে:
+এগুলো probability নয় — negative হতে পারে, যোগ করে ১ও হয় না। **Softmax** ঠিক করে:
 
 ```
 softmax = [0.659, 0.242, 0.099]   ← sum = 1.0 ✓
@@ -34,17 +36,21 @@ flowchart LR
     classDef prob fill:#10B981,color:#fff,stroke:#047857
 ```
 
-## Full Formula
+এখন sample বা argmax করা যায় — ঠিক Bigram-এর মতো, শুধু উৎস এবার neural net।
+
+## পুরো Formula
+
+Idea সহজ: exp দিয়ে সব positive করো, তারপর total দিয়ে ভাগ করে normalize করো।
 
 <MathLesson title="Softmax">
   <MathIntuition>
-    Logits বড় হলে probability বেশি — কিন্তু sum = 1 রাখতে normalize করতে হবে। exp() সব positive করে, তারপর divide by total।
+    বড় logit → বেশি probability। কিন্তু শুধু বড় হলেই চলবে না — সব মিলিয়ে sum = 1 রাখতে হবে। exp() সব positive করে, তারপর divide by total — তাই valid distribution পাও।
   </MathIntuition>
   <SymbolTable symbols={[
-    { sym: "z_i", meaning: "logit for class/token i (raw model output)" },
-    { sym: "e^{z_i}", meaning: "exponential — makes all values positive" },
-    { sym: "Σ_j e^{z_j}", meaning: "sum of all exponentials (normalizer)" },
-    { sym: "n", meaning: "number of classes / vocabulary size" }
+    { sym: "z_i", meaning: "logit — class/token i-এর raw model output" },
+    { sym: "e^{z_i}", meaning: "exponential — সব মান positive করে" },
+    { sym: "Σ_j e^{z_j}", meaning: "সব exponential-এর যোগ (normalizer)" },
+    { sym: "n", meaning: "class সংখ্যা / vocabulary size" }
   ]} />
   <Formula>
     {`$$\\text{softmax}(z_i) = \\frac{e^{z_i}}{\\sum_{j=1}^{n} e^{z_j}}$$`}
@@ -59,27 +65,29 @@ flowchart LR
   <CodeLink>Playground-এ same numbers run করো ↓</CodeLink>
 </MathLesson>
 
-## Step by Step
+## ধাপে ধাপে
 
 <StepReveal steps={[
   { emoji: "📈", title: "exp(z_i)", body: "প্রতিটা logit-এ exponential — সব positive" },
-  { emoji: "➕", title: "Sum all exp values", body: "Normalizer = Σ e^z_j" },
-  { emoji: "➗", title: "Divide each by sum", body: "Probability distribution তৈরি" },
-  { emoji: "✅", title: "Verify sum = 1", body: "Sampling / loss-এর জন্য required" }
+  { emoji: "➕", title: "সব exp যোগ", body: "Normalizer = Σ e^z_j" },
+  { emoji: "➗", title: "প্রতিটা ÷ sum", body: "Probability distribution তৈরি" },
+  { emoji: "✅", title: "চেক: sum = 1", body: "Sampling / loss-এর জন্য দরকার" }
 ]} />
 
-## Numerical Stability
+## Numerical Stability কেন দরকার
 
-Direct `exp(1000)` = overflow! Production code-এ **max trick** ব্যবহার:
+একটা ফাঁদ আছে। Direct `exp(1000)` = overflow! Production code-এ তাই **max trick** ব্যবহার হয়:
 
 ```
 z_stable = z - max(z)
 softmax(z) = softmax(z_stable)   ← same result, no overflow
 ```
 
-Playground-এ stable version implement করা আছে।
+সব logit থেকে max বাদ দিলে গণিত একই থাকে, কিন্তু exp আর ফেটে যায় না। Playground-এ stable versionই implement করা আছে।
 
 ## LLM-এ Softmax
+
+LLM-এর last step প্রায়ই এটাই — vocab_size logits → Softmax → next-token probability:
 
 ```mermaid
 flowchart TD
@@ -94,9 +102,7 @@ flowchart TD
     classDef gen fill:#EF4444,color:#fff,stroke:#B91C1C
 ```
 
-- Last layer → vocab_size logits
-- Softmax → probability over all tokens
-- Sample বা argmax → next token
+Last layer → vocab_size logits। Softmax → সব token-এর উপর probability। তারপর sample বা argmax দিয়ে next token বেছে নাও — Part 0-এর next-token prediction-এরই neural version।
 
 ## কোড চেষ্টা করো
 
@@ -120,12 +126,12 @@ log.ok('sum ≈ 1 ✓');`}</CodeRun>
 
 <Playground id="part-03/softmax" title="Softmax Calculator" viz="softmax" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Softmax** logits-কে valid probability distribution-এ convert করে
 - Formula: `exp(z_i) / Σ exp(z_j)`
 - বড় logit → বেশি probability
-- LLM output layer প্রায়ই softmax দিয়ে শেষ হয়
+- LLM output layer প্রায়ই Softmax দিয়ে শেষ হয়
 - Numerical stability-এর জন্য max-subtraction trick ব্যবহার করো
 
 **আগের lesson:** [Matrix Multiplication](/docs/part-03-math/04-matmul)

@@ -1,17 +1,19 @@
 ---
 title: Module 5 — Neural Network
-description: Neuron, layer, MLP, এবং XOR gate train করা
+description: Neuron, Layer, MLP — আর XOR gate train করা
 ---
 
-# 🧠 Module 5: Neural Network
+# Module 5: Neural Network
 
-Math + Autograd শেষ — এখন **real neural network** বানাবো। Single neuron থেকে শুরু করে **XOR** solve করব।
+Math + Autograd শেষ — এখন সেই tools দিয়ে **সত্যিকারের neural network** বানাবো। Single Neuron থেকে শুরু করে Layer, তারপর MLP — শেষে **XOR** solve করব।
 
 <Callout type="idea">
-💡 একটা **neuron** = weighted sum + activation function। Layer stack করলে **MLP (Multi-Layer Perceptron)** — GPT-এর ancestor!
+একটা **Neuron** = weighted sum + activation function। Layer stack করলে **MLP (Multi-Layer Perceptron)** — GPT-এর দূরবর্তী পূর্বপুরুষ!
 </Callout>
 
 <Illustration name="neuron-diagram" />
+
+এই Module-এর লক্ষ্য পরিষ্কার: নিজের হাতে ছোট একটা net train করে দেখা যে non-linear problemও শেখা যায়।
 
 <StepReveal steps={[
   { emoji: "🧬", title: "Neuron", body: "inputs × weights + bias → activation" },
@@ -20,7 +22,7 @@ Math + Autograd শেষ — এখন **real neural network** বানাব�
   { emoji: "❌", title: "XOR", body: "Non-linear problem — 2-layer net দিয়ে solve" }
 ]} />
 
-## Lessons
+## এই Module-এর Lessons
 
 | # | Lesson | Topic |
 |---|--------|-------|

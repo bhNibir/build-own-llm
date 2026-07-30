@@ -1,16 +1,16 @@
 ---
-title: Training Loop
+title: Training Loop — Model শেখানো
 description: Fruit dataset-এ forward + backward + update — model শেখা শুরু
 ---
 
-# Training Loop
+# Training Loop — Model শেখানো
 
 <ConceptAnim slug="part-06-neural-lm/04-train" />
 
-Embedding, weight matrix, loss — সব ready।
+Embedding, Weight Matrix, Loss — তিনটে piece ready। এখন সেগুলো একটা **loop**-এ বসাব: বারবার forward → Loss → backward → update। Module 4–5-এর training idea এখানে language model-এ apply হচ্ছে।
 
 <Callout type="tip">
-✅ Browser demo-তে **~200 epochs** fruit word pairs-এ train করি। Loss gradually কমতে থাকবে — Run চাপলে live chart-এ দেখবে।
+Browser demo-তে **~200 epochs** fruit word pairs-এ train করি। Loss gradually কমতে থাকবে — Run চাপলে live chart-এ দেখবে।
 </Callout>
 
 ```mermaid
@@ -28,26 +28,28 @@ flowchart TD
     classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
-## Loop Structure
+Training pairs Module 1-এর মতোই: `(like, apple)`, `(like, banana)`… Forward-এ current token দিয়ে Softmax probs, Loss-এ true next token মাপা, তারপর gradient দিয়ে `E` আর `W` আপডেট।
+
+## Loop Structure কেমন
 
 <StepReveal steps={[
-  { emoji: "1️⃣", title: "Forward", body: "Input token → logits → loss" },
-  { emoji: "2️⃣", title: "Backward", body: "Gradient compute (dW from softmax error)" },
+  { emoji: "1️⃣", title: "Forward", body: "Input token → logits → Loss" },
+  { emoji: "2️⃣", title: "Backward", body: "Gradient compute (dW from Softmax error)" },
   { emoji: "3️⃣", title: "Update", body: "W -= lr × gradient" },
-  { emoji: "4️⃣", title: "Repeat", body: "~200 epochs until loss drops" }
+  { emoji: "4️⃣", title: "Repeat", body: "~200 epochs until Loss drops" }
 ]} />
 
 ## Loss Curve
 
-Training চলাকালীন loss কমতে থাকে:
+Training চলাকালীন Loss কমতে থাকে — এটাই দেখে বোঝা যায় model শিখছে:
 
 <LossChart data={[2.5, 1.8, 1.2, 0.9, 0.7]} title="Neural LM Training Loss" />
 
 <Callout type="warn">
-⚠️ Loss 0 হবে না — overfitting warning! Real model-এ validation loss monitor করো।
+Loss 0 হবে না — আর হওয়া উচিতও নয় (overfitting warning)। Real model-এ validation Loss monitor করো।
 </Callout>
 
-## Hyperparameters
+## Hyperparameterগুলো
 
 | Param | Demo value | Meaning |
 |-------|------------|---------|
@@ -55,14 +57,16 @@ Training চলাকালীন loss কমতে থাকে:
 | `epochs` | 200 | Full dataset passes |
 | Dataset | 10 fruit sentences | Module 1 corpus |
 
+Toy dataset-এ `lr = 3` ঠিক আছে; বড় model-এ learning rate অনেক ছোট হয়। Idea একই — ধাপে ধাপে Loss নামানো।
+
 ## কোড চেষ্টা করো
 
 <Playground id="part-06/train" title="Fruit Neural LM Training" viz="loss" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Training = repeat forward → loss → backward → update
-- Loss curve should **decrease** over epochs
-- Same fruit words as Bigram — এখন learned weights
+- Training = বারবার forward → Loss → backward → update
+- Loss curve epoch ধরে **কমতে** থাকবে — তাই শিখছে
+- Bigram-এরই fruit words — এখন count নয়, learned weights
 
 **পরের lesson:** [Generate](/docs/part-06-neural-lm/05-generate)

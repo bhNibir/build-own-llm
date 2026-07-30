@@ -1,17 +1,19 @@
 ---
-title: Why Attention?
+title: Attention কেন লাগে?
 description: Bigram-এর 1-token limit — long-range dependency problem
 ---
 
-# 🤔 Why Attention?
+# Attention কেন লাগে?
 
 <ConceptAnim slug="part-07-attention/01-why-attention" />
 
-Bigram এবং neural bigram দুটোই শুধু **একটা আগের token** দেখে। কিন্তু real language-এ context অনেক বড়।
+Bigram আর Module 6-এর Neural LM দুটোই শুধু **একটা আগের token** দেখে। ছোট fruit sentence-এ চলে যায় — কিন্তু real language-এ context অনেক বড়।
 
 <Callout type="warn">
-⚠️ `"The animal didn't cross the road because it was tired."` — `"it"` কার দিকে point করে? `animal` নাকি `road`?
+`"The animal didn't cross the road because it was tired."` — `"it"` কার দিকে point করে? `animal` নাকি `road`?
 </Callout>
+
+মানুষ সহজে বলে `animal`। Model-কেও সেটা বুঝতে হলে `"it"`-এর আগের পুরো sentence দেখতে হবে — শুধু `"because"` নয়। এটাই **long-range dependency** problem।
 
 ```mermaid
 flowchart TD
@@ -26,7 +28,7 @@ flowchart TD
     classDef success fill:#6EE7B7,color:#065F46,stroke:#047857
 ```
 
-## The Problem: Fixed Context Window
+## সমস্যা: Fixed Context Window
 
 | Model | Context | Limitation |
 |-------|---------|------------|
@@ -34,39 +36,41 @@ flowchart TD
 | Neural bigram | 1 token | Same |
 | **Attention** | All tokens | Full sentence |
 
-## Real Example
+## বাস্তব উদাহরণ
 
 ```
 "i like apple because apple is fruit"
 ```
 
-`"because"`-এর পর `"apple"` আবার আসে — `"because"` `"apple"`-এর সাথে connect করতে চায়। Bigram `"because"`-কে শুধু আগের word দেখায়, `"apple"`-কে miss করে।
+`"because"`-এর পর `"apple"` আবার আসে — `"because"` `"apple"`-এর সাথে connect করতে চায়। Bigram `"because"`-কে শুধু আগের word দেখায়, আগের `"apple"`-কে miss করে।
 
-## Attention Solution
+## Attention-এর সমাধান
 
-**Attention** প্রতিটা token-কে sentence-এর **সব token-এর সাথে compare** করে:
+**Attention** প্রতিটা token-কে sentence-এর **সব token-এর সাথে compare** করে — কে কাকে relevant, সেটা score দিয়ে মাপে:
 
 <StepReveal steps={[
   { emoji: "🔍", title: "Query", body: "'it' কী খুঁজছে?" },
   { emoji: "🔑", title: "Key", body: "অন্য word-গুলো কী offer করে?" },
-  { emoji: "⚖️", title: "Score", body: "Relevance measure" },
-  { emoji: "📦", title: "Value", body: "Relevant info weighted sum" }
+  { emoji: "⚖️", title: "Score", body: "কে কত relevant — সেটা measure" },
+  { emoji: "📦", title: "Value", body: "Relevant info-এর weighted sum" }
 ]} />
 
-## Historical Context
+পরের lesson-এ এই Query, Key, Value আলাদা করে দেখব — search engine analogy দিয়ে।
 
-- **2017:** "Attention Is All You Need" paper — Transformer birth
-- **Before:** RNN/LSTM sequential processing (slow, forgetful)
-- **After:** Parallel attention — GPT, BERT, Llama সব এটা use করে
+## একটু ইতিহাস
+
+- **2017:** "Attention Is All You Need" paper — Transformer-এর জন্ম
+- **আগে:** RNN/LSTM sequential processing (ধীর, ভুলে যায়)
+- **পরে:** Parallel Attention — GPT, BERT, Llama সব এটা use করে
 
 <Callout type="tip">
-✅ Attention GPT-এর **core innovation** — Module 7-8-এ আমরা এটা from scratch build করব।
+Attention GPT-এর **core innovation** — Module 7–8-এ আমরা এটা from scratch build করব।
 </Callout>
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Bigram/neural bigram = 1-token context limit
-- Long sentences need **all-token** context
-- Attention solves long-range dependencies
+- Bigram আর Neural bigram শুধু **১টা আগের token** দেখে — context window ছোট
+- লম্বা sentence-এ **সব token** দেখা দরকার, নাহলে `"it"`-এর মতো reference ভুল হয়
+- **Attention** long-range dependency সমাধান করে — প্রতিটা token সব token-এর সাথে compare করে
 
 **পরের lesson:** [Query, Key, Value](/docs/part-07-attention/02-qkv)

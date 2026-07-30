@@ -3,14 +3,14 @@ title: Generate Text
 description: Autoregressive generation loop — trained Mini GPT দিয়ে text
 ---
 
-# ✨ Generate Text
+# Generate Text
 
 <ConceptAnim slug="part-09-mini-gpt/03-generate" />
 
-Trained Mini GPT ready — এখন **autoregressive generation**: একটা token predict → append → repeat।
+Train হয়ে গেছে — এখন সেই model দিয়ে **text generate** করব। Module 0 থেকেই যে idea শুনে আসছ: একটা token predict করো → context-এ যোগ করো → আবার predict। এই loop-ই **autoregressive** generation।
 
 <Callout type="idea">
-💡 Generation = inference mode — no backward pass, just forward + sample loop।
+💡 Generation = inference mode — কোনো backward pass নেই; শুধু forward + sample loop। Training-এর মতো weight আপডেট হয় না।
 </Callout>
 
 ```mermaid
@@ -29,16 +29,20 @@ flowchart LR
     classDef append fill:#8B5CF6,color:#fff,stroke:#7C3AED
 ```
 
-## Generation Code
+## Generation কীভাবে চলে
+
+Prompt দিয়ে শুরু — তারপর model শেষ token-এর logits দেয়, সেখান থেকে একটা pick হয়, context বাড়ে:
 
 <StepReveal steps={[
   { emoji: "🌱", title: "Prompt", body: "'i' or 'apple is'" },
-  { emoji: "🧠", title: "Forward", body: "Full GPT pass → last token logits" },
-  { emoji: "🎲", title: "Sample", body: "Pick from probability distribution" },
+  { emoji: "🧠", title: "Forward", body: "Full GPT pass → last token-এর logits" },
+  { emoji: "🎲", title: "Sample", body: "Probability distribution থেকে pick" },
   { emoji: "🔄", title: "Loop", body: "'i like apple is fruit...'" }
 ]} />
 
-## Example Outputs
+## উদাহরণ Output
+
+Same prompt, different sample — output আলাদা হতে পারে:
 
 ```
 Prompt: "i"
@@ -47,18 +51,18 @@ Prompt: "i"
 → i like banana is fruit
 ```
 
-## Causal Mask During Generation
+## Generation-এ Causal Mask
 
-GPT forward-এ **causal mask** active — token i শুধু tokens 0..i-1 দেখে। Generation-এ naturally satisfied (শুধু past tokens context-এ)।
+GPT forward-এ **causal mask** active থাকে — token i শুধু tokens 0..i-1 দেখে। Generation-এ এটা naturally satisfy হয়, কারণ context-এ শুধু past tokensই থাকে। Module 7-এর causal attention মনে আছে তো?
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-09/generate" title="Mini GPT Text Generation" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Generation = autoregressive forward + sample loop
-- Only last token's logits used for next prediction
-- Context window = last `seq_len` tokens
+- **Generation** = autoregressive forward + sample loop
+- পরের token predict করতে শুধু **last token-এর logits** লাগে
+- Context window = শেষ `seq_len` tokens — তার বেশি হলে কেটে ফেলা হয়
 
 **পরের lesson:** [Temperature](/docs/part-09-mini-gpt/04-temperature)

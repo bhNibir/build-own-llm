@@ -1,17 +1,19 @@
 ---
-title: Cross-Entropy Loss
-description: Model কতটা ভুল করলো — loss function দিয়ে measure
+title: Cross-Entropy Loss — ভুল মাপা
+description: Model কতটা ভুল করলো — Loss function দিয়ে measure
 ---
 
-# 📉 Cross-Entropy Loss
+# Cross-Entropy Loss — ভুল মাপা
 
 <ConceptAnim slug="part-06-neural-lm/03-loss" />
 
-Model prediction দিল — কিন্তু **কতটা ভুল**? Loss function এই answer দেয়। Language model-এ standard choice: **cross-entropy loss**।
+Forward pass দিয়ে Softmax probability পেলাম — কিন্তু model **কতটা ভুল**? সেই answer দেয় Loss function। Language model-এ standard choice: **cross-entropy loss**।
 
 <Callout type="idea">
-💡 Loss **কম** = model ভালো predict করছে। Training-এর goal: loss minimize করা।
+Loss **কম** = model ভালো predict করছে। Training-এর goal: Loss minimize করা।
 </Callout>
+
+সহজ intuition: সঠিক token-কে যদি model ৯০% probability দেয়, Loss ছোট। যদি ১০% দেয় — মানে ভুলের দিকে confident — Loss অনেক বড়। এই signal দিয়েই আমরা weights ঠিক করি।
 
 ```mermaid
 flowchart TD
@@ -28,7 +30,7 @@ flowchart TD
 
 <MathLesson title="Cross-Entropy Loss">
   <MathIntuition>
-    Model সঠিক token-কে **উচ্চ probability** দিলে loss কম। ভুল token-কে বেশি probability দিলে loss বেশি — log দিয়ে penalty exponential হয়।
+    Model সঠিক token-কে **উচ্চ probability** দিলে Loss কম। ভুল token-কে বেশি probability দিলে Loss বেশি — log দিয়ে penalty exponential হয়।
   </MathIntuition>
   <SymbolTable symbols={[
     { sym: "L", meaning: "Loss (scalar — একটা number)" },
@@ -46,10 +48,10 @@ flowchart TD
     <div>৪. যদি confident হত (p = 0.9): <code>L = −log(0.9) ≈ 0.105</code> — অনেক কম</div>
     <div>৫. যদি ভুল হত (p = 0.1): <code>L = −log(0.1) ≈ 2.303</code> — অনেক বেশি</div>
   </MathPractical>
-  <CodeLink>Playground-এ loss calculate করো ↓</CodeLink>
+  <CodeLink>Playground-এ Loss calculate করো ↓</CodeLink>
 </MathLesson>
 
-## Intuition
+## Intuition — মনে রাখো
 
 | Predicted P(correct) | Loss |
 |---------------------|------|
@@ -57,24 +59,24 @@ flowchart TD
 | 0.5 (unsure) | 0.69 |
 | 0.1 (wrong) | 2.30 |
 
-Loss **exponentially** বাড়ে যখন model confident ভুল হয়।
+Loss **exponentially** বাড়ে যখন model confident ভুল হয় — তাই training এটাকে hard punish করে।
 
-## Training Signal
+## Training Signal কোথা থেকে
 
 Loss থেকে **gradient** বের করে weights update করি:
 
 $$W \leftarrow W - \eta \cdot \frac{\partial L}{\partial W}$$
 
-এটা Module 4-এ শেখা autograd + gradient descent-এর application।
+এটা Module 4-এ শেখা autograd + gradient descent-এর application — শুধু এখন Loss = cross-entropy, আর parameters = Embedding `E` + Weight Matrix `W`।
 
 ## কোড চেষ্টা করো
 
 <Playground id="part-06/loss" title="Cross-Entropy Loss Calculator" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
 - **Cross-entropy** = `-log P(correct token)`
-- Lower loss = better predictions
-- Loss drives weight updates via backprop
+- Loss কম মানে prediction ভালো
+- এই Loss-ই backprop দিয়ে weight update চালায়
 
 **পরের lesson:** [Training Loop](/docs/part-06-neural-lm/04-train)

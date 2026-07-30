@@ -1,14 +1,16 @@
 ---
 title: Module 8 — Transformer Block
-description: Positional encoding, LayerNorm, FFN, Residual — full block assemble
+description: Positional Encoding, LayerNorm, FFN, Residual — full block assemble
 ---
 
-# 🧱 Module 8 — Transformer Block
+# Module 8 — Transformer Block
 
-Attention alone enough নয় — GPT-এর building block-এ **positional encoding**, **LayerNorm**, **FFN**, এবং **residual connections** আছে। Module 8-এ full block assemble করব।
+Module 7-এ Attention শিখলে — কিন্তু Attention alone দিয়ে GPT বানানো যায় না। Building block-এ আরও কয়েকটা piece লাগে: **Positional Encoding**, **LayerNorm**, **FFN**, আর **Residual** connections।
+
+এই Module-এ সেগুলো একসাথে জোড়াব — শেষে একটা full **Transformer Block** পাবে, যেটা Module 9-এ stack করে Mini GPT হবে।
 
 <Callout type="idea">
-💡 Transformer block = Attention + MLP + Norm + Residual — GPT Nটা block stack করে।
+Transformer Block = Attention + MLP + Norm + Residual — GPT Nটা block stack করে।
 </Callout>
 
 ```mermaid
@@ -32,11 +34,13 @@ flowchart TD
     classDef output fill:#EF4444,color:#fff,stroke:#DC2626
 ```
 
-## Lessons
+Diagram-এর flow মনে রাখো — প্রতিটা lesson একটা piece; শেষ lesson-এ সব assemble।
+
+## এই Module-এর Lessons
 
 | # | Lesson | Topic |
 |---|--------|-------|
-| 8.1 | [Positional Encoding](/docs/part-08-transformer/01-positional) | Position info in embeddings |
+| 8.1 | [Positional Encoding](/docs/part-08-transformer/01-positional) | Position info in Embeddings |
 | 8.2 | [LayerNorm](/docs/part-08-transformer/02-layer-norm) | Normalize activations |
 | 8.3 | [Feed-Forward (FFN)](/docs/part-08-transformer/03-ffn) | Position-wise MLP |
 | 8.4 | [Residual Connections](/docs/part-08-transformer/04-residual) | Skip connections |

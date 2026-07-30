@@ -1,16 +1,16 @@
 ---
 title: GPT Architecture
-description: N transformer blocks stacked — full Mini GPT stack
+description: Nটা Transformer Block stack করে — পুরো Mini GPT stack
 ---
 
-# 🏛️ GPT Architecture
+# GPT Architecture
 
 <ConceptAnim slug="part-09-mini-gpt/01-gpt-architecture" />
 
-সব building block এক জায়গায় — **GPT architecture**। Token in → transformer blocks → next token out।
+Module 1 থেকে 8 পর্যন্ত যে building blockগুলো আলাদা আলাদা শিখেছ — Tokenizer, Embedding, Attention, Transformer Block — এখন সেগুলো এক জায়গায় বসবে। **GPT architecture** মানেই: token ঢোকে → কয়েকটা block পার হয় → পরের token বের হয়।
 
 <Callout type="idea">
-💡 GPT = **Generative Pre-trained Transformer** — decoder-only, causal self-attention, autoregressive generation।
+💡 GPT = **Generative Pre-trained Transformer** — decoder-only, causal self-attention, autoregressive generation। নাম লম্বা, কিন্তু ধারণা একটাই: আগের token দেখে পরেরটা predict।
 </Callout>
 
 ```mermaid
@@ -38,7 +38,9 @@ flowchart TD
     classDef out fill:#EF4444,color:#fff,stroke:#DC2626
 ```
 
-## Transformer Block (recap)
+## Transformer Block (সংক্ষেপে)
+
+Module 8-এ যে block assemble করেছ, সেটাই এখানে N বার stack হবে। একটার ভিতর দেখলে এমন:
 
 ```mermaid
 flowchart TD
@@ -54,7 +56,9 @@ flowchart TD
     style attn fill:#FFD700
 ```
 
-## Mini GPT Config
+## Mini GPT-এর Config
+
+আমাদের ছোট্ট model — fruit corpus-এ চলবে, browser-এ fit হবে:
 
 | Hyperparameter | Value |
 |----------------|-------|
@@ -67,12 +71,14 @@ flowchart TD
 
 <StepReveal steps={[
   { emoji: "🔤", title: "Embed", body: "Token + positional lookup" },
-  { emoji: "🧱", title: "4 Blocks", body: "Attention + FFN each" },
-  { emoji: "📏", title: "Final Norm", body: "Stabilize before output" },
+  { emoji: "🧱", title: "4 Blocks", body: "প্রতিটাতে Attention + FFN" },
+  { emoji: "📏", title: "Final Norm", body: "Output-এর আগে stabilize" },
   { emoji: "🎯", title: "LM Head", body: "D → V logits" }
 ]} />
 
-## Components Map
+## Componentগুলোর Map
+
+প্রতিটা piece আগে কোন Module-এ এসেছিল — মনে করিয়ে দিই:
 
 | Component | Module | Role |
 |-----------|--------|------|
@@ -83,7 +89,7 @@ flowchart TD
 | Training | 6 | Loss + update |
 | Generation | 2, 6 | Autoregressive |
 
-## vs nanoGPT
+## vs nanoGPT — তফাত
 
 | | Our Mini GPT | Karpathy nanoGPT |
 |---|-------------|------------------|
@@ -93,13 +99,13 @@ flowchart TD
 | Runtime | Browser (esbuild-wasm) | GPU |
 
 <Callout type="tip">
-✅ Architecture **identical** — শুধু language এবং scale different। Module 10-এ nanoGPT line-by-line পড়ব।
+✅ Architecture **একই** — শুধু language আর scale আলাদা। Module 10-এ nanoGPT line-by-line পড়ব; তখন দেখবে formula-ও মিলে যায়।
 </Callout>
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- GPT = embed + N blocks + LM head
-- Decoder-only, causal attention
-- Our Mini GPT = same architecture, smaller scale
+- **GPT** = embed + Nটা Transformer block + LM head
+- Decoder-only, **causal attention** — শুধু past দেখে
+- আমাদের Mini GPT = same architecture, শুধু ছোট scale
 
 **পরের lesson:** [Train Mini GPT](/docs/part-09-mini-gpt/02-train)

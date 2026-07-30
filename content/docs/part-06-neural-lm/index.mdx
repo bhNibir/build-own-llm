@@ -1,14 +1,16 @@
 ---
 title: Module 6 — Neural Language Model
-description: Count table-এর বদলে learned embedding + weight matrix দিয়ে language model
+description: Count table-এর বদলে learned Embedding + Weight Matrix দিয়ে language model
 ---
 
 # Module 6 — Neural Language Model
 
-Bigram model **counting** দিয়ে কাজ করে। Module 6-এ আমরা same task neural network দিয়ে করব — **embedding**, **weight matrix**, **loss**, **training loop**, এবং **generation**।
+Module 2-এ Bigram **counting** দিয়ে next word predict করতাম। কাজ করত — কিন্তু count table fixed memory; data বাড়লেও smart pattern শেখে না।
+
+Module 5-এ neuron, layer, MLP দেখেছ। এখন সেই neural network দিয়ে **same next-token task** করব — Embedding, Weight Matrix, Loss, training loop, আর generation।
 
 <Callout type="idea">
-💡 Bigram-এর count table = fixed memory। Neural LM-এ weights **gradient descent** দিয়ে learn হয় — data বাড়লে pattern capture করতে পারে।
+Bigram-এর count table = fixed memory। Neural LM-এ weights **gradient descent** দিয়ে learn হয় — data বাড়লে pattern capture করতে পারে।
 </Callout>
 
 ```mermaid
@@ -22,7 +24,9 @@ flowchart LR
     classDef output fill:#F59E0B,color:#fff,stroke:#D97706
 ```
 
-## Lessons
+Pipeline সোজা: token ID → Embedding vector → Weight Matrix দিয়ে logits → Softmax দিয়ে probability → next token। Idea Bigram-এর মতোই; শুধু memory এখন learned weights।
+
+## এই Module-এর Lessons
 
 | # | Lesson | Topic |
 |---|--------|-------|

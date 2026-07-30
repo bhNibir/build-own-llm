@@ -7,9 +7,9 @@ description: কেন LLM random text generate করে
 
 <ConceptAnim slug="part-02-bigram/05-sampling-vs-argmax" />
 
-আগের lesson-এ দেখলাম argmax দিয়ে generate করলে **সবসময় same output**। কিন্তু ChatGPT তো প্রতিবার আলাদা answer দেয় — কেন?
+আগের lesson-এ দেখলাম argmax দিয়ে generate করলে **সবসময় same output**। কিন্তু ChatGPT তো প্রতিবার আলাদা answer দেয় — কেন? কারণ real system প্রায়ই highest count টানে না; probability অনুযায়ী **sample** করে।
 
-## Argmax Problem
+## Argmax-এর Problem
 
 ```
 Input: "like"
@@ -22,9 +22,9 @@ Probabilities:
 Argmax → সবসময় "apple" (highest)
 ```
 
-বারবার same thing — boring!
+বারবার same thing — নিরাপদ, কিন্তু boring। Creative বা conversational text-এ এটা সমস্যা।
 
-## Sampling Solution
+## Sampling-এর সমাধান
 
 Probability অনুযায়ী **random pick** করো:
 
@@ -37,13 +37,15 @@ Random number: 0.6
   banana: 25% → cumulative: 0.75 → 0.6 < 0.75 → PICK banana!
 ```
 
-পরের বার random number ভিন্ন হলে ভিন্ন word pick হবে।
+পরের বার random number ভিন্ন হলে ভিন্ন word pick হবে। মানে distribution মান্য করা হচ্ছে, শুধু চূড়াটা নয় — পুরো পাহাড়।
 
 ## কোড
 
 নীচের playground-এ Argmax vs Sampling চালিয়ে দেখো — Run বারবার চাপলে sampling output প্রতিবার আলাদা হবে।
 
-## Comparison
+## তুলনা
+
+পাশাপাশি রাখলে পার্থক্য স্পষ্ট:
 
 ```mermaid
 flowchart TD
@@ -68,7 +70,9 @@ flowchart TD
 | Strategy | Highest probability | Random by probability |
 | Used by | Search engines | ChatGPT, creative writing |
 
-## Interactive Demo
+কোনোটা “খারাপ” নয় — কাজ অনুযায়ী বেছে নাও। নিশ্চিত উত্তর চাইলে argmax; বৈচিত্র্য চাইলে sampling।
+
+## নিজে চেষ্টা করো
 
 <Playground id="part-02/sampling" title="Argmax vs Sampling" />
 
@@ -84,9 +88,11 @@ $$P_i = \frac{e^{z_i / T}}{\sum_j e^{z_j / T}}$$
 - $T = 1$: normal sampling
 - $T > 1$: more random/creative
 
-আমাদের model-এ temperature নেই, কিন্তু concept same।
+আমাদের model-এ temperature নেই, কিন্তু concept same — পরে neural model এলে এই knob আবার দেখা যাবে।
 
 ## Part 2 শেষ — তুমি কী শিখলে?
+
+পুরো Bigram pipeline এক নজরে:
 
 ```mermaid
 flowchart TD
@@ -103,8 +109,6 @@ flowchart TD
     classDef highlight fill:#FFF1F2,color:#881337,stroke:#E11D48,stroke-width:2px
 ```
 
-🎉 তুমি তোমার **প্রথম Language Model** বানালে, train করলে, এবং text generate করলে!
-
-কিন্তু Bigram model-এর limitation আছে — সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে — সেটা Module 3–9-এ।
+তুমি তোমার **প্রথম Language Model** বানালে, train করলে, এবং text generate করলে — count দিয়েই। কিন্তু Bigram model-এর limitation আছে: সে শুধু **১টা আগের word** দেখে। Real LLM **পুরো context** দেখে — সেটা Module 3–9-এ, যেখানে math আর neural net এসে Attention পর্যন্ত নিয়ে যাবে।
 
 **পরের Module:** [Module 3 — Math Foundations](/docs/part-03-math)

@@ -1,5 +1,5 @@
 ---
-title: Count Model
+title: Count Model কীভাবে train হয়?
 description: Training data থেকে count table বানানো
 ---
 
@@ -7,9 +7,11 @@ description: Training data থেকে count table বানানো
 
 <ConceptAnim slug="part-02-bigram/02-count-model" />
 
-Bigram model-এর training খুব simple: **গুনে রাখো** কোন word-এর পরে কোন word কতবার এসেছে।
+Bigram-এর idea পরিষ্কার — একটা word দেখে পরেরটা। এখন প্রশ্ন হলো: সেই “শেখা” আসলে কী? Bigram model-এর training খুব simple: **গুনে রাখো** কোন word-এর পরে কোন word কতবার এসেছে। কোনো gradient নেই, কোনো loss নেই — শুধু count।
 
-## Training Process
+## Training কীভাবে হয়
+
+প্রতিটা sentence থেকে pair তুলে count বাড়াও:
 
 ```mermaid
 flowchart TD
@@ -21,7 +23,7 @@ flowchart TD
     classDef process fill:#ECFDF5,color:#064E3B,stroke:#059669,stroke-width:2px
 ```
 
-## Step by Step
+## ধাপে ধাপে
 
 **Sentence 1:** `i like apple`
 
@@ -44,7 +46,11 @@ i → like: count = 3
 like → mango: count = 1
 ```
 
+দেখো — একই pair বারবার এলে count বাড়ে। এটাই model-এর “memory”।
+
 ## Final Count Table
+
+কয়েকটা sentence পরে table এরকম দেখায়:
 
 ```
 i       → { like: 3 }
@@ -56,11 +62,15 @@ is      → { fruit: 3, healthy: 1 }
 ...
 ```
 
-## Data Structure
+`like`-এর পরে তিনটা option — তাই পরে probability ভাগ হবে। `i`-এর পরে শুধু `like` — তাই সেখানে নিশ্চিত।
 
-`Map<currentWord, Map<nextWord, count>>` — `code/part-02/bigram.ts` ও নিচের playground-এ same idea।
+## Data Structure কেমন
 
-## Probability Formula
+`Map<currentWord, Map<nextWord, count>>` — `code/part-02/bigram.ts` ও নিচের playground-এ same idea। Nested map মানে: আগে current word খুঁজো, তারপর তার ভেতরের next-word count।
+
+## Probability-র Formula
+
+Count একা যথেষ্ট নয় — predict করতে **probability** লাগে। Count বেশি হলে chance বেশি, কিন্তু একই current word-এর সব next option যোগ করে 1 করতে হয় (normalize):
 
 <MathLesson title="Bigram Probability">
   <MathIntuition>
@@ -81,14 +91,16 @@ is      → { fruit: 3, healthy: 1 }
   <CodeLink>Playground-এ count table run করো ↓</CodeLink>
 </MathLesson>
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-02/count-model" title="Count Model Training" />
 
+Table তৈরি হলে পরের ধাপ: সেখান থেকে next word **predict** করা।
+
 ## তুমি কী শিখলে?
 
-- Training = counting how often each pair appears
-- Count table = model-এর "memory"
-- Count থেকে probability বের করা যায়
+- Training এখানে মানে counting — কোন pair কতবার এসেছে, সেটাই model-এর memory
+- Count থেকে probability বের করা যায়; normalize করলেই distribution পাওয়া যায়
+- Bigram শুধু শেষ word দেখে condition করে — পুরো sentence নয়
 
 **পরের lesson:** [Predict](/docs/part-02-bigram/03-predict)

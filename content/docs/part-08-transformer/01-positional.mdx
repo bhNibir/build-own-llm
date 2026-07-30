@@ -1,16 +1,18 @@
 ---
-title: Positional Encoding
-description: Token position যোগ করা — attention order-agnostic, position দরকার
+title: Positional Encoding — Order যোগ করা
+description: Token position যোগ করা — Attention order-agnostic, position দরকার
 ---
 
-# 📍 Positional Encoding
+# Positional Encoding — Order যোগ করা
 
 <ConceptAnim slug="part-08-transformer/01-positional" />
 
-Attention **order-agnostic** — `"i like apple"` এবং `"apple like i"` same attention weights পাবে (embedding same হলে)। Position info manually যোগ করতে হবে।
+Module 7-এর Self-Attention-এ একটা catch আছে: Attention **order-agnostic**। `"i like apple"` আর `"apple like i"` — Embedding same হলে same Attention weights পাবে। Word order বোঝে না।
+
+তাই position info **manually** যোগ করতে হয় — এটাই **Positional Encoding**।
 
 <Callout type="warn">
-⚠️ Attention matrix permutation invariant — word order বুঝতে **positional encoding** mandatory।
+Attention matrix permutation invariant — word order বুঝতে **Positional Encoding** mandatory।
 </Callout>
 
 ```mermaid
@@ -24,13 +26,15 @@ flowchart LR
     classDef out fill:#6366F1,color:#fff,stroke:#4338CA
 ```
 
+Module 6-এর Embedding-এ শুধু “কোন word” ছিল। এখন তার সাথে “কোন position”-ও যোগ হচ্ছে — `token_emb + pos_emb`।
+
 <MathLesson title="Sinusoidal Positional Encoding">
   <MathIntuition>
-    Original Transformer paper sin/cos waves ব্যবহার করে — fixed pattern, no learned params। GPT learned positional embeddings use করে, কিন্তু sin/cos intuition same।
+    Original Transformer paper sin/cos waves ব্যবহার করে — fixed pattern, no learned params। GPT learned positional Embeddings use করে, কিন্তু sin/cos intuition same।
   </MathIntuition>
   <SymbolTable symbols={[
     { sym: "pos", meaning: "Token position (0, 1, 2, ...)" },
-    { sym: "i", meaning: "Dimension index within embedding" },
+    { sym: "i", meaning: "Dimension index within Embedding" },
     { sym: "d_model", meaning: "Embedding dimension" }
   ]} />
   <Formula>
@@ -43,33 +47,33 @@ flowchart LR
     <div>৩. Position 1: <code>sin(1) ≈ 0.841</code>, <code>cos(1) ≈ 0.540</code> → PE ≈ <code>[0.841, 0.540, …]</code></div>
     <div>৪. ভিন্ন position → ভিন্ন sin/cos pattern — model order বুঝতে পারে</div>
   </MathPractical>
-  <CodeLink>Playground-এ positional encoding add করো ↓</CodeLink>
+  <CodeLink>Playground-এ Positional Encoding add করো ↓</CodeLink>
 </MathLesson>
 
-## Two Approaches
+## দুইটা Approach
 
 | Method | Type | Used by |
 |--------|------|---------|
 | Sinusoidal | Fixed formula | Original Transformer |
 | **Learned** | Trainable vector | **GPT**, Llama |
 
-আমাদের Mini GPT **learned positional embedding** use করব — simpler, same idea।
+আমাদের Mini GPT **learned positional Embedding** use করব — simpler, same idea। Module 6-এর Embedding lookup-এর মতোই, শুধু key = position index।
 
 <StepReveal steps={[
   { emoji: "🔢", title: "Position index", body: "0, 1, 2, ... for each token" },
-  { emoji: "🌊", title: "PE vector", body: "sin/cos or learned lookup" },
+  { emoji: "🌊", title: "PE vector", body: "sin/cos অথবা learned lookup" },
   { emoji: "➕", title: "Add to embed", body: "token_emb + pos_emb" },
-  { emoji: "📤", title: "To attention", body: "Now order-aware!" }
+  { emoji: "📤", title: "Attention-এ পাঠাও", body: "এখন order বোঝে!" }
 ]} />
 
-## Interactive Demo
+## নিজে চেষ্টা করো
 
 <Playground id="part-08/positional" title="Positional Encoding" />
 
-## ✅ তুমি কী শিখলে?
+## তুমি কী শিখলে?
 
-- Attention needs position info added manually
-- Sin/cos encoding = fixed wave patterns
-- GPT uses learned positional embeddings
+- Attention নিজে থেকে position জানে না — **manually** যোগ করতে হয়
+- Sin/cos encoding = fixed wave pattern দিয়ে position encode
+- GPT সাধারণত **learned positional Embedding** ব্যবহার করে
 
 **পরের lesson:** [LayerNorm](/docs/part-08-transformer/02-layer-norm)

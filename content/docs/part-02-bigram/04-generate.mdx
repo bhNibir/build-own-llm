@@ -1,5 +1,5 @@
 ---
-title: Generate
+title: Sentence কীভাবে generate হয়?
 description: একটার পর একটা word predict করে sentence তৈরি
 ---
 
@@ -7,9 +7,9 @@ description: একটার পর একটা word predict করে sentence
 
 <ConceptAnim slug="part-02-bigram/04-generate" />
 
-এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা।
+একটা word predict করতে শিখেছি। এখন সবচেয়ে মজার অংশ — model দিয়ে **নতুন sentence generate** করা। ধারণাটা Module 0-এর autoregressive loop-ই: একটা seed দিয়ে শুরু, predict, context-এ যোগ, আবার predict।
 
-## Idea: Autoregressive Generation
+## Idea: Autoregressive Generation কী
 
 একটা word দিয়ে শুরু করো, তারপর বারবার predict করো:
 
@@ -26,9 +26,9 @@ flowchart LR
     classDef dim fill:#F8FAFC,color:#475569,stroke:#94A3B8,stroke-width:2px
 ```
 
-Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ আটকে যায়।
+Result: `"i like apple is fruit is fruit ..."` — argmax একটা loop-এ আটকে যায়। কেন, সেটা নিচে ধাপে ধাপে দেখো।
 
-## Step by Step
+## ধাপে ধাপে
 
 Sentence বাড়ে, কিন্তু **bigram শুধু শেষ word** দেখে predict করে:
 
@@ -41,21 +41,24 @@ Step 5:  context="fruit"  → P(?|fruit)  → "is"    → "… fruit is"
 Step 6:  context="is"     → P(?|is)     → "fruit" → "… is fruit is fruit"  (loop)
 ```
 
-`is`-এর সবচেয়ে বড় count `fruit` (৩ বার), আর `fruit → is` — তাই argmax `is ↔ fruit`-এ আটকে যায়। তাই max length (এখানে ১০ step) পর্যন্ত চলে থামে, `null` prediction পেলে আগে থামত।
+`is`-এর সবচেয়ে বড় count `fruit` (৩ বার), আর `fruit → is` — তাই argmax `is ↔ fruit`-এ আটকে যায়। তাই max length (এখানে ১০ step) পর্যন্ত চলে থামে; `null` prediction পেলে আগে থামত। এটা bug নয় — ছোট corpus + argmax-এর স্বাভাবিক ফল।
 
 ## কোড
 
-Loop:
+Loop-এর চারটা ধাপ মনে রাখো:
+
 1. **শেষ word** নাও (bigram context = last token)
 2. Predict করো
 3. নতুন word যোগ করো
 4. Repeat (অথবা আর predict না পেলে stop)
 
-## Interactive Demo
+Playground-এ seed বদলে দেখো আউটপুট কীভাবে বদলায় — argmax হলে একই seed-এ সবসময় same string।
+
+## নিজে চেষ্টা করো
 
 <Playground id="part-02/generate" title="Sentence Generate" />
 
-Argmax দিয়ে generate করলে **সবসময় same output** — কারণ সবসময় highest count pick করে।
+Argmax দিয়ে generate করলে **সবসময় same output** — কারণ সবসময় highest count pick করে। পরের lesson-এ দেখব কীভাবে probability অনুযায়ী random pick করলে বৈচিত্র্য আসে।
 
 ## GPT-ও same process
 
@@ -66,12 +69,12 @@ Input: "The capital of France is"
 → predict → (stop)
 ```
 
-শুধু GPT-এর prediction অনেক বেশি smart (Transformer + Attention)।
+শুধু GPT-এর prediction অনেক বেশি smart (Transformer + Attention) — loop-এর কাঠামো একই।
 
 ## তুমি কী শিখলে?
 
-- **Generate** = repeatedly predict next word
-- **Autoregressive** = আগের output পরের input
-- Argmax generate = deterministic (সবসময় same)
+- **Generate** = বারবার next word predict করে sentence বানানো
+- **Autoregressive** মানে আগের output-ই পরের input — Bigram-এ সেটা শুধু last token
+- Argmax generate deterministic: একই seed → সবসময় same output, কখনো loop-এও আটকে যেতে পারে
 
 **পরের lesson:** [Sampling vs Argmax](/docs/part-02-bigram/05-sampling-vs-argmax)
