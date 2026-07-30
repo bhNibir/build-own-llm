@@ -38,9 +38,10 @@ export function TempSoftmaxAnim({ paused }: { paused?: boolean }) {
             key={temp}
             type="button"
             onClick={() => setTi(i)}
-            className={`rounded-lg border-2 px-3 py-1 font-mono text-xs font-medium transition ${
+            aria-pressed={i === ti}
+            className={`rounded-lg border-2 px-3 py-1.5 font-mono text-xs font-semibold transition ${
               i === ti
-                ? 'border-amber-500 bg-amber-50 text-amber-900 dark:bg-amber-950/50 dark:text-amber-100'
+                ? 'border-amber-500 bg-amber-400 text-amber-950 shadow-md ring-2 ring-amber-300 dark:bg-amber-500 dark:text-amber-950'
                 : 'border-fd-border bg-fd-muted/30 text-fd-muted-foreground hover:border-amber-300'
             }`}
           >
