@@ -1,15 +1,15 @@
 ---
-title: Part 2 — Bigram LM
+title: Module 2 — Bigram LM
 description: তোমার প্রথম Language Model — train করে text generate করো
 ---
 
 # Part 2: Bigram Language Model
 
-Part 1-এ আমরা data prepare করলাম। এখন **প্রথম সত্যিকারের Language Model** বানাবো।
-
-এটা LLM না — **Bigram Language Model**। কিন্তু GPT-এর foundation বুঝার জন্য এটা সবচেয়ে গুরুত্বপূর্ণ।
+Part 1-এ আমরা data prepare করলাম — corpus থেকে training pair পর্যন্ত। এখন সেই pair দিয়ে **প্রথম সত্যিকারের Language Model** বানাবো। এটা পুরো GPT নয় — **Bigram Language Model**। কিন্তু GPT-এর foundation বুঝার জন্য এটা সবচেয়ে গুরুত্বপূর্ণ: আগের word দেখে পরেরটা guess করা।
 
 ## এই Part-এ কী শিখবে?
+
+Count থেকে generate পর্যন্ত একটা ছোট loop:
 
 ```mermaid
 flowchart LR
@@ -34,7 +34,9 @@ flowchart LR
 
 ## মনে রাখো
 
-> Bigram মানে: **একটা word দেখে পরেরটা guess করা**। কোনো neural network নেই — শুধু counting। কিন্তু idea same: training data থেকে pattern শেখা।
+> Bigram মানে: **একটা word দেখে পরেরটা guess করা**। কোনো neural network নেই — শুধু counting। কিন্তু idea same: training data থেকে pattern শেখা, তারপর next token predict।
+
+এখান থেকেই শুরু — আগে concept, তারপর count table।
 
 <Cards>
   <Card title="Lesson 01: Bigram Concept" href="/docs/part-02-bigram/01-bigram-concept" />

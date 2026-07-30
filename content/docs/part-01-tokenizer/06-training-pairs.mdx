@@ -1,5 +1,5 @@
 ---
-title: Training Pairs
+title: Training Pairs কী?
 description: Model কী শেখে — input/output pair তৈরি
 ---
 
@@ -7,13 +7,11 @@ description: Model কী শেখে — input/output pair তৈরি
 
 <ConceptAnim slug="part-01-tokenizer/06-training-pairs" />
 
-এখন সবচেয়ে গুরুত্বপূর্ণ প্রশ্ন: **Model কী শেখে?**
-
-উত্তর: **Next word prediction**।
+Encoding পর্যন্ত এসেছি — text এখন number। এখন সবচেয়ে গুরুত্বপূর্ণ প্রশ্ন: **Model কী শেখে?** উত্তরটা আবার সেই পরিচিত ধারণা: **Next word prediction**। মানে প্রতিটা জায়গায় “এর পরে কী আসে?” — সেই pair-গুলোই training data।
 
 ## Idea
 
-প্রতিটা sentence-এ, একটা word দেখে পরেরটা predict করতে শেখাও:
+প্রতিটা sentence-এ, একটা word দেখে পরেরটা predict করতে শেখাও। ধরো:
 
 ```
 "i like apple"
@@ -37,7 +35,11 @@ description: Model কী শেখে — input/output pair তৈরি
 "is"     →  "fruit"
 ```
 
+তাহলে কী হয়? একটা লম্বা sentence ভেঙে অনেক ছোট “(current → next)” উদাহরণে পরিণত হয় — model ঠিক এগুলোই গুনে শেখে।
+
 ## পুরো Dataset থেকে
+
+কয়েকটা sentence দিয়ে pair কেমন হয়, সেটা flowchart-এ দেখো:
 
 ```mermaid
 flowchart TD
@@ -49,7 +51,7 @@ flowchart TD
   s3 --> p6["is → healthy"]
 ```
 
-মোট **~20টা pair** তৈরি হবে ১০টা sentence থেকে।
+মোট **~20টা pair** তৈরি হবে ১০টা sentence থেকে। ছোট সংখ্যা — তাই Module 2-এ count table খুলে দেখা যাবে কোন pair কতবার এসেছে।
 
 ## কোড
 
@@ -62,13 +64,15 @@ flowchart TD
 | Pairs | ~20 | Trillions |
 | Source | 10 sentences | Internet |
 
-Same process, বিশাল scale।
+Same process, বিশাল scale। GPT-ও মূলত অসংখ্য “(context → next token)” pair দেখে শেখে — শুধু context অনেক লম্বা।
 
 ## Interactive Demo
 
 <Playground id="part-01/training-pairs" title="Training Pairs Demo" />
 
 ## Part 1 শেষ — তুমি কী শিখলে?
+
+পুরো Module 1 এক নজরে:
 
 ```mermaid
 flowchart TD
@@ -79,8 +83,6 @@ flowchart TD
     style E fill:#90EE90
 ```
 
-✅ Text → Tokens → Numbers → Training Pairs
-
-এখনও কোনো AI নেই। শুধু data preparation। কিন্তু এটাই **সব LLM-এর প্রথম ধাপ**।
+Text → Tokens → Numbers → Training Pairs — এই চার ধাপই data preparation। এখনও কোনো AI নেই; কিন্তু এটাই **সব LLM-এর প্রথম ধাপ**। এখান থেকেই পরের Module: এই pair গুনে প্রথম Bigram Language Model বানাবো।
 
 **পরের Part:** [Part 2 — Bigram Language Model](/docs/part-02-bigram)

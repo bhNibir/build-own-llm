@@ -1,5 +1,5 @@
 ---
-title: Vocabulary
+title: Vocabulary কী?
 description: Unique word-এর list এবং ID mapping
 ---
 
@@ -7,9 +7,7 @@ description: Unique word-এর list এবং ID mapping
 
 <ConceptAnim slug="part-01-tokenizer/04-vocabulary" />
 
-Tokenizer sentence কে word-এ ভাগ করল। এখন প্রশ্ন: model কীভাবে এই word-গুলো বুঝবে?
-
-উত্তর: **number দিয়ে**।
+Tokenizer sentence কে word-এ ভাগ করল। এখন প্রশ্ন: model কীভাবে এই word-গুলো বুঝবে? উত্তর: **number দিয়ে**। আর সেই number-এর dictionary-ই হলো **Vocabulary** — সব unique token-এর list, প্রতিটার একটা স্থায়ী ID সহ।
 
 ## Vocabulary তৈরি
 
@@ -26,7 +24,11 @@ flowchart LR
     classDef m fill:#EC4899,color:#fff,stroke:#DB2777
 ```
 
+Sorted করে ID দিলে lookup deterministic হয় — একই corpus-এ বারবার একই mapping পাবে।
+
 ## আমাদের Vocabulary
+
+আমাদের fruit corpus থেকে ১২টা unique word:
 
 | Word | ID |
 |------|----|
@@ -43,15 +45,16 @@ flowchart LR
 | mango | 10 |
 | you | 11 |
 
-মোট **12টা unique word** = Vocabulary size = 12
+মোট **12টা unique word** = Vocabulary size = 12। ছোট, কিন্তু পুরো pipeline চালানোর জন্য যথেষ্ট।
 
 ## কোড
 
-`code/part-01/vocabulary.ts`:
+`code/part-01/vocabulary.ts`-এ দুটো map থাকে — দুদিকেই যেতে পারার জন্য:
 
-দুটো map:
 - **stoi** (string → int): `"apple"` → `0`
 - **itos** (int → string): `0` → `"apple"`
+
+একদিক শুধু encode-এর জন্য; অন্যদিক decode-এর জন্য। দুটোই লাগবে।
 
 ## GPT-এর Vocabulary
 
@@ -61,16 +64,18 @@ flowchart LR
 | GPT-2 | 50,257 |
 | GPT-4 | ~100,000 |
 
-স্কেল আলাদা, concept same।
+স্কেল আলাদা, concept same — শুধু আমাদেরটা টেবিল খুলে দেখা যায়।
 
 ## Interactive Demo
 
 <Playground id="part-01/vocabulary" title="Vocabulary Demo" />
 
+Vocabulary থাকলে পরের ধাপ সোজা: পুরো sentence কে number list-এ convert করা — Encoding।
+
 ## তুমি কী শিখলে?
 
 - **Vocabulary** = সব unique token-এর list + ID mapping
-- Model শুধু number বুঝে, string নয়
-- `stoi` এবং `itos` দুটো direction-এ lookup
+- Model শুধু number বুঝে, string নয় — তাই `stoi` আর `itos` দুটো direction-এ lookup দরকার
+- Vocab size ছোট হলে intuition পরিষ্কার থাকে; বড় model-এ শুধু list লম্বা হয়
 
 **পরের lesson:** [Encoding](/docs/part-01-tokenizer/05-encoding)
